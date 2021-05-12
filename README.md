@@ -58,6 +58,14 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | IlluminaNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Illumina and PlateToNextclade is more than 8, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 | NanoporeNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToNextclade is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 
+---
+
+<b>Additional Information</b>
+* https://cov-lineages.org/index.html
+* https://perkinelmer-appliedgenomics.com/wp-content/uploads/marketing/Coronavirus/NEXTFLEX_Variant-Seq_SARS-CoV-2_Software-from-CosmosID.pdf
+* https://github.com/nextstrain/nextclade
+
+
 ### Each Code Step:
 
 #### Manifest Code

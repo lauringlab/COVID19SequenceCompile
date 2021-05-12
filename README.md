@@ -2,7 +2,26 @@
 
 ### Set-Up:
 
-
+<b>Folder Structure:</b>
+* SampleMetaDataOrganization
+    * FinalSummary: Contains the final compiled data full_compiled_data.csv
+        * ReportNotifications: Contains out_of_range_alert.csv
+        * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file
+    * Manifests
+        * CBR: Contains manifest files from the University of Michigan Campus BioRepository
+        * CDCIVY: Contains manifest files from the CDC IVY project
+        * CSTP: Contains manifest files from the COVID-19 Sampling & Tracking Program (ultimately from LynxDx)
+        * EDIDNOW: Contains manifest files from the ED IDnow testing program at Michigan Medicine
+        * Martin: Contains manifest files from the Martin Lab at the School of Public Health
+        * ManifestsComplete: Contains the manifest_output_report_YYYYMMDD.xlsx reports, as well as the compiled manifest list sample_full_manifest_list.csv
+    * PlateMaps: Contains all plate map files as YYYYMMDD_Illumina_Plate_##.xlsx or YYYYMMDD_Nanopore_Run_##.xlsx
+        * PlateMapsComplete: Contains the compiled plate map list sample_full_plate_list.csv
+    * PreviousLists: Contains the original processed sample list ProcessedSampleCumulativeList_20210326.csv maintained by Andrew Valesano prior to code implementation
+    * SequenceOutcomes
+        * gisaid: Contains the GISAID metadata file metadata_YYYY-MM-DD_MM-DD.tsv
+        * nextclade: Contains the NextClade output files as either YYYYMMDD_Plate_##\_##\_nextclade.tsv or YYYYMMDD\_Nanopore\_Run_##_nextclade.tsv
+        * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv
+        * SequenceOutcomeComplete: Contains the sequence outcome final compiled files of sample_full_gisaid_list.csv, sample_full_nextclade_list.csv, and sample_full_pangolin_list.csv
 
 ### Code Order:
 

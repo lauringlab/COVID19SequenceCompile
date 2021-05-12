@@ -1,5 +1,9 @@
 # README for Compilation Pipeline:
 
+### Set-Up:
+
+
+
 ### Code Order:
 
 Use full_run_code.R to run all the pieces of the pipeline in order. This order is:

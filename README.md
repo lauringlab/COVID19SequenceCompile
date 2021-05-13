@@ -3,6 +3,7 @@
 ### Set-Up:
 
 <b>Folder Structure:</b>
+
 * SampleMetaDataOrganization
     * FinalSummary: Contains the final compiled data full_compiled_data.csv
         * ReportNotifications: Contains out_of_range_alert.csv
@@ -22,6 +23,18 @@
         * nextclade: Contains the NextClade output files as either YYYYMMDD_Plate_##\_##\_nextclade.tsv or YYYYMMDD\_Nanopore\_Run_##_nextclade.tsv
         * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv
         * SequenceOutcomeComplete: Contains the sequence outcome final compiled files of sample_full_gisaid_list.csv, sample_full_nextclade_list.csv, and sample_full_pangolin_list.csv
+
+<b>R Libraries:</b>
+
+* tidyverse: https://www.tidyverse.org/
+* lubridate: https://lubridate.tidyverse.org/
+* janitor: https://cran.r-project.org/web/packages/janitor/index.html
+* withr: https://cran.r-project.org/web/packages/withr/index.html
+* openxlsx: https://cran.r-project.org/web/packages/openxlsx/index.html
+
+<b>Additional Notes:</b>
+
+All code sets have a variable called ```starting_path``` that will need to be changed to your individual path to the level just above the  SampleMetaDataOrganization folder.
 
 ### Code Order:
 

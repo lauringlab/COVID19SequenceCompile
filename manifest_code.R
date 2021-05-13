@@ -25,7 +25,7 @@ edidnow_manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifes
 cdcivy_manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifests/CDCIVY")
 
 manifest_folder_list <- c(cbr_manifest_fp, martin_manifest_fp, cstp_manifest_fp, 
-                          edidnow_manifest_fp, cdcivy_manifest_fp)
+                          edidnow_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SampleMetadataOrganization/Manifests/ManifestsComplete")
@@ -44,7 +44,7 @@ manifest_storage <- data.frame()
 
 # will iterate through folders
 for (each_folder in manifest_folder_list){
-  
+    
     #print(each_folder)
     ### get names of all .csv files in folder
     file_list <- list.files(pattern = "*.csv", path = each_folder)
@@ -160,6 +160,38 @@ if (unique_ids != nrow(manifest_storage)){
   
   #duplicate_ssc <- rbind(duplicate_ssc, duplicate_ssc2)
 }
+
+################################################################################
+## handle cdc ivy manifests
+
+cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
+
+cdc_ivy_storage <- data.frame()
+
+for (each_file in cdc_file_list){
+  fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
+  fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
+  ## change all column names to lowercase and remove leading/lagging white space
+  ## to make it easier to process
+  cdc_names <- colnames(fileone)
+  new_names <- c()
+  for (i in cdc_names){
+    new_names <- c(new_names, tolower(trimws(i)))
+  }
+  colnames(fileone) <- new_names
+  
+  fileone <- fileone %>% select(`position.#`, site.name, study.id, collection.date, aliquot.id)
+  
+  colnames(fileone) <- c("Position", "SiteName", "subject_id", "coll_date", "sample_id")
+  
+  ### need to add rec_date, rec_source
+  ### re-arrange variables
+  
+  cdc_ivy_storage <- rbind(cdc_ivy_storage, fileone)
+}
+
+### add onto main manifest file HERE
+
 
 
 ################################################################################

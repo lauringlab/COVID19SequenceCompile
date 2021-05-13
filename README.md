@@ -101,23 +101,10 @@ The final created file is called <b>full_compiled_data.csv</b>.
 * https://perkinelmer-appliedgenomics.com/wp-content/uploads/marketing/Coronavirus/NEXTFLEX_Variant-Seq_SARS-CoV-2_Software-from-CosmosID.pdf
 * https://github.com/nextstrain/nextclade
 
-
-### Each Code Step:
-
-#### Manifest Code
-
-#### Plate Map Code
-
-#### Pangolin Code
-
-#### NextClade Code
-
-#### GISAID Code
-
-#### Compile Components Code
-
 ---
 
 ### Outside the Pipeline
 
 #### Checking Compiled Files
+
+The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data. 

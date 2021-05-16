@@ -167,10 +167,12 @@ if (unique_ids != nrow(manifest_storage)){
 cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
 
 cdc_ivy_storage <- data.frame()
+full_ivy <- data.frame()
 
 for (each_file in cdc_file_list){
   fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
   fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
+  
   ## change all column names to lowercase and remove leading/lagging white space
   ## to make it easier to process
   cdc_names <- colnames(fileone)
@@ -179,6 +181,9 @@ for (each_file in cdc_file_list){
     new_names <- c(new_names, tolower(trimws(i)))
   }
   colnames(fileone) <- new_names
+  
+  ## keep full set of cdc ivy rows separate, for back checks on full data
+  full_ivy <- rbind(full_ivy, fileone)
   
   fileone <- fileone %>% select(`position.#`, site.name, study.id, collection.date, aliquot.id)
   
@@ -200,6 +205,9 @@ for (each_file in cdc_file_list){
   
   cdc_ivy_storage <- rbind(cdc_ivy_storage, fileone)
 }
+
+### write out full ivy set
+write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
 
 ### add onto main manifest file HERE
 manifest_storage$SiteName <- NA

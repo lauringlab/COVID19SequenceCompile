@@ -182,16 +182,28 @@ for (each_file in cdc_file_list){
   
   fileone <- fileone %>% select(`position.#`, site.name, study.id, collection.date, aliquot.id)
   
-  colnames(fileone) <- c("Position", "SiteName", "subject_id", "coll_date", "sample_id")
+  colnames(fileone) <- c("position", "SiteName", "subject_id", "coll_date", "sample_id")
   
-  ### need to add rec_date, rec_source
+  # add in 2 new columns: received_date and received_source (from file name)
+  rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
+  rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
+  fileone$received_date <- rec_date
+  
+  rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
+  fileone$received_source <- rec_source
+  
+  ### add in "regular" manifest columns
+  fileone$flag <- NA
+  
   ### re-arrange variables
+  fileone <- fileone %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, SiteName)
   
   cdc_ivy_storage <- rbind(cdc_ivy_storage, fileone)
 }
 
 ### add onto main manifest file HERE
-
+manifest_storage$SiteName <- NA
+manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 
 
 ################################################################################

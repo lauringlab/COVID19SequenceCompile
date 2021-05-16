@@ -138,28 +138,6 @@ for (each_folder in manifest_folder_list){
     #}
 }
 
-################################################################################
-# check for sample_id/subject_id/coll_date duplicates
-# count of unique sample_id, subject_id, coll_date combinations
-unique_ids <- nrow(manifest_storage %>% select(sample_id, subject_id, coll_date) %>% distinct())
-
-if (unique_ids != nrow(manifest_storage)){
-  # identify duplicates
-  dupes <- manifest_storage %>% group_by(sample_id, subject_id, coll_date) %>% summarize(count_unique = length(sample_id))
-  # merge with the original file
-  mfs <- merge(manifest_storage, dupes, by = c("sample_id", "subject_id", "coll_date"), all.x = TRUE)
-  # filter that down to a set of duplicates, to use in the output report
-  duplicate_ssc <- filter(mfs, count_unique != 1)
-  ### alter flag column in original file to note the duplication
-  manifest_storage$flag <- ifelse(is.na(manifest_storage$flag), "", manifest_storage$flag)
-  manifest_storage$flag <- ifelse(manifest_storage$sample_id %in% duplicate_ssc$sample_id & manifest_storage$subject_id %in% duplicate_ssc$subject_id 
-                                  & manifest_storage$coll_date %in% duplicate_ssc$coll_date, 
-                                  paste0(manifest_storage$flag, " ", "Duplicate Sample - Subject - Collection"), manifest_storage$flag)
-  manifest_storage$flag <- trimws(manifest_storage$flag)
-  manifest_storage$flag <- ifelse(manifest_storage$flag == "", NA, manifest_storage$flag)
-  
-  #duplicate_ssc <- rbind(duplicate_ssc, duplicate_ssc2)
-}
 
 ################################################################################
 ## handle cdc ivy manifests
@@ -212,6 +190,30 @@ write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_ma
 ### add onto main manifest file HERE
 manifest_storage$SiteName <- NA
 manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
+
+
+################################################################################
+# check for sample_id/subject_id/coll_date duplicates
+# count of unique sample_id, subject_id, coll_date combinations
+unique_ids <- nrow(manifest_storage %>% select(sample_id, subject_id, coll_date) %>% distinct())
+
+if (unique_ids != nrow(manifest_storage)){
+  # identify duplicates
+  dupes <- manifest_storage %>% group_by(sample_id, subject_id, coll_date) %>% summarize(count_unique = length(sample_id))
+  # merge with the original file
+  mfs <- merge(manifest_storage, dupes, by = c("sample_id", "subject_id", "coll_date"), all.x = TRUE)
+  # filter that down to a set of duplicates, to use in the output report
+  duplicate_ssc <- filter(mfs, count_unique != 1)
+  ### alter flag column in original file to note the duplication
+  manifest_storage$flag <- ifelse(is.na(manifest_storage$flag), "", manifest_storage$flag)
+  manifest_storage$flag <- ifelse(manifest_storage$sample_id %in% duplicate_ssc$sample_id & manifest_storage$subject_id %in% duplicate_ssc$subject_id 
+                                  & manifest_storage$coll_date %in% duplicate_ssc$coll_date, 
+                                  paste0(manifest_storage$flag, " ", "Duplicate Sample - Subject - Collection"), manifest_storage$flag)
+  manifest_storage$flag <- trimws(manifest_storage$flag)
+  manifest_storage$flag <- ifelse(manifest_storage$flag == "", NA, manifest_storage$flag)
+  
+  #duplicate_ssc <- rbind(duplicate_ssc, duplicate_ssc2)
+}
 
 
 ################################################################################

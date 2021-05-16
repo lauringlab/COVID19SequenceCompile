@@ -7,7 +7,7 @@
 | Column | Data Style | Equivalent To | Definition |
 | --- | --- | --- | --- |
 | position.# | numeric (integer) | position | Location of the sample in the box received at the University of Michigan |
-| site.name | character | | Name of the site that the sample originated from; format = <location>_<state abbreviation>; used in GISAID identifier |
+| site.name | character | | Name of the site that the sample originated from; format = location_state abbreviation; used in GISAID identifier; list of options included in Site Table |
 | study.id | character | subject_id | Identifies the year collected, the site, participant # and the specimen type (nomenclature decided by the CDC/IVY Study Leads) |
 | specimen.type | character | | Type of specimen collected from the study participant; ex. Nasal/Throat Swab |
 | collection.date | date | coll_date | Date the sample was collected on |

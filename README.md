@@ -11,6 +11,7 @@
     * Manifests
         * CBR: Contains manifest files from the University of Michigan Campus BioRepository
         * CDCIVY: Contains manifest files from the CDC IVY project
+            * Full_IVY_Set: Contains IVY_sample_full_manifest_list.csv, the compiled CDC IVY manifest lists with all variables sent (a subset of these are kept for the final compiled sequence list)
         * CSTP: Contains manifest files from the COVID-19 Sampling & Tracking Program (ultimately from LynxDx)
         * EDIDNOW: Contains manifest files from the ED IDnow testing program at Michigan Medicine
         * Martin: Contains manifest files from the Martin Lab at the School of Public Health
@@ -107,4 +108,4 @@ The final created file is called <b>full_compiled_data.csv</b>.
 
 #### Checking Compiled Files
 
-The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data. 
+The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data.

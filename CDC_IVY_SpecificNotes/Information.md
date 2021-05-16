@@ -24,12 +24,12 @@
 
 | Number | Institution | Location | Site Name Code |
 | --- | --- | --- | --- |
-| 1 | Baylor, Scott & White | Temple, TX | |
-| 2 | Baystate Medical Center | Springfield, MA | |
+| 1 | Baylor, Scott & White | Temple, TX | BSWH_TX |
+| 2 | Baystate Medical Center | Springfield, MA | Baystate_MA |
 | 3 | Beth Israel Deaconess | Boston, MA | |
-| 4 | Cleveland Clinic | Cleveland, OH | |
+| 4 | Cleveland Clinic | Cleveland, OH | Cleveland_OH |
 | 5 | Emory University | Atlanta, GA | |
-| 6 | Hennepin County Medical Center | Minneapolis, MN | | 
+| 6 | Hennepin County Medical Center | Minneapolis, MN | Hennepin_MN |
 | 7 | Intermountain Medical Center | Murray, UT | |
 | 8 | Johns Hopkins | Baltimore, MD | |
 | 9 | Montefiore Medical Center | Bronx, NY | |
@@ -37,12 +37,12 @@
 | 11 | Oregon Health & Sciences University | Portland, OR | |
 | 12 | Stanford University | Stanford, CA | |
 | 13 | University of California, Los Angeles | Los Angeles, CA | |
-| 14 | University of Colorado | Aurora, CO | |
-| 15 | University of Iowa | Iowa City, IA | |
+| 14 | University of Colorado | Aurora, CO | Univ. Colorado |
+| 15 | University of Iowa | Iowa City, IA | Univ. of Iowa_IA |
 | 16 | University of Miami | Miami, FL | |
 | 17 | University of Michigan | Ann Arbor, MI | |
-| 18 | University of Washington | Seattle, WA | |
-| 19 | Vanderbilt University Medical Center | Nashville, TN | |
+| 18 | University of Washington | Seattle, WA | Univ of Wash_WA |
+| 19 | Vanderbilt University Medical Center | Nashville, TN | Vanderbilt_TN |
 | 20 | Wake Forest University | Winston-Salem, NC | |
 | 21 | Washington University | St. Louis, MO | |
 

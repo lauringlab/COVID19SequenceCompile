@@ -2,6 +2,8 @@
 
 ### Data Dictionary:
 
+__Will be finalized after first data run__
+
 | Original from Manifest | Column | Data Type | Definition |
 | --- | --- | --- | --- |
 | aliquot.id | sample_id | character | CUID alpha numeric – printed in an alpha numeric cycling sequence that should be unique to the sample; One individual (subject_id) can have multiple samples, each with their own sample_id number |
@@ -47,3 +49,7 @@
 * https://cov-lineages.org/index.html
 * https://perkinelmer-appliedgenomics.com/wp-content/uploads/marketing/Coronavirus/NEXTFLEX_Variant-Seq_SARS-CoV-2_Software-from-CosmosID.pdf
 * https://github.com/nextstrain/nextclade
+
+---
+
+Completed data rows are updated as information becomes available.

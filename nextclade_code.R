@@ -1,6 +1,6 @@
 ################################################################################
 #        Creation of NextClade Dataset for COVID-19 Genetic Sampling           #
-#                         Last Updated: 04/16/2021                             #
+#                         Last Updated: 05/18/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -13,13 +13,13 @@ library(janitor)
 #                 NextClade Files - Upload and Data Checks                     #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Box Sync/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 # nextclade file path
-nc_fp <- paste0(starting_path, "SampleMetadataOrganization/SequenceOutcomes/nextclade")
+nc_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/nextclade")
 
 ### output location of nextclade files, all together
-outputLOC <- paste0(starting_path, "SampleMetadataOrganization/SequenceOutcomes/SequenceOutcomeComplete")
+outputLOC <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
 ################################################################################
 

@@ -1,6 +1,6 @@
 ################################################################################
 #       Creation of Plate Map Dataset for COVID-19 Genetic Sampling            #
-#                         Last Updated: 04/12/2021                             #
+#                         Last Updated: 05/18/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -13,13 +13,13 @@ library(openxlsx)
 #                Plate Map Files - Upload and Data Checks                      #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Box Sync/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 # plate map file path
-platemap_fp <- paste0(starting_path, "SampleMetadataOrganization/PlateMaps")
+platemap_fp <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps")
 
 ### output location of plate map files, all together
-outputLOC <- paste0(starting_path, "SampleMetadataOrganization/PlateMaps/PlateMapsComplete")
+outputLOC <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps/PlateMapsComplete")
 
 ################################################################################
 

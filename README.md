@@ -77,6 +77,7 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | coll_date | sample_full_manifest_list.csv | date | | Date the sample was collected from the individual |
 | flag | sample_full_manifest_list.csv | character | | Notes for each sample, some warnings introduced by the pipeline |
 | received_source | sample_full_manifest_list.csv | character | | Place the sample was received from; options include = UHS, CBR, CSTP, Martin, etc. |
+| SiteName | sample_full_manifest_list.csv | character | | Research site where the sample was collected from; Only applicable for the CDC IVY study |
 | SampleBarcode | sample_full_plate_list.csv | character | | Barcode type identifier for a particular sample; Not all samples have a barcode style identifier |
 | PlateDate | sample_full_plate_list.csv | date | | Date the plate was created on |
 | PlatePlatform | sample_full_plate_list.csv | character | | Testing system the plate was run through; Options include = Nanopore, Illumina, etc. |
@@ -127,3 +128,35 @@ The final created file is called <b>full_compiled_data.csv</b>.
 #### Checking Compiled Files
 
 The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data.
+
+---
+
+### Process
+
+Manifests are received from the following sources:
+
+* COVID-19 Sampling & Tracking Program (CSTP) - samples from this source are processed first by LynxDx
+* Martin Lab at the University of Michigan School of Public Health (Martin)
+* University of Michigan Central Biorepository (CBR)
+* CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan
+* Michigan Medicine ED ID Now project (EDIDNOW)
+
+Dr. Adam Lauring reviews these manifests, checks and renames columns as necessary, renames the file, and places them in the appropriate Manifests folder.
+
+##### Manifest Column Format (for all except CDC IVY)
+
+| Columns | Data Type	| Variable Description |
+| --- | --- | --- |
+| position | character | Where the sample is located in the box sent |
+| sample_id | numeric | Identification number for the sample; unique |
+| subject_id | numeric | Identification number for the subject (individual) - there may be multiple samples per subject |
+| coll_date | date | Date the sample was collected on; M/D/YY format |
+| flag | character | Notes |
+
+##### Manifest File Name Format
+
+nameOfSource_YYYYMMDD_#.csv
+
+nameOfSource = Where the samples came from, corresponds to the name of the project folders inside the Manifests folder (CBR, CSTP, Martin, CDCIVY, EDIDNOW)
+YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file was received
+\# = Number of the manifest; Will usually be a "1", but if two batches of samples arrive on the same day from the same source, with two separate associated manifest files, then these would be numbered accordingly

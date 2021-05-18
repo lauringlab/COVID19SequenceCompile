@@ -35,9 +35,25 @@ Folder structure lives within the MED-LauringLab DropBox folder.
 * withr: https://cran.r-project.org/web/packages/withr/index.html
 * openxlsx: https://cran.r-project.org/web/packages/openxlsx/index.html
 
+<b>Code:</b>
+
+In order to run the compilation code pipeline, download the following code sets:
+
+* manifest_code.R
+* plate_map_code.R
+* pangolin_code.R
+* nextclade_code.R
+* gisaid_code.R
+* compile_components_code.R
+* full_run_code.R
+
+And put them all in the same folder on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
+
 <b>Additional Notes:</b>
 
-All code sets have a variable called ```starting_path``` that will need to be changed to your individual path to the level just above the  SampleMetaDataOrganization folder.
+* All code sets have a variable called ```starting_path``` that will need to be changed to your individual path to the level just above the  SampleMetaDataOrganization folder.
+* Ensure that you have access to either the LauringLab DropBox folder, or your own version of the pipeline folder structure, on your computer.
+
 
 ### Code Order:
 

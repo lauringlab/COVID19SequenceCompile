@@ -1,10 +1,10 @@
 ################################################################################
 #               Complete Run - COVID-19 Genetic Data Compilation               #
-#                         Last Updated: 04/12/2021                             #
+#                         Last Updated: 05/18/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
-code_path <- "C:/Users/juliegil/Documents/UofM_Work/Lab_Organization/"
+code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
 
 source(paste0(code_path, "manifest_code.R"))
 

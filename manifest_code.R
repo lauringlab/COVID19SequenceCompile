@@ -142,6 +142,9 @@ for (each_folder in manifest_folder_list){
 ################################################################################
 ## handle cdc ivy manifests
 
+# read in cdc ivy site code list 
+cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), colClasses = "character")
+
 cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
 
 cdc_ivy_storage <- data.frame()
@@ -166,6 +169,16 @@ for (each_file in cdc_file_list){
   fileone <- fileone %>% select(`position.#`, site.name, study.id, collection.date, aliquot.id)
   
   colnames(fileone) <- c("position", "SiteName", "subject_id", "coll_date", "sample_id")
+  
+  ### site name checks
+  fileone$SiteName_check <- ifelse(fileone$SiteName %in% cdc_sites$SiteCode, 0, 1)
+  
+  if (sum(fileone$SiteName_check, na.rm = TRUE) != 0){
+    print(each_file)
+    stop("There are incorrect site names in the manifest.")
+  } else {
+    fileone <- fileone %>% select(position, SiteName, subject_id, coll_date, sample_id)
+  }
   
   # add in 2 new columns: received_date and received_source (from file name)
   rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))

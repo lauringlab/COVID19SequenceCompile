@@ -164,5 +164,6 @@ Dr. Adam Lauring reviews these manifests, checks and renames columns as necessar
 nameOfSource_YYYYMMDD_#.csv
 
 nameOfSource = Where the samples came from, corresponds to the name of the project folders inside the Manifests folder (CBR, CSTP, Martin, CDCIVY, EDIDNOW)
+
 YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file was received
 \# = Number of the manifest; Will usually be a "1", but if two batches of samples arrive on the same day from the same source, with two separate associated manifest files, then these would be numbered accordingly

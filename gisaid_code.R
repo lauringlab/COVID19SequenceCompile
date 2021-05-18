@@ -1,6 +1,6 @@
 ################################################################################
 #          Creation of GISAID Dataset for COVID-19 Genetic Sampling            #
-#                         Last Updated: 04/12/2021                             #
+#                         Last Updated: 05/18/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -13,13 +13,13 @@ library(janitor)
 #                   GISAID Files - Upload and Data Checks                      #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Box Sync/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 # gisaid file path
-gisaid_fp <- paste0(starting_path, "SampleMetadataOrganization/SequenceOutcomes/gisaid")
+gisaid_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/gisaid")
 
 ### output location of gisaid files, all together
-outputLOC <- paste0(starting_path, "SampleMetadataOrganization/SequenceOutcomes/SequenceOutcomeComplete")
+outputLOC <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
 ################################################################################
 

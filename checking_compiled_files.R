@@ -1,6 +1,6 @@
 ################################################################################
 #          Check of Cumulative Dataset for COVID-19 Genetic Sampling           #
-#                         Last Updated: 04/12/2021                             #
+#                         Last Updated: 05/18/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -9,8 +9,8 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Box Sync/"
-compiled_loc <- paste0(starting_path, "SampleMetadataOrganization/FinalSummary")
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+compiled_loc <- paste0(starting_path, "SequenceSampleMetadata/FinalSummary")
 
 # essentially, we just want a small code snippet to compare the "secret" version 
 # of the complete file, to the "accessible" version of the complete file

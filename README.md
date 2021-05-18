@@ -4,7 +4,9 @@
 
 <b>Folder Structure:</b>
 
-* SampleMetaDataOrganization
+Folder structure lives within the MED-LauringLab DropBox folder.
+
+* SequenceSampleMetadata
     * FinalSummary: Contains the final compiled data full_compiled_data.csv
         * ReportNotifications: Contains out_of_range_alert.csv
         * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file

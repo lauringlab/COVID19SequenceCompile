@@ -1,6 +1,6 @@
 ################################################################################
 #         Creation of Manifest Dataset for COVID-19 Genetic Sampling           #
-#                         Last Updated: 05/11/2021                             #
+#                         Last Updated: 05/18/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -14,21 +14,21 @@ library(withr)
 #                Manifest Files - Upload and Data Checks                       #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Box Sync/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 # Manifest file paths
-cbr_manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifests/CBR")
+cbr_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CBR")
 #uhs_manifest_fp <- "SampleMetadataOrganization/Manifests/UHS"
-martin_manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifests/Martin")
-cstp_manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifests/CSTP")
-edidnow_manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifests/EDIDNOW")
-cdcivy_manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifests/CDCIVY")
+martin_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/Martin")
+cstp_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CSTP")
+edidnow_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/EDIDNOW")
+cdcivy_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CDCIVY")
 
 manifest_folder_list <- c(cbr_manifest_fp, martin_manifest_fp, cstp_manifest_fp, 
                           edidnow_manifest_fp)
 
 ### output location of manifest files, all together
-outputLOC <- paste0(starting_path, "SampleMetadataOrganization/Manifests/ManifestsComplete")
+outputLOC <- paste0(starting_path, "SequenceSampleMetadata/Manifests/ManifestsComplete")
 
 # each manifest provider will have their own folder, with all files inside
 # don't want to re-build the entire thing every time, so will eventually need a 

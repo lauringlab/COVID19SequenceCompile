@@ -12,23 +12,23 @@ library(withr)
 #                 Component Files - Upload and Data Checks                     #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Box Sync/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 # manifest file path
-manifest_fp <- paste0(starting_path, "SampleMetadataOrganization/Manifests/ManifestsComplete")
+manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/ManifestsComplete")
 # platemap file path
-plate_fp <- paste0(starting_path, "SampleMetadataOrganization/PlateMaps/PlateMapsComplete")
+plate_fp <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps/PlateMapsComplete")
 # nextclade file path
-nc_fp <- paste0(starting_path, "SampleMetadataOrganization/SequenceOutcomes/SequenceOutcomeComplete")
+nc_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # pangolin file path
-pang_fp <- paste0(starting_path, "SampleMetadataOrganization/SequenceOutcomes/SequenceOutcomeComplete")
+pang_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # gisaid file path
-gisaid_fp <- paste0(starting_path, "SampleMetadataOrganization/SequenceOutcomes/SequenceOutcomeComplete")
+gisaid_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # previous 2021 file path
-prev_2021 <- paste0(starting_path, "SampleMetadataOrganization/PreviousLists")
+prev_2021 <- paste0(starting_path, "SequenceSampleMetadata/PreviousLists")
 
 ### output location for files, all together
-outputLOC <- paste0(starting_path, "SampleMetadataOrganization/FinalSummary")
+outputLOC <- paste0(starting_path, "SequenceSampleMetadata/FinalSummary")
 
 ################################################################################
 

@@ -10,6 +10,7 @@ Folder structure lives within the MED-LauringLab DropBox folder.
     * FinalSummary: Contains the final compiled data full_compiled_data.csv
         * ReportNotifications: Contains out_of_range_alert.csv
         * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file
+        * CDC_IVY_UPLOADS: Contains the files created in order to upload to the CDC IVY RedCap database
     * Manifests
         * CBR: Contains manifest files from the University of Michigan Campus BioRepository
         * CDCIVY: Contains manifest files from the CDC IVY project
@@ -129,6 +130,10 @@ The final created file is called <b>full_compiled_data.csv</b>.
 #### Checking Compiled Files
 
 The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data.
+
+#### Generating .csv File for RedCap Upload
+
+The cdc_ivy_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the CDC IVY RedCap database.
 
 ---
 

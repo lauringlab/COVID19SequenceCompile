@@ -14,6 +14,7 @@ Folder structure lives within the MED-LauringLab DropBox folder.
         * CBR: Contains manifest files from the University of Michigan Campus BioRepository
         * CDCIVY: Contains manifest files from the CDC IVY project
             * Full_IVY_Set: Contains IVY_sample_full_manifest_list.csv, the compiled CDC IVY manifest lists with all variables sent (a subset of these are kept for the final compiled sequence list)
+            * Keys: Contains CDC_SiteCodebook.csv, the list of CDC IVY sites, their locations, and their coded name
         * CSTP: Contains manifest files from the COVID-19 Sampling & Tracking Program (ultimately from LynxDx)
         * EDIDNOW: Contains manifest files from the ED IDnow testing program at Michigan Medicine
         * Martin: Contains manifest files from the Martin Lab at the School of Public Health

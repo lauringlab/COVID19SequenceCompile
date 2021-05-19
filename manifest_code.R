@@ -296,20 +296,20 @@ write.csv(manifest_storage, paste0(outputLOC, "/sample_full_manifest_list.csv"),
 
 ### create date formatting
 
-# add leading zero to month
-if (length(month(Sys.Date()))){
-  m <- paste0("0", month(Sys.Date()))
-} else {
-  m <- month(Sys.Date())
-}
-# add leading zero to day
-if (length(day(Sys.Date()))){
-  d <- paste0("0", day(Sys.Date()))
-} else {
-  d <- day(Sys.Date())
-}
+# # add leading zero to month
+# if (length(month(Sys.Date()))){
+#   m <- paste0("0", month(Sys.Date()))
+# } else {
+#   m <- month(Sys.Date())
+# }
+# # add leading zero to day
+# if (length(day(Sys.Date()))){
+#   d <- paste0("0", day(Sys.Date()))
+# } else {
+#   d <- day(Sys.Date())
+# }
 
-today <- paste0(year(Sys.Date()), m, d)
+today <- current_date_string()
 
 wb <- loadWorkbook(paste0(outputLOC, "/manifest_output_report_template.xlsx"))
 

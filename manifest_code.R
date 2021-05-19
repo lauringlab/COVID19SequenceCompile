@@ -9,13 +9,10 @@ library(lubridate)
 library(janitor)
 library(openxlsx)
 library(withr)
-source("pipeline_functions.R")
 
 ################################################################################
 #                Manifest Files - Upload and Data Checks                       #
 ################################################################################
-
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 # Manifest file paths (there should be a path per source)
 cbr_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CBR")

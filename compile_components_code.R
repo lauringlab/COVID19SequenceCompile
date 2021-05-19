@@ -12,8 +12,6 @@ library(withr)
 #                 Component Files - Upload and Data Checks                     #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-
 # manifest file path
 manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/ManifestsComplete")
 # platemap file path

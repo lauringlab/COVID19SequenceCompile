@@ -13,8 +13,6 @@ library(janitor)
 #                   GISAID Files - Upload and Data Checks                      #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-
 # gisaid file path
 gisaid_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/gisaid")
 

@@ -13,8 +13,6 @@ library(openxlsx)
 #                Plate Map Files - Upload and Data Checks                      #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-
 # plate map file path
 platemap_fp <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps")
 

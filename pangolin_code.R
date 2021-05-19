@@ -32,9 +32,8 @@ for (each_page in file_list){
   
   # remove any empty rows/columns that may come in
   pang1 <- remove_empty(pang1)
-  
-  pang1_runDate <- trimws(as.character(strsplit(each_page, "_")[[1]][1]))
-  pang1$pang1_runDate <- paste0(substr(pang1_runDate, 1, 4), "-", substr(pang1_runDate, 5, 6), "-", substr(pang1_runDate, 7, 8))
+
+  pang1$pang1_runDate <- date_from_file_FIRST(each_page)
   
   
   if (counter == 1){

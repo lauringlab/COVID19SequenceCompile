@@ -135,46 +135,9 @@ mppnc2$subject_id <- gsub("/", "", mppnc2$subject_id)
 # add a column to check length of subject_id
 mppnc2$subject_id_length <- nchar(mppnc2$subject_id)
 
-# edit flag to note mismatches/instances where leading zeros were re-introduced (CBR)
-mppnc2$flag <- ifelse(is.na(mppnc2$flag), "", mppnc2$flag)
-mppnc2$flag <- ifelse(mppnc2$received_source == "CBR" & mppnc2$subject_id_length < 9, 
-                                paste0(mppnc2$flag, " ", "MRN < 9 digits + leading 0s restored"), mppnc2$flag)
-mppnc2$flag <- trimws(mppnc2$flag)
-mppnc2$flag <- ifelse(mppnc2$flag == "", NA, mppnc2$flag)
-
-# add in those leading zeros in cases (CBR)
-
-mppnc2$subject_id <- ifelse(mppnc2$received_source == "CBR" & mppnc2$subject_id_length < 9, 
-                                      with_options(c(scipen = 999), str_pad(mppnc2$subject_id, 9, pad = "0")), 
-                                      mppnc2$subject_id)
-
-
-# edit flag to note mismatches/instances where leading zeros were re-introduced (CSTP)
-mppnc2$flag <- ifelse(is.na(mppnc2$flag), "", mppnc2$flag)
-mppnc2$flag <- ifelse(mppnc2$received_source == "CSTP" & mppnc2$subject_id_length < 8, 
-                                paste0(mppnc2$flag, " ", "UMID < 8 digits + leading 0s restored"), mppnc2$flag)
-mppnc2$flag <- trimws(mppnc2$flag)
-mppnc2$flag <- ifelse(mppnc2$flag == "", NA, mppnc2$flag)
-
-# add in those leading zeros in cases (CBR)
-
-mppnc2$subject_id <- ifelse(mppnc2$received_source == "CSTP" & mppnc2$subject_id_length < 8, 
-                                      with_options(c(scipen = 999), str_pad(mppnc2$subject_id, 8, pad = "0")), 
-                                      mppnc2$subject_id)
-
-# edit flag to note mismatches/instances where leading zeros were re-introduced (ED_IDNOW)
-mppnc2$flag <- ifelse(is.na(mppnc2$flag), "", mppnc2$flag)
-mppnc2$flag <- ifelse(mppnc2$received_source == "ED_IDNOW" & mppnc2$subject_id_length < 9, 
-                                paste0(mppnc2$flag, " ", "MRN < 9 digits + leading 0s restored"), mppnc2$flag)
-mppnc2$flag <- trimws(mppnc2$flag)
-mppnc2$flag <- ifelse(mppnc2$flag == "", NA, mppnc2$flag)
-
-# add in those leading zeros in cases (CBR)
-
-mppnc2$subject_id <- ifelse(mppnc2$received_source == "ED_IDNOW" & mppnc2$subject_id_length < 9, 
-                                      with_options(c(scipen = 999), str_pad(mppnc2$subject_id, 9, pad = "0")), 
-                                      mppnc2$subject_id)
-
+mppnc2 <- subject_id_length_QA(mppnc2, "CBR")
+mppnc2 <- subject_id_length_QA(mppnc2, "ED_IDNOW")
+mppnc2 <- subject_id_length_QA(mppnc2, "CSTP")
 
 ################################################################################
 

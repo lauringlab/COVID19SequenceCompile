@@ -9,6 +9,7 @@ library(lubridate)
 library(janitor)
 library(openxlsx)
 library(withr)
+source("pipeline_functions.R")
 
 ################################################################################
 #                Manifest Files - Upload and Data Checks                       #
@@ -104,9 +105,9 @@ for (each_folder in manifest_folder_list){
         }
         
         # add in 2 new columns: received_date and received_source (from file name)
-        rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
-        rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
-        file_in$received_date <- rec_date
+        #rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
+        #rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
+        file_in$received_date <- date_from_file(each_file)
         
         rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
         file_in$received_source <- rec_source
@@ -181,9 +182,9 @@ for (each_file in cdc_file_list){
   }
   
   # add in 2 new columns: received_date and received_source (from file name)
-  rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
-  rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
-  fileone$received_date <- rec_date
+  #rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
+  #rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
+  fileone$received_date <- date_from_file(each_file)
   
   rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
   fileone$received_source <- rec_source

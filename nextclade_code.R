@@ -31,8 +31,7 @@ for (each_page in file_list){
   nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs)
   
   ### add date column from file name
-  nextclade_runDate <- trimws(as.character(strsplit(each_page, "_")[[1]][1]))
-  nc1$nextclade_runDate <- paste0(substr(nextclade_runDate, 1, 4), "-", substr(nextclade_runDate, 5, 6), "-", substr(nextclade_runDate, 7, 8))
+  nc1$nextclade_runDate <- date_from_file_FIRST(each_page)
   
   nc_storage <- rbind(nc_storage, nc1)
 }

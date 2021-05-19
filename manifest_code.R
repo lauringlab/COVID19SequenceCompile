@@ -1,6 +1,6 @@
 ################################################################################
 #         Creation of Manifest Dataset for COVID-19 Genetic Sampling           #
-#                         Last Updated: 05/18/2021                             #
+#                         Last Updated: 05/19/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -17,9 +17,8 @@ source("pipeline_functions.R")
 
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
-# Manifest file paths
+# Manifest file paths (there should be a path per source)
 cbr_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CBR")
-#uhs_manifest_fp <- "SampleMetadataOrganization/Manifests/UHS"
 martin_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/Martin")
 cstp_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CSTP")
 edidnow_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/EDIDNOW")
@@ -46,25 +45,25 @@ manifest_storage <- data.frame()
 # will iterate through folders
 for (each_folder in manifest_folder_list){
     
-    #print(each_folder)
     ### get names of all .csv files in folder
     file_list <- list.files(pattern = "*.csv", path = each_folder)
     
-    #each_file_row_count <- 0
-    
     # then iterate through files within each folder
     for (each_file in file_list){
+      
         # read in the file
         file_in <- read.csv(paste0(each_folder, "/", each_file), colClasses = "character")
+        
         # turn any "" or " " into NA
         file_in[file_in == ""] <- NA
         file_in[file_in == " "] <- NA
+        
         # remove any empty rows that may come in
         file_in <- remove_empty(file_in, which = "rows")
+        
         # check for column names: position, sample_id, subject_id, coll_date, flag
         column_name_check <- colnames(file_in)
         true_columns <- c("position", "sample_id", "subject_id", "coll_date", "flag")
-        
         
         if (identical(true_columns, column_name_check)){
           ## then do nothing
@@ -88,10 +87,12 @@ for (each_folder in manifest_folder_list){
           print(each_file)
           stop("There are missing sample ids.")
         }
+        
         if(any(is.na(file_in$subject_id))){
           print(each_file)
           stop("There are missing subject ids.")
         }
+        
         if(any(is.na(file_in$coll_date))){
           print(each_file)
           stop("There are missing collection dates.")
@@ -105,38 +106,19 @@ for (each_folder in manifest_folder_list){
         }
         
         # add in 2 new columns: received_date and received_source (from file name)
-        #rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
-        #rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
         file_in$received_date <- date_from_file(each_file)
         
         rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
         file_in$received_source <- rec_source
         
-        ## use to count individual file row counts
-        #each_file_row_count <- each_file_row_count + nrow(file_in)
-        
         # bind all rows together
         manifest_storage <- rbind(manifest_storage, file_in)
         
-       
-        
     }
-    
-    ### check that number of rows in each file adds up to total number of rows
-    #if (nrow(manifest_storage) != each_file_row_count){
-    #  stop("Row counts not aligned between summary and individual files.")
-    #}
-    
-    ### change collection date to YYYY-MM-DD format
-    #manifest_storage$coll_date <- as.POSIXct(manifest_storage$coll_date, format = "%m/%d/%y")
     
     ### select only distinct rows
     manifest_storage <- manifest_storage %>% distinct()
     
-    ### check that number of rows in each file adds up to total number of distinct rows
-    #if (nrow(manifest_storage) != each_file_row_count){
-    #  stop("Row counts not aligned between summary and individual files [REPEAT ROWS REMOVED].")
-    #}
 }
 
 

@@ -1,6 +1,6 @@
 ################################################################################
 #        Creation of Pangolin Dataset for COVID-19 Genetic Sampling            #
-#                         Last Updated: 05/18/2021                             #
+#                         Last Updated: 05/19/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -41,30 +41,6 @@ for (each_page in file_list){
   } else {
     pang_storage <- merge(pang_storage, pang1, all = TRUE)
   }
-  
-  # check for column names: position, sample_id, subject_id, coll_date, flag
-  #column_name_check <- colnames(pang1)
-  #true_columns <- c("taxon", "lineage", "probability", "pangoLEARN_version", "status", "note")
-  
-  
-  # if (identical(true_columns, column_name_check)){
-  #   ## then do nothing
-  #   x <- 0
-  # } else {
-  #   if (ncol(pang1) == 6){
-  #     # if the number of columns is the same, just rename them
-  #     colnames(pang1) <- true_columns
-  #   } else {
-  #     # find out which column is missing
-  #     whatsdifferent <- setdiff(true_columns, column_name_check)
-  #     print(whatsdifferent)
-  #     print("There is a column difference in")
-  #     print(each_page)
-  #     stop()
-  #   }
-  # }
-  
-  #pang_storage <- rbind(pang_storage, pang1)
   
   counter <- counter + 1
 }

@@ -7,9 +7,11 @@
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
 
+################################################################################
+
 source(paste0(code_path, "pipeline_functions.R"))
 
-setwd(starting_path)
+################################################################################
 
 source(paste0(code_path, "manifest_code.R"))
 

@@ -41,13 +41,14 @@ Folder structure lives within the MED-LauringLab DropBox folder.
 
 In order to run the compilation code pipeline, download the following code sets:
 
+* <span style="background-color: #8AA29E">pipeline_functions.R</span>
 * manifest_code.R
 * plate_map_code.R
 * pangolin_code.R
 * nextclade_code.R
 * gisaid_code.R
 * compile_components_code.R
-* full_run_code.R
+* <span style="background-color: #F0B7B3">full_run_code.R</span>
 
 And put them all in the same folder on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
 

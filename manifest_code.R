@@ -215,56 +215,11 @@ if (unique_ids != nrow(manifest_storage)){
 ################################################################################
 # check for instances where leading zeros may have been dropped from subject id
 # CBR should == 9 digits (MRN)
+# ED NOW should == 9 digits (MRN)
 # CSTP should == 8 digits (UMID)
 
 # add a column to check length of subject_id
 manifest_storage$subject_id_length <- nchar(manifest_storage$subject_id)
-
-################################################################################
-
-# edit flag to note mismatches/instances where leading zeros were re-introduced (CBR)
-# manifest_storage$flag <- ifelse(is.na(manifest_storage$flag), "", manifest_storage$flag)
-# manifest_storage$flag <- ifelse(manifest_storage$received_source == "CBR" & manifest_storage$subject_id_length < 9, 
-#                                 paste0(manifest_storage$flag, " ", "MRN < 9 digits + leading 0s restored"), manifest_storage$flag)
-# manifest_storage$flag <- trimws(manifest_storage$flag)
-# manifest_storage$flag <- ifelse(manifest_storage$flag == "", NA, manifest_storage$flag)
-# 
-# # add in those leading zeros in cases (CBR)
-# 
-# manifest_storage$subject_id <- ifelse(manifest_storage$received_source == "CBR" & manifest_storage$subject_id_length < 9, 
-#                                       with_options(c(scipen = 999), str_pad(manifest_storage$subject_id, 9, pad = "0")), 
-#                                       manifest_storage$subject_id)
-# 
-# ################################################################################
-# 
-# # edit flag to note mismatches/instances where leading zeros were re-introduced (CSTP)
-# manifest_storage$flag <- ifelse(is.na(manifest_storage$flag), "", manifest_storage$flag)
-# manifest_storage$flag <- ifelse(manifest_storage$received_source == "CSTP" & manifest_storage$subject_id_length < 8, 
-#                                 paste0(manifest_storage$flag, " ", "UMID < 8 digits + leading 0s restored"), manifest_storage$flag)
-# manifest_storage$flag <- trimws(manifest_storage$flag)
-# manifest_storage$flag <- ifelse(manifest_storage$flag == "", NA, manifest_storage$flag)
-# 
-# # add in those leading zeros in cases (CBR)
-# 
-# manifest_storage$subject_id <- ifelse(manifest_storage$received_source == "CSTP" & manifest_storage$subject_id_length < 8, 
-#                                       with_options(c(scipen = 999), str_pad(manifest_storage$subject_id, 8, pad = "0")), 
-#                                       manifest_storage$subject_id)
-# 
-# ################################################################################
-# 
-# # edit flag to note mismatches/instances where leading zeros were re-introduced (ED_IDNOW)
-# manifest_storage$flag <- ifelse(is.na(manifest_storage$flag), "", manifest_storage$flag)
-# manifest_storage$flag <- ifelse(manifest_storage$received_source == "ED_IDNOW" & manifest_storage$subject_id_length < 9, 
-#                                 paste0(manifest_storage$flag, " ", "MRN < 9 digits + leading 0s restored"), manifest_storage$flag)
-# manifest_storage$flag <- trimws(manifest_storage$flag)
-# manifest_storage$flag <- ifelse(manifest_storage$flag == "", NA, manifest_storage$flag)
-# 
-# # add in those leading zeros in cases (CBR)
-# 
-# manifest_storage$subject_id <- ifelse(manifest_storage$received_source == "ED_IDNOW" & manifest_storage$subject_id_length < 9, 
-#                                       with_options(c(scipen = 999), str_pad(manifest_storage$subject_id, 9, pad = "0")), 
-#                                       manifest_storage$subject_id)
-
 
 manifest_storage <- subject_id_length_QA(manifest_storage, "CBR")
 manifest_storage <- subject_id_length_QA(manifest_storage, "ED_IDNOW")

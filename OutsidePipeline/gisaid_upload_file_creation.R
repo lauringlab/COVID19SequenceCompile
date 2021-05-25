@@ -43,3 +43,19 @@ ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
 
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", State), 
                                          T ~ "North America / USA / Michigan"))
+
+### constants
+ff$AdditionalLoc <- ""
+ff$Host <- "Human"
+ff$AdditionalHost <- ""
+ff$Gender <- "unknown"
+ff$Age <- "unknown"
+ff$Status <- "unknown"
+ff$SpecimenSource <- "unknown"
+ff$Outbreak <- ""
+ff$lastVaccinated <- ""
+ff$Treatment <- ""
+
+
+
+ff$SequencingTechnology

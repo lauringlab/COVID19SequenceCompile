@@ -57,5 +57,12 @@ ff$lastVaccinated <- ""
 ff$Treatment <- ""
 
 
+# Oxford Nanopore, Illumina MiSeq
+ff$SequencingTechnology <- ifelse(ff$PlatePlatform == "Nanopore", "Oxford Nanopore", 
+                                  ifelse(ff$PlatePlatform == "Illumina", "Illumina MiSeq", "Unknown"))
 
-ff$SequencingTechnology
+unknown_tech <- filter(ff, SequencingTechnology == "Unknown")
+
+if (nrow(unknown_tech) != 0){
+  stop("Check Sequencing Technology options.")
+}

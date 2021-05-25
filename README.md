@@ -240,8 +240,6 @@ This creates the following files:
 * plateMapName.all.consensus.final.fasta
 * plateMapName.all.consensus.final.gisaid.fasta
 * plateMapName.all.consensus.renamed.full.fasta
-* plateMapName.meta.csv
-* plateMapName.meta.gisaid.csv
 
 That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/]
 ---

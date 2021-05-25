@@ -150,6 +150,8 @@ Manifests are received from the following sources:
 
 Dr. Adam Lauring reviews these manifests, checks and renames columns as necessary, renames the file, and places them in the appropriate Manifests folder.
 
+---
+
 ##### Manifest Column Format (for all except CDC IVY)
 
 | Columns | Data Type	| Variable Description |
@@ -168,3 +170,29 @@ nameOfSource = Where the samples came from, corresponds to the name of the proje
 
 YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file was received
 \# = Number of the manifest; Will usually be a "1", but if two batches of samples arrive on the same day from the same source, with two separate associated manifest files, then these would be numbered accordingly
+
+---
+
+##### Samples
+
+Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generating, matching samples to their location on those plates.
+
+---
+
+##### Plate Map File Column Format
+
+##### Plate Map File Name Format
+
+---
+
+These Nanopore or Illumina systems generate .fastq formatted files, containing the raw sequence data for each sample. There is a python script on the lab computer that converts these files to .fasta files, with a ">" symbol marking the beginning of each new sequence. After that symbol will be a string denoting the barcode value for the corresponding sample, and the sequence will proceed on a new line following that information.
+
+---
+
+There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin, Next Clade, and GISAID uploads.
+
+---
+
+##### Pangolin
+
+Instructions for installing the command line version of Pangolin can be found here: 

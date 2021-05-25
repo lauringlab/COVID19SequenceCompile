@@ -148,7 +148,7 @@ Manifests are received from the following sources:
 * CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan
 * Michigan Medicine ED ID Now project (EDIDNOW)
 
-Dr. Adam Lauring reviews these manifests, checks and renames columns as necessary, renames the file, and places them in the appropriate Manifests folder.
+Dr. Adam Lauring reviews these manifests, checks and renames columns as necessary, renames the file, and places them in the appropriate Manifests folder [within DropBox/MED-LauringLab/SequenceSampleMetadata/Manifests].
 
 ---
 
@@ -169,19 +169,42 @@ nameOfSource_YYYYMMDD_#.csv
 nameOfSource = Where the samples came from, corresponds to the name of the project folders inside the Manifests folder (CBR, CSTP, Martin, CDCIVY, EDIDNOW)
 
 YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file was received
+
 \# = Number of the manifest; Will usually be a "1", but if two batches of samples arrive on the same day from the same source, with two separate associated manifest files, then these would be numbered accordingly
 
 ---
 
 ##### Samples
 
-Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generating, matching samples to their location on those plates.
+Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generated, matching samples to their location on those plates. Original plate map files are placed in [DropBox/MED-LauringLab/Plate Maps] as .xlsx files. Before running the data compilation pipleline, these files will need to be copied to [DropBox/MED-LauringLab/SequenceSampleMetadata/PlateMaps] and checked for format in column order/naming and file naming.
 
 ---
 
 ##### Plate Map File Column Format
 
+| Columns | Data Type	| Variable Description |
+| --- | --- | --- |
+| Processing Plate | character | Name of the plate. Should match the file name |
+| Slot | numeric (int) | Well position on the plate that the sample was placed in |
+| Sample ACCN | character/numeric | Corresponds to sample_id |
+| Sample MRN | character/numeric | If filled in, corresponds to subject_id |
+| Sample Order# | blank | blank |
+| Barcode | character | Barcode information, will be output in .fastq file to identify samples |
+| Source | character | Where the sample came from; In general, should correspond to the Manifest source names |
+
+These columns will occupy columns A-G of the Excel file. Columns H-T contain the sample_id information laid out in the format of the plate itself. This information is ignored in data processing, but can be a good point of reference for Quality Assurance checking.
+
+---
+
 ##### Plate Map File Name Format
+
+YYYYMMDD_sequenceSystem_#.xlsx
+
+YYYYMMDD = Year, Month, and Day of when the Plate Map file was created and the samples began the sequencing process.
+
+sequenceSystem = Nanopore_Run or Illumina_Plate, depending on whichever system was used. If a new system is introduced, the main system information should be first. The character string after the "_" character is occasionally dropped.
+
+\# = The number assigned to the testing plate.
 
 ---
 

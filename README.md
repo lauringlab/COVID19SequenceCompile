@@ -241,8 +241,6 @@ There is another python script that takes the generated .fasta file and replaces
 3. Run prep_fasta_for_gisaid.py
 
 This creates the following files:
-* plateMapName.all.consensus.fasta
-* plateMapName.all.consensus.final.fasta
 * plateMapName.all.consensus.final.gisaid.fasta
 * plateMapName.all.consensus.renamed.full.fasta
 

@@ -126,7 +126,7 @@ The final created file is called <b>full_compiled_data.csv</b>.
 
 ---
 
-### Outside the Pipeline
+## Outside the Pipeline
 
 #### Checking Compiled Files
 
@@ -135,6 +135,16 @@ The checking_compiled_files.R code file can be used to see if the "main" version
 #### Generating .csv File for RedCap Upload
 
 The cdc_ivy_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the CDC IVY RedCap database.
+
+### Folder: ProcessingFASTA
+
+#### Converting Names in .FASTA files
+
+The prep_fasta_for_gisaid.py code converts the genome names within .fasta files for use in pangolin/nextclade/gisaid.
+
+#### Subset .FASTA files by ID
+
+The SelectSequences.py code is for getting a subset of a .fasta file by ID.
 
 ---
 
@@ -212,7 +222,7 @@ These Nanopore or Illumina systems generate .fastq formatted files, containing t
 
 ---
 
-There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin, Next Clade, and GISAID uploads.
+There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin, Next Clade, and GISAID systems [prep_fasta_for_gisaid.py].
 
 ---
 

@@ -138,6 +138,15 @@ The cdc_ivy_upload_code.R code file is used to generate the new rows of data tha
 
 ### Folder: ProcessingFASTA
 
+<b>Python Libraries Needed:</b>
+* import argparse: https://docs.python.org/3/library/argparse.html
+* import glob: https://docs.python.org/3/library/glob.html
+* import pandas as pd: https://pandas.pydata.org/
+* from Bio import SeqIO: https://biopython.org/wiki/SeqIO
+* from Bio.Seq import Seq: https://biopython.org/docs/1.75/api/Bio.Seq.html
+* from Bio.SeqRecord import SeqRecord https://biopython.org/docs/1.75/api/Bio.SeqRecord.html
+* import os: https://docs.python.org/3/library/os.html
+
 #### Converting Names in .FASTA files
 
 The prep_fasta_for_gisaid.py code converts the genome names within .fasta files for use in pangolin/nextclade/gisaid.

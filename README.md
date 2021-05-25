@@ -229,10 +229,21 @@ sequenceSystem = Nanopore_Run or Illumina_Plate, depending on whichever system w
 
 These Nanopore or Illumina systems generate .fastq formatted files, containing the raw sequence data for each sample. There is a python script on the lab computer that converts these files to .fasta files, with a ">" symbol marking the beginning of each new sequence. After that symbol will be a string denoting the barcode value for the corresponding sample, and the sequence will proceed on a new line following that information.
 
+This .fasta file is called <b>plateMapName.all.consensus.fasta</b> and is placed in the corresponding plateMapName folder within [DropBox/MED-LauringLab/ProcessedGenomes/].
+
 ---
 
 There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin, Next Clade, and GISAID systems [prep_fasta_for_gisaid.py].
 
+This creates the following files:
+* plateMapName.all.consensus.fasta
+* plateMapName.all.consensus.final.fasta
+* plateMapName.all.consensus.final.gisaid.fasta
+* plateMapName.all.consensus.renamed.full.fasta
+* plateMapName.meta.csv
+* plateMapName.meta.gisaid.csv
+
+That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/]
 ---
 
 ##### Pangolin

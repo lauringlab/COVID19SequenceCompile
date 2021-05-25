@@ -235,6 +235,11 @@ This .fasta file is called <b>plateMapName.all.consensus.fasta</b> and is placed
 
 There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin, Next Clade, and GISAID systems [prep_fasta_for_gisaid.py].
 
+<b>Steps:</b>
+1. Compile full data set using pipeline code.
+2. Copy that file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv
+3. Run prep_fasta_for_gisaid.py
+
 This creates the following files:
 * plateMapName.all.consensus.fasta
 * plateMapName.all.consensus.final.fasta

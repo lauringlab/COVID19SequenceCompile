@@ -229,7 +229,7 @@ sequenceSystem = Nanopore_Run or Illumina_Plate, depending on whichever system w
 
 These Nanopore or Illumina systems generate .fastq formatted files, containing the raw sequence data for each sample. There is a python script on the lab computer that converts these files to .fasta files, with a ">" symbol marking the beginning of each new sequence. After that symbol will be a string denoting the barcode value for the corresponding sample, and the sequence will proceed on a new line following that information.
 
-This .fasta file is called <b>plateMapName.all.consensus.fasta</b> and is placed in the corresponding plateMapName folder within [DropBox/MED-LauringLab/ProcessedGenomes/].
+The .fasta files generated are called <b>plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta</b> and are placed in the corresponding plateMapName folder within [DropBox/MED-LauringLab/ProcessedGenomes/].
 
 ---
 
@@ -237,14 +237,17 @@ There is another python script that takes the generated .fasta file and replaces
 
 <b>Steps:</b>
 1. Compile full data set using pipeline code.
-2. Copy that file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv
-3. Run prep_fasta_for_gisaid.py
+2. Ensure there is a folder in [DropBox/MED-LauringLab/ProcessedGenomes] named the same as the originating PlateMap file
+3. In that folder, there should be two files: plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta
+4. Copy the newly generated full_compiled_data.csv file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv
+5. Run prep_fasta_for_gisaid.py
 
 This creates the following files:
 * plateMapName.all.consensus.final.gisaid.fasta
 * plateMapName.all.consensus.renamed.full.fasta
 
-That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/]
+That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
+
 ---
 
 ##### Pangolin

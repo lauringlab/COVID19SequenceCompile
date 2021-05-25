@@ -68,8 +68,10 @@ if (nrow(unknown_tech) != 0){
 }
 
 ### Assembly Method
+ff$AssemblyMethod <- ""
 
 ### Coverage
+ff$Coverage <- ""
 
 ### Originating Lab
 ff$originlab <- ""
@@ -84,8 +86,17 @@ ff$submitlabsampleid <- ""
 ### Authors
 ff$authors <- "Gilbert"
 
+ff$comment <- ""
+ff$commenticon <- ""
+
 ################################################################################
 
 ## select variables
+ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 
+                             AdditionalLoc, Host, AdditionalHost, Gender, Age, Status, 
+                             SpecimenSource, Outbreak, lastVaccinated, Treatment, SequencingTechnology, 
+                             AssemblyMethod, Coverage, originlab, originlabaddress, originlabsampleid, 
+                             submitlab, submitlabaddress, submitlabsampleid, authors, 
+                             comment, commenticon)
 
 ## write to excel file (follow format)

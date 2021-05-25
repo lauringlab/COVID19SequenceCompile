@@ -21,4 +21,14 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 # select run of choice
 ff <- filter(ff, PlatePlatform == "" & PlateNumber == "")
 
+# enter GISAID username here
+ff$Submitter <- ""
 
+# create FASTA filename string
+ff$FASTAfilename <- paste0(gsub("-", "", ff$PlateDate), "_", ff$PlateName, "_", ff$PlateNumber, ".all.consensus.final.gisaid.fasta")
+
+# create virus name
+# hCoV-19/USA/MI-UM-10037140915/2020
+
+ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/CDC-IVY-", sample_id, "/", substr(ff$coll_date, 1, 4)), 
+                                          T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(ff$coll_date, 1, 4))))

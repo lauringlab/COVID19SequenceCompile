@@ -195,4 +195,20 @@ There is another python script that takes the generated .fasta file and replaces
 
 ##### Pangolin
 
-Instructions for installing the command line version of Pangolin can be found here: 
+Instructions for installing the command line version of Pangolin can be found here: https://cov-lineages.org/pangolin_docs/installation.html
+
+Note: This can only be completed using Linux or OS operating systems.
+
+Pangolin can also be used at the following site: https://pangolin.cog-uk.io/
+
+##### Next Clade
+
+Next Clade can be accessed at this site: https://clades.nextstrain.org/
+
+After the process is complete, the output should be downloaded as a .tsv file.
+
+##### GISAID
+
+GISAID can be accessed at this site: https://www.gisaid.org/
+
+Note: You will need to register - https://www.gisaid.org/registration/register/

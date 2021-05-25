@@ -32,3 +32,14 @@ ff$FASTAfilename <- paste0(gsub("-", "", ff$PlateDate), "_", ff$PlateName, "_", 
 
 ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/CDC-IVY-", sample_id, "/", substr(ff$coll_date, 1, 4)), 
                                           T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(ff$coll_date, 1, 4))))
+
+### constants
+ff$Type <- "betacoronavirus"
+ff$Passage <- "Original"
+
+### create location from state collection location
+ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"))
+ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
+
+ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", State), 
+                                         T ~ "North America / USA / Michigan"))

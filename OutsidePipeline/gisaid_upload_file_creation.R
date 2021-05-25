@@ -66,3 +66,26 @@ unknown_tech <- filter(ff, SequencingTechnology == "Unknown")
 if (nrow(unknown_tech) != 0){
   stop("Check Sequencing Technology options.")
 }
+
+### Assembly Method
+
+### Coverage
+
+### Originating Lab
+ff$originlab <- ""
+ff$originlabaddress <- ""
+ff$originlabsampleid <- ""
+
+### submitting Lab
+ff$submitlab <- ""
+ff$submitlabaddress <- ""
+ff$submitlabsampleid <- ""
+
+### Authors
+ff$authors <- "Gilbert"
+
+################################################################################
+
+## select variables
+
+## write to excel file (follow format)

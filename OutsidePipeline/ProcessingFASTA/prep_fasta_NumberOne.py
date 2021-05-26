@@ -64,7 +64,7 @@ def main():
     with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
     # rename to .all.consensus.renamed.full.fasta
-    sed_cmd = """ sed '/^>/ s/ .*//' """ + file_2 + " > " + file_3
+    sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"' # need quotes around file names with spaces in them (from the dropbox folder)
     print(sed_cmd)
     os.system(sed_cmd)
     os.system("rm " + file_2) # remove the .all.consensus.tmp.fasta

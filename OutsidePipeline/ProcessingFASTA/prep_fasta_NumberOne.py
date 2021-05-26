@@ -7,7 +7,7 @@
 #"""
 # use in git bash
 #c:/users/juliegil/appdata/local/programs/python/python38/python.exe C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/ProcessingFASTA/prep_fasta_NumberOne.py --prefix "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/ProcessedGenomes/20210519_Nanopore_Run_26/20210519_Nanopore_Run_26"
-# python prep_fasta_for_gisaid.py --prefix 20210519_Nanopore_Run_26
+# python prep_fasta_NumberOne.py --prefix 20210519_Nanopore_Run_26
 #"""
 
 # ======================= Import modules ======================
@@ -51,12 +51,13 @@ def main():
     for record in SeqIO.parse(file_1, "fasta"):
 
         id = str(record.id).split()[0]
+        id = id.split("/", 1)[0] ## removes excess info that comes through with barcode in some instances (NB01/ARTIC/nanopolish)
         print(id)
 
         meta_sample = meta[meta.SampleBarcode == id]
         new_ID = list(set(meta_sample.sample_id))[0]
 
-        record.id = new_ID
+        record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
         all_fasta.append(record)
 
     # Write everything out as .all.consensus.tmp.fasta, with the replaced system

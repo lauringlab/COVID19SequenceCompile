@@ -147,9 +147,13 @@ The cdc_ivy_upload_code.R code file is used to generate the new rows of data tha
 * from Bio.SeqRecord import SeqRecord https://biopython.org/docs/1.75/api/Bio.SeqRecord.html
 * import os: https://docs.python.org/3/library/os.html
 
-#### Converting Names in .FASTA files
+#### Converting Names in .FASTA files (DEPRECATED)
 
 The prep_fasta_for_gisaid.py code converts the genome names within .fasta files for use in pangolin/nextclade/gisaid.
+
+#### Converting Barcode to Sample ID
+
+The prep_fasta_NumberOne.py code turns the barcode label names into the subject_id string for the corresponding sample for each sequence. This file is used for Pangolin and NextClade processing.
 
 #### Subset .FASTA files by ID
 

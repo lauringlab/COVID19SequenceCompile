@@ -233,19 +233,22 @@ These Nanopore or Illumina systems generate .fastq formatted files, containing t
 
 The .fasta files generated are called <b>plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta</b> and are placed in the corresponding plateMapName folder within [DropBox/MED-LauringLab/ProcessedGenomes/].
 
+plateMapName.all.consensus.fasta = the sequence information for all samples in a given plate run. Some samples may not appear if there was essentially no matching genetic material in the sample.
+
+plateMapName.all.consensus.final.fasta = filtered version of plateMapName.all.consensus.fasta (deprecated 26 May 2021)
+
 ---
 
-There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin, Next Clade, and GISAID systems [prep_fasta_for_gisaid.py].
+There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin and NextClade systems [prep_fasta_NumberOne.py].
 
 <b>Steps:</b>
 1. Compile full data set using pipeline code.
 2. Ensure there is a folder in [DropBox/MED-LauringLab/ProcessedGenomes] named the same as the originating PlateMap file
-3. In that folder, there should be two files: plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta
+3. In that folder, there will be two files: plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta; only plateMapName.all.consensus.fasta is necessary.
 4. Copy the newly generated full_compiled_data.csv file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv
-5. Run prep_fasta_for_gisaid.py
+5. Run prep_fasta_NumberOne.py
 
-This creates the following files:
-* plateMapName.all.consensus.final.gisaid.fasta
+This creates the following file:
 * plateMapName.all.consensus.renamed.full.fasta
 
 That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]

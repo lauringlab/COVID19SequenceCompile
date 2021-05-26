@@ -7,9 +7,31 @@
 library(tidyverse)
 library(openxlsx)
 
+################################################################################
+# just need some of these functions
+
+code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+source(paste0(code_path, "pipeline_functions.R"))
+
+################################################################################
+### fill in some info manually
+
+runtech <- "" # nanopore or illumina, will match "PlatePlatform" options
+runnum <- "" # number, will match "PlateNumber" options
+
+################################################################################
+
 # run comparison code file first, to be sure full_compiled_data matches the one
 # in the secret folder
+
+# set starting path
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+
+# set output path for gisaid upload file
+# will need to add appropriate folder name at the end of this path
+outputLOC <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/GISAID_Uploads/"
+
+################################################################################
 
 # read in full compiled pile
 finalfileLOC <- paste0(starting_path, "SequenceSampleMetadata/FinalSummary")
@@ -19,7 +41,7 @@ final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClass
 ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 
 # select run of choice
-ff <- filter(ff, PlatePlatform == "" & PlateNumber == "")
+ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
 # enter GISAID username here
 ff$Submitter <- "juliegil"
@@ -109,4 +131,14 @@ ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage, 
                              submitlab, submitlabaddress, submitlabsampleid, authors, 
                              comment, commenticon)
 
+## gisaid upload file name
+today <- current_date_string()
+gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum) 
+
 ## write to excel file (follow format)
+wb <- loadWorkbook(paste0(starting_path, "/SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE.xls"))
+
+# fill in the submissions tab with built data frame
+writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1)
+
+saveWorkbook(wb, paste0(outputLOC, gufn, ".xls"), overwrite = TRUE)

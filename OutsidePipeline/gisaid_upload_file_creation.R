@@ -23,6 +23,7 @@ runnum <- "" # number, will match "PlateNumber" options
 
 # run comparison code file first, to be sure full_compiled_data matches the one
 # in the secret folder
+source("C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/checking_compiled_files.R")
 
 # set starting path
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"

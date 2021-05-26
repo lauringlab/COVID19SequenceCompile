@@ -159,6 +159,8 @@ The SelectSequences.py code is for getting a subset of a .fasta file by ID.
 
 ### Process
 
+Process is tracked here: https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit?usp=sharing
+
 Manifests are received from the following sources:
 
 * COVID-19 Sampling & Tracking Program (CSTP) - samples from this source are processed first by LynxDx

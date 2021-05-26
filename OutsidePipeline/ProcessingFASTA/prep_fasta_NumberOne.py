@@ -27,6 +27,7 @@ import os
 def main():
 
     parser = argparse.ArgumentParser()
+    # takes the string after "--prefix" in the command line for use later
     parser.add_argument('--prefix', action="store", dest="prefix")
     args = parser.parse_args()
 
@@ -38,13 +39,14 @@ def main():
     file_3 = args.prefix + ".all.consensus.renamed.full.fasta" # This is the file to use in pangolin and nextclade.
     meta_file = args.prefix + ".meta.csv" # This is the full compiled list, or the subset that matches this run.
 
-    # read in meta file, which is the compiled file (full_compiled_data.csv)
+    # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
     meta.columns = meta.columns.astype(str)
 
     # Change NBXX into sample_id
     all_fasta = list()
-    # read in file_1, which is the output from the lab (fastq -> fasta)
+    # read in .all.consensus.fasta, which is the output from the lab (fastq -> fasta)
+    # that contains all the sequences from a plate run
     # replace barcode as ID part with the corresponding sample_id
     for record in SeqIO.parse(file_1, "fasta"):
 
@@ -57,14 +59,14 @@ def main():
         record.id = new_ID
         all_fasta.append(record)
 
-    # Write everything out as file_2 name, with the replaced system
+    # Write everything out as .all.consensus.tmp.fasta, with the replaced system
     with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
-    # turn it into file_3 name
+    # rename to .all.consensus.renamed.full.fasta
     sed_cmd = """ sed '/^>/ s/ .*//' """ + file_2 + " > " + file_3
     print(sed_cmd)
     os.system(sed_cmd)
-    os.system("rm " + file_2) # remove the file_2 name
+    os.system("rm " + file_2) # remove the .all.consensus.tmp.fasta
 
 if __name__ == "__main__":
     main()

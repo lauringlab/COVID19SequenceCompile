@@ -41,6 +41,10 @@ plate_storage$Plate_Platform <- sapply(strsplit(as.character(plate_storage$Proce
 ### get plate number
 plate_storage$Plate_Number <- sapply(strsplit(as.character(plate_storage$Processing.Plate),'_'), "[", 4)
 
+### Source Formatting
+# remove commas, if they are there
+plate_storage$Source <- gsub(",", " ", plate_storage$Source)
+
 #### Get source information to use for joining with the manifest record
 plate_storage$Source_Date <- sapply(strsplit(as.character(plate_storage$Source),' '), "[", 2)
 plate_storage$Source_Date <- as.character(as_date(paste0(sapply(strsplit(as.character(plate_storage$Source_Date),'-'), "[", 3), "-", sapply(strsplit(as.character(plate_storage$Source_Date),'-'), "[", 1), "-", sapply(strsplit(as.character(plate_storage$Source_Date),'-'), "[", 2))))

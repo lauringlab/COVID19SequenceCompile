@@ -22,7 +22,7 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 ff <- filter(ff, PlatePlatform == "" & PlateNumber == "")
 
 # enter GISAID username here
-ff$Submitter <- ""
+ff$Submitter <- "juliegil"
 
 # create FASTA filename string
 ff$FASTAfilename <- paste0(gsub("-", "", ff$PlateDate), "_", ff$PlateName, "_", ff$PlateNumber, ".all.consensus.final.gisaid.fasta")
@@ -68,19 +68,29 @@ if (nrow(unknown_tech) != 0){
 }
 
 ### Assembly Method
-ff$AssemblyMethod <- ""
+ff$AssemblyMethod <- ifelse(ff$PlatePlatform == "Nanopore", "BWA-MEM, iVar", 
+                            ifelse(ff$PlatePlatform == "Illumina", "ARTIC Network", "Unknown"))
+
+unknown_assembly <- filter(ff, AssemblyMethod == "Unknown")
+
+if (nrow(unknown_assembly) != 0){
+  stop("Check Assembly Method options.")
+}
 
 ### Coverage
 ff$Coverage <- ""
 
 ### Originating Lab
-ff$originlab <- ""
-ff$originlabaddress <- ""
+ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "Vanderbilt", 
+                                          T ~ "University of Michigan Clinical Microbiology Laboratory"), 
+                    originalabaddress = case_when(received_source == "CDCIVY" ~ "", 
+                                                  T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
+
 ff$originlabsampleid <- ""
 
 ### submitting Lab
-ff$submitlab <- ""
-ff$submitlabaddress <- ""
+ff$submitlab <- "Lauring Lab, University of Michigan, Department of Microbiology and Immunology"
+ff$submitlabaddress <- "1150 W. Medical Center Dr. MSRB1, Ann Arbor, MI, USA"
 ff$submitlabsampleid <- ""
 
 ### Authors

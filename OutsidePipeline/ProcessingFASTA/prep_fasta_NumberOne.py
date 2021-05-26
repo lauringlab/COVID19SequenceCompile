@@ -64,6 +64,7 @@ def main():
     with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
     # rename to .all.consensus.renamed.full.fasta
+    # and remove everything after a space character on fasta entry lines. The Biopython modules add extra characters after the sample ID
     sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"' # need quotes around file names with spaces in them (from the dropbox folder)
     print(sed_cmd)
     os.system(sed_cmd)

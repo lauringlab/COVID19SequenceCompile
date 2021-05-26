@@ -24,7 +24,7 @@ Folder structure lives within the MED-LauringLab DropBox folder.
         * PlateMapsComplete: Contains the compiled plate map list sample_full_plate_list.csv
     * PreviousLists: Contains the original processed sample list ProcessedSampleCumulativeList_20210326.csv maintained by Andrew Valesano prior to code implementation
     * SequenceOutcomes
-        * gisaid: Contains the GISAID metadata file metadata_YYYY-MM-DD_MM-DD.tsv
+        * gisaid: Contains the GISAID metadata file metadata_YYYY-MM-DD_MM-DD.tsv; also contains the GISAID upload template file (GISAID_UPLOAD_TEMPLATE.xls)
         * nextclade: Contains the NextClade output files as either YYYYMMDD_Plate_##\_##\_nextclade.tsv or YYYYMMDD\_Nanopore\_Run_##_nextclade.tsv
         * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv
         * SequenceOutcomeComplete: Contains the sequence outcome final compiled files of sample_full_gisaid_list.csv, sample_full_nextclade_list.csv, and sample_full_pangolin_list.csv
@@ -254,7 +254,7 @@ That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName
 
 Instructions for installing the command line version of Pangolin can be found here: https://cov-lineages.org/pangolin_docs/installation.html
 
-Note: This can only be completed using Linux or OS operating systems.
+Note: This can only be completed using Linux or OS operating systems. (The environment.yml file to install pangolin requires minimap2 and gofasta libraries, both of which are only built for those systems, not for Windows)
 
 Pangolin can also be used at the following site: https://pangolin.cog-uk.io/
 

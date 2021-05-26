@@ -16,8 +16,8 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 ### fill in some info manually
 
-runtech <- "" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "" # number, will match "PlateNumber" options
+runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
+runnum <- "25" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -30,7 +30,7 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 
 # set output path for gisaid upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/GISAID_Uploads/"
+outputLOC <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/GISAID_Uploads/upload_20210517_nanopore_run_25/"
 
 ################################################################################
 
@@ -106,7 +106,7 @@ ff$Coverage <- ""
 ### Originating Lab
 ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "Vanderbilt", 
                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
-                    originalabaddress = case_when(received_source == "CDCIVY" ~ "", 
+                    originlabaddress = case_when(received_source == "CDCIVY" ~ "", 
                                                   T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
 
 ff$originlabsampleid <- ""
@@ -137,9 +137,9 @@ today <- current_date_string()
 gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum) 
 
 ## write to excel file (follow format)
-wb <- loadWorkbook(paste0(starting_path, "/SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE.xls"))
+wb <- loadWorkbook(paste0(starting_path, "/SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE.xlsx"))
 
 # fill in the submissions tab with built data frame
 writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1)
 
-saveWorkbook(wb, paste0(outputLOC, gufn, ".xls"), overwrite = TRUE)
+saveWorkbook(wb, paste0(outputLOC, gufn, ".xlsx"), overwrite = TRUE)

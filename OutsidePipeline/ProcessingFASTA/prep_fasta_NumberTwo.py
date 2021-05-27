@@ -42,6 +42,8 @@ def main():
     # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
     meta.columns = meta.columns.astype(str)
+    ## select all the IDs that we care about:
+    IDs = meta['sample_id'].tolist()
 
     # Change NBXX into sample_id
     all_fasta = list()
@@ -54,11 +56,12 @@ def main():
         id = id.split("/", 1)[0] ## removes excess info that comes through with barcode in some instances (NB01/ARTIC/nanopolish)
         print(id)
 
-        meta_sample = meta[meta.sample_id == id]
-        new_ID = list(set(meta_sample.VirusName))[0]
+        if(id in IDs):
+            meta_sample = meta[meta.sample_id == id]
+            new_ID = list(set(meta_sample.VirusName))[0]
 
-        record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
-        all_fasta.append(record)
+            record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
+            all_fasta.append(record)
 
     # Write everything out as .all.consensus.tmp.fasta, with the replaced system
     with open(file_2, 'w') as corrected:

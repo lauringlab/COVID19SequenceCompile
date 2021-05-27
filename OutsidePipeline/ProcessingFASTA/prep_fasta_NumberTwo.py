@@ -47,15 +47,15 @@ def main():
     all_fasta = list()
     # read in .all.consensus.fasta, which is the output from the lab (fastq -> fasta)
     # that contains all the sequences from a plate run
-    # replace barcode as ID part with the corresponding sample_id
+    # replace sampleid as ID part with the corresponding Virus name that is submitted to gisaid
     for record in SeqIO.parse(file_1, "fasta"):
 
         id = str(record.id).split()[0]
         id = id.split("/", 1)[0] ## removes excess info that comes through with barcode in some instances (NB01/ARTIC/nanopolish)
         print(id)
 
-        meta_sample = meta[meta.SampleBarcode == id]
-        new_ID = list(set(meta_sample.sample_id))[0]
+        meta_sample = meta[meta.sample_id == id]
+        new_ID = list(set(meta_sample.VirusName))[0]
 
         record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
         all_fasta.append(record)
@@ -63,7 +63,7 @@ def main():
     # Write everything out as .all.consensus.tmp.fasta, with the replaced system
     with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
-    # rename to .all.consensus.renamed.full.fasta
+    # rename to .all.consensus.final.gisaid.fasta
     # and remove everything after a space character on fasta entry lines. The Biopython modules add extra characters after the sample ID
     sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"' # need quotes around file names with spaces in them (from the dropbox folder)
     print(sed_cmd)

@@ -273,6 +273,16 @@ Note: This can only be completed using Linux or OS operating systems. (The envir
 
 Pangolin can also be used at the following site: https://pangolin.cog-uk.io/
 
+Steps:
+1. In command line, navigate to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
+2. Activate the pangolin environment ```conda activate pangolin```
+3. Run the command ``` pangolin plateMapName.all.consensus.renamed.full.fasta```
+4. This will output a file called lineage_report.csv in [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
+5. Rename this file to plateMapName_pangolin.csv
+6. Copy this renamed file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/pangolin]
+
+---
+
 ##### Next Clade
 
 Next Clade can be accessed at this site: https://clades.nextstrain.org/
@@ -285,6 +295,8 @@ Steps:
 3. Once complete, in the top bar of the processing screen, click the arrow next to "Export to CSV" and select "Export to TSV"
 4. The file will go to the Downloads file of your computer as nextclade.tsv - Copy the file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName_nextclade.tsv
 5. Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
+
+---
 
 ##### GISAID
 

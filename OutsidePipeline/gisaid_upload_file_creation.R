@@ -44,6 +44,11 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 # select run of choice
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
+################################################################################
+# need to compare to complete GISAID file, to avoid submitting duplicate sequences
+
+################################################################################
+
 # enter GISAID username here
 ff$Submitter <- "juliegil"
 

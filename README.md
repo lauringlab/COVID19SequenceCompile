@@ -269,7 +269,7 @@ _At this point, the [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] folde
 
 Instructions for installing the command line version of Pangolin can be found here: https://cov-lineages.org/pangolin_docs/installation.html
 
-Note: This can only be completed using Linux or OS operating systems. (The environment.yml file to install pangolin requires minimap2 and gofasta libraries, both of which are only built for those systems, not for Windows)
+Note: This can only be completed using Linux or OS operating systems. (The environment.yml file to install pangolin requires minimap2 and gofasta libraries, both of which are only built for those systems, not for Windows) If you only have a Windows operating system, you can install a Windows Subsystem for Linux (directions here: https://docs.microsoft.com/en-us/windows/wsl/install-win10) which will allow you to proceed with the pangolin installation process.
 
 Pangolin can also be used at the following site: https://pangolin.cog-uk.io/
 

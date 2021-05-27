@@ -1,6 +1,6 @@
 ################################################################################
 #                    GISAID File Upload Format Creation                        #
-#                         Last Updated: 05/25/2021                             #
+#                         Last Updated: 05/27/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -104,9 +104,9 @@ if (nrow(unknown_assembly) != 0){
 ff$Coverage <- ""
 
 ### Originating Lab
-ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "Vanderbilt", 
+ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Central Lab, Vanderbilt University Medical Center", 
                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
-                    originlabaddress = case_when(received_source == "CDCIVY" ~ "", 
+                    originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA", 
                                                   T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
 
 ff$originlabsampleid <- ""

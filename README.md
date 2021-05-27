@@ -130,11 +130,15 @@ The final created file is called <b>full_compiled_data.csv</b>.
 
 #### Checking Compiled Files
 
-The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data.
+The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data. The code will only tell you if the two are different. Further investigation would be necessary to determine the extent and character of the differences.
 
 #### Generating .csv File for RedCap Upload
 
 The cdc_ivy_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the CDC IVY RedCap database.
+
+#### Generating Excel File for GISAID Upload
+
+The gisaid_upload_file_creation.R code is used to generate a properly structured Excel document to use for batch uploading to the GISAID system. This is completed in batches corresponding to plate runs. Only non-duplicate samples should be uploaded, with >= 90% NextClade sequence completeness.
 
 ### Folder: ProcessingFASTA
 
@@ -157,7 +161,7 @@ The prep_fasta_NumberOne.py code turns the barcode label names into the subject_
 
 #### Subset .FASTA files by ID
 
-The SelectSequences.py code is for getting a subset of a .fasta file by ID.
+The SelectSequences.py code is used to get a subset of a .fasta file by ID.
 
 ---
 
@@ -257,6 +261,8 @@ This creates the following file:
 
 That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
 
+_At this point, the [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] folder should contain plateMapName.all.consensus.fasta, plateMapName.all.consensus.final.fasta, plateMapName.all.consensus.renamed.full.fasta, and plateMapName.meta.csv._
+
 ---
 
 ##### Pangolin
@@ -272,6 +278,13 @@ Pangolin can also be used at the following site: https://pangolin.cog-uk.io/
 Next Clade can be accessed at this site: https://clades.nextstrain.org/
 
 After the process is complete, the output should be downloaded as a .tsv file.
+
+Steps:
+1. Navigate to https://clades.nextstrain.org/
+2. In the SARS-CoV-2 box in the lower right-hand corner, ensure the "From File" tab is selected and either drag & drop or select the <b>plateMapName.all.consensus.renamed.full.fasta</b> from the [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] folder you've been working from
+3. Once complete, in the top bar of the processing screen, click the arrow next to "Export to CSV" and select "Export to TSV"
+4. The file will go to the Downloads file of your computer as nextclade.tsv - Copy the file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName_nextclade.tsv
+5. Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
 
 ##### GISAID
 

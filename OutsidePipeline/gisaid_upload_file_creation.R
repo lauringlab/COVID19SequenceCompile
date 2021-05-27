@@ -130,6 +130,12 @@ ff$commenticon <- ""
 
 ################################################################################
 
+### write out VirusName + sample_id crosswalk for use in making 
+# .all.consensus.final.gisaid.fasta
+
+ff_crosswalk <- ff %>% select(sample_id, VirusName)
+write.csv(ff_crosswalk, paste0(starting_path, "/ProcessedGenomes//.forgisaid.meta.csv"), row.names = FALSE, na = "")
+
 ## select variables
 ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 
                              AdditionalLoc, Host, AdditionalHost, Gender, Age, Status, 

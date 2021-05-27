@@ -55,12 +55,6 @@ ff$Submitter <- "juliegil"
 # create FASTA filename string
 ff$FASTAfilename <- paste0(gsub("-", "", ff$PlateDate), "_", ff$PlateName, "_", ff$PlateNumber, ".all.consensus.final.gisaid.fasta")
 
-# create virus name
-# hCoV-19/USA/MI-UM-10037140915/2020
-
-ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/CDC-IVY-", sample_id, "/", substr(ff$coll_date, 1, 4)), 
-                                          T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(ff$coll_date, 1, 4))))
-
 ### constants
 ff$Type <- "betacoronavirus"
 ff$Passage <- "Original"
@@ -71,6 +65,13 @@ ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
 
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", State), 
                                          T ~ "North America / USA / Michigan"))
+
+# create virus name
+# hCoV-19/USA/MI-UM-10037140915/2020
+# hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
+ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)), 
+                                          T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
+
 
 ### constants
 ff$AdditionalLoc <- ""
@@ -96,8 +97,8 @@ if (nrow(unknown_tech) != 0){
 }
 
 ### Assembly Method
-ff$AssemblyMethod <- ifelse(ff$PlatePlatform == "Nanopore", "BWA-MEM, iVar", 
-                            ifelse(ff$PlatePlatform == "Illumina", "ARTIC Network", "Unknown"))
+ff$AssemblyMethod <- ifelse(ff$PlatePlatform == "Nanopore", "ARTIC Network pipeline", 
+                            ifelse(ff$PlatePlatform == "Illumina", "BWA-MEM, iVar", "Unknown"))
 
 unknown_assembly <- filter(ff, AssemblyMethod == "Unknown")
 
@@ -145,6 +146,6 @@ gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum)
 wb <- loadWorkbook(paste0(starting_path, "/SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE.xlsx"))
 
 # fill in the submissions tab with built data frame
-writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1)
+writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)
 
 saveWorkbook(wb, paste0(outputLOC, gufn, ".xlsx"), overwrite = TRUE)

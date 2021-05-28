@@ -309,3 +309,9 @@ Note: You will need to register - https://www.gisaid.org/registration/register/
 3. Run prep_fasta_NumberTwo.py; Ensure that file names/folder paths are all accurate; This will create a .all.consensus.final.gisaid.fasta file
 4. Copy that gisaid.fasta file to the proper run folder in [DropBox/MED-LauringLab/GISAID_Uploads/]
 5. Double check the fasta file and the .xlsx file have the same number of records, no duplicates, proper rows.
+6. Re-save the .xslx file as an .xls file for submission to GISAID
+7. Go to https://www.gisaid.org/ and log-in
+8. Click on "Upload" then "Batch Upload"
+9. Upload the .xls and .fasta file in their corresponding sections, and press "Check and Submit" in the lower right-hand corner
+
+Email correspondence with the GISAID curators will determine the remainder of the GISAID submission process.

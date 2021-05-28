@@ -6,8 +6,8 @@
 
 #"""
 # use in git bash
-#c:/users/juliegil/appdata/local/programs/python/python38/python.exe C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/ProcessingFASTA/prep_fasta_NumberOne.py --prefix "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/ProcessedGenomes/20210519_Nanopore_Run_26/20210519_Nanopore_Run_26"
-# python prep_fasta_NumberOne.py --prefix 20210519_Nanopore_Run_26
+#c:/users/juliegil/appdata/local/programs/python/python38/python.exe C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/ProcessingFASTA/prep_fasta_NumberTwo.py --prefix "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/ProcessedGenomes/20210517_Nanopore_Run_25/20210517_Nanopore_Run_25"
+# python prep_fasta_NumberTwo.py --prefix 20210519_Nanopore_Run_26
 #"""
 
 # ======================= Import modules ======================
@@ -34,7 +34,7 @@ def main():
     ### This section converts barcode (NBXX) into sample_id.
 
     # create set of file names
-    file_1 = args.prefix + ".all.consensus.fasta"
+    file_1 = args.prefix + ".all.consensus.renamed.full.fasta"
     file_2 = args.prefix + ".all.consensus.tmp.fasta"
     file_3 = args.prefix + ".all.consensus.final.gisaid.fasta" # This is the file to use in gisaid
     meta_file = args.prefix + ".forgisaid.meta.csv" # This is made in gisaid file prep code - just uploaded names + sample ifs

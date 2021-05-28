@@ -53,7 +53,7 @@ ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 ff$Submitter <- "juliegil"
 
 # create FASTA filename string
-ff$FASTAfilename <- paste0(gsub("-", "", ff$PlateDate), "_", ff$PlateName, "_", ff$PlateNumber, ".all.consensus.final.gisaid.fasta")
+ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.final.gisaid.fasta")
 
 ### constants
 ff$Type <- "betacoronavirus"
@@ -134,7 +134,7 @@ ff$commenticon <- ""
 # .all.consensus.final.gisaid.fasta
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName)
-write.csv(ff_crosswalk, paste0(starting_path, "/ProcessedGenomes//.forgisaid.meta.csv"), row.names = FALSE, na = "")
+write.csv(ff_crosswalk, paste0(starting_path, "/ProcessedGenomes/20210517_Nanopore_Run_25/20210517_Nanopore_Run_25.forgisaid.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
 ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 
@@ -143,6 +143,8 @@ ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage, 
                              AssemblyMethod, Coverage, originlab, originlabaddress, originlabsampleid, 
                              submitlab, submitlabaddress, submitlabsampleid, authors, 
                              comment, commenticon)
+
+ff_writeout <- ff_writeout %>% distinct()
 
 ## gisaid upload file name
 today <- current_date_string()

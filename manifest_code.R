@@ -259,4 +259,7 @@ zeros <- rbind(filter(manifest_storage, grepl("MRN < 9", flag)), filter(manifest
 writeData(wb, zeros, sheet = "RESTORE_ZEROS",   
           startRow = 1, startCol = 1)
 
+miss_dats <- filter(manigest_storage, grepl("Missing Date", flag))
+writeData(wb, miss_dats, sheet = "MISSING_DATES", startRow = 1, startCol = 1)
+
 saveWorkbook(wb, paste0(outputLOC, "/manifest_output_report_", today, ".xlsx"), overwrite = TRUE)

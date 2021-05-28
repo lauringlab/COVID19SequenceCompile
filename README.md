@@ -303,3 +303,9 @@ Steps:
 GISAID can be accessed at this site: https://www.gisaid.org/
 
 Note: You will need to register - https://www.gisaid.org/registration/register/
+
+1. Compile full data set using pipeline code.
+2. Run gisaid_upload_file_creation.R; Ensure that file names/folder paths are all accurate; This will create a YYYYMMDD_Lauring_gisaid_upload_metadata_run_#.xlsx file
+3. Run prep_fasta_NumberTwo.py; Ensure that file names/folder paths are all accurate; This will create a .all.consensus.final.gisaid.fasta file
+4. Copy that gisaid.fasta file to the proper run folder in [DropBox/MED-LauringLab/GISAID_Uploads/]
+5. Double check the fasta file and the .xlsx file have the same number of records, no duplicates, proper rows.

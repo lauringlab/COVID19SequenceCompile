@@ -92,7 +92,13 @@ for (each_folder in manifest_folder_list){
         
         if(any(is.na(file_in$coll_date))){
           print(each_file)
-          stop("There are missing collection dates.")
+          print("There are missing collection dates.")
+          
+          ## fill the missings with current date, and edit flag
+          file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ paste0(flag, "Missing Date in Manifest - Replaced with Today Date"), 
+                                                         T ~ flag), 
+                                        coll_date = case_when(is.na(coll_date) ~ as.character(Sys.Date()), 
+                                                              T ~ coll_date))
         }
         
         ## reformat coll_date to YYYY-MM-DD format if necessary

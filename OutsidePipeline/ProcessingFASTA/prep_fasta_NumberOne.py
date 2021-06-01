@@ -41,6 +41,7 @@ def main():
 
     # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
+    #meta.dropna()
     meta.columns = meta.columns.astype(str)
 
     # Change NBXX into sample_id
@@ -53,13 +54,15 @@ def main():
         id = str(record.id).split()[0]
         id = id.split("/", 1)[0] ## removes excess info that comes through with barcode in some instances (NB01/ARTIC/nanopolish)
         print(id)
+        try:
+            meta_sample = meta[meta.SampleBarcode == id]
+            new_ID = list(set(meta_sample.sample_id))[0]
+            print(new_ID)
 
-        meta_sample = meta[meta.SampleBarcode == id]
-        new_ID = list(set(meta_sample.sample_id))[0]
-
-        record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
-        all_fasta.append(record)
-
+            record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
+            all_fasta.append(record)
+        except:
+            print('file complete - all wells')
     # Write everything out as .all.consensus.tmp.fasta, with the replaced system
     with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")

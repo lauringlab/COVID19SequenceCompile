@@ -315,3 +315,9 @@ Note: You will need to register - https://www.gisaid.org/registration/register/
 9. Upload the .xls and .fasta file in their corresponding sections, and press "Check and Submit" in the lower right-hand corner
 
 Email correspondence with the GISAID curators will determine the remainder of the GISAID submission process.
+
+Once email confirms sequence release, those will show up within the download portion of GISAID after 24 hours. When that time period has passed:
+
+1. Go to https://www.gisaid.org/ and log-in
+2. With the EpiCoV tab highlighted, click the "Downloads" tab
+3. 

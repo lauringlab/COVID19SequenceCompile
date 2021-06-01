@@ -2,8 +2,6 @@
 
 ### Data Dictionary:
 
-__Will be finalized after first data run__
-
 | Original from Manifest | Column | Data Type | Definition |
 | --- | --- | --- | --- |
 | aliquot.id | sample_id | character | CUID alpha numeric – printed in an alpha numeric cycling sequence that should be unique to the sample; One individual (subject_id) can have multiple samples, each with their own sample_id number |
@@ -17,7 +15,7 @@ __Will be finalized after first data run__
 | | plateplatform | character | Testing system the plate was run through; Options include = Nanopore, Illumina, etc. |
 | | platenumber | character | ##_## format, indicates what distinct plate the sample was run with |
 | | pangolin_lineage | character | Strain type of the sample; Ex. B.1.1.7 |
-| | pangolin_probability | numeric | Probability of correct lineage assignment (pangolin_lineage) by PANGOLIN. Archived as of 3 May 2021 update |
+| | pangolin_probability | numeric | Probability of correct lineage assignment (pangolin_lineage) by PANGOLIN. Archived as of 3 May 2021 update; Blank in all IVY records |
 | | pangolin_status | character | Pangolin classifier assigns either “passed_qc” or “fail” to the sequenced SARS-CoV-2 strain based on sequence completeness and quality. If the consensus SARS-CoV-2 sequence has 50 percent or more ambiguous bases (50%N's) in the consensus fasta or if the consensus length is less than or equal to 10,000bp only, the status will change to fail. |
 | | pangolin_note | character | Additional information provided by the pangolin system |
 | | nextclade_clade | character | The global clade identified for the sequenced sample |
@@ -26,7 +24,7 @@ __Will be finalized after first data run__
 | | gisaid_strain | character | Virus name, as listed on GISAID. Format is USA/MI-UM-sample_id/YYYY. |
 | | gisaid_epi_isl | character | GISAID database accession number. General format is EPI_ISL_NNNNNN. |
 | | received_date | date | Date the sample was received at the lab from the received_source |
-| | position.# | position | character | Location of the sample in the box received at the University of Michigan |
+| position.# | position | character | Location of the sample in the box received at the University of Michigan |
 | | platename | character | Full plate name of the sample test run; generally corresponds to plate file name |
 | | plateposition | character | Position the sample was in, in the plate that it was tested on |
 | | samplesourcelocation | character | Where the sample came from (should correlate with received source) |
@@ -52,4 +50,4 @@ __Will be finalized after first data run__
 
 ---
 
-Completed data rows are updated as information becomes available.
+Completed data rows are updated as information becomes available - Updates to a given sample entry will be noted in the ```flag``` column. Samples are received from Vanderbilt University Medical Center. Please direct questions regarding the dataset to Julie (Jules) Gilbert (juliegil@umich.edu).

@@ -253,7 +253,7 @@ There is another python script that takes the generated .fasta file and replaces
 1. Compile full data set using pipeline code.
 2. Ensure there is a folder in [DropBox/MED-LauringLab/ProcessedGenomes] named the same as the originating PlateMap file
 3. In that folder, there will be two files: plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta; only plateMapName.all.consensus.fasta is necessary.
-4. Copy the newly generated full_compiled_data.csv file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv
+4. Subset the newly generated full_compiled_data.csv file to only contain the relevant plate samples, copy it here [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv (This is because the barcode locations repeat on sample runs, so this is necessary to ensure proper barcode to sample_id matching)
 5. Run prep_fasta_NumberOne.py
 
 This creates the following file:
@@ -320,4 +320,4 @@ Once email confirms sequence release, those will show up within the download por
 
 1. Go to https://www.gisaid.org/ and log-in
 2. With the EpiCoV tab highlighted, click the "Downloads" tab
-3. 
+3.

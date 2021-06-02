@@ -320,4 +320,8 @@ Once email confirms sequence release, those will show up within the download por
 
 1. Go to https://www.gisaid.org/ and log-in
 2. With the EpiCoV tab highlighted, click the "Downloads" tab
-3.
+3. Under the header "Download packages", click on the "metadata" box
+4. Accept the "Terms & Conditions" in the pop-up, and click "Download" - a file called metadata_tsv_YYYY_MM_DD.tar.xz will go to your Downloads folder
+5. Unzip the tar.xz file - This can be done by right-clicking on the file and using 7-Zip (on a Windows computer); You'll need to do it twice - once to get out of .xz, and once to get out of .tar
+6. Inside of these, will be a file called metadata.tsv. Copy that file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/gisaid] and rename it as metadata_YYYY-MM-DD.tsv
+7. Move the previous metadata_YYYY-MM-DD.tsv to the ARCHIVE folder (These files are large, so only keeping the 2-3 most recent in the ARCHIVE folder is sufficient)

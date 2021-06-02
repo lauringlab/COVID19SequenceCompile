@@ -1,6 +1,6 @@
 ################################################################################
 #                    GISAID File Upload Format Creation                        #
-#                         Last Updated: 05/27/2021                             #
+#                         Last Updated: 06/02/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -13,6 +13,9 @@ library(openxlsx)
 code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
 source(paste0(code_path, "pipeline_functions.R"))
 
+# set starting path
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+
 ################################################################################
 ### fill in some info manually
 
@@ -24,14 +27,11 @@ runnum <- "27" # number, will match "PlateNumber" options
 
 # run comparison code file first, to be sure full_compiled_data matches the one
 # in the secret folder
-source("C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/checking_compiled_files.R")
-
-# set starting path
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
 
 # set output path for gisaid upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
+outputLOC <- paste0(starting_path, "GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
 
 ################################################################################
 

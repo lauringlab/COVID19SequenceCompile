@@ -14,13 +14,15 @@ outputLOC <- paste0(starting_path, "SequenceSampleMetadata/FinalSummary/CDC_IVY_
 
 seq_list <- read.csv(paste0(starting_path, "SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
+################################################################################
+
 seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
                                 flag, received_source, SiteName, SampleBarcode,                
                                 PlateDate, PlatePlatform, PlateNumber,                 
                                 pangolin_lineage, pangolin_probability, pangolin_status,             
                                 pangolin_note, nextclade_clade, nextclade_totalMissing,      
                                 nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
-                                received_date, position, subject_id_length,           
+                                received_date, position,          
                                 PlateName, PlatePosition, SampleSourceLocation,        
                                 pangoLEARN_version, pangolin_conflict, pango_version,               
                                 pangolin_version, pangolin_runDate, PlateToPangolin_days,        
@@ -28,6 +30,18 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
                                 nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
 
 seq_list <- filter(seq_list, received_source == "CDCIVY")
+
+if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
+  stop("Duplicate sample IDs - handle accordingly")
+}
+
+
+
+# id_count <- seq_list %>% group_by(sample_id) %>% summarize(count = length(subject_id))
+# seq_list <- merge(seq_list, id_count, by = c("sample_id"), all.x = TRUE)
+# 
+# dupes <- filter(seq_list, count > 1)
+### if we need to manually put in gisaid info
 
 # only keep complete rows?
 

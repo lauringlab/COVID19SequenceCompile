@@ -16,8 +16,9 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 ### fill in some info manually
 
+plate_datef <- "20210524" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "25" # number, will match "PlateNumber" options
+runnum <- "27" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -30,7 +31,7 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 
 # set output path for gisaid upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/GISAID_Uploads/upload_20210517_nanopore_run_25/"
+outputLOC <- paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
 
 ################################################################################
 
@@ -44,6 +45,7 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 # select run of choice
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
+#table(final_file$PlatePlatform, final_file$PlateNumber, useNA = "always")
 ################################################################################
 # need to compare to complete GISAID file, to avoid submitting duplicate sequences
 
@@ -134,7 +136,7 @@ ff$commenticon <- ""
 # .all.consensus.final.gisaid.fasta
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName)
-write.csv(ff_crosswalk, paste0(starting_path, "/ProcessedGenomes/20210517_Nanopore_Run_25/20210517_Nanopore_Run_25.forgisaid.meta.csv"), row.names = FALSE, na = "")
+write.csv(ff_crosswalk, paste0(starting_path, "/ProcessedGenomes/", plate_datef, "_", runtech, "_Run_", runnum, "/", plate_datef, "_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
 ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 

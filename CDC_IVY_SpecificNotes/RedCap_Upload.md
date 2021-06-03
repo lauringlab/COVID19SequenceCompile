@@ -51,3 +51,9 @@
 ---
 
 Completed data rows are updated as information becomes available - Updates to a given sample entry will be noted in the ```flag``` column. Samples are received from Vanderbilt University Medical Center. Please direct questions regarding the dataset to Julie (Jules) Gilbert (juliegil@umich.edu).
+
+---
+
+Specific Notes:
+
+1.  The results from 21020015 and 2102016 should be merged/assigned to the IVY 3 counterparts: 2102015 -> merged with 2102007 and 2102016 -> merged with 2102008

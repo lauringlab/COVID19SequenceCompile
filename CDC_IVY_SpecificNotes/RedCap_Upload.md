@@ -57,3 +57,5 @@ Completed data rows are updated as information becomes available - Updates to a 
 Specific Notes:
 
 1.  The results from 21020015 and 2102016 should be merged/assigned to the IVY 3 counterparts: 2102015 -> merged with 2102007 and 2102016 -> merged with 2102008
+2. Sample IDs = ZZX9KS78 and ZZX9L7L4 were re-submitted to GISAID after frameshift detection
+3. 

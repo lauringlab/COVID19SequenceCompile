@@ -95,7 +95,7 @@ for (each_folder in manifest_folder_list){
           print("There are missing collection dates.")
           
           ## fill the missings with current date, and edit flag
-          file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ paste0(flag, "Missing Date in Manifest - Replaced with Today Date"), 
+          file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ gsub("NA", "", paste0(flag, "Missing Date in Manifest - Replaced with Today Date")), 
                                                          T ~ flag), 
                                         coll_date = case_when(is.na(coll_date) ~ as.character(Sys.Date()), 
                                                               T ~ coll_date))
@@ -124,6 +124,7 @@ for (each_folder in manifest_folder_list){
     
 }
 
+manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
 
 ################################################################################
 ## handle cdc ivy manifests
@@ -155,6 +156,7 @@ for (each_file in cdc_file_list){
   fileone <- fileone %>% select(`position.#`, site.name, study.id, collection.date, aliquot.id)
   
   colnames(fileone) <- c("position", "SiteName", "subject_id", "coll_date", "sample_id")
+  fileone$coll_date <- as.character(fileone$coll_date)
   
   ### site name checks
   fileone$SiteName_check <- ifelse(fileone$SiteName %in% cdc_sites$SiteCode, 0, 1)

@@ -12,13 +12,13 @@ library(lubridate)
 # set paths 
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 ## set run folder accordingly
-outputLOC <- paste0(starting_path, "ProcessedGenomes/20210524_Nanopore_Run_27/")
+outputLOC <- paste0(starting_path, "ProcessedGenomes/20210528_Nanopore_Run_28/")
 
 # read in compiled dataset
 seq_list <- read.csv(paste0(starting_path, "SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
 ################################################################################
 # filter to plate run
-seq_list2 <- filter(seq_list, PlateNumber == "27")
+seq_list2 <- filter(seq_list, PlateNumber == "28")
 # write out that file as the .meta.csv file - change name as appropriate
-write.csv(seq_list2, paste0(outputLOC, "20210524_Nanopore_Run_27.meta.csv"), row.names = FALSE, na = "")
+write.csv(seq_list2, paste0(outputLOC, "20210528_Nanopore_Run_28.meta.csv"), row.names = FALSE, na = "")

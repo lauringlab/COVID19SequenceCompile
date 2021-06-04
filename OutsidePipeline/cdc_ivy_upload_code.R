@@ -50,6 +50,21 @@ if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
 # so we'll read in the full list, then read in the previous upload list, and only keep 
 # rows that are not in the previous upload list(s) to write out and upload the next time
 
+ivy_file_list <- list.files(pattern = "*.csv", path = paste0(outputLOC, "ARCHIVE/"))
+
+ivy_redcap <- data.frame()
+for (i in ivy_file_list){
+  one <- read.csv(paste0(outputLOC, "ARCHIVE/", i), colClasses = "character")
+  ivy_redcap <- rbind(ivy_redcap, one)
+}
+
+# select only rows from seqlist that are not in ivy_redcap
+combo <- anti_join(seq_list, ivy_redcap)
+
+#length(unique(combo$sample_id))
+#combo$flag <- ifelse(grepl("REDO", combo$SampleSourceLocation), "Re-run sample from batch #1", "")
+################################################################################
+
 colnames(seq_list) <- tolower(colnames(seq_list))
 
 # add leading zero to month

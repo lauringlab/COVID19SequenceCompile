@@ -43,6 +43,8 @@ for (each_page in file_list){
   nc_storage <- rbind(nc_storage, nc1)
 }
 
+### remove commas from clade column
+nc_storage$clade <- gsub(",", "", nc_storage$clade)
 
 ### rename columns 
 rename_columns <- c("SampleID", "nextclade_clade", "nextclade_totalMissing", "nextclade_qcOverallScore", "nextclade_qcOverallStatus", "nextclade_totalMutations", "nextclade_totalNonACGTNs", "nextclade_runDate")

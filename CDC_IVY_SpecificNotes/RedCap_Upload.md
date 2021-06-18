@@ -36,7 +36,7 @@
 | | platetopangolin_days | numeric | Number of days between pangolin_runDate and PlateDate; Put in place to add more context for samples when joining multiple sources, as some sample aliquots are received more than once from the same source |
 | | nextclade_qcoverallscore | numeric | Quality control overall score (smaller is better) |
 | | nextclade_qcoverallstatus | character | Quality control overall status |
-| | nextclade_totalmutations | numeric | Total number of nucleotide substitutions relative to Wuhan/Hu-1 reference. Does not include ambiguous nucleotides (see below). |
+| | nextclade_totalmutations | numeric | Total number of nucleotide substitutions relative to Wuhan/Hu-1 reference. Does not include ambiguous nucleotides (see below). as of 6/18/2021 new nextclade records will combine totalmuatations and totalsubstitutions columns to accomodate nextclade changes |
 | | nextclade_totalnonacgtns | numeric | Number of ambiguous nucleotide characters, i.e. not A, C, T, G, or N. |
 | | nextclade_runDate | date | Date of nextclade output receipt; pulled from the nextclade filename the sample_id was reported on |
 | | platetonextclade_days | numeric | Number of days between nextclade_runDate and PlateDate; Put in place to add more context for samples when joining multiple sources, as some sample aliquots are received more than once from the same source |
@@ -50,12 +50,11 @@
 
 ---
 
-Completed data rows are updated as information becomes available - Updates to a given sample entry will be noted in the ```flag``` column. Samples are received from Vanderbilt University Medical Center. Please direct questions regarding the dataset to Julie (Jules) Gilbert (juliegil@umich.edu).
+Completed data rows are updated as information becomes available - If you need a new copy of the data as it was on a particular date, please reach out to Kim Hart (kim.hart@vumc.org) and Julie (Jules) Gilbert (juliegil@umich.edu). Samples are received from Vanderbilt University Medical Center. Please direct questions regarding the dataset to Julie (Jules) Gilbert (juliegil@umich.edu).
 
 ---
 
 Specific Notes:
 
 1.  The results from 21020015 and 2102016 should be merged/assigned to the IVY 3 counterparts: 2102015 -> merged with 2102007 and 2102016 -> merged with 2102008
-2. Sample IDs = ZZX9KS78 and ZZX9L7L4 were re-submitted to GISAID after frameshift detection
-3. GISAID results for the most recent additions (PlateNumber == 28) will be uploaded upon availability
+2. GISAID results are uploaded upon availability

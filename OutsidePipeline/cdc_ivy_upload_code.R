@@ -69,13 +69,13 @@ if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
 colnames(seq_list) <- tolower(colnames(seq_list))
 
 # add leading zero to month
-if (length(month(Sys.Date()))){
+if (nchar(month(Sys.Date())) == 1){
   m <- paste0("0", month(Sys.Date()))
 } else {
   m <- month(Sys.Date())
 }
 # add leading zero to day
-if (length(day(Sys.Date()))){
+if (nchar(day(Sys.Date())) == 1){
   d <- paste0("0", day(Sys.Date()))
 } else {
   d <- day(Sys.Date())

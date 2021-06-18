@@ -28,7 +28,14 @@ nc_storage <- data.frame()
 for (each_page in file_list){
   nc1 <- read.table(paste0(nc_fp, "/", each_page), header = TRUE, colClasses = "character", stringsAsFactors = FALSE, fill = TRUE, sep = "\t")
   
-  nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs)
+  #print(colnames(nc1))
+  if("totalMutations" %in% colnames(nc1)){
+    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs)
+  } else {
+    ### nextclade update changed column totalMutations to totalSubstitutions (near 6/18/2021)
+    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs)
+    colnames(nc1) <- c("seqName", "clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs")
+  }
   
   ### add date column from file name
   nc1$nextclade_runDate <- date_from_file_FIRST(each_page)

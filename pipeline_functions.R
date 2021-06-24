@@ -90,7 +90,7 @@ subject_id_length_QA <- function(storage_df, source_string){
   ### Michigan Medicine MRNs are 9 characters long
   ### samples from CSTP should be UofM affiliated and have UMIDs
   ### UMIDs are 8 characters long
-      if (source_string == "CBR" | source_string == "ED_IDNOW"){
+      if (source_string == "CBR" | source_string == "EDIDNOW"){
           # edit flag to note mismatches/instances where leading zeros were re-introduced
           storage_df$flag <- ifelse(is.na(storage_df$flag), "", storage_df$flag)
           storage_df$flag <- ifelse(storage_df$received_source == source_string & storage_df$subject_id_length < 9, 

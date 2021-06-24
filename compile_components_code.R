@@ -137,7 +137,7 @@ mppnc2$subject_id <- gsub("/", "", mppnc2$subject_id)
 mppnc2$subject_id_length <- nchar(mppnc2$subject_id)
 
 mppnc2 <- subject_id_length_QA(mppnc2, "CBR")
-mppnc2 <- subject_id_length_QA(mppnc2, "ED_IDNOW")
+mppnc2 <- subject_id_length_QA(mppnc2, "EDIDNOW")
 mppnc2 <- subject_id_length_QA(mppnc2, "CSTP")
 
 ################################################################################

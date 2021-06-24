@@ -227,7 +227,7 @@ if (unique_ids != nrow(manifest_storage)){
 manifest_storage$subject_id_length <- nchar(manifest_storage$subject_id)
 
 manifest_storage <- subject_id_length_QA(manifest_storage, "CBR")
-manifest_storage <- subject_id_length_QA(manifest_storage, "ED_IDNOW")
+manifest_storage <- subject_id_length_QA(manifest_storage, "EDIDNOW")
 manifest_storage <- subject_id_length_QA(manifest_storage, "CSTP")
 
 ################################################################################

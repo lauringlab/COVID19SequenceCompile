@@ -1,0 +1,136 @@
+---
+title: "Sequence Report"
+author: "Julie Gilbert"
+date: "6/29/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Report Overview
+
+This report uses ```/SequenceSampleMetadata/FinalSummary/secret/full_compiled_data.csv``` as its data source. The goal of this report is to provide summary statistics on the COVID-19 sequencing status of Dr. Adam Lauring's research lab. 
+
+This report was run on `r Sys.Date()`.
+
+For questions, please contact Julie (Jules) Gilbert [juliegil@umich.edu].
+
+--- 
+
+```{r}
+library(tidyverse)
+library(reshape2)
+library(lubridate)
+library(gt)
+```
+
+```{r}
+
+data_file <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SequenceSampleMetadata/FinalSummary/secret/full_compiled_data.csv", colClasses = c("character"))
+
+```
+
+
+## Complete Data Review
+
+```{r}
+data_file$coll_date <- as_date(data_file$coll_date)
+
+data_file$PlateDate <- as_date(data_file$PlateDate)
+
+data_file$counter <- 1
+```
+
+
+The full_compiled_data.csv dataset includes `r nrow(data_file)` sample records. This includes samples collected from `r min(data_file$coll_date)` to `r max(data_file$coll_date)`. The most recent samples were processed on `r max(data_file$PlateDate)`.
+
+***Table 1.*** Sample Count from Received Sources
+
+```{r}
+sample_count <- data_file %>% group_by(received_source) %>% summarize(unique_samples = length(unique(sample_id)), total_samples = length(sample_id), unique_subjects = length(unique(subject_id)), min_collection = min(coll_date), max_collection = max(coll_date), min_plate_run = min(PlateDate), max_plate_run = max(PlateDate))
+
+colnames(sample_count) <- c("Source", "Count of Unique Samples", "Count of Total Samples", "Count of Unique Subjects", "Min. Collection Date", "Max. Collection Date", "Min. Plate Run Date", "Max. Plate Run Date")
+
+sample_count %>%
+  gt() %>%
+  tab_header(
+    title = "Overview of COVID-19 Sequencing Samples")
+ 
+
+```
+
+Add: 
+
+Table of Count - insufficient pangolin calls (pangolin probability/status)
+Table of most common pangolin call per week
+Table of Nextclade 5 number summary on completeness by received source + overall
+Table of most common next clade clade call per week
+
+
+#### Complete Data Review - Charts
+
+***Chart 1.*** Platforms Used
+
+```{r}
+platforms <- data_file %>% group_by(PlateDate, PlatePlatform) %>% summarize(count = sum(counter, na.rm = TRUE))
+
+ill_sum <- sum(filter(platforms, PlatePlatform == "Illumina")$count, na.rm = TRUE)
+nan_sum <- sum(filter(platforms, PlatePlatform == "Nanopore")$count, na.rm = TRUE)
+
+ggplot(platforms, aes(x = PlateDate, y = count, color = PlatePlatform)) + 
+  geom_point(alpha = 0.5) + 
+  geom_line() + 
+  theme_bw() + 
+  labs(title = "Samples Run on Various Platforms", 
+       x = "Plate Run Date", 
+       y = "Count of Samples Run", 
+       color = "Platforms", 
+       caption = paste0("Total Samples Run with Illumina = ", ill_sum, "; Total Samples Run with Nanopore = ", nan_sum, ";"))
+
+
+```
+
+***Chart 2.*** Pangolin Lineage Calls Over Time
+
+```{r}
+pangolin_calls <- data_file %>% group_by(coll_date, pangolin_lineage) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
+
+pangolin_calls <- filter(pangolin_calls, coll_date < Sys.Date())
+
+ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = pangolin_lineage)) + 
+  geom_bar(stat = "identity") + 
+  theme_bw() + 
+  theme(legend.position = "none") +
+  labs(title = "Pangolin Lineage Calls Over Time", 
+       x = "Sample Collection Date", 
+       y = "Sample Count")
+
+```
+
+***Chart 3.*** NextClade Clade Calls Over Time
+
+```{r}
+nextclade_calls <- data_file %>% group_by(coll_date, nextclade_clade) %>% summarize(ind_count = length(unique(sample_id)))
+
+nextclade_calls <- filter(nextclade_calls, coll_date < Sys.Date())
+
+ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = nextclade_clade)) + 
+  geom_bar(stat = "identity") + 
+  theme_bw() + 
+  theme(legend.position = "none") +
+  labs(title = "NextClade Clade Calls Over Time", 
+       x = "Sample Collection Date", 
+       y = "Sample Count")
+
+```
+
+
+
+
+Add: 
+
+Chart of Nextclade 5 number summary on completeness by received source + overall (by week)
+
+

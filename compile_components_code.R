@@ -108,6 +108,17 @@ prev2$umid <- ifelse(prev2$umid == "NA", NA, prev2$umid)
 
 prev2$subject_id <- coalesce(prev2$MRN, prev2$umid)
 
+changes <- c("CBR 3-15-2021", "CBR December MFIVE", "Lynx", "LynxDx")
+table(prev2$origin)
+prev2$changed_origin <- ifelse(prev2$origin %in% changes, 1, 0)
+prev2 <- prev2 %>% mutate(note = case_when(changed_origin == 1 ~ paste0(note, "Origin Column changed from ", origin),
+                                           T ~ note), 
+                          origin = case_when(origin == "CBR 3-15-2021" | origin == "CBR December MFIVE" ~ "CBR", 
+                                             origin == "Lynx" | origin == "LynxDx" ~ "CSTP", 
+                                             T ~ origin)
+                          )
+
+
 ### get plate creation date
 prev2$PlateDate <- paste0(substr(prev2$batch, 1, 4), "-", substr(prev2$batch, 5, 6), "-", substr(prev2$batch, 7, 8))
 

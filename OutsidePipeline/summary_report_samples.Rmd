@@ -67,7 +67,7 @@ Table of Count - insufficient pangolin calls (pangolin probability/status)
 Table of most common pangolin call per week
 Table of Nextclade 5 number summary on completeness by received source + overall
 Table of most common next clade clade call per week
-
+Table of count of no gisaid information (control for completeness factor)
 
 #### Complete Data Review - Charts
 
@@ -92,6 +92,26 @@ ggplot(platforms, aes(x = PlateDate, y = count, color = PlatePlatform)) +
 
 ```
 
+***Chart 1.1*** Platforms Used by Received Source
+
+```{r}
+platforms2 <- data_file %>% group_by(PlateDate, PlatePlatform, received_source) %>% summarize(count = sum(counter, na.rm = TRUE))
+
+ggplot(platforms2, aes(x = PlateDate, y = count, color = received_source)) + 
+  geom_point(alpha = 0.7, aes(shape = platforms2$PlatePlatform)) + 
+  #geom_line() + 
+  theme_bw() + 
+  labs(title = "Samples Run on Various Platforms", 
+       subtitle = "by Received Source",
+       x = "Plate Run Date", 
+       y = "Count of Samples Run", 
+       color = "Source", 
+       shape = "Platform")
+
+
+```
+
+
 ***Chart 2.*** Pangolin Lineage Calls Over Time
 
 ```{r}
@@ -108,6 +128,27 @@ ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = pangolin_lineage
        y = "Sample Count")
 
 ```
+
+
+***Chart 2.1*** Pangolin Lineage Calls Over Time by Received Source
+
+```{r}
+pangolin_calls2 <- data_file %>% group_by(coll_date, pangolin_lineage, received_source) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
+
+pangolin_calls2 <- filter(pangolin_calls2, coll_date < Sys.Date())
+
+ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = pangolin_lineage)) + 
+  geom_bar(stat = "identity") + 
+  theme_bw() + 
+  theme(legend.position = "none") +
+  labs(title = "Pangolin Lineage Calls Over Time",
+       subtitle = "by Received Source",
+       x = "Sample Collection Date", 
+       y = "Sample Count") + 
+  facet_wrap(.~received_source)
+
+```
+
 
 ***Chart 3.*** NextClade Clade Calls Over Time
 
@@ -126,11 +167,46 @@ ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = nextclade_clade
 
 ```
 
+***Chart 3.1*** NextClade Clade Calls Over Time by Received Source
+
+```{r}
+nextclade_calls <- data_file %>% group_by(coll_date, nextclade_clade) %>% summarize(ind_count = length(unique(sample_id)))
+
+nextclade_calls <- filter(nextclade_calls, coll_date < Sys.Date())
+
+ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = nextclade_clade)) + 
+  geom_bar(stat = "identity") + 
+  theme_bw() + 
+  theme(legend.position = "none") +
+  labs(title = "NextClade Clade Calls Over Time", 
+       x = "Sample Collection Date", 
+       y = "Sample Count")
+
+```
 
 
+***Chart 4.*** GISAID Strains Over Time
+
+```{r}
+
+gisaid_strains <- data_file %>% group_by(coll_date, gisaid_strain) %>% summarize(ind_count = length(unique(sample_id)))
+
+gisaid_strains <- filter(gisaid_strains, coll_date < Sys.Date())
+
+ggplot(gisaid_strains, aes(x = coll_date, y = ind_count, fill = gisaid_strain)) + 
+  geom_bar(stat = "identity") + 
+  theme_bw() + 
+  theme(legend.position = "none") +
+  labs(title = "GISAID Strain Calls Over Time", 
+       x = "Sample Collection Date", 
+       y = "Sample Count")
+
+```
 
 Add: 
 
 Chart of Nextclade 5 number summary on completeness by received source + overall (by week)
+All charts broken out by received source
 
+Do anything with: nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations, nextclade_totalNonACGTNs?
 

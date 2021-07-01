@@ -32,6 +32,8 @@ library(gt)
 
 data_file <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SequenceSampleMetadata/FinalSummary/secret/full_compiled_data.csv", colClasses = c("character"))
 
+
+#table(data_file$nextclade_clade)
 ```
 
 

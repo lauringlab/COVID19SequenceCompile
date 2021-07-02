@@ -26,5 +26,6 @@ source(paste0(code_path, "gisaid_code.R"))
 
 source(paste0(code_path, "compile_components_code.R"))
 
+## only run for updating Slack channel (underworld) with total sample count
 shell.exec(paste0(batch_path, "/sample_count_run.bat"))
 

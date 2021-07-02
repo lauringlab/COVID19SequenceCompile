@@ -185,6 +185,11 @@ for (each_file in cdc_file_list){
   cdc_ivy_storage <- rbind(cdc_ivy_storage, fileone)
 }
 
+cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "2108074UR" | subject_id == "2103143UR" ~ "Withdrawn from study", 
+                                                               subject_id == "2102015UR" ~ "IVY Counterpart is 2102007UR", 
+                                                               subject_id == "2102016UR" ~ "IVY Counterpart is 2102008UR", 
+                                                               T ~ as.character(flag)))
+
 ### write out full ivy set
 write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
 

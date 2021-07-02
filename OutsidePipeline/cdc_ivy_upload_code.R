@@ -35,7 +35,8 @@ if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
   stop("Duplicate sample IDs - handle accordingly")
 }
 
-
+## remove study withdraws
+seq_list <- filter(seq_list, flag != "Withdrawn from study")
 
 # id_count <- seq_list %>% group_by(sample_id) %>% summarize(count = length(subject_id))
 # seq_list <- merge(seq_list, id_count, by = c("sample_id"), all.x = TRUE)

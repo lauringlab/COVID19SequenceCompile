@@ -32,15 +32,19 @@ library(gt)
 
 data_file <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SequenceSampleMetadata/FinalSummary/secret/full_compiled_data.csv", colClasses = c("character"))
 
-
-#table(data_file$nextclade_clade)
 ```
 
 
 ## Complete Data Review
 
 ```{r}
-data_file$coll_date <- as_date(data_file$coll_date)
+### fix date formatting
+data_file <- data_file %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.POSIXct(coll_date, format = "%m/%d/%Y"), 
+                                                        grepl("-", coll_date) ~ as.POSIXct(coll_date, format = "%Y-%m-%d"), 
+                                                        T ~ NA_real_))
+
+
+#data_file$coll_date <- as_date(data_file$coll_date)
 
 data_file$PlateDate <- as_date(data_file$PlateDate)
 
@@ -48,16 +52,16 @@ data_file$counter <- 1
 ```
 
 
-The full_compiled_data.csv dataset includes `r nrow(data_file)` sample records. This includes samples collected from `r min(data_file$coll_date)` to `r max(data_file$coll_date)`. The most recent samples were processed on `r max(data_file$PlateDate)`.
+The full_compiled_data.csv dataset includes `r nrow(data_file)` sample records. This includes samples collected from `r min(data_file$coll_date, na.rm = TRUE)` to `r max(data_file$coll_date, na.rm = TRUE)`. The most recent samples were processed on `r max(data_file$PlateDate, na.rm = TRUE)`.
 
 ***Table 1.*** Sample Count from Received Sources
 
 ```{r}
-sample_count <- data_file %>% group_by(received_source) %>% summarize(unique_samples = length(unique(sample_id)), total_samples = length(sample_id), unique_subjects = length(unique(subject_id)), min_collection = min(coll_date), max_collection = max(coll_date), min_plate_run = min(PlateDate), max_plate_run = max(PlateDate))
+sample_count <- data_file %>% group_by(received_source) %>% summarize(unique_samples = length(unique(sample_id)), total_samples = length(sample_id), unique_subjects = length(unique(subject_id)), min_collection = min(coll_date, na.rm = TRUE), max_collection = max(coll_date, na.rm = TRUE), min_plate_run = min(PlateDate, na.rm = TRUE), max_plate_run = max(PlateDate, na.rm = TRUE))
 
 colnames(sample_count) <- c("Source", "Count of Unique Samples", "Count of Total Samples", "Count of Unique Subjects", "Min. Collection Date", "Max. Collection Date", "Min. Plate Run Date", "Max. Plate Run Date")
 
-sample_count2 <- data_file %>% group_by(counter) %>% summarize(unique_samples = length(unique(sample_id)), total_samples = length(sample_id), unique_subjects = length(unique(subject_id)), min_collection = min(coll_date), max_collection = max(coll_date), min_plate_run = min(PlateDate), max_plate_run = max(PlateDate))
+sample_count2 <- data_file %>% group_by(counter) %>% summarize(unique_samples = length(unique(sample_id)), total_samples = length(sample_id), unique_subjects = length(unique(subject_id)), min_collection = min(coll_date, na.rm = TRUE), max_collection = max(coll_date, na.rm = TRUE), min_plate_run = min(PlateDate, na.rm = TRUE), max_plate_run = max(PlateDate, na.rm = TRUE))
 
 colnames(sample_count2) <- c("Source", "Count of Unique Samples", "Count of Total Samples", "Count of Unique Subjects", "Min. Collection Date", "Max. Collection Date", "Min. Plate Run Date", "Max. Plate Run Date")
 
@@ -73,6 +77,42 @@ sample_count %>%
 
 ```
 
+***Table 1.1*** Month by Month Sample Counts by Received Source
+
+Total samples processed during each month, for each source/project.
+
+```{r}
+month_sample_count <- data_file %>% group_by(received_source, year(PlateDate), month(PlateDate)) %>% summarize(total_samples = length(sample_id))
+
+month_sample_count$ProcessedMonth <- paste0(month_sample_count$`year(PlateDate)`, "-", month_sample_count$`month(PlateDate)`, "-01")
+
+month_sample_count <- dcast(month_sample_count, received_source ~ ProcessedMonth, value.var = c("total_samples"))
+
+month_sample_count[is.na(month_sample_count)] <- 0
+
+
+###########
+# do same thing, but for overall too
+
+ov_sample_count <- data_file %>% group_by(year(PlateDate), month(PlateDate)) %>% summarize(received_source = "Overall", total_samples = length(sample_id))
+
+ov_sample_count$ProcessedMonth <- paste0(ov_sample_count$`year(PlateDate)`, "-", ov_sample_count$`month(PlateDate)`, "-01")
+
+ov_sample_count <- dcast(ov_sample_count, received_source ~ ProcessedMonth, value.var = c("total_samples"))
+
+ov_sample_count[is.na(ov_sample_count)] <- 0
+
+all_month_sample_count <- rbind(ov_sample_count, month_sample_count)
+
+colnames(all_month_sample_count)[1] <- " "
+
+all_month_sample_count %>%
+  gt() %>%
+  tab_header(
+    title = "COVID-19 Sequencing Samples Processed by Month & Received Source")
+ 
+
+```
 
 ***Table 2.*** Status of Pangolin Calls
 
@@ -121,6 +161,44 @@ nc_complete %>%
     title = "Summary of Nextclade Completeness (%) by Received Source")
 ```
 
+***Table 3.1*** Nextclade Completeness by Plate Run - Over 80% Complete
+
+```{r}
+plate_complete <- data_file %>% mutate(over80 = case_when(nextclade_completeness >= 80 ~ 1, 
+                                                          T ~ 0), 
+                                       over90 = case_when(nextclade_completeness >= 90 ~ 1, 
+                                                          T ~ 0)) %>% group_by(PlateName, PlateDate, received_source) %>% summarize(over80 = sum(over80, na.rm = TRUE), over90 = sum(over90, na.rm = TRUE), total = sum(counter, na.rm = TRUE))
+
+plate_complete$over80perc <- (plate_complete$over80 / plate_complete$total) * 100
+plate_complete$over90perc <- (plate_complete$over90 / plate_complete$total) * 100
+
+ggplot(plate_complete, aes(x = PlateDate, y = over80perc, color = received_source)) + 
+  geom_point() + 
+  theme_bw() + 
+  scale_color_manual(values = c("gray50", "dodgerblue", "dodgerblue", "coral", "seagreen", "goldenrod", "forestgreen", "forestgreen", "goldenrod", "goldenrod", "darkorchid4", "darkorchid4", "darkorchid4")) + 
+  labs(title = "Percent of Samples with Genome Completeness Over 80%", 
+       x = "Date", 
+       y = "Percent (%)", 
+       color = "Source", 
+       caption = "Each point is a plate/source combination") 
+
+```
+
+***Table 3.2*** Nextclade Completeness by Plate Run - Over 90% Complete
+
+```{r}
+
+ggplot(plate_complete, aes(x = PlateDate, y = over90perc, color = received_source)) + 
+  geom_point() + 
+  theme_bw() + 
+  scale_color_manual(values = c("gray50", "dodgerblue", "dodgerblue", "coral", "seagreen", "goldenrod", "forestgreen", "forestgreen", "goldenrod", "goldenrod", "darkorchid4", "darkorchid4", "darkorchid4")) + 
+  labs(title = "Percent of Samples with Genome Completeness Over 90%", 
+       x = "Date", 
+       y = "Percent (%)", 
+       color = "Source", 
+       caption = "Each point is a plate/source combination")
+
+```
 
 ***Table 4.*** GISAID Information by Received Source
 
@@ -207,7 +285,7 @@ ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = pangolin_lineage
 
 ***Chart 2.1*** Pangolin Lineage Calls by Received Source + Date of Sample Collection
 
-```{r}
+```{r, fig.height = 20, fig.width = 8}
 pangolin_calls2 <- data_file %>% group_by(coll_date, pangolin_lineage, received_source) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
 
 pangolin_calls2 <- filter(pangolin_calls2, coll_date < Sys.Date())
@@ -220,7 +298,7 @@ ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = pangolin_lineag
        subtitle = "by Received Source",
        x = "Sample Collection Date", 
        y = "Sample Count") + 
-  facet_wrap(.~received_source)
+  facet_wrap(.~received_source, ncol = 2)
 
 ```
 
@@ -244,7 +322,7 @@ ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = nextclade_clade
 
 ***Chart 3.1*** NextClade Clade Calls by Received Source + Date of Sample Collection
 
-```{r}
+```{r, fig.height = 20, fig.width = 8}
 nextclade_calls2 <- data_file %>% group_by(received_source, coll_date, nextclade_clade) %>% summarize(ind_count = length(unique(sample_id)))
 
 nextclade_calls2 <- filter(nextclade_calls2, coll_date < Sys.Date())
@@ -257,7 +335,7 @@ ggplot(nextclade_calls2, aes(x = coll_date, y = ind_count, fill = nextclade_clad
        subtitle = "by Received Source",
        x = "Sample Collection Date", 
        y = "Sample Count") + 
-  facet_wrap(.~received_source)
+  facet_wrap(.~received_source, ncol = 2)
 
 ```
 
@@ -284,7 +362,7 @@ ggplot(gisaid_strains, aes(x = coll_date, y = ind_count, fill = gisaid_strain)) 
 
 ***Chart 4.1*** GISAID Strains by Received Source + Week of Sample Collection
 
-```{r}
+```{r, fig.height = 20, fig.width = 8}
 
 gisaid_strains2 <- data_file %>% group_by(received_source, coll_date, gisaid_strain) %>% summarize(ind_count = length(unique(sample_id)))
 
@@ -298,7 +376,7 @@ ggplot(gisaid_strains2, aes(x = coll_date, y = ind_count, fill = gisaid_strain))
        subtitle = "by Received Source",
        x = "Sample Collection Date", 
        y = "Sample Count") + 
-  facet_wrap(.~received_source)
+  facet_wrap(.~received_source, ncol = 2)
 
 ```
 
@@ -348,7 +426,7 @@ ggplot(common_nextclade_calls, aes(x = week, y = nextclade_clade, color = receiv
 
 ***Chart 6.*** NextClade Completeness Over Time by Received Source + Week of Plate Run
 
-```{r}
+```{r, fig.height = 15, fig.width = 8}
 data_file$week <- paste0(year(data_file$PlateDate), "-", ifelse(nchar(epiweek(data_file$PlateDate)) == 1, paste0("0", as.character(epiweek(data_file$PlateDate))), epiweek(data_file$PlateDate)))
 
 ggplot(data_file, aes(x = week, y = as.numeric(nextclade_completeness))) + 
@@ -365,7 +443,7 @@ ggplot(data_file, aes(x = week, y = as.numeric(nextclade_completeness))) +
 
 ***Chart 6.1*** NextClade Completeness Over Time by Received Source + Week of Sample Collection
 
-```{r}
+```{r, fig.height = 15, fig.width = 8}
 data_file$week2 <- paste0(year(data_file$coll_date), "-", ifelse(nchar(epiweek(data_file$coll_date)) == 1, paste0("0", as.character(epiweek(data_file$coll_date))), epiweek(data_file$coll_date)))
 
 ggplot(data_file, aes(x = week2, y = as.numeric(nextclade_completeness))) + 
@@ -380,6 +458,36 @@ ggplot(data_file, aes(x = week2, y = as.numeric(nextclade_completeness))) +
 ```
 
 
+***Chart 7.*** Percent of Calls = B117 per Week (by collection date)
+
+based on Pangolin Calls
+
+```{r}
+pangolin_b117 <- data_file %>% group_by(week2, coll_date, pangolin_lineage) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
+
+pangolin_b117$b117yn <- ifelse(pangolin_b117$pangolin_lineage == "B.1.1.7", "B117", "Other")
+
+pangolin_b117 <- pangolin_b117 %>% group_by(week2, b117yn) %>% summarize(count_all = sum(count, na.rm = TRUE))
+
+pangolin_b117 <- dcast(pangolin_b117, week2 ~ b117yn, value.var = c("count_all"))
+
+pangolin_b117[is.na(pangolin_b117)] <- 0
+
+pangolin_b117$percent <- (pangolin_b117$B117 / (pangolin_b117$B117 + pangolin_b117$Other))*100
+pangolin_b117$total <- (pangolin_b117$B117 + pangolin_b117$Other)
+
+ggplot(pangolin_b117, aes(x = week2, y = percent)) + 
+  geom_point() + 
+  geom_line() + 
+  geom_text(aes(x = week2, y = percent, label = total), nudge_y = 3, size = 3) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
+  labs(title = "Percent of Samples Collected Each Week Identified as B.1.1.7", 
+       x = "Week", 
+       y = "Percent (%)", 
+       caption = "Pangolin used to determine strain; Number label = Count of samples collected each week")
+  
+```
 
 Should we do anything with: nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations, nextclade_totalNonACGTNs?
 

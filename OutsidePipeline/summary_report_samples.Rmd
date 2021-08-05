@@ -32,6 +32,15 @@ library(gt)
 
 data_file <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SequenceSampleMetadata/FinalSummary/secret/full_compiled_data.csv", colClasses = c("character"))
 
+who_cw <- read.csv("C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/who_variant_crosswalk.csv")
+
+data_file$voi_voc_pangolin <- ifelse(grepl(who_cw$pango_lineage, data_file$pangolin_lineage), who_cw$pango_lineage, "Not VOI/VOC")
+
+data_file$voi_voc_nextclade <- ifelse(grepl(who_cw$nextclade_clade, data_file$nextclade_clade), who_cw$nextclade_clade, "Not VOI/VOC")
+
+data_file$voi_voc <- ifelse(data_file$voi_voc_pangolin == "Not VOI/VOC", "Not VOI/VOC", 
+                            ifelse(data_file$voi_voc_nextclade == "Not VOI/VOC", "Not VOI/VOC", "VOI/VOC"))
+#table(data_file$voi_voc)
 ```
 
 
@@ -222,6 +231,28 @@ gisaid_info %>%
     subtitle = "Of Samples with NextClade Completeness > 90%")
 ```
 
+***Table 5. WHO VOIs and VOCs***
+
+(As of WHO site on 7/14/2021)
+
+```{r}
+who_voic <- data_file %>% group_by(received_source, voi_voc) %>% summarize(count = sum(counter, na.rm = TRUE))
+
+#table(data_file$voi_voc, data_file$voi_voc_nextclade)
+
+who_voic <- dcast(who_voic, received_source ~ voi_voc, value.var = c("count"))
+who_voic[is.na(who_voic)] <- 0
+
+who_voic$Total <- who_voic$`Not VOI/VOC` + who_voic$`VOI/VOC`
+
+who_voic$PercentVOIVOC <- paste0(round((who_voic$`VOI/VOC` / who_voic$Total)*100, 1), "%")
+
+who_voic %>%
+  gt() %>%
+  tab_header(
+    title = "WHO VOIs and VOCs")
+```
+
 #### Complete Data Review - Charts
 
 ***Chart 1.*** Platforms Used (by Plate Run Date)
@@ -268,17 +299,23 @@ ggplot(platforms2, aes(x = PlateDate, y = count, color = received_source)) +
 ***Chart 2.*** Pangolin Lineage Calls Over Time (Sample Collection)
 
 ```{r}
-pangolin_calls <- data_file %>% group_by(coll_date, pangolin_lineage) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
+pangolin_calls <- data_file %>% group_by(coll_date, pangolin_lineage, voi_voc_pangolin) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
 
 pangolin_calls <- filter(pangolin_calls, coll_date < Sys.Date())
 
-ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = pangolin_lineage)) + 
+ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = voi_voc_pangolin)) + 
   geom_bar(stat = "identity") + 
-  theme_bw() + 
-  theme(legend.position = "none") +
+  theme_bw() +
+  scale_fill_manual(values = c("dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
+                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+                               "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
+                               "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
+                               "lightskyblue", "plum4")) + 
+  #theme(legend.position = "none") +
   labs(title = "Pangolin Lineage Calls Over Time", 
        x = "Sample Collection Date", 
-       y = "Sample Count")
+       y = "Sample Count", 
+       fill = "WHO VOIs and VOCs")
 
 ```
 
@@ -286,18 +323,24 @@ ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = pangolin_lineage
 ***Chart 2.1*** Pangolin Lineage Calls by Received Source + Date of Sample Collection
 
 ```{r, fig.height = 20, fig.width = 8}
-pangolin_calls2 <- data_file %>% group_by(coll_date, pangolin_lineage, received_source) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
+pangolin_calls2 <- data_file %>% group_by(coll_date, pangolin_lineage, received_source, voi_voc_pangolin) %>% summarize(count = sum(counter, na.rm = TRUE), ind_count = length(unique(sample_id)))
 
 pangolin_calls2 <- filter(pangolin_calls2, coll_date < Sys.Date())
 
-ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = pangolin_lineage)) + 
+ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_pangolin)) + 
   geom_bar(stat = "identity") + 
   theme_bw() + 
-  theme(legend.position = "none") +
+  scale_fill_manual(values = c("dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
+                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+                               "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
+                               "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
+                               "lightskyblue", "plum4")) + 
+  #theme(legend.position = "none") +
   labs(title = "Pangolin Lineage Calls Over Time",
        subtitle = "by Received Source",
        x = "Sample Collection Date", 
-       y = "Sample Count") + 
+       y = "Sample Count", 
+       fill = "WHO VOIs and VOCs") + 
   facet_wrap(.~received_source, ncol = 2)
 
 ```
@@ -306,35 +349,39 @@ ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = pangolin_lineag
 ***Chart 3.*** NextClade Clade Calls by Date of Sample Collection
 
 ```{r}
-nextclade_calls <- data_file %>% group_by(coll_date, nextclade_clade) %>% summarize(ind_count = length(unique(sample_id)))
+nextclade_calls <- data_file %>% group_by(coll_date, nextclade_clade, voi_voc_nextclade) %>% summarize(ind_count = length(unique(sample_id)))
 
 nextclade_calls <- filter(nextclade_calls, coll_date < Sys.Date())
 
-ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = nextclade_clade)) + 
+ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = voi_voc_nextclade)) + 
   geom_bar(stat = "identity") + 
   theme_bw() + 
-  theme(legend.position = "none") +
+  #theme(legend.position = "none") +
+  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink")) + 
   labs(title = "NextClade Clade Calls Over Time", 
        x = "Sample Collection Date", 
-       y = "Sample Count")
+       y = "Sample Count", 
+       fill = "WHO VOIs and VOCs")
 
 ```
 
 ***Chart 3.1*** NextClade Clade Calls by Received Source + Date of Sample Collection
 
 ```{r, fig.height = 20, fig.width = 8}
-nextclade_calls2 <- data_file %>% group_by(received_source, coll_date, nextclade_clade) %>% summarize(ind_count = length(unique(sample_id)))
+nextclade_calls2 <- data_file %>% group_by(received_source, coll_date, nextclade_clade, voi_voc_nextclade) %>% summarize(ind_count = length(unique(sample_id)))
 
 nextclade_calls2 <- filter(nextclade_calls2, coll_date < Sys.Date())
 
-ggplot(nextclade_calls2, aes(x = coll_date, y = ind_count, fill = nextclade_clade)) + 
+ggplot(nextclade_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_nextclade)) + 
   geom_bar(stat = "identity") + 
   theme_bw() + 
-  theme(legend.position = "none") +
+  #theme(legend.position = "none") +
+  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink")) + 
   labs(title = "NextClade Clade Calls Over Time", 
        subtitle = "by Received Source",
        x = "Sample Collection Date", 
-       y = "Sample Count") + 
+       y = "Sample Count", 
+       fill = "WHO VOIs and VOCs") + 
   facet_wrap(.~received_source, ncol = 2)
 
 ```

@@ -45,9 +45,22 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 # select run of choice
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
-#table(final_file$PlatePlatform, final_file$PlateNumber, useNA = "always")
 ################################################################################
-# need to compare to complete GISAID file, to avoid submitting duplicate sequences
+# set up alert to duplicate items
+
+if (any(ff$sample_per_subject > 1)){
+  print("STOP: Examine this set of GISAID submissions.")
+  stop("There are samples from subject_ids that we've sequenced previously.")
+}
+
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+### check if the samples are > 90 days apart from one another - then you can let 
+### them through.
+
+### uncomment this portion to remove those samples
+### to remove these: 
+#ff <- filter(ff, sample_per_subject == 1)
 
 ################################################################################
 

@@ -1,6 +1,6 @@
 ################################################################################
 #       Creation of Cumulative Dataset for COVID-19 Genetic Sampling           #
-#                         Last Updated: 05/11/2021                             #
+#                         Last Updated: 5 August 2021                          #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -61,6 +61,8 @@ if (nrow(mani_plate) != plate_map_ids){
   stop("There are more or less rows in our manifest + plate combination than there were date/sample id combinations in the original plate map file")
 }
 
+#missings <- filter(mani_plate, is.na(subject_id))
+#write.csv(missings, "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/check_miss_subjects.csv", na = "", row.names = FALSE)
 
 # then, read in pangolin, gisaid, and next clade files
 pangolin <- read.csv(paste0(pang_fp, "/sample_full_pangolin_list.csv"), colClasses = "character")
@@ -150,6 +152,11 @@ mppnc2$subject_id_length <- nchar(mppnc2$subject_id)
 mppnc2 <- subject_id_length_QA(mppnc2, "CBR")
 mppnc2 <- subject_id_length_QA(mppnc2, "EDIDNOW")
 mppnc2 <- subject_id_length_QA(mppnc2, "CSTP")
+
+################################################################################
+## add a column to number multiple sample_ids per subject_id
+
+mppnc2 <- mppnc2 %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
 ################################################################################
 

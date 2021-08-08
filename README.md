@@ -140,6 +140,10 @@ The cdc_ivy_upload_code.R code file is used to generate the new rows of data tha
 
 The gisaid_upload_file_creation.R code is used to generate a properly structured Excel document to use for batch uploading to the GISAID system. This is completed in batches corresponding to plate runs. Only non-duplicate samples should be uploaded, with >= 90% NextClade sequence completeness.
 
+#### Subsetting Main File for Data Processing/FASTA Steps
+
+The subset_compiled_for_fasta.R code is used to generate a smaller meta.csv file to use in matching the consensus sequence barcode to the proper sample ID.
+
 ### Folder: ProcessingFASTA
 
 <b>Python Libraries Needed:</b>
@@ -253,7 +257,7 @@ There is another python script that takes the generated .fasta file and replaces
 1. Compile full data set using pipeline code.
 2. Ensure there is a folder in [DropBox/MED-LauringLab/ProcessedGenomes] named the same as the originating PlateMap file
 3. In that folder, there will be two files: plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta; only plateMapName.all.consensus.fasta is necessary.
-4. Subset the newly generated full_compiled_data.csv file to only contain the relevant plate samples, copy it here [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv (This is because the barcode locations repeat on sample runs, so this is necessary to ensure proper barcode to sample_id matching)
+4. Using the subset_compiled_for_fasta.R code, subset the newly generated full_compiled_data.csv file to only contain the relevant plate samples, copy it here [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv (This is because the barcode locations repeat on sample runs, so this is necessary to ensure proper barcode to sample_id matching)
 5. Run prep_fasta_NumberOne.py
 
 This creates the following file:

@@ -436,6 +436,9 @@ common_pangolin_calls <- filter(common_pangolin_calls, coll_date < Sys.Date())
 
 common_pangolin_calls$week <- paste0(year(common_pangolin_calls$coll_date), "-", ifelse(nchar(epiweek(common_pangolin_calls$coll_date)) == 1, paste0("0", as.character(epiweek(common_pangolin_calls$coll_date))), epiweek(common_pangolin_calls$coll_date)))
 
+# week is counting last week of 2020 as week "53"
+common_pangolin_calls$week <- ifelse(common_pangolin_calls$week == "2021-53" & year(common_pangolin_calls$coll_date) == 2021, "2021-01", common_pangolin_calls$week)
+
 common_pangolin_calls <- common_pangolin_calls %>% group_by(week, received_source) %>% top_n(1, ind_count)
 
 ggplot(common_pangolin_calls, aes(x = week, y = pangolin_lineage, color = received_source)) +   
@@ -458,6 +461,10 @@ common_nextclade_calls <- filter(common_nextclade_calls, coll_date < Sys.Date())
 
 common_nextclade_calls$week <- paste0(year(common_nextclade_calls$coll_date), "-", ifelse(nchar(epiweek(common_nextclade_calls$coll_date)) == 1, paste0("0", as.character(epiweek(common_nextclade_calls$coll_date))), epiweek(common_nextclade_calls$coll_date)))
 
+# week is counting last week of 2020 as week "53"
+common_nextclade_calls$week <- ifelse(common_nextclade_calls$week == "2021-53" & year(common_nextclade_calls$coll_date) == 2021, "2021-01", common_nextclade_calls$week)
+
+
 common_nextclade_calls <- common_nextclade_calls %>% group_by(week, received_source) %>% top_n(1, ind_count)
 
 ggplot(common_nextclade_calls, aes(x = week, y = nextclade_clade, color = received_source)) +   
@@ -476,6 +483,9 @@ ggplot(common_nextclade_calls, aes(x = week, y = nextclade_clade, color = receiv
 ```{r, fig.height = 15, fig.width = 8}
 data_file$week <- paste0(year(data_file$PlateDate), "-", ifelse(nchar(epiweek(data_file$PlateDate)) == 1, paste0("0", as.character(epiweek(data_file$PlateDate))), epiweek(data_file$PlateDate)))
 
+# week is counting last week of 2020 as week "53"
+data_file$week <- ifelse(data_file$week == "2021-53" & year(data_file$coll_date) == 2021, "2021-01", data_file$week)
+
 ggplot(data_file, aes(x = week, y = as.numeric(nextclade_completeness))) + 
   geom_boxplot() + 
   theme_bw() + 
@@ -492,6 +502,10 @@ ggplot(data_file, aes(x = week, y = as.numeric(nextclade_completeness))) +
 
 ```{r, fig.height = 15, fig.width = 8}
 data_file$week2 <- paste0(year(data_file$coll_date), "-", ifelse(nchar(epiweek(data_file$coll_date)) == 1, paste0("0", as.character(epiweek(data_file$coll_date))), epiweek(data_file$coll_date)))
+
+# week is counting last week of 2020 as week "53"
+data_file$week2 <- ifelse(data_file$week2 == "2021-53" & year(data_file$coll_date) == 2021, "2021-01", data_file$week2)
+
 
 ggplot(data_file, aes(x = week2, y = as.numeric(nextclade_completeness))) + 
   geom_boxplot() + 

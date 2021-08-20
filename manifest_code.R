@@ -53,7 +53,7 @@ for (each_folder in manifest_folder_list){
     
       # then iterate through files within each folder
       for (each_file in file_list){
-        
+          #print(each_file)
           # read in the file
           file_in <- read.csv(paste0(each_folder, "/", each_file), colClasses = "character")
           
@@ -96,6 +96,16 @@ for (each_folder in manifest_folder_list){
             stop("There are missing subject ids.")
           }
           
+          
+          ## reformat coll_date to YYYY-MM-DD format if necessary
+          test_date_format <- substr(as.character(file_in[1, 4]), 1, 4)
+          #print(test_date_format)
+          
+          if (is.na(as.numeric(test_date_format))){
+               #a <- file_in$coll_date
+               file_in$coll_date <- as.POSIXct(file_in$coll_date, format = "%m/%d/%y")
+          }
+          
           if(any(is.na(file_in$coll_date))){
             print(each_file)
             print("There are missing collection dates.")
@@ -104,14 +114,7 @@ for (each_folder in manifest_folder_list){
             file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ gsub("NA", "", paste0(flag, "Missing Date in Manifest - Replaced with Today Date")), 
                                                            T ~ flag), 
                                           coll_date = case_when(is.na(coll_date) ~ as.character(Sys.Date()), 
-                                                                T ~ coll_date))
-          }
-          
-          ## reformat coll_date to YYYY-MM-DD format if necessary
-          test_date_format <- substr(as.character(file_in[1, 4]), 1, 4)
-          
-          if (is.na(as.numeric(test_date_format))){
-               file_in$coll_date <- as.POSIXct(file_in$coll_date, format = "%m/%d/%y")
+                                                                T ~ as.character(coll_date)))
           }
           
           # add in 2 new columns: received_date and received_source (from file name)

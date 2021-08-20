@@ -10,6 +10,7 @@ batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organizatio
 
 ################################################################################
 
+options(scipen=999)
 source(paste0(code_path, "pipeline_functions.R"))
 
 ################################################################################

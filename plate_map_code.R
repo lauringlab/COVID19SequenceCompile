@@ -9,6 +9,8 @@ library(lubridate)
 library(janitor)
 library(openxlsx)
 
+options(scipen=999)
+
 ################################################################################
 #                Plate Map Files - Upload and Data Checks                      #
 ################################################################################
@@ -20,6 +22,7 @@ platemap_fp <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps")
 outputLOC <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps/PlateMapsComplete")
 
 ################################################################################
+
 
 file_list <- list.files(pattern = "*.xlsx", path = platemap_fp)
 

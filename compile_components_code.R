@@ -42,6 +42,27 @@ plate_map <- filter(plate_map, SampleID != "" & !is.na(SampleID)) # remove any r
 # store unique number of sample ids 
 plate_map_ids <- nrow(plate_map %>% group_by(SampleID, SampleSourceDate) %>% summarize(count = length(SampleID)))
 
+
+################################################################################
+# Warning for if plate map date and manifest date are DIFFERENT
+
+manifest_options <- filter(manifest, received_date != "" & !is.na(received_date)) %>% select(sample_id, subject_id, received_date)
+platemap_options <- filter(plate_map, SampleSourceDate != "" & !is.na(SampleSourceDate)) %>% select(SampleID, SampleSourceDate)
+
+compare_options <- merge(manifest_options, platemap_options, by.x = c("sample_id"), by.y = c("SampleID"))
+
+compare_options$different <- ifelse(compare_options$received_date != compare_options$SampleSourceDate, 1, 0)
+
+compare_options <- filter(compare_options, as_date(received_date) >= as_date("2021-07-01") & different == 1)
+
+if (nrow(compare_options) > 0){
+  print(compare_options)
+  stop("Mismatched received dates between manifest and platemap.")
+}
+
+################################################################################
+
+
 # merge on plate map file, and only keep rows where plate map file has a sample
 mani_plate <- merge(manifest, plate_map, by.x = c("sample_id", "received_date"), by.y = c("SampleID", "SampleSourceDate"), all.y = TRUE)
 mani_plate <- filter(mani_plate, !is.na(received_date) & received_date != "")

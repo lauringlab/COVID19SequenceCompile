@@ -6,7 +6,7 @@
 
 #"""
 # use in git bash
-#c:/users/juliegil/appdata/local/programs/python/python38/python.exe C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/ProcessingFASTA/prep_fasta_NumberTwo.py --prefix "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/ProcessedGenomes/20210809_Nanopore_Run_38/20210809_Nanopore_Run_38"
+#c:/users/juliegil/appdata/local/programs/python/python38/python.exe C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/ProcessingFASTA/prep_fasta_NumberTwo.py --prefix "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/ProcessedGenomes/20210811_Nanopore_Run_39/20210811_Nanopore_Run_39"
 # python prep_fasta_NumberTwo.py --prefix 20210519_Nanopore_Run_26
 #"""
 

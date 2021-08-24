@@ -38,6 +38,16 @@ if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
 ## remove study withdraws
 seq_list <- filter(seq_list, flag != "Withdrawn from study")
 
+################################################################################
+### fix date formatting
+seq_list <- seq_list %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
+                                          grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
+                                          T ~ NA_character_))
+
+################################################################################
+
+
+
 # id_count <- seq_list %>% group_by(sample_id) %>% summarize(count = length(subject_id))
 # seq_list <- merge(seq_list, id_count, by = c("sample_id"), all.x = TRUE)
 # 

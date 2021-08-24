@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20210811" # plate date in YYYYMMDD format
+plate_datef <- "20210818" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "39" # number, will match "PlateNumber" options
+runnum <- "41" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -61,6 +61,13 @@ original_full <- filter(final_file, subject_id %in% unique(samples_previous$subj
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
+#ff <- filter(ff, sample_id != "10041097200")
+
+################################################################################
+### fix date formatting
+ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
+                                                        grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
+                                                        T ~ NA_character_))
 
 ################################################################################
 

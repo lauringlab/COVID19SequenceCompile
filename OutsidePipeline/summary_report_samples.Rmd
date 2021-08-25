@@ -184,7 +184,7 @@ plate_complete$over90perc <- (plate_complete$over90 / plate_complete$total) * 10
 ggplot(plate_complete, aes(x = PlateDate, y = over80perc, color = received_source)) + 
   geom_point() + 
   theme_bw() + 
-  scale_color_manual(values = c("gray50", "dodgerblue", "dodgerblue", "coral", "seagreen", "goldenrod", "forestgreen", "forestgreen", "goldenrod", "goldenrod", "darkorchid4", "darkorchid4", "darkorchid4")) + 
+  scale_color_manual(values = c("gray50", "dodgerblue", "dodgerblue", "coral", "seagreen", "goldenrod", "forestgreen", "forestgreen", "goldenrod", "goldenrod", "darkorchid4", "darkorchid4", "darkorchid4", "paleturquoise")) + 
   labs(title = "Percent of Samples with Genome Completeness Over 80%", 
        x = "Date", 
        y = "Percent (%)", 
@@ -200,7 +200,7 @@ ggplot(plate_complete, aes(x = PlateDate, y = over80perc, color = received_sourc
 ggplot(plate_complete, aes(x = PlateDate, y = over90perc, color = received_source)) + 
   geom_point() + 
   theme_bw() + 
-  scale_color_manual(values = c("gray50", "dodgerblue", "dodgerblue", "coral", "seagreen", "goldenrod", "forestgreen", "forestgreen", "goldenrod", "goldenrod", "darkorchid4", "darkorchid4", "darkorchid4")) + 
+  scale_color_manual(values = c("gray50", "dodgerblue", "dodgerblue", "coral", "seagreen", "goldenrod", "forestgreen", "forestgreen", "goldenrod", "goldenrod", "darkorchid4", "darkorchid4", "darkorchid4", "paleturquoise")) + 
   labs(title = "Percent of Samples with Genome Completeness Over 90%", 
        x = "Date", 
        y = "Percent (%)", 
@@ -310,7 +310,7 @@ ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = voi_voc_pangolin
                                "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
                                "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
                                "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
-                               "lightskyblue", "plum4")) + 
+                               "lightskyblue", "plum4", "paleturquoise")) + 
   #theme(legend.position = "none") +
   labs(title = "Pangolin Lineage Calls Over Time", 
        x = "Sample Collection Date", 
@@ -334,7 +334,7 @@ ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_pangoli
                                "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
                                "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
                                "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
-                               "lightskyblue", "plum4")) + 
+                               "lightskyblue", "plum4", "paleturquoise")) + 
   #theme(legend.position = "none") +
   labs(title = "Pangolin Lineage Calls Over Time",
        subtitle = "by Received Source",
@@ -357,7 +357,7 @@ ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = voi_voc_nextcla
   geom_bar(stat = "identity") + 
   theme_bw() + 
   #theme(legend.position = "none") +
-  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink")) + 
+  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink", "paleturquoise")) + 
   labs(title = "NextClade Clade Calls Over Time", 
        x = "Sample Collection Date", 
        y = "Sample Count", 
@@ -376,7 +376,7 @@ ggplot(nextclade_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_nextcl
   geom_bar(stat = "identity") + 
   theme_bw() + 
   #theme(legend.position = "none") +
-  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink")) + 
+  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink", "paleturquoise")) + 
   labs(title = "NextClade Clade Calls Over Time", 
        subtitle = "by Received Source",
        x = "Sample Collection Date", 

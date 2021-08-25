@@ -22,8 +22,8 @@ seq_list <- read.csv(paste0(starting_path, "SequenceSampleMetadata/FinalSummary/
 seq_list2 <- filter(seq_list, PlateNumber == "40" & PlateDate == "2021-08-16")
 
 # for use for identifying missing manifests
-#out <- filter(seq_list2, subject_id == "")
-#write.csv(out, "C:/Users/juliegil/Dropbox (University of Michigan)/Personal_DropBox/2021/MissingManifests/run40_20210823.csv", row.names = FALSE, na = "")
+# out <- filter(seq_list2, subject_id == "")
+# write.csv(out, "C:/Users/juliegil/Dropbox (University of Michigan)/Personal_DropBox/2021/MissingManifests/run40_20210823.csv", row.names = FALSE, na = "")
 
 # write out that file as the .meta.csv file - change name as appropriate
 write.csv(seq_list2, paste0(outputLOC, "20210818_Nanopore_Run_41.meta.csv"), row.names = FALSE, na = "")

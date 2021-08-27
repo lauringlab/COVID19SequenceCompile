@@ -181,7 +181,7 @@ Manifests are received from the following sources:
 * CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan
 * Michigan Medicine ED ID Now project (EDIDNOW)
 
-Dr. Adam Lauring reviews these manifests, checks and renames columns as necessary, renames the file, and places them in the appropriate Manifests folder [within DropBox/MED-LauringLab/SequenceSampleMetadata/Manifests].
+Dr. Adam Lauring / Will Fitzsimmons review these manifests, checks and renames columns as necessary, renames the file, and places them in the appropriate Manifests folder [within DropBox/MED-LauringLab/SequenceSampleMetadata/Manifests].
 
 ---
 
@@ -243,29 +243,44 @@ sequenceSystem = Nanopore_Run or Illumina_Plate, depending on whichever system w
 
 These Nanopore or Illumina systems generate .fastq formatted files, containing the raw sequence data for each sample. There is a python script on the lab computer that converts these files to .fasta files, with a ">" symbol marking the beginning of each new sequence. After that symbol will be a string denoting the barcode value for the corresponding sample, and the sequence will proceed on a new line following that information.
 
-The .fasta files generated are called <b>plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta</b> and are placed in the corresponding plateMapName folder within [DropBox/MED-LauringLab/ProcessedGenomes/].
+~~The .fasta files generated are called <b>plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta</b> and are placed in the corresponding plateMapName folder within [DropBox/MED-LauringLab/ProcessedGenomes/].~~
 
-plateMapName.all.consensus.fasta = the sequence information for all samples in a given plate run. Some samples may not appear if there was essentially no matching genetic material in the sample.
+~~plateMapName.all.consensus.fasta = the sequence information for all samples in a given plate run. Some samples may not appear if there was essentially no matching genetic material in the sample.~~
 
-plateMapName.all.consensus.final.fasta = filtered version of plateMapName.all.consensus.fasta (deprecated 26 May 2021)
+~~plateMapName.all.consensus.final.fasta = filtered version of plateMapName.all.consensus.fasta (deprecated 26 May 2021)~~
+
+As of August 19, 2021, the .fasta files that are generated are called <b>plateMapName.all.consensus.final.fasta & plateMapName.all.consensus.renamed.full.fasta</b>. These now have the ">" separators use the sample_id as the identifier, rather than the barcode identifier.
+
+These files are placed in the corresponding plateMapName folder within [DropBox/MED-LauringLab/ProcessedGenomes/].
+
+plateMapName.all.consensus.renamed.full.fasta = the sequence information for all samples in a given plate run. Some samples may not appear if there was essentially no matching genetic material in the sample.
+
+plateMapName.all.consensus.final.fasta = filtered version of plateMapName.all.consensus.fasta (not used in any subsequent analyses)
 
 ---
 
-There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin and NextClade systems [prep_fasta_NumberOne.py].
+~~There is another python script that takes the generated .fasta file and replaces the barcode string with the matching sample ID string. Once this .fasta file has been created, it will be used in the Pangolin and NextClade systems [prep_fasta_NumberOne.py].~~
 
-<b>Steps:</b>
-1. Compile full data set using pipeline code.
+~~<b>Steps:</b>~~
+1. ~~Compile full data set using pipeline code.~~
+2. ~~Ensure there is a folder in [DropBox/MED-LauringLab/ProcessedGenomes] named the same as the originating PlateMap file~~
+3. ~~In that folder, there will be two files: plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta; only plateMapName.all.consensus.fasta is necessary.~~
+4. ~~Using the subset_compiled_for_fasta.R code, subset the newly generated full_compiled_data.csv file to only contain the relevant plate samples, copy it here [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv (This is because the barcode locations repeat on sample runs, so this is necessary to ensure proper barcode to sample_id matching)~~
+5. ~~Run prep_fasta_NumberOne.py~~
+
+~~This creates the following file:~~
+* ~~plateMapName.all.consensus.renamed.full.fasta~~
+
+~~That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]~~
+
+<b>New Steps (now that prep_fasta_NumberOne.py no longer needs to be run):</b>
+
+1. Compile full data set using pipeline code [full_run_code.R]
 2. Ensure there is a folder in [DropBox/MED-LauringLab/ProcessedGenomes] named the same as the originating PlateMap file
-3. In that folder, there will be two files: plateMapName.all.consensus.fasta & plateMapName.all.consensus.final.fasta; only plateMapName.all.consensus.fasta is necessary.
-4. Using the subset_compiled_for_fasta.R code, subset the newly generated full_compiled_data.csv file to only contain the relevant plate samples, copy it here [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and rename it to plateMapName.meta.csv (This is because the barcode locations repeat on sample runs, so this is necessary to ensure proper barcode to sample_id matching)
-5. Run prep_fasta_NumberOne.py
+3. In that folder, there will be two files: plateMapName.all.consensus.final.fasta & plateMapName.all.consensus.renamed.full.fasta; only plateMapName.all.consensus.renamed.full.fasta is necessary
+4. Using the subset_compiled_for_fasta.R code, subset the newly generated full_compiled_data.csv file to only contain the relevant plate samples. Check for missing manifest entries [by ensuring that there are no missing coll_date entries in seq_list2]. This code will write out a copy of that information to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] as plateMapName.meta.csv.
 
-This creates the following file:
-* plateMapName.all.consensus.renamed.full.fasta
-
-That should be placed into [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
-
-_At this point, the [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] folder should contain plateMapName.all.consensus.fasta, plateMapName.all.consensus.final.fasta, plateMapName.all.consensus.renamed.full.fasta, and plateMapName.meta.csv._
+_At this point, the [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] folder should contain plateMapName.all.consensus.final.fasta, plateMapName.all.consensus.renamed.full.fasta, and plateMapName.meta.csv._
 
 ---
 

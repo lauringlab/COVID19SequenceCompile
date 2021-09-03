@@ -15,21 +15,21 @@ library(withr)
 ################################################################################
 
 # Manifest file paths (there should be a path per source)
-cbr_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CBR")
-martin_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/Martin")
-cstp_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CSTP")
-edidnow_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/EDIDNOW")
-cdcivy_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/CDCIVY")
+cbr_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CBR")
+martin_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/Martin")
+cstp_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CSTP")
+edidnow_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/EDIDNOW")
+cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
 
-henryford_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/HENRYFORD")
-puimisc_manifest_fp <- paste0(starting_path, "SequenceSampleMetadata/Manifests/PUIMISC")
+henryford_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/HENRYFORD")
+puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/PUIMISC")
 
 
 manifest_folder_list <- c(cbr_manifest_fp, martin_manifest_fp, cstp_manifest_fp, 
                           edidnow_manifest_fp, henryford_manifest_fp, puimisc_manifest_fp)
 
 ### output location of manifest files, all together
-outputLOC <- paste0(starting_path, "SequenceSampleMetadata/Manifests/ManifestsComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
 
 # each manifest provider will have their own folder, with all files inside
 # don't want to re-build the entire thing every time, so will eventually need a 

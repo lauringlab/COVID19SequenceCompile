@@ -16,10 +16,10 @@ options(scipen=999)
 ################################################################################
 
 # plate map file path
-platemap_fp <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps")
+platemap_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps")
 
 ### output location of plate map files, all together
-outputLOC <- paste0(starting_path, "SequenceSampleMetadata/PlateMaps/PlateMapsComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/PlateMapsComplete")
 
 ################################################################################
 

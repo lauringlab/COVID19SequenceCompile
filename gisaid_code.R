@@ -14,10 +14,10 @@ library(janitor)
 ################################################################################
 
 # gisaid file path
-gisaid_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/gisaid")
+gisaid_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
 
 ### output location of gisaid files, all together
-outputLOC <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
 ################################################################################
 

@@ -12,10 +12,10 @@ library(lubridate)
 # set paths 
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 ## set run folder accordingly
-outputLOC <- paste0(starting_path, "ProcessedGenomes/20210824_Nanopore_Run_42/")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/3_ProcessedGenomes/20210824_Nanopore_Run_42/")
 
 # read in compiled dataset
-seq_list <- read.csv(paste0(starting_path, "SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
+seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
 ################################################################################
 # filter to plate run

@@ -31,12 +31,12 @@ source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
 
 # set output path for gisaid upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- paste0(starting_path, "GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
 
 ################################################################################
 
 # read in full compiled pile
-finalfileLOC <- paste0(starting_path, "SequenceSampleMetadata/FinalSummary")
+finalfileLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary")
 final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
 
 # only keep rows with completeness > 90%
@@ -156,7 +156,7 @@ ff$commenticon <- ""
 # .all.consensus.final.gisaid.fasta
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName)
-write.csv(ff_crosswalk, paste0(starting_path, "/ProcessedGenomes/", plate_datef, "_", runtech, "_Run_", runnum, "/", plate_datef, "_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
+write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/SARSCOV2/3_ProcessedGenomes/", plate_datef, "_", runtech, "_Run_", runnum, "/", plate_datef, "_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
 ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 
@@ -173,7 +173,7 @@ today <- current_date_string()
 gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum) 
 
 ## write to excel file (follow format)
-wb <- loadWorkbook(paste0(starting_path, "/SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE.xlsx"))
+wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE.xlsx"))
 
 # fill in the submissions tab with built data frame
 writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)

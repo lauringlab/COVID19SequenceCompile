@@ -14,10 +14,10 @@ library(janitor)
 ################################################################################
 
 # pangolin file path
-pangolin_fp <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/pangolin")
+pangolin_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin")
 
 ### output location of pangolin files, all together
-outputLOC <- paste0(starting_path, "SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
 ################################################################################
 

@@ -161,6 +161,8 @@ for (each_file in cdc_file_list){
   }
   colnames(fileone) <- new_names
   
+  #fileone <- janitor::remove_empty(fileone, which = "cols")
+  
   ## keep full set of cdc ivy rows separate, for back checks on full data
   full_ivy <- rbind(full_ivy, fileone)
   

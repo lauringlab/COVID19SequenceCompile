@@ -47,7 +47,7 @@ plate_map_ids <- nrow(plate_map %>% group_by(SampleID, SampleSourceDate) %>% sum
 # Warning for if plate map date and manifest date are DIFFERENT
 
 manifest_options <- filter(manifest, received_date != "" & !is.na(received_date)) %>% select(sample_id, subject_id, received_date)
-platemap_options <- filter(plate_map, SampleSourceDate != "" & !is.na(SampleSourceDate)) %>% select(SampleID, SampleSourceDate)
+platemap_options <- filter(plate_map, SampleSourceDate != "" & !is.na(SampleSourceDate)) %>% select(SampleID, SampleSourceDate, PlateNumber)
 
 compare_options <- merge(manifest_options, platemap_options, by.x = c("sample_id"), by.y = c("SampleID"))
 
@@ -78,9 +78,9 @@ if (nrow(mani_plate2) != nrow(dc)){
 
 mani_plate <- rbind(mani_plate, mani_plate2)
 
-if (nrow(mani_plate) != plate_map_ids){
-  stop("There are more or less rows in our manifest + plate combination than there were date/sample id combinations in the original plate map file")
-}
+#if (nrow(mani_plate) != plate_map_ids){
+#  stop("There are more or less rows in our manifest + plate combination than there were date/sample id combinations in the original plate map file")
+#}
 
 #missings <- filter(mani_plate, is.na(subject_id))
 #write.csv(missings, "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/check_miss_subjects.csv", na = "", row.names = FALSE)

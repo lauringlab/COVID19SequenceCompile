@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20210824" # plate date in YYYYMMDD format
+plate_datef <- "20210907" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "42" # number, will match "PlateNumber" options
+runnum <- "47" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -53,8 +53,8 @@ if (any(ff$sample_per_subject > 1)){
   stop("There are samples from subject_ids that we've sequenced previously.")
 }
 
-samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 
@@ -99,6 +99,23 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
 ff$AdditionalLoc <- ""
 ff$Host <- "Human"
 ff$AdditionalHost <- ""
+
+ff <- ff %>% mutate(SamplingStrategy = case_when(sample_per_subject > 1 ~ "Warning", 
+                                                 received_source %in% c("CDCIVY", "MHOME") ~ "", 
+                                                 grepl("PUI", flag) ~ "", 
+                                                 T ~ "Baseline surveillance"))
+
+if(any(ff$SamplingStrategy == "Warning")){
+  print("Look at this, apply logic if necessary")
+  ## For someone positive > 90 days apart it's tricky. Strictly speaking, 
+  ## they would be considered possible reinfection and not longitudinal (and 
+  ## therefore surveillance). However, they could be prolonged shedder. One way 
+  ## around this would be to look at the lineage in the duplicates, if different, 
+  ## then it is reinfection and surveillance for both. Put another way, the 
+  ## filter for duplicates would be check dates (>90 days) and check lineage 
+  ## (different) in order for it to be considered surveillance.
+}
+
 ff$Gender <- "unknown"
 ff$Age <- "unknown"
 ff$Status <- "unknown"
@@ -160,7 +177,7 @@ write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/SARSCOV2/3_ProcessedG
 
 ## select variables
 ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 
-                             AdditionalLoc, Host, AdditionalHost, Gender, Age, Status, 
+                             AdditionalLoc, Host, AdditionalHost, SamplingStrategy, Gender, Age, Status, 
                              SpecimenSource, Outbreak, lastVaccinated, Treatment, SequencingTechnology, 
                              AssemblyMethod, Coverage, originlab, originlabaddress, originlabsampleid, 
                              submitlab, submitlabaddress, submitlabsampleid, authors, 
@@ -173,7 +190,7 @@ today <- current_date_string()
 gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum) 
 
 ## write to excel file (follow format)
-wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE.xlsx"))
+wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE2.xlsx"))
 
 # fill in the submissions tab with built data frame
 writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)

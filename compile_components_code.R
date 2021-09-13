@@ -180,6 +180,50 @@ mppnc2 <- subject_id_length_QA(mppnc2, "CSTP")
 mppnc2 <- mppnc2 %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
 ################################################################################
+## apply logic for mis-matched pangolin/nextclade info
+## necessary for instances where a sample was run on two different plates
+
+# mppnc_look <- filter(mppnc2, sample_id %in% unique(filter(mppnc2, sample_per_subject > 1)$sample_id))
+# mppnc_look$correct_matched <- ifelse(mppnc_look$PlateDate == mppnc_look$pangolin_runDate & mppnc_look$PlateDate == mppnc_look$nextclade_runDate, 1, 0)
+# 
+#a <- filter(mppnc2, sample_id == "10041282602")
+
+mppnc2 <- mppnc2 %>% mutate(correct_matched = case_when(PlateDate == pangolin_runDate & PlateDate == nextclade_runDate ~ 1, 
+                                                        T ~ 0))
+
+mppnc2 <- mppnc2 %>% group_by(sample_id) %>% mutate(count_platedates = length(unique(PlateDate)), 
+                                                    count_platedates2 = length(PlateDate),
+                                                    sum_matched = sum(correct_matched, na.rm = T))
+
+mppnc2 <- mppnc2 %>% mutate(keeps = case_when(count_platedates == sum_matched ~ 1, 
+                                              T ~ 0))
+
+mppnc2_outs <- filter(mppnc2, count_platedates2 %% 4 == 0 & sample_id != "")
+mppnc2_outs_keep <- filter(mppnc2_outs, correct_matched == 1)
+
+goal <- nrow(mppnc2) - nrow(mppnc2_outs)
+mppnc2_t <- filter(mppnc2, count_platedates2 %% 4 != 0 | (count_platedates2 %% 4 == 0 & sample_id == ""))
+
+if (nrow(mppnc2_t) != goal){
+  stop("Filter & Keep did not work properly")
+}
+
+mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, coll_date,                   
+                                                       flag, received_source, SampleBarcode,               
+                                                       PlateDate, PlatePlatform, PlateNumber,                 
+                                                       pangolin_lineage, pangolin_probability, pangolin_status,             
+                                                       pangolin_note, nextclade_clade, nextclade_totalMissing,      
+                                                       nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
+                                                       received_date, position, SiteName,                    
+                                                       subject_id_length, PlateName, PlatePosition,               
+                                                       SampleSourceLocation, pangoLEARN_version, pangolin_conflict,           
+                                                       pango_version, pangolin_version, pangolin_runDate,            
+                                                       PlateToPangolin_days, nextclade_qcOverallScore, nextclade_qcOverallStatus,  
+                                                       nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate,          
+                                                       PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
+                                                       IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, sample_per_subject)
+
+################################################################################
 
 write.csv(mppnc2, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc2, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")

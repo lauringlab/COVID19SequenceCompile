@@ -224,6 +224,22 @@ mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, co
                                                        IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, sample_per_subject)
 
 ################################################################################
+### negative control well warning
+
+neg_control <- unique(filter(mppnc2, grepl("NC_", sample_id) & is.na(as.numeric(sample_id)))$sample_id)
+helas <- unique(filter(mppnc2, grepl("hela", tolower(sample_id)))$sample_id)
+
+check_NCs <- filter(mppnc2, sample_id %in% neg_control | sample_id %in% helas)
+
+# We want to make sure with each plate that the three negative controls have ???10% of genome covered. 
+
+check_NCs$neg_control_warning <- ifelse(check_NCs$nextclade_completeness >= 10, 1, 0)
+
+keep_NCs <- table(check_NCs$PlateName, check_NCs$neg_control_warning)
+
+write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_warnings.tsv"), sep = "\t")
+
+################################################################################
 
 write.csv(mppnc2, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc2, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")

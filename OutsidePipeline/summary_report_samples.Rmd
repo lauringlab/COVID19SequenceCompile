@@ -30,7 +30,7 @@ library(gt)
 
 ```{r}
 
-data_file <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SequenceSampleMetadata/FinalSummary/secret/full_compiled_data.csv", colClasses = c("character"))
+data_file <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/secret/full_compiled_data.csv", colClasses = c("character"))
 
 who_cw <- read.csv("C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/who_variant_crosswalk.csv")
 
@@ -310,6 +310,10 @@ ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = voi_voc_pangolin
                                "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
                                "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
                                "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
+                               "lightskyblue", "plum4", "paleturquoise", "dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
+                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+                               "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
+                               "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
                                "lightskyblue", "plum4", "paleturquoise")) + 
   #theme(legend.position = "none") +
   labs(title = "Pangolin Lineage Calls Over Time", 
@@ -331,6 +335,10 @@ ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_pangoli
   geom_bar(stat = "identity") + 
   theme_bw() + 
   scale_fill_manual(values = c("dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
+                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+                               "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
+                               "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
+                               "lightskyblue", "plum4", "paleturquoise", "dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
                                "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
                                "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
                                "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 

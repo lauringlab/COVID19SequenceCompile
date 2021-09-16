@@ -12,18 +12,18 @@ library(lubridate)
 # set paths 
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 ## set run folder accordingly
-outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/3_ProcessedGenomes/20210908_Nanopore_Run_48/")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/3_ProcessedGenomes/20210913_Nanopore_Run_49/")
 
 # read in compiled dataset
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
 ################################################################################
 # filter to plate run
-seq_list2 <- filter(seq_list, PlateNumber == "48" & PlateDate == "2021-09-08")
+seq_list2 <- filter(seq_list, PlateNumber == "49" & PlateDate == "2021-09-13")
 
 # for use for identifying missing manifests
 # out <- filter(seq_list2, subject_id == "")
 # write.csv(out, "C:/Users/juliegil/Dropbox (University of Michigan)/Personal_DropBox/2021/MissingManifests/run40_20210823.csv", row.names = FALSE, na = "")
 
 # write out that file as the .meta.csv file - change name as appropriate
-write.csv(seq_list2, paste0(outputLOC, "20210908_Nanopore_Run_48.meta.csv"), row.names = FALSE, na = "")
+write.csv(seq_list2, paste0(outputLOC, "20210913_Nanopore_Run_49.meta.csv"), row.names = FALSE, na = "")

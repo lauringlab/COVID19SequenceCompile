@@ -34,13 +34,26 @@ data_file <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-La
 
 who_cw <- read.csv("C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/who_variant_crosswalk.csv")
 
-data_file$voi_voc_pangolin <- ifelse(grepl(who_cw$pango_lineage, data_file$pangolin_lineage), who_cw$pango_lineage, "Not VOI/VOC")
+data_file <- merge(data_file, select(who_cw, pango_lineage, TYPE), by.x = ("pangolin_lineage"), by.y = ("pango_lineage"), all.x = TRUE)
 
-data_file$voi_voc_nextclade <- ifelse(grepl(who_cw$nextclade_clade, data_file$nextclade_clade), who_cw$nextclade_clade, "Not VOI/VOC")
+data_file$voi_voc_pangolin <- ifelse(!is.na(data_file$TYPE), data_file$pangolin_lineage, "Not VOI/VOC")
 
-data_file$voi_voc <- ifelse(data_file$voi_voc_pangolin == "Not VOI/VOC", "Not VOI/VOC", 
-                            ifelse(data_file$voi_voc_nextclade == "Not VOI/VOC", "Not VOI/VOC", "VOI/VOC"))
-#table(data_file$voi_voc)
+data_file <- data_file %>% select(sample_id, subject_id, coll_date, flag, received_source, SampleBarcode, PlateDate, PlatePlatform, PlateNumber, pangolin_lineage, pangolin_probability, pangolin_status, pangolin_note, nextclade_clade, nextclade_totalMissing, nextclade_completeness, gisaid_strain, gisaid_epi_isl, received_date, position, SiteName, subject_id_length, PlateName, PlatePosition, SampleSourceLocation, pangoLEARN_version, pangolin_conflict, pango_version, pangolin_version, pangolin_runDate, PlateToPangolin_days, nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, sample_per_subject, voi_voc_pangolin)
+
+data_file$voi_voc <- ifelse(data_file$voi_voc_pangolin == "Not VOI/VOC", "Not VOI/VOC", "VOI/VOC")
+
+#data_file$voi_voc_pangolin <- ifelse(grepl(who_cw$pango_lineage, data_file$pangolin_lineage), who_cw$pango_lineage, "Not VOI/VOC")
+
+# data_file <- merge(data_file, select(who_cw, nextclade_clade, TYPE), by = c("nextclade_clade"), all.x = TRUE)
+# 
+# data_file$voi_voc_nextclade <- ifelse(!is.na(data_file$TYPE), data_file$nextclade_clade, "Not VOI/VOC")
+# 
+# data_file <- data_file %>% select(sample_id, subject_id, coll_date, flag, received_source, SampleBarcode, PlateDate, PlatePlatform, PlateNumber, pangolin_lineage, pangolin_probability, pangolin_status, pangolin_note, nextclade_clade, nextclade_totalMissing, nextclade_completeness, gisaid_strain, gisaid_epi_isl, received_date, position, SiteName, subject_id_length, PlateName, PlatePosition, SampleSourceLocation, pangoLEARN_version, pangolin_conflict, pango_version, pangolin_version, pangolin_runDate, PlateToPangolin_days, nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, sample_per_subject, voi_voc_pangolin, voi_voc_nextclade)
+
+#data_file$voi_voc_nextclade <- ifelse(grepl(who_cw$nextclade_clade, data_file$nextclade_clade), who_cw$nextclade_clade, "Not VOI/VOC")
+# 
+# data_file$voi_voc <- ifelse(data_file$voi_voc_pangolin == "Not VOI/VOC" | data_file$voi_voc_nextclade == "Not VOI/VOC", "Not VOI/VOC", "VOI/VOC")
+# #table(data_file$voi_voc)
 ```
 
 
@@ -306,12 +319,12 @@ pangolin_calls <- filter(pangolin_calls, coll_date < Sys.Date())
 ggplot(pangolin_calls, aes(x = coll_date, y = ind_count, fill = voi_voc_pangolin)) + 
   geom_bar(stat = "identity") + 
   theme_bw() +
-  scale_fill_manual(values = c("dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
-                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
-                               "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
-                               "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
-                               "lightskyblue", "plum4", "paleturquoise", "dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
-                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+  scale_fill_manual(values = c("dodgerblue", "dodgerblue3", "coral2", "lightpink1", "lightpink2", 
+                               "lightpink3", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+                               "darkolivegreen3", "forestgreen", "springgreen", "darkorchid", 
+                               "mediumpurple1", "mediumpurple2", "mediumpurple3", 
+                               "lightskyblue", "plum4", "paleturquoise", "deepskyblue1", "deepskyblue2", "coral3", "darkcyan",   "violetred1", 
+                               "violetred3", "gray75", "brown3", "deepskyblue4", "darkolivegreen2", 
                                "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
                                "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
                                "lightskyblue", "plum4", "paleturquoise")) + 
@@ -334,12 +347,12 @@ pangolin_calls2 <- filter(pangolin_calls2, coll_date < Sys.Date())
 ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_pangolin)) + 
   geom_bar(stat = "identity") + 
   theme_bw() + 
-  scale_fill_manual(values = c("dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
-                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
-                               "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
-                               "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
-                               "lightskyblue", "plum4", "paleturquoise", "dodgerblue", "dodgerblue", "coral2", "darkcyan", "darkcyan", 
-                               "darkcyan", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+  scale_fill_manual(values = c("dodgerblue", "dodgerblue3", "coral2", "lightpink1", "lightpink2", 
+                               "lightpink3", "deepskyblue", "deepskyblue4", "darkolivegreen2", 
+                               "darkolivegreen3", "forestgreen", "springgreen", "darkorchid", 
+                               "mediumpurple1", "mediumpurple2", "mediumpurple3", 
+                               "lightskyblue", "plum4", "paleturquoise", "deepskyblue1", "deepskyblue2", "coral3", "darkcyan",   "violetred1", 
+                               "violetred3", "gray75", "brown3", "deepskyblue4", "darkolivegreen2", 
                                "darkolivegreen3", "forestgreen", "forestgreen", "darkorchid", 
                                "gray75", "mediumpurple1", "mediumpurple1", "mediumpurple1", 
                                "lightskyblue", "plum4", "paleturquoise")) + 
@@ -353,87 +366,6 @@ ggplot(pangolin_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_pangoli
 
 ```
 
-
-***Chart 3.*** NextClade Clade Calls by Date of Sample Collection
-
-```{r}
-nextclade_calls <- data_file %>% group_by(coll_date, nextclade_clade, voi_voc_nextclade) %>% summarize(ind_count = length(unique(sample_id)))
-
-nextclade_calls <- filter(nextclade_calls, coll_date < Sys.Date())
-
-ggplot(nextclade_calls, aes(x = coll_date, y = ind_count, fill = voi_voc_nextclade)) + 
-  geom_bar(stat = "identity") + 
-  theme_bw() + 
-  #theme(legend.position = "none") +
-  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink", "paleturquoise")) + 
-  labs(title = "NextClade Clade Calls Over Time", 
-       x = "Sample Collection Date", 
-       y = "Sample Count", 
-       fill = "WHO VOIs and VOCs")
-
-```
-
-***Chart 3.1*** NextClade Clade Calls by Received Source + Date of Sample Collection
-
-```{r, fig.height = 20, fig.width = 8}
-nextclade_calls2 <- data_file %>% group_by(received_source, coll_date, nextclade_clade, voi_voc_nextclade) %>% summarize(ind_count = length(unique(sample_id)))
-
-nextclade_calls2 <- filter(nextclade_calls2, coll_date < Sys.Date())
-
-ggplot(nextclade_calls2, aes(x = coll_date, y = ind_count, fill = voi_voc_nextclade)) + 
-  geom_bar(stat = "identity") + 
-  theme_bw() + 
-  #theme(legend.position = "none") +
-  scale_fill_manual(values = c("dodgerblue", "mediumpurple", "goldenrod", "orange3", "violetred", "tomato3", "skyblue1", "slateblue1", "palegreen3", "darkorchid4", "lightblue1", "gray75", "olivedrab3", "lightgoldenrod1", "lightpink", "paleturquoise")) + 
-  labs(title = "NextClade Clade Calls Over Time", 
-       subtitle = "by Received Source",
-       x = "Sample Collection Date", 
-       y = "Sample Count", 
-       fill = "WHO VOIs and VOCs") + 
-  facet_wrap(.~received_source, ncol = 2)
-
-```
-
-
-***Chart 4.*** GISAID Strains Over Time (Sample Collection)
-
-```{r}
-
-gisaid_strains <- data_file %>% group_by(coll_date, gisaid_strain) %>% summarize(ind_count = length(unique(sample_id)))
-
-gisaid_strains <- filter(gisaid_strains, coll_date < Sys.Date())
-
-ggplot(gisaid_strains, aes(x = coll_date, y = ind_count, fill = gisaid_strain)) + 
-  geom_bar(stat = "identity") + 
-  theme_bw() + 
-  theme(legend.position = "none") +
-  labs(title = "GISAID Strain Calls Over Time", 
-       x = "Sample Collection Date", 
-       y = "Sample Count")
-
-```
-
-
-
-***Chart 4.1*** GISAID Strains by Received Source + Week of Sample Collection
-
-```{r, fig.height = 20, fig.width = 8}
-
-gisaid_strains2 <- data_file %>% group_by(received_source, coll_date, gisaid_strain) %>% summarize(ind_count = length(unique(sample_id)))
-
-gisaid_strains2 <- filter(gisaid_strains2, coll_date < Sys.Date())
-
-ggplot(gisaid_strains2, aes(x = coll_date, y = ind_count, fill = gisaid_strain)) + 
-  geom_bar(stat = "identity") + 
-  theme_bw() + 
-  theme(legend.position = "none") +
-  labs(title = "GISAID Strain Calls Over Time", 
-       subtitle = "by Received Source",
-       x = "Sample Collection Date", 
-       y = "Sample Count") + 
-  facet_wrap(.~received_source, ncol = 2)
-
-```
 
 ***Chart 5.*** Common Pangolin Calls by Week of Sample Collection
 

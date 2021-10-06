@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20210913" # plate date in YYYYMMDD format
+plate_datef <- "20210929" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "49" # number, will match "PlateNumber" options
+runnum <- "57" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -52,6 +52,7 @@ if (any(ff$sample_per_subject > 1)){
   print("STOP: Examine this set of GISAID submissions.")
   stop("There are samples from subject_ids that we've sequenced previously.")
 }
+
 
 #samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
 #original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))

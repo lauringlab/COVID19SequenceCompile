@@ -7,6 +7,7 @@
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
 batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaA/"
 
 ################################################################################
 
@@ -30,4 +31,13 @@ source(paste0(code_path, "compile_components_code.R"))
 
 ## only run for updating Slack channel (underworld) with total sample count
 shell.exec(paste0(batch_path, "/sample_count_run.bat"))
+
+################################################################################
+
+source(pate0(influenza_path, "influenza_manifestcode.R"))
+
+source(pate0(influenza_path, "influenza_platemapcode.R"))
+
+################################################################################
+
 

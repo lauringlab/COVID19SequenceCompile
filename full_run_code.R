@@ -18,6 +18,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 source(paste0(code_path, "manifest_code.R"))
 
 source(paste0(code_path, "plate_map_code.R"))
+# note: this doesn't run if any plate map excel files are open
 
 source(paste0(code_path, "pangolin_code.R"))
 

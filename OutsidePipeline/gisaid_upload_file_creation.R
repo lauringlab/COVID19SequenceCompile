@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20210929" # plate date in YYYYMMDD format
+plate_datef <- "20211105" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "57" # number, will match "PlateNumber" options
+runnum <- "71" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -62,6 +62,7 @@ if (any(ff$sample_per_subject > 1)){
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
+#ff <- filter(ff, sample_per_subject == 1 | sample_id == "10042234896")
 #ff <- filter(ff, sample_id != "10041097200")
 
 ################################################################################
@@ -115,6 +116,8 @@ if(any(ff$SamplingStrategy == "Warning")){
   ## then it is reinfection and surveillance for both. Put another way, the 
   ## filter for duplicates would be check dates (>90 days) and check lineage 
   ## (different) in order for it to be considered surveillance.
+  
+  #ff$SamplingStrategy <- ifelse(ff$SamplingStrategy == "Warning", "Baseline surveillance", ff$SamplingStrategy)
 }
 
 ff$Gender <- "unknown"

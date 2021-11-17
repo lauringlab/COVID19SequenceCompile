@@ -1,6 +1,6 @@
 ################################################################################
 #         Creation of Manifest Dataset for COVID-19 Genetic Sampling           #
-#                         Last Updated: 05/28/2021                             #
+#                           Created: 05/28/2021                                #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -16,6 +16,7 @@ library(withr)
 
 # Manifest file paths (there should be a path per source)
 cbr_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CBR")
+uhs_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/UHS")
 martin_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/Martin")
 cstp_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CSTP")
 edidnow_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/EDIDNOW")
@@ -25,7 +26,7 @@ henryford_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSa
 puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/PUIMISC")
 
 
-manifest_folder_list <- c(cbr_manifest_fp, martin_manifest_fp, cstp_manifest_fp, 
+manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, martin_manifest_fp, cstp_manifest_fp, 
                           edidnow_manifest_fp, henryford_manifest_fp, puimisc_manifest_fp)
 
 ### output location of manifest files, all together
@@ -96,7 +97,16 @@ for (each_folder in manifest_folder_list){
             stop("There are missing subject ids.")
           }
           
+          #check character count of date
+          character_count_date <- unique(nchar(as.character(file_in$coll_date)))
           
+          if (character_count_date == 8){
+            print("dates in expected format")
+            print(each_file)
+          } else {
+            print("dates in full year format")
+            print(each_file)
+          }
           ## reformat coll_date to YYYY-MM-DD format if necessary
           test_date_format <- substr(as.character(file_in[1, 4]), 1, 4)
           #print(test_date_format)

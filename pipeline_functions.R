@@ -16,7 +16,7 @@
 date_from_file <- function(file_name_in){
   # get the second item out of the file name, as a character string, removing any excess 
   # leading/lagging whitespace
-  rec_date <- trimws(as.character(strsplit(file_name_in, "_")[[1]][2]))
+  rec_date <- trimws(as.character(strsplit(file_name_in, "_")[[1]][3]))
   
   # check that the date piece is 8 digits long
   if (nchar(rec_date) != 8){
@@ -40,7 +40,7 @@ date_from_file <- function(file_name_in){
 date_from_file_FIRST <- function(file_name_in){
   # get the second item out of the file name, as a character string, removing any excess 
   # leading/lagging whitespace
-  rec_date <- trimws(as.character(strsplit(file_name_in, "_")[[1]][1]))
+  rec_date <- trimws(as.character(strsplit(file_name_in, "_")[[1]][3]))
   
   # check that the date piece is 8 digits long
   if (nchar(rec_date) != 8){

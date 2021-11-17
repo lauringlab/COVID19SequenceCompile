@@ -98,15 +98,15 @@ for (each_folder in manifest_folder_list){
           }
           
           #check character count of date
-          character_count_date <- unique(nchar(as.character(file_in$coll_date)))
-          
-          if (character_count_date == 8){
-            print("dates in expected format")
-            print(each_file)
-          } else {
-            print("dates in full year format")
-            print(each_file)
-          }
+          # character_count_date <- unique(nchar(as.character(file_in$coll_date)))
+          # 
+          # if (character_count_date == 8){
+          #   print("dates in expected format")
+          #   print(each_file)
+          # } else {
+          #   print("dates in full year format")
+          #   print(each_file)
+          # }
           ## reformat coll_date to YYYY-MM-DD format if necessary
           test_date_format <- substr(as.character(file_in[1, 4]), 1, 4)
           #print(test_date_format)

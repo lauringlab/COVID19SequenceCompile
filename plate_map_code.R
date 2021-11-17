@@ -40,9 +40,9 @@ for (each_page in file_list){
 ### get plate creation date
 plate_storage$Plate_Date <- paste0(substr(plate_storage$Processing.Plate, 1, 4), "-", substr(plate_storage$Processing.Plate, 5, 6), "-", substr(plate_storage$Processing.Plate, 7, 8))
 ### get plate run platform
-plate_storage$Plate_Platform <- sapply(strsplit(as.character(plate_storage$Processing.Plate),'_'), "[", 2)
+plate_storage$Plate_Platform <- sapply(strsplit(as.character(plate_storage$Processing.Plate),'_'), "[", 3)
 ### get plate number
-plate_storage$Plate_Number <- sapply(strsplit(as.character(plate_storage$Processing.Plate),'_'), "[", 4)
+plate_storage$Plate_Number <- sapply(strsplit(as.character(plate_storage$Processing.Plate),'_'), "[", 5)
 
 ### Source Formatting
 ### Source should refer to the manifest report that the sample came in with

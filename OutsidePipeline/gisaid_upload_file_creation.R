@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20211105" # plate date in YYYYMMDD format
+plate_datef <- "20211110" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "71" # number, will match "PlateNumber" options
+runnum <- "73" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -177,7 +177,7 @@ ff$commenticon <- ""
 # .all.consensus.final.gisaid.fasta
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName)
-write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/SARSCOV2/3_ProcessedGenomes/", plate_datef, "_", runtech, "_Run_", runnum, "/", plate_datef, "_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
+write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/SARSCOV2/3_ProcessedGenomes/", plate_datef, "_SC2_", runtech, "_Run_", runnum, "/", plate_datef, "_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
 ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 

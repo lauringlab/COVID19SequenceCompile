@@ -1,6 +1,6 @@
 ################################################################################
 #               Complete Run - COVID-19 Genetic Data Compilation               #
-#                         Last Updated: 07/01/2021                             #
+#                         Last Updated: 11/19/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -34,11 +34,11 @@ shell.exec(paste0(batch_path, "/sample_count_run.bat"))
 
 ################################################################################
 
-source(pate0(influenza_path, "influenza_manifestcode.R"))
+source(paste0(influenza_path, "influenza_manifestcode.R"))
 
-source(pate0(influenza_path, "influenza_platemapcode.R"))
+source(paste0(influenza_path, "influenza_platemapcode.R"))
 
-source(pate0(influenza_path, "influenza_nextcladecode.R"))
+source(paste0(influenza_path, "influenza_nextcladecode.R"))
 
 ### will need a piece to incorporate gisaid returns
 

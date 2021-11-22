@@ -63,6 +63,10 @@ colnames(nc_storage) <- rename_columns
 
 #nc_storage$nextclade_completeness <- 100*(29903 - as.numeric(nc_storage$nextclade_totalMissing)) / 29903
 
+nc_storage <- nc_storage %>% mutate(nextclade_HA_completeness = case_when(nextclade_HA_type == "H3" ~ 100*(1737 - as.numeric(nextclade_HA_totalMissing)) / 1737, 
+                                                                       nextclade_HA_type == "H1" ~ 100*(1752 - as.numeric(nextclade_HA_totalMissing)) / 1752, 
+                                                                       T ~ NA_real_))
+
 ################################################################################
 
 # write out the compiled file

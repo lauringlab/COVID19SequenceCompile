@@ -43,6 +43,7 @@ source(paste0(influenza_path, "influenza_nextcladecode.R"))
 ### will need a piece to incorporate gisaid returns
 
 ### need to compile everything
+source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 
 ################################################################################
 

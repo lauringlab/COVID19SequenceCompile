@@ -118,7 +118,7 @@ colnames(mppnc)
 mppnc2 <- mppnc %>% select(sample_id, subject_id, coll_date,                   
                            flag, received_source, received_date, SampleBarcode,               
                            PlateDate, PlatePlatform, PlateNumber,
-                           nextclade_HA_clade, nextclade_HA_totalMissing,      
+                           nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
                            nextclade_HA_runDate, nextclade_HA_type, 

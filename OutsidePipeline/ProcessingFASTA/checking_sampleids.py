@@ -12,8 +12,8 @@ from Bio.SeqRecord import SeqRecord
 ## the sequences will be matched with the wrong samples
 
 ## first, get a list of all the sample_ids in the plate map we're checking
-meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/20211115_SC2_Nanopore_Run_74/"
-meta_file = "20211115_SC2_Nanopore_Run_74.meta.csv"
+meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/20211122_SC2_Nanopore_Run_77/"
+meta_file = "20211122_SC2_Nanopore_Run_77.meta.csv"
 
 # read in file as pandas table
 meta = pd.read_csv(meta_file_location + meta_file, index_col = None, header = 0, dtype = object)
@@ -22,7 +22,7 @@ meta = pd.read_csv(meta_file_location + meta_file, index_col = None, header = 0,
 plate_sampleids = meta['sample_id'].tolist()
 
 ## second, get a list of all the sample_ids in the fasta file we're comparing it to
-fasta_file = "20211115_SC2_Nanopore_Run_74.all.consensus.renamed.full.fasta"
+fasta_file = "20211122_SC2_Nanopore_Run_77.all.consensus.renamed.full.fasta"
 file_1 = meta_file_location + fasta_file
 
 fasta_file_sampleids = list()

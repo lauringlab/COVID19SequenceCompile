@@ -27,9 +27,11 @@ import os
 def main():
 
     parser = argparse.ArgumentParser()
-    # takes the string after "--prefix" in the command line for use later
+    ## takes the string after "--prefix" in the command line for use later
     parser.add_argument('--prefix', action="store", dest="prefix")
     args = parser.parse_args()
+
+    #sequence_folder = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211111_IAV_Nanopore_Run_3/Segment_sequences/"
 
     ### This section converts barcode (NBXX) into sample_id.
 

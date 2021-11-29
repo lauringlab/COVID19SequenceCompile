@@ -6,6 +6,7 @@
 
 library(tidyverse)
 library(openxlsx)
+library(reshape2)
 
 ################################################################################
 # just need some of these functions
@@ -22,6 +23,8 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 plate_datef <- "20211111" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
 runnum <- "3" # number, will match "PlateNumber" options
+
+seq_list_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211111_IAV_Nanopore_Run_3/Segment_sequences/"
 
 ################################################################################
 
@@ -74,6 +77,9 @@ ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(a
 
 ################################################################################
 
+ff$IsolateID <- ""
+ff$SegmentIDs <- ""
+
 ### strain naming: A/Michigan/UOM[sample_id]/2021
 ### {flu type A/B} / {collection state} / {UOM}{sample_id} / {collection year}
 ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
@@ -82,24 +88,66 @@ if (any(ff$StrainName == "CHECK")){
   stop("Unexpected received source!")
 }
 
-ff$Passage <- "ORI"
-ff$Type <- "A"
-ff$SubtypeH <- gsub("H", "", ff$nextclade_HA_type)
-ff$SubtypeN <- ifelse(ff$nextclade_HA_type == "H3", "2", #H3N2
-                      ifelse(ff$nextclade_HA_type == "H1", "1", "CHECK")) #H1N1
+#
+#ff$Type <- "A"
+#ff$SubtypeH <- gsub("H", "", ff$nextclade_HA_type)
+ff$Subtype <- ifelse(ff$nextclade_HA_type == "H3", "H3N2", #H3N2
+                      ifelse(ff$nextclade_HA_type == "H1", "H1N1", "CHECK")) #H1N1
 
-if(any(ff$SubtypeN == "CHECK")){
-  stop("Issue with N subtype assignment")
+if(any(ff$Subtype == "CHECK")){
+  stop("Issue with subtype assignment")
 }
 
-ff$CollectionDate <- ff$coll_date
+ff$Lineage <- ""
+ff$Passage <- "ORI"
+
 ff$Location <- "North America"
+ff$Province <- "United States"
+ff$SubProvince <- ""
+ff$LocationAdditionalInfo <- ""
+
 ff$Host <- "Human"
+ff$HostAdditionalInfo <- ""
+
+### now need sequence ids
+### read in made file from prep_fasta_gisaid_flu.py
+
+sequence_ids <- read.csv(paste0(seq_list_path, "gisaid_IDlist.csv"))
+sequence_ids <- separate(data = sequence_ids, col = IDS, sep = "\\_", into = c("sample_id", "segment", "platedate"), remove = FALSE)
+
+sequence_ids <- reshape2::dcast(sequence_ids, sample_id + platedate ~ segment, value.var = c("IDS"))
+
+sequence_ids <- sequence_ids %>% select(sample_id, HA, `NA`, PB1, PB2, PA, MP, NS, NP)
+colnames(sequence_ids) <- c("sample_id", "SeqID_HA", "SeqID_NA", "SeqID_PB1", "SeqID_PB2", "SeqID_PA", "SeqID_MP", "SeqID_NS", "SeqID_NP")
+
+ff <- merge(ff, sequence_ids, by = c("sample_id"))
+
+ff$SeqID_HE <- ""
+ff$SeqID_P3 <- ""
+
+ff$SubmittingSampleID <- ""
+ff$Authors <- ""
+ff$OriginatingLabID <- "3201"
+ff$OriginatingSampleID <- ""
+
+ff$CollectionMonth <- ""
+ff$CollectionYear <- ""
+ff$CollectionDate <- ff$coll_date
+
+ff_gisaid <- ff %>% select(IsolateID, SegmentIDs, StrainName, Subtype, Lineage,
+                           Passage, Location, Province, SubProvince, LocationAdditionalInfo, 
+                           Host, HostAdditionalInfo, SeqID_HA, SeqID_NA, SeqID_PB1, SeqID_PB2, 
+                           SeqID_PA, SeqID_MP, SeqID_NS, SeqID_NP, SeqID_HE, SeqID_P3, 
+                           SubmittingSampleID, Authors, OriginatingLabID, OriginatingSampleID, 
+                           CollectionMonth, CollectionYear, CollectionDate)
+
+ff_gisaid[is.na(ff_gisaid)] <- ""
+
+write.csv(ff_gisaid, "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_20211111_iav_nanopore_run_3/gisaid_base.csv", row.names = FALSE, na = "")
 
 #University of Michigan Clinical Microbiology Laboratory
 #2800 Plymouth Rd, Ann Arbor, MI, USA
 
-ff_gisaid <- ff %>% select(StrainName, Passage, Type, SubtypeH, SubtypeN, 
-                           CollectionDate, Location, Host)
+
 
 ## single upload: A/Michigan/UOM10042526240/2021 (2021-11-21)

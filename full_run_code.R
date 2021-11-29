@@ -33,6 +33,8 @@ source(paste0(code_path, "compile_components_code.R"))
 shell.exec(paste0(batch_path, "/sample_count_run.bat"))
 
 ################################################################################
+# INFLUENZA COMPONENT
+################################################################################
 
 source(paste0(influenza_path, "influenza_manifestcode.R"))
 

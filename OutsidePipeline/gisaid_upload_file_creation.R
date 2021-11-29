@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20211115" # plate date in YYYYMMDD format
+plate_datef <- "20211122" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "74" # number, will match "PlateNumber" options
+runnum <- "77" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -164,7 +164,7 @@ ff$originlabsampleid <- ""
 
 ### submitting Lab
 ff$submitlab <- "Lauring Lab, University of Michigan, Department of Microbiology and Immunology"
-ff$submitlabaddress <- "1150 W. Medical Center Dr. MSRB1, Ann Arbor, MI, USA"
+ff$submitlabaddress <- "1137 Catherine Street, Ann Arbor, MI, USA"
 ff$submitlabsampleid <- ""
 
 ### Authors

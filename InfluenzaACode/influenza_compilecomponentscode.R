@@ -19,7 +19,7 @@ plate_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetada
 # nextclade file path
 nc_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # gisaid file path
-#gisaid_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+gisaid_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
 # previous 2021 file path
 #prev_2021 <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PreviousLists")
 
@@ -85,10 +85,16 @@ mani_plate <- rbind(mani_plate, mani_plate2)
 
 # then, read in pangolin, gisaid, and next clade files
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
-#gisaid <- read.csv(paste0(gisaid_fp, "/sample_full_gisaid_list.csv"), colClasses = "character")
+gisaid <- read.csv(paste0(gisaid_fp, "/gisaid_epiflu_isolates.csv"), colClasses = "character")
 
-#mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
-mppnc <- merge(mani_plate, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
+gisaid <- gisaid %>% select(Isolate_Id, HA.Segment_Id, Isolate_Name)
+gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
+gisaid$id <- gsub("UOM", "", gisaid$id)
+gisaid <- gisaid %>% select(id, Isolate_Id, HA.Segment_Id, Isolate_Name)
+colnames(gisaid) <- c("sample_id", "Isolate_Id", "HA.Segment_Id", "Isolate_Name")
+
+mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 
 ### add column for time in days from plate to nextclade
 mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_HA_runDate, mppnc$PlateDate, units = "days")
@@ -122,7 +128,7 @@ mppnc2 <- mppnc %>% select(sample_id, subject_id, coll_date,
                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
                            nextclade_HA_runDate, nextclade_HA_type, 
-                           #gisaid_strain, gisaid_epi_isl,              
+                           Isolate_Id, HA.Segment_Id, Isolate_Name,              
                            subject_id_length, position, PlateName, PlatePosition,               
                            SampleSourceLocation, PlateToNextclade_days, 
                            sample_per_subject)

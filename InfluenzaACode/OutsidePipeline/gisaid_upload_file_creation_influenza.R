@@ -112,9 +112,9 @@ ff$HostAdditionalInfo <- ""
 ### now need sequence ids
 ### read in made file from prep_fasta_gisaid_flu.py
 
-sequence_ids <- read.csv(paste0(seq_list_path, "gisaid_IDlist.csv"))
+sequence_ids <- read.csv(paste0(seq_list_path, "gisaid_IDlist.csv")) %>% distinct()
 sequence_ids <- separate(data = sequence_ids, col = IDS, sep = "\\_", into = c("sample_id", "segment", "platedate"), remove = FALSE)
-
+#sequence_ids <- data.frame(sequence_ids) %>% select(IDS, sample_id, platedate, segment) %>% distinct()
 sequence_ids <- reshape2::dcast(sequence_ids, sample_id + platedate ~ segment, value.var = c("IDS"))
 
 sequence_ids <- sequence_ids %>% select(sample_id, HA, `NA`, PB1, PB2, PA, MP, NS, NP)

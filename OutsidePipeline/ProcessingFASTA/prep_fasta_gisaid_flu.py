@@ -33,14 +33,22 @@ def main():
     #parser.add_argument('--prefix', action="store", dest="prefix")
     #args = parser.parse_args()
 
-    sequence_folder = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211112_IAV_Nanopore_Run_4/Segment_sequences/"
+    sequence_folder = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211111_IAV_Nanopore_Run_3/Segment_sequences/"
     onlyfiles = [f for f in os.listdir(sequence_folder) if os.path.isfile(os.path.join(sequence_folder, f))]
 
-    loc90 = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211112_IAV_Nanopore_Run_4/"
+    loc90 = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211111_IAV_Nanopore_Run_3/"
     keep90s = list()
-    file90 = loc90 + "20211112_IAV_Nanopore_Run_4.90.consensus.fasta"
+    #library_checker = {}
+    file90 = loc90 + "20211111_IAV_Nanopore_Run_3.90.consensus.fasta"
     for record in SeqIO.parse(file90, "fasta"):
         keep90s.append(record.id)
+        #if record.seq not in library_checker:
+            #library_checker[record.seq] = 1
+        #else:
+            #library_checker[record.seq] = library_checker[record.seq] + 1
+
+    #for each_i in library_checker:
+        #print(library_checker[each_i])
 
     df_out = pd.DataFrame(keep90s, columns=[""])
     df_out.to_csv(('{}gisaid_90keeps.csv').format(sequence_folder), index=False)
@@ -53,15 +61,19 @@ def main():
         #record = SeqIO.parse(sequence_folder + file_in, "fasta")
         for record in SeqIO.parse(file_next, "fasta"):
             if str(record.id).split("_")[0] in keep90s:
-                original = record.id
-                record.id = str(original) + "_" + "20211112"
+                #if "HA" in str(record.id):
+                original = record.id.split("_")[0] + "_" + record.id.split("_")[1]
+                record.id = str(original) + "_" + "20211111"
                 all_fasta.append(">" + record.id)
                 ids_only.append(record.id)
                 all_fasta.append(record.seq)
+                #else:
+                #    not_used = not_used + 1
             else:
                 not_used = not_used + 1
 
     df_out = pd.DataFrame(all_fasta, columns=[""])
+    #df_out.to_csv(('{}gisaid_HA_sequencelist.csv').format(sequence_folder), index=False)
     df_out.to_csv(('{}gisaid_sequencelist.csv').format(sequence_folder), index=False)
 
     df_out2 = pd.DataFrame(ids_only, columns=["IDS"])

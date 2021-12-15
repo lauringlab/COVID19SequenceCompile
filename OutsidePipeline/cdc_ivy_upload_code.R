@@ -125,3 +125,5 @@ today <- paste0(year(Sys.Date()), m, d)
 
 #seq_list <- filter(seq_list, platenumber <= 49)
 write.csv(seq_list, paste0(outputLOC, "cdc_ivy_", today, ".csv"), row.names = FALSE, na = "")
+
+#table(seq_list$pangolin_lineage)

@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20211202" # plate date in YYYYMMDD format
+plate_datef <- "20211207" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "82" # number, will match "PlateNumber" options
+runnum <- "84" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -62,7 +62,7 @@ if (any(ff$sample_per_subject > 1)){
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, sample_per_subject == 1 | sample_id == "10042501717")
+#ff <- filter(ff, sample_per_subject == 1 | sample_id == "10042792225")
 #ff <- filter(ff, sample_id != "10041097200")
 
 ################################################################################

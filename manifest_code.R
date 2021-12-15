@@ -57,6 +57,7 @@ for (each_folder in manifest_folder_list){
           #print(each_file)
           # read in the file
           file_in <- read.csv(paste0(each_folder, "/", each_file), colClasses = "character")
+          file_in <- file_in[, c(1:5)]
           
           # turn any "" or " " into NA
           file_in[file_in == ""] <- NA
@@ -170,7 +171,8 @@ for (each_file in cdc_file_list){
     new_names <- c(new_names, tolower(trimws(i)))
   }
   colnames(fileone) <- new_names
-  
+  #print(colnames(fileone))
+  #fileone <- fileone[, c(1:13)]
   #fileone <- janitor::remove_empty(fileone, which = "cols")
   
   ## keep full set of cdc ivy rows separate, for back checks on full data
@@ -179,6 +181,7 @@ for (each_file in cdc_file_list){
   fileone <- fileone %>% select(`position.#`, site.name, study.id, collection.date, aliquot.id)
   
   colnames(fileone) <- c("position", "SiteName", "subject_id", "coll_date", "sample_id")
+  fileone$subject_id <- trimws(fileone$subject_id)
   fileone$coll_date <- as.character(fileone$coll_date)
   
   ### site name checks
@@ -191,6 +194,24 @@ for (each_file in cdc_file_list){
     fileone <- fileone %>% select(position, SiteName, subject_id, coll_date, sample_id)
   }
   
+  
+  #### additional check --- numbers to sites
+  ### set of subject_id, sample_id, SiteName; 
+  check_site_codes <- fileone %>% select(subject_id, sample_id, SiteName) %>% mutate(site_number = as.numeric(substr(subject_id, 3, 4)))
+  check_site_codes <- merge(check_site_codes, cdc_sites, by.x = c("site_number"), by.y = c("Number"), all.x = TRUE)
+  
+  if(any(is.na(check_site_codes$Institution))){
+    print(each_file)
+    stop("No Site Numerical Match")
+  }
+  
+  check_site_codes$mismatch_sites <- ifelse(check_site_codes$SiteName != check_site_codes$SiteCode, 1, 0)
+  
+  if(any(check_site_codes$mismatch_sites == 1)){
+    print(each_file)
+    print(filter(check_site_codes, mismatch_sites == 1))
+    stop("Mismatched site code to name")
+  }
   # add in 2 new columns: received_date and received_source (from file name)
   #rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
   #rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
@@ -211,6 +232,12 @@ for (each_file in cdc_file_list){
 cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "2108074UR" | subject_id == "2103143UR" ~ "Withdrawn from study", 
                                                                subject_id == "2102015UR" ~ "IVY Counterpart is 2102007UR", 
                                                                subject_id == "2102016UR" ~ "IVY Counterpart is 2102008UR", 
+                                                               sample_id %in% c("ZZX9LL2N","ZZX9LL3W",
+                                                                                 "ZZX9LL5K","ZZX9LL5O","ZZX9LL5U","ZZX9LL28",
+                                                                                 "ZZX9LL32","ZZX9LL41","ZZX9LL46","ZZX9LL54") ~ "Location previously incorrect to Univ. of Wash_WA; corrected to Washington_MO on 12/14/2021",
+                                                               subject_id == "2110107UR" ~ "Subject ID corrected from 211107UR on 12/14/2021",
+                                                               subject_id == "2112117UR" ~ "Subject ID corrected from 2122117UR on 12/14/2021",
+                                                               subject_id == "2112119UR" ~ "Subject ID corrected from 2122119UR on 12/14/2021",
                                                                T ~ as.character(flag)))
 
 ### write out full ivy set

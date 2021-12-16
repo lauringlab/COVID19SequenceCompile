@@ -233,7 +233,8 @@ check_NCs <- filter(mppnc2, sample_id %in% neg_control | sample_id %in% helas)
 
 # We want to make sure with each plate that the three negative controls have ???10% of genome covered. 
 
-check_NCs$neg_control_warning <- ifelse(check_NCs$nextclade_completeness >= 10, 1, 0)
+check_NCs <- check_NCs %>% mutate(neg_control_warning = case_when(as.numeric(nextclade_completeness) >= 10 ~ 1,
+                                                                  T ~ 0))
 
 keep_NCs <- table(check_NCs$PlateName, check_NCs$neg_control_warning)
 

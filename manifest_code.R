@@ -238,6 +238,7 @@ cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "21
                                                                subject_id == "2110107UR" ~ "Subject ID corrected from 211107UR on 12/14/2021",
                                                                subject_id == "2112117UR" ~ "Subject ID corrected from 2122117UR on 12/14/2021",
                                                                subject_id == "2112119UR" ~ "Subject ID corrected from 2122119UR on 12/14/2021",
+                                                               sample_id %in% c("ZZX9KRY2", "ZZX9KRY7", "ZZX9KRYC", "ZZX9KRYH", "ZZX9KRYM") ~ "Subject ID corrected from Iowa Code to Emory Code on 12/22/2021",
                                                                T ~ as.character(flag)))
 
 ### write out full ivy set

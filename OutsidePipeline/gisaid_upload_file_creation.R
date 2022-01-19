@@ -19,9 +19,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20211215" # plate date in YYYYMMDD format
+plate_datef <- "20220111" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "89" # number, will match "PlateNumber" options
+runnum <- "99" # number, will match "PlateNumber" options
 
 ################################################################################
 
@@ -45,6 +45,8 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 # select run of choice
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
+table(ff$received_source, useNA = "always")
+#ff <- filter(ff, received_source != "")
 ################################################################################
 # set up alert to duplicate items
 
@@ -64,6 +66,7 @@ if (any(ff$sample_per_subject > 1)){
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, sample_per_subject == 1 | sample_id == "10042792225")
 #ff <- filter(ff, sample_id != "10041097200")
+#ff <- filter(ff, subject_id != "045447388" & subject_id != "101437962")
 
 ################################################################################
 ### fix date formatting

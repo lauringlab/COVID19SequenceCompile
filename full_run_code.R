@@ -15,6 +15,37 @@ options(scipen=999)
 source(paste0(code_path, "pipeline_functions.R"))
 
 ################################################################################
+#                                 ROUND 1                                      #
+################################################################################
+
+source(paste0(code_path, "manifest_code.R"))
+
+source(paste0(code_path, "plate_map_code.R"))
+# note: this doesn't run if any plate map excel files are open
+
+source(paste0(code_path, "compile_components_code.R"))
+
+################################################################################
+#                                 ROUND 2                                      #
+################################################################################
+
+source(paste0(code_path, "manifest_code.R"))
+
+source(paste0(code_path, "plate_map_code.R"))
+# note: this doesn't run if any plate map excel files are open
+
+source(paste0(code_path, "pangolin_code.R"))
+
+source(paste0(code_path, "nextclade_code.R"))
+
+source(paste0(code_path, "compile_components_code.R"))
+
+## only run for updating Slack channel (underworld) with total sample count
+shell.exec(paste0(batch_path, "/sample_count_run.bat"))
+
+################################################################################
+#                                 ROUND 3                                      #
+################################################################################
 
 source(paste0(code_path, "manifest_code.R"))
 
@@ -29,8 +60,7 @@ source(paste0(code_path, "gisaid_code.R"))
 
 source(paste0(code_path, "compile_components_code.R"))
 
-## only run for updating Slack channel (underworld) with total sample count
-shell.exec(paste0(batch_path, "/sample_count_run.bat"))
+################################################################################
 
 ################################################################################
 # INFLUENZA COMPONENT

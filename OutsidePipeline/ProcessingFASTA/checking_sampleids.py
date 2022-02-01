@@ -10,10 +10,11 @@ from Bio.SeqRecord import SeqRecord
 ## Process = samples have barcode map that assigns sample_ids to each sample
 ## sequence. If the barcode map is incorrect (contains the wrong samples) then
 ## the sequences will be matched with the wrong samples
+plate_run_name = "20220127_SC2_Nanopore_Run_108"
 
 ## first, get a list of all the sample_ids in the plate map we're checking
-meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/20220120_SC2_Nanopore_Run_104/"
-meta_file = "20220120_SC2_Nanopore_Run_104.meta.csv"
+meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
+meta_file = plate_run_name + ".meta.csv"
 
 # read in file as pandas table
 meta = pd.read_csv(meta_file_location + meta_file, index_col = None, header = 0, dtype = object)
@@ -22,7 +23,7 @@ meta = pd.read_csv(meta_file_location + meta_file, index_col = None, header = 0,
 plate_sampleids = meta['sample_id'].tolist()
 
 ## second, get a list of all the sample_ids in the fasta file we're comparing it to
-fasta_file = "20220120_SC2_Nanopore_Run_104.all.consensus.renamed.full.fasta"
+fasta_file = plate_run_name + ".all.consensus.renamed.full.fasta"
 file_1 = meta_file_location + fasta_file
 
 fasta_file_sampleids = list()

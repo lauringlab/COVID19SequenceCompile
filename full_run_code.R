@@ -15,6 +15,11 @@ options(scipen=999)
 source(paste0(code_path, "pipeline_functions.R"))
 
 ################################################################################
+
+# sars-cov-2 plate
+plate_name <- "20220127_SC2_Nanopore_Run_108"
+
+################################################################################
 #                                 ROUND 1                                      #
 ################################################################################
 
@@ -24,6 +29,10 @@ source(paste0(code_path, "plate_map_code.R"))
 # note: this doesn't run if any plate map excel files are open
 
 source(paste0(code_path, "compile_components_code.R"))
+
+source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
+
+# checking_sampleids.py step goes here
 
 ################################################################################
 #                                 ROUND 2                                      #

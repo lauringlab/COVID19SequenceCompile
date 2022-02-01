@@ -8,8 +8,6 @@
 library(tidyverse)
 library(lubridate)
 
-plate_name <- "20220127_SC2_Nanopore_Run_108"
-
 ################################################################################
 # set paths 
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"

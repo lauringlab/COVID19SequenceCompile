@@ -49,18 +49,6 @@ plate_storage$Plate_Number <- sapply(strsplit(as.character(plate_storage$Process
 # remove commas, if they are there
 plate_storage$Source <- gsub(",", " ", plate_storage$Source)
 
-### check Source column for following format: <character string>, <space>, date as M-D-YYYY
-space_check <- grepl(" ", plate_storage$Source)
-if (any(space_check == FALSE)){
-  print("Warning: There are some Plate records without space character separater in Source column.")
-}
-
-date_part <- sapply(strsplit(as.character(plate_storage$Source), " "), "[", 2)
-date_part <- as.POSIXct(date_part, format = "%m-%d-%Y")
-if (any(is.na(date_part))){
-  print("Warning: There are some Plate records without date information in Source column.")
-}
-
 #### Get source information to use for joining with the manifest record
 plate_storage$Source_Date <- sapply(strsplit(as.character(plate_storage$Source),' '), "[", 2)
 plate_storage$Source_Date <- as.character(as_date(paste0(sapply(strsplit(as.character(plate_storage$Source_Date),'-'), "[", 3), "-", sapply(strsplit(as.character(plate_storage$Source_Date),'-'), "[", 1), "-", sapply(strsplit(as.character(plate_storage$Source_Date),'-'), "[", 2))))

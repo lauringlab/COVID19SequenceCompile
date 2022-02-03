@@ -7,7 +7,8 @@ library(openxlsx)
 # Dropbox (University of Michigan)\MED-LauringLab\SEQUENCING\SARSCOV2\4_SequenceSampleMetadata\PlateMaps
 
 file.copy(from = paste0(starting_path, "SEQUENCING/SARSCOV2/2_PlateMaps/", plate_name, ".xlsx"),
-            to = paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"))
+            to = paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), 
+          overwrite = TRUE)
 
 
 # then, read in that excel file that we moved to the inner pipeline set
@@ -25,6 +26,22 @@ colnames(file_in)[4] <- "Sample MRN"
 colnames(file_in)[5] <- "Sample Order#"
 colnames(file_in)[6] <- "Barcode"
 colnames(file_in)[7] <- "Source"
+
+# need to remove negative control wells from consideration
+file_in_source <- filter(file_in, !grepl("control", tolower(file_in$Source)))
+### check Source column for following format: <character string>, <space>, date as M-D-YYYY
+space_check <- grepl(" ", file_in_source$Source)
+if (any(space_check == FALSE)){
+  print(plate_name)
+  print("Warning: There are some records without space character separater in Source column.")
+}
+
+date_part <- sapply(strsplit(as.character(file_in_source$Source), " "), "[", 2)
+date_part <- as.POSIXct(date_part, format = "%m-%d-%Y")
+if (any(is.na(date_part))){
+  print(plate_name)
+  print("Warning: There are some records without date information in Source column.")
+}
 
 # write the excel file back out
 write.xlsx(file_in, paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), overwrite = TRUE)

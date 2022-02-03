@@ -1,6 +1,8 @@
 library(tidyverse)
 library(openxlsx)
 
+options(scipen=999)
+
 # get plate map from 
 # Dropbox (University of Michigan)\MED-LauringLab\SEQUENCING\SARSCOV2\2_PlateMaps
 # and drop it in
@@ -13,6 +15,8 @@ file.copy(from = paste0(starting_path, "SEQUENCING/SARSCOV2/2_PlateMaps/", plate
 
 # then, read in that excel file that we moved to the inner pipeline set
 file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), sheet = 1)
+
+file_in$Sample.ACCN <- ifelse(grepl('\\.', file_in$Sample.ACCN) & grepl('E', file_in$Sample.ACCN), as.numeric(file_in$Sample.ACCN), file_in$Sample.ACCN)
 
 # remove the well position column
 drop_columns <- c("Well.Position")

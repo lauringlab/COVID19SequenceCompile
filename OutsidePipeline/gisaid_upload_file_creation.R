@@ -21,7 +21,7 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 
 plate_datef <- "20220127" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "108" # number, will match "PlateNumber" options
+runnum <- "109" # number, will match "PlateNumber" options
 
 ################################################################################
 

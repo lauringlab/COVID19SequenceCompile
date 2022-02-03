@@ -10,7 +10,7 @@ from Bio.SeqRecord import SeqRecord
 ## Process = samples have barcode map that assigns sample_ids to each sample
 ## sequence. If the barcode map is incorrect (contains the wrong samples) then
 ## the sequences will be matched with the wrong samples
-plate_run_name = "20220127_SC2_Nanopore_Run_108"
+plate_run_name = "20220127_SC2_Nanopore_Run_109"
 
 ## first, get a list of all the sample_ids in the plate map we're checking
 meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"

@@ -1,6 +1,6 @@
 ################################################################################
 #               Complete Run - COVID-19 Genetic Data Compilation               #
-#                         Last Updated: 11/19/2021                             #
+#                         Last Updated: 02/03/2021                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -17,11 +17,17 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 
 # sars-cov-2 plate
-plate_name <- "20220127_SC2_Nanopore_Run_108"
+plate_name <- "20220127_SC2_Nanopore_Run_109"
 
 ################################################################################
 #                                 ROUND 1                                      #
 ################################################################################
+# Explanation: Moves proper plate map from load location to use location, compiles
+# manifests and plate maps, merges them together, and checks that the plate we're 
+# running has a manifest entry for each sample
+################################################################################
+
+source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
 source(paste0(code_path, "manifest_code.R"))
 
@@ -32,7 +38,13 @@ source(paste0(code_path, "compile_components_code.R"))
 
 source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
 
+################################################################################
+
 # checking_sampleids.py step goes here
+
+# pangolin step
+
+# nextclade step 
 
 ################################################################################
 #                                 ROUND 2                                      #

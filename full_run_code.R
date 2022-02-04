@@ -97,8 +97,26 @@ source(paste0(code_path, "OutsidePipeline/moving_pangolin_output.R"))
 #                                NEXTCLADE                                     #
 ################################################################################
 
+# Steps:
+
+# Navigate to https://clades.nextstrain.org/
+
+# In the SARS-CoV-2 box in the lower right-hand corner, ensure the "From File" 
+# tab is selected and either drag & drop or select the 
+# plateMapName.all.consensus.renamed.full.fasta from the 
+# [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] folder you've been working from
+
+# Once complete, in the top bar of the processing screen, click the arrow next 
+# to "Export to CSV" and select "Export to TSV"
+
+# The file will go to the Downloads file of your computer as nextclade.tsv - 
+# Copy the file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and 
+# rename it to plateMapName_nextclade.tsv
+
+# Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
 
 
+### nextclade CLI download information: https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli.html
 
 ################################################################################
 #                                 ROUND 2                                      #
@@ -118,9 +136,12 @@ source(paste0(code_path, "compile_components_code.R"))
 ## only run for updating Slack channel (underworld) with total sample count
 shell.exec(paste0(batch_path, "/sample_count_run.bat"))
 
+### next, do gisaid upload steps
+
 ################################################################################
 #                                 ROUND 3                                      #
 ################################################################################
+# Run this after downloading new gisaid metadata from gisaid.org
 
 source(paste0(code_path, "manifest_code.R"))
 

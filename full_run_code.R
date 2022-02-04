@@ -56,6 +56,8 @@ source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
 ################################################################################
 
 # checking_sampleids.py step goes here
+# may need keyboard shortcut = Ctrl+Shift+F10 to clear environment/loaded packages
+system(paste0("c:/users/juliegil/appdata/local/programs/python/python38/python.exe ", code_path, "OutsidePipeline/ProcessingFASTA/checking_sampleids.py ", plate_name))
 
 # pangolin step
 

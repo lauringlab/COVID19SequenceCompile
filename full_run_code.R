@@ -90,8 +90,8 @@ system(paste0("c:/users/juliegil/appdata/local/programs/python/python38/python.e
 # This will output a file called lineage_report.csv 
 
 # Rename this file to plateMapName_pangolin.csv
-
 # Copy this renamed file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/pangolin]
+source(paste0(code_path, "OutsidePipeline/moving_pangolin_output.R"))
 
 ################################################################################
 #                                NEXTCLADE                                     #

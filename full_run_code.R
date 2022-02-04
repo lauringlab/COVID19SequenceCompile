@@ -59,9 +59,46 @@ source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
 # may need keyboard shortcut = Ctrl+Shift+F10 to clear environment/loaded packages
 system(paste0("c:/users/juliegil/appdata/local/programs/python/python38/python.exe ", code_path, "OutsidePipeline/ProcessingFASTA/checking_sampleids.py ", plate_name))
 
-# pangolin step
+################################################################################
+#                                PANGOLIN                                      #
+################################################################################
 
-# nextclade step 
+# Instructions for installing the command line version of Pangolin can be found 
+# here: https://cov-lineages.org/pangolin_docs/installation.html
+
+# Note: This can only be completed using Linux or OS operating systems. (The 
+# environment.yml file to install pangolin requires minimap2 and gofasta libraries, 
+# both of which are only built for those systems, not for Windows) If you only 
+# have a Windows operating system, you can install a Windows Subsystem for Linux 
+# (directions here: https://docs.microsoft.com/en-us/windows/wsl/install-win10) 
+# which will allow you to proceed with the pangolin installation process.
+
+# Steps:
+  
+# In command line, navigate to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
+# For me, this command is: 
+# cd /mnt/c/Users/juliegil/'Dropbox (University of Michigan)'/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes
+
+# Activate the pangolin environment 
+# The command is:
+# conda activate pangolin
+
+# Run pangolin
+# The command is: 
+# pangolin {plateMapName}.all.consensus.renamed.full.fasta
+
+# This will output a file called lineage_report.csv 
+
+# Rename this file to plateMapName_pangolin.csv
+
+# Copy this renamed file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/pangolin]
+
+################################################################################
+#                                NEXTCLADE                                     #
+################################################################################
+
+
+
 
 ################################################################################
 #                                 ROUND 2                                      #

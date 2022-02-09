@@ -17,7 +17,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 
 # sars-cov-2 plate
-plate_name <- "20220128_SC2_Nanopore_Run_112"
+plate_name <- "20220131_SC2_Nanopore_Run_111"
 
 ################################################################################
 #                                 ROUND 1                                      #
@@ -33,25 +33,10 @@ source(paste0(code_path, "manifest_code.R"))
 
 source(paste0(code_path, "plate_map_code.R"))
 # note: this doesn't run if any plate map excel files are open
-# you'll get this error if this is the case: 
-# Error in file(con, "r") : invalid 'description' argument
-# In addition: Warning message:
-# In unzip(xlsxFile, exdir = xmlDir) : error 1 in extracting from zip file
 
 source(paste0(code_path, "compile_components_code.R"))
 
 source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
-## Common error here: 
-#Error in file(file, ifelse(append, "a", "w")) : 
-#  cannot open the connection
-#In addition: Warning message:
-#  In file(file, ifelse(append, "a", "w")) :
-#  cannot open file 'C:/Users/juliegil/Dropbox (University of Michigan)/
-# MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/20220128_SC2_Nanopore_Run_112/
-# 20220128_SC2_Nanopore_Run_112.meta.csv': No such file or directory
-
-# usually means that the plate map name, and the folder created in 3_ProcessedGenomes
-# for a particular run, don't match
 
 ################################################################################
 
@@ -78,6 +63,8 @@ system(paste0("c:/users/juliegil/appdata/local/programs/python/python38/python.e
 # In command line, navigate to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
 # For me, this command is: 
 # cd /mnt/c/Users/juliegil/'Dropbox (University of Michigan)'/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes
+
+# move into the platemap folder of the run you're on.
 
 # Activate the pangolin environment 
 # The command is:
@@ -114,6 +101,7 @@ source(paste0(code_path, "OutsidePipeline/moving_pangolin_output.R"))
 # rename it to plateMapName_nextclade.tsv
 
 # Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
+source(paste0(code_path, "OutsidePipeline/moving_nextclade_output.R"))
 
 
 ### nextclade CLI download information: https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli.html

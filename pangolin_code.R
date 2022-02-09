@@ -31,7 +31,7 @@ for (each_page in file_list){
   pang1 <- read.csv(paste0(pangolin_fp, "/", each_page), colClasses = "character")
   #print(colnames(pang1))
   # remove any empty rows/columns that may come in
-  pang1 <- remove_empty(pang1)
+  pang1 <- remove_empty(pang1, which = c("rows", "cols"))
 
   pang1$pang1_runDate <- date_from_file_FIRST(each_page)
   

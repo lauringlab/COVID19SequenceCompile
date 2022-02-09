@@ -17,11 +17,16 @@ source(paste0(code_path, "pipeline_functions.R"))
 starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 ################################################################################
-### fill in some info manually
+### fill in some info
 
-plate_datef <- "20220127" # plate date in YYYYMMDD format
-runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "109" # number, will match "PlateNumber" options
+plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
+runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
+runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" options
+
+################################################################################
+
+# create gisaid directory
+dir.create(paste0(starting_path, "/SEQUENCING/SARSCOV2/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum))
 
 ################################################################################
 
@@ -63,8 +68,8 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, sample_per_subject == 1 | sample_id == "10042792225")
+#ff <- filter(ff, sample_per_subject == 2 | subject_id == "037844834")
+#ff <- filter(ff, sample_per_subject == 1 | subject_id == "040222893")
 #ff <- filter(ff, sample_id != "10041097200")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "101437962")
 

@@ -32,14 +32,17 @@ def main():
     ## takes the string after "--prefix" in the command line for use later
     #parser.add_argument('--prefix', action="store", dest="prefix")
     #args = parser.parse_args()
+    pn_date = "20211129"
+    pn_run = "8"
+    pn = pn_date + "_IAV_Nanopore_Run_" + pn_run
 
-    sequence_folder = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211111_IAV_Nanopore_Run_3/Segment_sequences/"
+    sequence_folder = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/" + pn + "/Segment_sequences/"
     onlyfiles = [f for f in os.listdir(sequence_folder) if os.path.isfile(os.path.join(sequence_folder, f))]
 
-    loc90 = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20211111_IAV_Nanopore_Run_3/"
+    loc90 = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/" + pn + "/"
     keep90s = list()
     #library_checker = {}
-    file90 = loc90 + "20211111_IAV_Nanopore_Run_3.90.consensus.fasta"
+    file90 = loc90 + pn + ".90.consensus.fasta"
     for record in SeqIO.parse(file90, "fasta"):
         keep90s.append(record.id)
         #if record.seq not in library_checker:
@@ -63,7 +66,7 @@ def main():
             if str(record.id).split("_")[0] in keep90s:
                 #if "HA" in str(record.id):
                 original = record.id.split("_")[0] + "_" + record.id.split("_")[1]
-                record.id = str(original) + "_" + "20211111"
+                record.id = str(original) + "_" + pn_date
                 all_fasta.append(">" + record.id)
                 ids_only.append(record.id)
                 all_fasta.append(record.seq)

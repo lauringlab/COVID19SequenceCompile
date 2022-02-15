@@ -4,10 +4,14 @@
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+#starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+#code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+#batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+#influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
 
 ################################################################################
 
@@ -17,7 +21,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 
 # sars-cov-2 plate
-plate_name <- "20220131_SC2_Nanopore_Run_111"
+plate_name <- "20220208_SC2_Nanopore_Run_117"
 
 ################################################################################
 #                                 ROUND 1                                      #

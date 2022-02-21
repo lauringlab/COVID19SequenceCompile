@@ -21,11 +21,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 
 # sars-cov-2 plate
-<<<<<<< HEAD
 plate_name <- "20220209_SC2_Nanopore_Run_119"
-=======
-plate_name <- "20220208_SC2_Nanopore_Run_117"
->>>>>>> efce63d9c680fb7fb44beaeb48e6b646f2b4b1b5
 
 ################################################################################
 #                                 ROUND 1                                      #

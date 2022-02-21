@@ -130,18 +130,18 @@ ivy4 <- filter(seq_list, substr(subject_id, 1, 2) == 22)
 
 
 ivy4 <- ivy4 %>% select(sample_id, subject_id, coll_date,                    
-                                flag, received_source, SiteName, SampleBarcode,                
-                                PlateDate, PlatePlatform, PlateNumber, 
-                                received_date, position, PlateName, PlatePosition, SampleSourceLocation,
-                                gisaid_strain, gisaid_epi_isl, pangoLEARN_version,
+                                flag, received_source, sitename, samplebarcode,                
+                                platedate, plateplatform, platenumber, 
+                                received_date, position, platename, plateposition, samplesourcelocation,
+                                gisaid_strain, gisaid_epi_isl, pangolearn_version,
                                 pango_version, pangolin_version, pangolin_lineage, pangolin_status,             
-                                pangolin_note, nextclade_clade, nextclade_totalMissing,      
-                                nextclade_completeness, nextclade_qcOverallScore, nextclade_qcOverallStatus, 
-                                nextclade_totalMutations, pangolin_probability, nextclade_totalNonACGTNs)
+                                pangolin_note, nextclade_clade, nextclade_totalmissing,      
+                                nextclade_completeness, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
+                                nextclade_totalmutations, pangolin_probability, nextclade_totalnonacgtns)
 
 
 #seq_list <- filter(seq_list, platenumber <= 49)
 write.csv(ivy3, paste0(outputLOC, "cdc_ivy3_", today, ".csv"), row.names = FALSE, na = "")
-write.csv(ivy3, paste0(outputLOC, "cdc_ivy4_", today, ".csv"), row.names = FALSE, na = "")
+write.csv(ivy4, paste0(outputLOC, "cdc_ivy4_", today, ".csv"), row.names = FALSE, na = "")
 
 #table(seq_list$pangolin_lineage)

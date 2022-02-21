@@ -20,9 +20,9 @@ starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-Lauring
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20211129" # plate date in YYYYMMDD format
+plate_datef <- "20220117" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "8" # number, will match "PlateNumber" options
+runnum <- "11" # number, will match "PlateNumber" options
 
 seq_list_path <- paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_Nanopore_Run_", runnum, "/Segment_sequences/")
 
@@ -58,8 +58,8 @@ if (any(ff$sample_per_subject > 1)){
 }
 
 
-# samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-# original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 

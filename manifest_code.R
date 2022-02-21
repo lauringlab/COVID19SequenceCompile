@@ -113,9 +113,10 @@ for (each_folder in manifest_folder_list){
           #print(test_date_format)
           
           if (is.na(as.numeric(test_date_format))){
-               #a <- file_in$coll_date
-               file_in$coll_date <- as.POSIXct(file_in$coll_date, format = "%m/%d/%y")
+            #a <- file_in$coll_date
+            file_in$coll_date <- as.POSIXct(file_in$coll_date, format = "%m/%d/%y")
           }
+          
           
           if(any(is.na(file_in$coll_date))){
             print(each_file)

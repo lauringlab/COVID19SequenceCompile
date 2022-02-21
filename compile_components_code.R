@@ -179,6 +179,23 @@ mppnc2 <- subject_id_length_QA(mppnc2, "CSTP")
 
 mppnc2 <- mppnc2 %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
+# add a column for indicating if a particular subject_id has multiple samples
+mppnc2 <- mppnc2 %>% group_by(subject_id) %>% mutate(multiSamples = case_when(max(sample_per_subject) > 1 ~ 1, 
+                                                                              T ~ 0))
+# filter out multiple samples
+multiple_samples <- filter(mppnc2, multiSamples == 1)
+# want to have an indicator marking samples that are 90 days from previous
+multiple_samples <- multiple_samples %>% group_by(subject_id) %>% arrange(coll_date) %>% 
+                      mutate(daysFromPrevious = as.numeric(as_date(coll_date) - lag(as_date(coll_date), default = NA)), 
+                             ninetyDayFromPrevious = case_when(daysFromPrevious >= 90 ~ 1, 
+                                                               T ~ 0), 
+                             previousLineageDifferentThanCurrent = case_when(pangolin_lineage != lag(pangolin_lineage, default = NA) ~ 1, 
+                                                                             T ~ 0), 
+                             previousCladeDifferentThanCurrent = case_when(nextclade_clade != lag(nextclade_clade, default = NA) ~ 1, 
+                                                                             T ~ 0))
+
+mppnc2 <- merge(mppnc2, multiple_samples, all.x = TRUE)
+
 ################################################################################
 ## apply logic for mis-matched pangolin/nextclade info
 ## necessary for instances where a sample was run on two different plates
@@ -221,7 +238,9 @@ mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, co
                                                        PlateToPangolin_days, nextclade_qcOverallScore, nextclade_qcOverallStatus,  
                                                        nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate,          
                                                        PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
-                                                       IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, sample_per_subject)
+                                                       IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, sample_per_subject, 
+                                                       multiSamples, daysFromPrevious, ninetyDayFromPrevious, previousLineageDifferentThanCurrent, 
+                                                       previousCladeDifferentThanCurrent)
 
 ################################################################################
 ### negative control well warning

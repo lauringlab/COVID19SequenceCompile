@@ -10,7 +10,9 @@ library(lubridate)
 
 ################################################################################
 # set paths 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+#starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+#"/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+
 ## set run folder accordingly
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/3_ProcessedGenomes/", plate_name, "/")
 

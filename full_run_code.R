@@ -21,7 +21,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 
 # sars-cov-2 plate
-plate_name <- "20220209_SC2_Nanopore_Run_119"
+plate_name <- "20220210_SC2_Nanopore_Run_121"
 
 ################################################################################
 #                                 ROUND 1                                      #
@@ -46,7 +46,10 @@ source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
 
 # checking_sampleids.py step goes here
 # may need keyboard shortcut = Ctrl+Shift+F10 to clear environment/loaded packages
-system(paste0("c:/users/juliegil/appdata/local/programs/python/python38/python.exe ", code_path, "OutsidePipeline/ProcessingFASTA/checking_sampleids.py ", plate_name))
+#system(paste0("c:/users/juliegil/appdata/local/programs/python/python38/python.exe ", code_path, "OutsidePipeline/ProcessingFASTA/checking_sampleids.py ", plate_name))
+#system("pip3 install pandas")
+#system(paste0("python3 ", code_path, "OutsidePipeline/ProcessingFASTA/checking_sampleids.py ", plate_name))
+
 
 ################################################################################
 #                                PANGOLIN                                      #
@@ -126,7 +129,8 @@ source(paste0(code_path, "nextclade_code.R"))
 source(paste0(code_path, "compile_components_code.R"))
 
 ## only run for updating Slack channel (underworld) with total sample count
-shell.exec(paste0(batch_path, "/sample_count_run.bat"))
+#shell.exec(paste0("sh ", batch_path, "/sample_count_run_mac.sh"))
+#system2(paste0("sh ", batch_path, "/sample_count_run_mac.sh"))
 
 ### next, do gisaid upload steps
 

@@ -9,7 +9,7 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 compiled_loc <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary")
 
 # essentially, we just want a small code snippet to compare the "secret" version 

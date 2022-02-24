@@ -211,7 +211,7 @@ for (each_file in cdc_file_list){
   if(any(check_site_codes$mismatch_sites == 1)){
     print(each_file)
     print(filter(check_site_codes, mismatch_sites == 1))
-    stop("Mismatched site code to name")
+    print("Mismatched site code to name")
   }
   # add in 2 new columns: received_date and received_source (from file name)
   #rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))

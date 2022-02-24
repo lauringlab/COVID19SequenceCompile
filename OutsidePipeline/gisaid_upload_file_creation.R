@@ -10,11 +10,11 @@ library(openxlsx)
 ################################################################################
 # just need some of these functions
 
-code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
 source(paste0(code_path, "pipeline_functions.R"))
 
 # set starting path
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 ################################################################################
 ### fill in some info
@@ -69,7 +69,7 @@ if (any(ff$sample_per_subject > 1)){
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 2 | subject_id == "037844834")
-#ff <- filter(ff, sample_per_subject == 1 | subject_id == "101202140")
+#ff <- filter(ff, sample_per_subject == 1 | subject_id == "100093194")
 #ff <- filter(ff, sample_id != "10041097200")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "101437962")
 

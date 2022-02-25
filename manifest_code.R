@@ -198,7 +198,8 @@ for (each_file in cdc_file_list){
   
   #### additional check --- numbers to sites
   ### set of subject_id, sample_id, SiteName; 
-  check_site_codes <- fileone %>% select(subject_id, sample_id, SiteName) %>% mutate(site_number = as.numeric(substr(subject_id, 3, 4)))
+  check_site_codes <- fileone %>% select(subject_id, sample_id, SiteName) %>% mutate(site_number = case_when(substr(subject_id, 1, 1) == "C" ~ as.numeric(substr(subject_id, 4, 5)), 
+                                                                                                               T ~ as.numeric(substr(subject_id, 3, 4))))
   check_site_codes <- merge(check_site_codes, cdc_sites, by.x = c("site_number"), by.y = c("Number"), all.x = TRUE)
   
   if(any(is.na(check_site_codes$Institution))){

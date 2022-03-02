@@ -21,6 +21,7 @@ martin_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampl
 cstp_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CSTP")
 edidnow_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/EDIDNOW")
 cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
+rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN")
 
 henryford_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/HENRYFORD")
 puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/PUIMISC")
@@ -159,8 +160,62 @@ cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
 
 cdc_ivy_storage <- data.frame()
 full_ivy <- data.frame()
+full_ivy4 <- data.frame()
 
 for (each_file in cdc_file_list){
+  
+  if (grepl("CDCIVY4", each_file)){
+    
+    fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
+    fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
+    
+    ## change all column names to lowercase and remove leading/lagging white space
+    ## to make it easier to process
+    cdc_names <- colnames(fileone)
+    new_names <- c()
+    for (i in cdc_names){
+      new_names <- c(new_names, tolower(trimws(i)))
+    }
+    colnames(fileone) <- new_names
+    
+    ## keep full set of cdc ivy rows separate, for back checks on full data
+    full_ivy4 <- rbind(full_ivy4, fileone)
+    
+    fileone <- fileone %>% select(`position.#`, study.id, collection.date, aliquot.id)
+    
+    colnames(fileone) <- c("position", "subject_id", "coll_date", "sample_id")
+    fileone$subject_id <- trimws(fileone$subject_id)
+    fileone$coll_date <- as.character(fileone$coll_date)
+    
+    fileone <- fileone %>% mutate(site_number = case_when(substr(subject_id, 1, 1) == "C" ~ as.numeric(substr(subject_id, 4, 5)), 
+                                                                                            T ~ as.numeric(substr(subject_id, 3, 4))))
+    
+    check_site_codes <- fileone %>% select(subject_id, sample_id) %>% mutate(site_number = case_when(substr(subject_id, 1, 1) == "C" ~ as.numeric(substr(subject_id, 4, 5)), 
+                                                                                                               T ~ as.numeric(substr(subject_id, 3, 4))))
+    check_site_codes <- merge(check_site_codes, cdc_sites, by.x = c("site_number"), by.y = c("Number"), all.x = TRUE)
+    
+    if(any(is.na(check_site_codes$Institution))){
+      print(each_file)
+      stop("No Site Numerical Match")
+    }
+    
+    site_bit <- cdc_sites %>% select(Number, SiteCode)
+    colnames(site_bit) <- c("Number", "SiteName")
+    fileone <- merge(fileone, site_bit, by.x = c("site_number"), by.y = c("Number"))
+    
+    fileone$received_date <- date_from_file(each_file)
+    
+    rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
+    fileone$received_source <- rec_source
+    
+    ### add in "regular" manifest columns
+    fileone$flag <- NA
+    
+    ### re-arrange variables
+    fileone <- fileone %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, SiteName)
+    
+  } else {
+  
   fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
   fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
   
@@ -228,6 +283,8 @@ for (each_file in cdc_file_list){
   ### re-arrange variables
   fileone <- fileone %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, SiteName)
   
+  }
+  
   cdc_ivy_storage <- rbind(cdc_ivy_storage, fileone)
 }
 
@@ -249,10 +306,106 @@ cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "21
 
 ### write out full ivy set
 write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
+write.csv(full_ivy4, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY4_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
 
 ### add onto main manifest file HERE
 manifest_storage$SiteName <- NA
 manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
+
+
+################################################################################
+## handle rvtn manifests
+
+rvtn_file_list <- list.files(pattern = "*.xlsx", path = rvtn_manifest_fp)
+
+rvtn_storage <- data.frame()
+full_rvtn <- data.frame()
+
+for (each_file in rvtn_file_list){
+    
+    fileone <- read.xlsx(paste0(rvtn_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
+    #fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
+    
+    ## change all column names to lowercase and remove leading/lagging white space
+    ## to make it easier to process
+    rvtn_names <- colnames(fileone)
+    new_names <- c()
+    for (i in rvtn_names){
+      new_names <- c(new_names, tolower(trimws(i)))
+    }
+    colnames(fileone) <- new_names
+    
+    ## keep full set of cdc ivy rows separate, for back checks on full data
+    full_rvtn <- rbind(full_rvtn, fileone)
+    
+    fileone <- fileone %>% select(study_id, date_of_collection, specimen_id, site)
+    
+    if (any(nchar(as.character(fileone$specimen_id)) != 9)){
+      print(each_file)
+      stop("RVTN Specimen ID not 9 digits")
+    }
+    
+    site_check <- fileone %>% mutate(check_site_number = case_when(substr(specimen_id, 1, 1) == "1" ~ "Tennessee", 
+                                                                   substr(specimen_id, 1, 1) == "2" ~ "North Carolina",
+                                                                   substr(specimen_id, 1, 1) == "3" ~ "Colorado",
+                                                                   substr(specimen_id, 1, 1) == "4" ~ "Arizona",
+                                                                   substr(specimen_id, 1, 1) == "5" ~ "California",
+                                                                   substr(specimen_id, 1, 1) == "6" ~ "Wisconsin",
+                                                                   substr(specimen_id, 1, 1) == "7" ~ "New York",
+                                                                   T ~ "Unknown"))
+    
+    if (any(site_check$check_site_number != site_check$site)){
+      print(each_file)
+      stop("Study ID number doesn't correspond to manifest site listed.")
+    }
+    
+    # 1, Tennessee
+    # 2, North Carolina
+    # 3, Colorado
+    # 4, Arizona
+    # 5, California
+    # 6, Wisconsin
+    # 7, New York
+    # 
+    # Specimen Study ID
+    # [_][_ _ _][_ _][_][_ _]  (should be 9 digits)
+    # 
+    # Study site: 1-7
+    # Household number: 001-999 
+    # Individual number: 01-11
+    # Specimen type: 0 = nasal swab, 1 = DBS, 2 = serum
+    # Specimen number: 01-10 for nasal swab, 01-02 for DBS, 01 for serum
+    
+    
+    colnames(fileone) <- c("subject_id", "coll_date", "sample_id", "SiteName")
+    fileone$subject_id <- trimws(fileone$subject_id)
+  
+    fileone$coll_date <- as.Date(fileone$coll_date, origin = "1899-12-30")
+    fileone$coll_date <- as.character(fileone$coll_date)
+    
+    fileone$received_date <- date_from_file(each_file)
+    
+    rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
+    fileone$received_source <- rec_source
+    
+    ### add in "regular" manifest columns
+    fileone$flag <- NA
+    fileone$position <- NA
+    
+    ### re-arrange variables
+    fileone <- fileone %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, SiteName)
+  
+  rvtn_storage <- rbind(rvtn_storage, fileone)
+}
+
+
+### write out full ivy set
+write.csv(full_rvtn, paste0(rvtn_manifest_fp, "/Full_RVTN_Set/RVTN_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
+
+
+### add onto main manifest file HERE
+manifest_storage <- rbind(manifest_storage, rvtn_storage)
+
 
 
 ################################################################################

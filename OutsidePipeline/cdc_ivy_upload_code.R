@@ -9,7 +9,7 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
@@ -46,7 +46,7 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
                                 # nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
 
 
-seq_list <- filter(seq_list, received_source == "CDCIVY")
+seq_list <- filter(seq_list, received_source == "CDCIVY" | received_source == "CDCIVY4")
 
 
 ## check for CDC IVY 4 samples (start with 22, ivy 3 == 21)

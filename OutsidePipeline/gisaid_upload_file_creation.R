@@ -68,7 +68,7 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id == "100285708")
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("019874965", "040057021", "100342524"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, sample_id != "10041097200")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "101437962")
@@ -92,16 +92,25 @@ ff$Type <- "betacoronavirus"
 ff$Passage <- "Original"
 
 ### create location from state collection location
-ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"))
-ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
+ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"), fill = "right")
+#ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
+ff <- ff %>% mutate(State = case_when(received_source == "RVTN" ~ Site, 
+                                      T ~ state.name[match(ff$StateAbbrev,state.abb)]))
+
+ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.abb[match(ff$State,state.name)], 
+                                      T ~ StateAbbrev))
 
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", State), 
+                                         received_source == "CDCIVY4" ~ paste0("North America / USA / ", State), 
+                                         received_source == "RVTN" ~ paste0("North America / USA / ", State), 
                                          T ~ "North America / USA / Michigan"))
 
 # create virus name
 # hCoV-19/USA/MI-UM-10037140915/2020
 # hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
-ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)), 
+ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "CDCIVY4" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "RVTN" ~ paste0("hCoV-19/USA/", StateAbbrev, "-RVTN-", sample_id, "/", substr(coll_date, 1, 4)),
                                           T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 
@@ -113,6 +122,7 @@ ff$AdditionalHost <- ""
 ff <- ff %>% mutate(SamplingStrategy = case_when(sample_per_subject > 1 ~ "Warning", 
                                                  received_source %in% c("CDCIVY", "MHOME") ~ "", 
                                                  grepl("PUI", flag) ~ "", 
+                                                 received_source == "RVTN" ~ "Research",
                                                  T ~ "Baseline surveillance"))
 
 if(any(ff$SamplingStrategy == "Warning")){
@@ -164,8 +174,12 @@ ff$Coverage <- ""
 
 ### Originating Lab
 ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Central Lab, Vanderbilt University Medical Center", 
+                                          received_source == "CDCIVY4" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
+                                          received_source == "RVTN" ~ "Vanderbilt University Medical Center",
                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
-                    originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA", 
+                    originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
+                                                 received_source == "CDCIVY4" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
+                                                 received_source == "RVTN" ~ "Medical Center North CC303, 1161 21st Ave. S., Nashville, TN, USA",
                                                   T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
 
 ff$originlabsampleid <- ""

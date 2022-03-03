@@ -36,10 +36,10 @@ def main():
     ### This section converts barcode (NBXX) into sample_id.
 
     # create set of file names
-    file_1 = args.prefix + ".all.consensus.fasta"
+    file_1 = args.prefix + ".all.consensus.renamed.full.fasta"
     file_2 = args.prefix + ".all.consensus.tmp.fasta"
-    file_3 = args.prefix + ".all.consensus.renamed.full.fasta" # This is the file to use in pangolin and nextclade.
-    meta_file = args.prefix + ".meta.csv" # This is the full compiled list, or the subset that matches this run.
+    file_3 = args.prefix + ".2all.consensus.renamed.full.fasta" # This is the file to use in pangolin and nextclade.
+    meta_file = args.prefix + ".replace.meta.csv" # This is the full compiled list, or the subset that matches this run.
 
     # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)

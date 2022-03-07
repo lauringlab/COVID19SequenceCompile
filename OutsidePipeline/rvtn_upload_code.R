@@ -63,12 +63,13 @@ today <- paste0(year(Sys.Date()), m, d)
 rvtn <- seq_list %>% select(sample_id, subject_id, coll_date,                    
                                 flag, received_source, sitename, samplebarcode,                
                                 platedate, plateplatform, platenumber, 
-                                received_date, position, platename, plateposition, samplesourcelocation,
-                                gisaid_strain, gisaid_epi_isl, pangolearn_version,
-                                pango_version, pangolin_version, pangolin_lineage, pangolin_status,             
-                                pangolin_note, nextclade_clade, nextclade_totalmissing,      
-                                nextclade_completeness, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
-                                nextclade_totalmutations, pangolin_probability, nextclade_totalnonacgtns)
+                            pangolin_lineage, pangolin_status,             
+                            pangolin_note, nextclade_clade, nextclade_totalmissing,      
+                            nextclade_completeness, gisaid_strain, gisaid_epi_isl,
+                            received_date, position, platename, plateposition, samplesourcelocation,
+                                 pangolearn_version,
+                                pango_version, pangolin_version,  nextclade_qcoverallscore, nextclade_qcoverallstatus, 
+                                nextclade_totalmutations, nextclade_totalnonacgtns)
 
 
 #seq_list <- filter(seq_list, platenumber <= 49)

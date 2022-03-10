@@ -60,7 +60,8 @@ if (nrow(compare_options) > 0){
 
 ################################################################################
 
-
+manifest$sample_id <- trimws(manifest$sample_id)
+plate_map$SampleID <- trimws(plate_map$SampleID)
 # merge on plate map file, and only keep rows where plate map file has a sample
 mani_plate <- merge(manifest, plate_map, by.x = c("sample_id", "received_date"), by.y = c("SampleID", "SampleSourceDate"), all.y = TRUE)
 mani_plate <- filter(mani_plate, !is.na(received_date) & received_date != "")

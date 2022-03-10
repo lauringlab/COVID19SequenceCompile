@@ -11,26 +11,26 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
 source(paste0(code_path, "pipeline_functions.R"))
 
 # set starting path
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20220117" # plate date in YYYYMMDD format
+plate_datef <- "20220303" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "11" # number, will match "PlateNumber" options
+runnum <- "13" # number, will match "PlateNumber" options
 
-seq_list_path <- paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_Nanopore_Run_", runnum, "/Segment_sequences/")
+seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_Nanopore_Run_", runnum, "/Segment_sequences/")
 
 ################################################################################
 
 # run comparison code file first, to be sure full_compiled_data matches the one
 # in the secret folder
-code_path2 <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
 source(paste0(code_path2, "OutsidePipeline/comparing_full_secret_influenza.R"))
 
 # set output path for gisaid upload file
@@ -58,8 +58,8 @@ if (any(ff$sample_per_subject > 1)){
 }
 
 
-samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 
@@ -143,7 +143,7 @@ ff_gisaid <- ff %>% select(IsolateID, SegmentIDs, StrainName, Subtype, Lineage,
 
 ff_gisaid[is.na(ff_gisaid)] <- ""
 
-write.csv(ff_gisaid, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_nanopore_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
+write.csv(ff_gisaid, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_nanopore_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
 
 #University of Michigan Clinical Microbiology Laboratory
 #2800 Plymouth Rd, Ann Arbor, MI, USA

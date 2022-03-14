@@ -242,6 +242,11 @@ mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, co
                                                        multiSamples, daysFromPrevious, ninetyDayFromPrevious, previousLineageDifferentThanCurrent, 
                                                        previousCladeDifferentThanCurrent)
 
+
+mppnc2 <- mppnc2 %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
+                                                      grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
+                                                      T ~ NA_character_))
+
 ################################################################################
 ### negative control well warning
 

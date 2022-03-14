@@ -319,14 +319,15 @@ manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 ################################################################################
 ## handle rvtn manifests
 
-rvtn_file_list <- list.files(pattern = "*.xlsx", path = rvtn_manifest_fp)
+rvtn_file_list <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
 
 rvtn_storage <- data.frame()
 full_rvtn <- data.frame()
 
 for (each_file in rvtn_file_list){
-    
-    fileone <- read.xlsx(paste0(rvtn_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
+  
+    fileone <- read.csv(paste0(rvtn_manifest_fp, "/", each_file), colClasses = "character")
+    fileone <- filter(fileone, study_id != "" & specimen_id != "")
     #fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
     
     ## change all column names to lowercase and remove leading/lagging white space
@@ -342,6 +343,9 @@ for (each_file in rvtn_file_list){
     full_rvtn <- rbind(full_rvtn, fileone)
     
     fileone <- fileone %>% select(study_id, date_of_collection, specimen_id, site)
+    
+    # fix date
+    fileone <- fileone %>% mutate(date_of_collection = as.POSIXct(date_of_collection, format = "%d-%b-%y"))
     
     if (any(nchar(as.character(fileone$specimen_id)) != 9)){
       print(each_file)
@@ -383,8 +387,8 @@ for (each_file in rvtn_file_list){
     colnames(fileone) <- c("subject_id", "coll_date", "sample_id", "SiteName")
     fileone$subject_id <- trimws(fileone$subject_id)
   
-    fileone$coll_date <- as.Date(fileone$coll_date, origin = "1899-12-30")
-    fileone$coll_date <- as.character(fileone$coll_date)
+    #fileone$coll_date <- as.Date(fileone$coll_date, origin = "1899-12-30")
+    #fileone$coll_date <- as.character(fileone$coll_date)
     
     fileone$received_date <- date_from_file(each_file)
     

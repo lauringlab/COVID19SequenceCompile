@@ -51,7 +51,7 @@ seq_list <- filter(seq_list, received_source == "CDCIVY" | received_source == "C
 
 ## check for CDC IVY 4 samples (start with 22, ivy 3 == 21)
 if (any(substr(seq_list$subject_id, 1, 2) == 22)){
-  stop("IVY 4 Samples Present, Need to separate for upload")
+  print("IVY 4 Samples Present, Need to separate for upload")
 }
 
 if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
@@ -78,7 +78,7 @@ seq_list <- seq_list %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as
 # 
 # qpcr_full <- filter(seq_list_o, PlateName %in% unique(qpcr$PlateName)) %>% select(sample_id, subject_id, coll_date, PlateName, PlatePosition, received_source, flag)
 # 
-# pmc <- read.csv("C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/plate_map_cross.csv")
+# pmc <- read.csv("/Users/juliegil/Documents/LauringLab_Code/plate_map_cross.csv")
 # qpcr_full <- merge(qpcr_full, pmc, by.x = c("PlatePosition"), by.y = c("Slot"), all.x = TRUE)
 # qpcr_full$wellgrid <- paste0(qpcr_full$Letter, qpcr_full$Number) 
 # qpcr_full <- qpcr_full %>% arrange(PlateName, Letter, Number)
@@ -129,16 +129,18 @@ ivy3 <- filter(seq_list, substr(subject_id, 1, 2) == 21)
 ivy4 <- filter(seq_list, substr(subject_id, 1, 2) == 22)
 
 
+# change subject_id to study_id
 ivy4 <- ivy4 %>% select(sample_id, subject_id, coll_date,                    
                                 flag, received_source, sitename, samplebarcode,                
                                 platedate, plateplatform, platenumber, 
-                                received_date, position, platename, plateposition, samplesourcelocation,
-                                gisaid_strain, gisaid_epi_isl, pangolearn_version,
-                                pango_version, pangolin_version, pangolin_lineage, pangolin_status,             
-                                pangolin_note, nextclade_clade, nextclade_totalmissing,      
-                                nextclade_completeness, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
-                                nextclade_totalmutations, pangolin_probability, nextclade_totalnonacgtns)
+                                pangolin_lineage, pangolin_status, pangolin_note,
+                        nextclade_clade, nextclade_totalmissing, nextclade_completeness, 
+                        gisaid_strain, gisaid_epi_isl, received_date, position, platename,
+                        plateposition, samplesourcelocation, pangolearn_version,
+                        pango_version, pangolin_version, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
+                                nextclade_totalmutations, nextclade_totalnonacgtns)
 
+names(ivy4)[names(ivy4) == 'subject_id'] <- 'study_id'
 
 #seq_list <- filter(seq_list, platenumber <= 49)
 write.csv(ivy3, paste0(outputLOC, "cdc_ivy3_", today, ".csv"), row.names = FALSE, na = "")

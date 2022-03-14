@@ -45,43 +45,12 @@ source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
 ################################################################################
 
 # checking_sampleids.py step goes here
-# may need keyboard shortcut = Ctrl+Shift+F10 to clear environment/loaded packages
-#system(paste0("c:/users/juliegil/appdata/local/programs/python/python38/python.exe ", code_path, "OutsidePipeline/ProcessingFASTA/checking_sampleids.py ", plate_name))
-#system("pip3 install pandas")
-#system(paste0("python3 ", code_path, "OutsidePipeline/ProcessingFASTA/checking_sampleids.py ", plate_name))
-
 
 ################################################################################
 #                                PANGOLIN                                      #
 ################################################################################
 
-# Instructions for installing the command line version of Pangolin can be found 
-# here: https://cov-lineages.org/pangolin_docs/installation.html
-
-# Note: This can only be completed using Linux or OS operating systems. (The 
-# environment.yml file to install pangolin requires minimap2 and gofasta libraries, 
-# both of which are only built for those systems, not for Windows) If you only 
-# have a Windows operating system, you can install a Windows Subsystem for Linux 
-# (directions here: https://docs.microsoft.com/en-us/windows/wsl/install-win10) 
-# which will allow you to proceed with the pangolin installation process.
-
-# Steps:
-  
-# In command line, navigate to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName]
-# For me, this command is: 
-# cd /mnt/c/Users/juliegil/'Dropbox (University of Michigan)'/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes
-
-# move into the platemap folder of the run you're on.
-
-# Activate the pangolin environment 
-# The command is:
-# conda activate pangolin
-
-# Run pangolin
-# The command is: 
-# pangolin {plateMapName}.all.consensus.renamed.full.fasta
-
-# This will output a file called lineage_report.csv 
+# Run pangolin in the command line
 
 # Rename this file to plateMapName_pangolin.csv
 # Copy this renamed file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/pangolin]
@@ -91,25 +60,10 @@ source(paste0(code_path, "OutsidePipeline/moving_pangolin_output.R"))
 #                                NEXTCLADE                                     #
 ################################################################################
 
-# Steps:
-
-# Navigate to https://clades.nextstrain.org/
-
-# In the SARS-CoV-2 box in the lower right-hand corner, ensure the "From File" 
-# tab is selected and either drag & drop or select the 
-# plateMapName.all.consensus.renamed.full.fasta from the 
-# [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] folder you've been working from
-
-# Once complete, in the top bar of the processing screen, click the arrow next 
-# to "Export to CSV" and select "Export to TSV"
-
-# The file will go to the Downloads file of your computer as nextclade.tsv - 
-# Copy the file to [DropBox/MED-LauringLab/ProcessedGenomes/plateMapName] and 
-# rename it to plateMapName_nextclade.tsv
+# run nextclade from https://clades.nextstrain.org/results
 
 # Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
 source(paste0(code_path, "OutsidePipeline/moving_nextclade_output.R"))
-
 
 ### nextclade CLI download information: https://docs.nextstrain.org/projects/nextclade/en/stable/user/nextclade-cli.html
 

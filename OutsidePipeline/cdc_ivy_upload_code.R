@@ -13,7 +13,7 @@ starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLa
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
-#seq_list_o <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
+seq_list_o <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
 ################################################################################
 
@@ -32,18 +32,18 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
 
 
 
-#seq_list_o <- seq_list_o %>% select(sample_id, subject_id, coll_date,                    
-#                                flag, received_source, SiteName, SampleBarcode,                
-#                                PlateDate, PlatePlatform, PlateNumber,                 
-#                                pangolin_lineage, pangolin_probability, pangolin_status,             
-#                                pangolin_note, nextclade_clade, nextclade_totalMissing,      
-#                                nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
-                                # received_date, position,          
-                                # PlateName, PlatePosition, SampleSourceLocation,        
-                                # pangoLEARN_version, pangolin_conflict, pango_version,               
-                                # pangolin_version, pangolin_runDate, PlateToPangolin_days,        
-                                # nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
-                                # nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
+seq_list_o <- seq_list_o %>% select(sample_id, subject_id, coll_date,
+                               flag, received_source, SiteName, SampleBarcode,
+                               PlateDate, PlatePlatform, PlateNumber,
+                               pangolin_lineage, pangolin_probability, pangolin_status,
+                               pangolin_note, nextclade_clade, nextclade_totalMissing,
+                               nextclade_completeness, gisaid_strain, gisaid_epi_isl,
+received_date, position,
+PlateName, PlatePosition, SampleSourceLocation,
+pangoLEARN_version, pangolin_conflict, pango_version,
+pangolin_version, pangolin_runDate, PlateToPangolin_days,
+nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,
+nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
 
 
 seq_list <- filter(seq_list, received_source == "CDCIVY" | received_source == "CDCIVY4")
@@ -67,23 +67,27 @@ seq_list <- seq_list %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as
                                           grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
                                           T ~ NA_character_))
 
-# seq_list_o <- seq_list_o %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
-#                                                       grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
-#                                                       T ~ NA_character_))
+seq_list_o <- seq_list_o %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")),
+                                                      grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")),
+                                                      T ~ NA_character_))
 
 ################################################################################
 # create portion for qPCR matching
 
-# qpcr <- seq_list %>% select(sample_id, subject_id, coll_date, PlateName, PlatePosition)
-# 
-# qpcr_full <- filter(seq_list_o, PlateName %in% unique(qpcr$PlateName)) %>% select(sample_id, subject_id, coll_date, PlateName, PlatePosition, received_source, flag)
-# 
-# pmc <- read.csv("/Users/juliegil/Documents/LauringLab_Code/plate_map_cross.csv")
-# qpcr_full <- merge(qpcr_full, pmc, by.x = c("PlatePosition"), by.y = c("Slot"), all.x = TRUE)
-# qpcr_full$wellgrid <- paste0(qpcr_full$Letter, qpcr_full$Number) 
-# qpcr_full <- qpcr_full %>% arrange(PlateName, Letter, Number)
-# 
-# write.csv(qpcr_full, "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/8_QPCR_IVY/IVY_Locations/ivy_mapping.csv", row.names = FALSE, na = "")
+qpcr <- seq_list %>% select(sample_id, subject_id, coll_date, PlateName, PlatePosition)
+ 
+qpcr_full <- filter(seq_list_o, PlateName %in% unique(qpcr$PlateName)) %>% select(sample_id, subject_id, coll_date, PlateName, PlatePosition, received_source, flag)
+ 
+pmc <- read.csv("/Users/juliegil/Documents/LauringLab_Code/plate_map_cross.csv")
+hv <- read.csv("/Users/juliegil/Documents/LauringLab_Code/horizonal_vertical_by_plate.csv")
+hv <- hv %>% select(processing.plate, order_plate)
+# match plate to horiz/vertical arrangement
+qpcr_full <- merge(qpcr_full, hv, by.x = c("PlateName"), by.y = c("processing.plate"), all.x = TRUE)
+qpcr_full <- merge(qpcr_full, pmc, by.x = c("PlatePosition", "order_plate"), by.y = c("Slot", "PlateOrder"), all.x = TRUE)
+qpcr_full$wellgrid <- paste0(qpcr_full$Letter, qpcr_full$Number) 
+qpcr_full <- qpcr_full %>% arrange(PlateName, Letter, Number)
+ 
+write.csv(qpcr_full, "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/8_QPCR_IVY/IVY_Locations/ivy_mapping.csv", row.names = FALSE, na = "")
 
 
 ################################################################################

@@ -186,6 +186,7 @@ for (each_file in cdc_file_list){
     
     colnames(fileone) <- c("position", "subject_id", "coll_date", "sample_id")
     fileone$subject_id <- trimws(fileone$subject_id)
+    fileone$subject_id <- as.numeric(file_noe$subject_id)
     fileone$coll_date <- as.character(fileone$coll_date)
     
     fileone <- fileone %>% mutate(site_number = case_when(substr(subject_id, 1, 1) == "C" ~ as.numeric(substr(subject_id, 4, 5)), 
@@ -241,6 +242,7 @@ for (each_file in cdc_file_list){
   
   colnames(fileone) <- c("position", "SiteName", "subject_id", "coll_date", "sample_id")
   fileone$subject_id <- trimws(fileone$subject_id)
+  
   fileone$coll_date <- as.character(fileone$coll_date)
   
   ### site name checks

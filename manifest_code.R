@@ -186,7 +186,7 @@ for (each_file in cdc_file_list){
     
     colnames(fileone) <- c("position", "subject_id", "coll_date", "sample_id")
     fileone$subject_id <- trimws(fileone$subject_id)
-    fileone$subject_id <- as.numeric(file_noe$subject_id)
+    fileone$subject_id <- as.numeric(fileone$subject_id)
     fileone$coll_date <- as.character(fileone$coll_date)
     
     fileone <- fileone %>% mutate(site_number = case_when(substr(subject_id, 1, 1) == "C" ~ as.numeric(substr(subject_id, 4, 5)), 
@@ -407,7 +407,7 @@ for (each_file in rvtn_file_list){
   rvtn_storage <- rbind(rvtn_storage, fileone)
 }
 
-
+rvtn_storage$coll_date <- as.character(rvtn_storage$coll_date)
 ### write out full ivy set
 write.csv(full_rvtn, paste0(rvtn_manifest_fp, "/Full_RVTN_Set/RVTN_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
 

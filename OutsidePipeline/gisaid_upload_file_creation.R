@@ -44,6 +44,8 @@ outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/5_GISAID_Uploads/upload_
 finalfileLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary")
 final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
 
+final_file <- filter(final_file, !grepl("Missing Date in Manifest", flag))
+
 # only keep rows with completeness > 90%
 ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 
@@ -68,7 +70,7 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("019874965", "040057021", "100342524"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("100829489"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, sample_id != "10041097200")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "101437962")

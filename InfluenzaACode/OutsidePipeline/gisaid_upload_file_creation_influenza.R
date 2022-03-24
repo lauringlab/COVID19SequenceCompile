@@ -20,9 +20,9 @@ starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLa
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20220303" # plate date in YYYYMMDD format
+plate_datef <- "20220314" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "13" # number, will match "PlateNumber" options
+runnum <- "14" # number, will match "PlateNumber" options
 
 seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_Nanopore_Run_", runnum, "/Segment_sequences/")
 
@@ -42,6 +42,9 @@ outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/uplo
 # read in full compiled pile
 finalfileLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary")
 final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
+
+# remove any with missing collection date
+final_file <- filter(final_file, !grepl("Replaced with Today Date", flag) & received_source != "WW")
 
 # only keep rows with completeness > 90%
 ff <- filter(final_file, as.numeric(nextclade_HA_completeness) >= 90)
@@ -82,7 +85,7 @@ ff$SegmentIDs <- ""
 
 ### strain naming: A/Michigan/UOM[sample_id]/2021
 ### {flu type A/B} / {collection state} / {UOM}{sample_id} / {collection year}
-ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
+ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
 
 if (any(ff$StrainName == "CHECK")){
   stop("Unexpected received source!")

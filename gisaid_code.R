@@ -39,7 +39,7 @@ gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID)
 
 # create sample_id column
 gisaid_storage$sample_id <-  sapply(strsplit(as.character(gisaid_storage$Virus.name),'/'), "[", 3)
-gisaid_storage <- filter(gisaid_storage, grepl("MI-UM", Virus.name) | grepl("IVY", Virus.name))
+gisaid_storage <- filter(gisaid_storage, grepl("MI-UM", Virus.name) | grepl("IVY", Virus.name) | grepl("RVTN", Virus.name))
 gisaid_storage$sample_id <-  sapply(strsplit(as.character(gisaid_storage$sample_id),'-'), "[", 3)
 
 ### rename columns 

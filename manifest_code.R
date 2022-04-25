@@ -197,7 +197,8 @@ for (each_file in cdc_file_list){
     check_site_codes <- merge(check_site_codes, cdc_sites, by.x = c("site_number"), by.y = c("Number"), all.x = TRUE)
     
     if(any(is.na(check_site_codes$Institution))){
-      print(each_file)
+      message(each_file)
+      message(filter(check_site_codes, is.na(Institution)))
       stop("No Site Numerical Match")
     }
     
@@ -249,7 +250,8 @@ for (each_file in cdc_file_list){
   fileone$SiteName_check <- ifelse(fileone$SiteName %in% cdc_sites$SiteCode, 0, 1)
   
   if (sum(fileone$SiteName_check, na.rm = TRUE) != 0){
-    print(each_file)
+    message(each_file)
+    message(filter(fileone, SeiteName_check == 0))
     stop("There are incorrect site names in the manifest.")
   } else {
     fileone <- fileone %>% select(position, SiteName, subject_id, coll_date, sample_id)
@@ -263,16 +265,17 @@ for (each_file in cdc_file_list){
   check_site_codes <- merge(check_site_codes, cdc_sites, by.x = c("site_number"), by.y = c("Number"), all.x = TRUE)
   
   if(any(is.na(check_site_codes$Institution))){
-    print(each_file)
+    message(each_file)
+    message(filter(check_site_codes, is.na(Institution)))
     stop("No Site Numerical Match")
   }
   
   check_site_codes$mismatch_sites <- ifelse(check_site_codes$SiteName != check_site_codes$SiteCode, 1, 0)
   
   if(any(check_site_codes$mismatch_sites == 1)){
-    print(each_file)
-    print(filter(check_site_codes, mismatch_sites == 1))
-    print("Mismatched site code to name")
+    message(each_file)
+    message(filter(check_site_codes, mismatch_sites == 1))
+    message("Mismatched site code to name")
   }
   # add in 2 new columns: received_date and received_source (from file name)
   #rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
@@ -350,7 +353,8 @@ for (each_file in rvtn_file_list){
     fileone <- fileone %>% mutate(date_of_collection = as.POSIXct(date_of_collection, format = "%d-%b-%y"))
     
     if (any(nchar(as.character(fileone$specimen_id)) != 9)){
-      print(each_file)
+      message(each_file)
+      message(filter(fileone, nchar(as.character(speciment_id)) != 9))
       stop("RVTN Specimen ID not 9 digits")
     }
     
@@ -364,7 +368,8 @@ for (each_file in rvtn_file_list){
                                                                    T ~ "Unknown"))
     
     if (any(site_check$check_site_number != site_check$site)){
-      print(each_file)
+      message(each_file)
+      message(filter(site_check, check_site_number != site))
       stop("Study ID number doesn't correspond to manifest site listed.")
     }
     

@@ -20,9 +20,9 @@ starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLa
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20220314" # plate date in YYYYMMDD format
+plate_datef <- "20220408" # plate date in YYYYMMDD format
 runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "14" # number, will match "PlateNumber" options
+runnum <- "16" # number, will match "PlateNumber" options
 
 seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_Nanopore_Run_", runnum, "/Segment_sequences/")
 

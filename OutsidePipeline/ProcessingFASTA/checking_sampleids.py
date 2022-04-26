@@ -7,6 +7,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 import sys
+import os
 
 ## Process = samples have barcode map that assigns sample_ids to each sample
 ## sequence. If the barcode map is incorrect (contains the wrong samples) then
@@ -16,7 +17,14 @@ plate_run_name = str(sys.argv[1])
 
 ## first, get a list of all the sample_ids in the plate map we're checking
 #meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
-meta_file_location = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
+current_user <- os.getcwd()
+
+if "juliegil" in current_user:
+    meta_file_location = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
+elif "leighbak" in current_user:
+    meta_file_location = "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
+else:
+    print("User not recognized.")
 
 meta_file = plate_run_name + ".meta.csv"
 

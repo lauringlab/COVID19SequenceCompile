@@ -9,7 +9,22 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+checking_wd <- getwd()
+if (grepl("juliegil", checking_wd)){
+  
+  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+
+} else if (grepl("leighbak", checking_wd)){
+  
+  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  
+} else {
+  
+  print("User not recognized.")
+  
+}
+
+
 compiled_loc <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary")
 
 # essentially, we just want a small code snippet to compare the "secret" version 

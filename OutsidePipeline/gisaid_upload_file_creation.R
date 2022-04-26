@@ -10,11 +10,24 @@ library(openxlsx)
 ################################################################################
 # just need some of these functions
 
-code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-source(paste0(code_path, "pipeline_functions.R"))
+checking_wd <- getwd()
+if (grepl("juliegil", checking_wd)){
+  
+  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  
+} else if (grepl("leighbak", checking_wd)){
+  code_path <- "/Users/leighbak/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  
+} else {
+  
+  print("User not recognized.")
+  
+}
 
-# set starting path
-starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+
+source(paste0(code_path, "pipeline_functions.R"))
 
 ################################################################################
 ### fill in some info

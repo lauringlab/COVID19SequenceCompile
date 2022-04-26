@@ -16,9 +16,9 @@ if (grepl("juliegil", checking_wd)){
   code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
   starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   
-} else if (grepl("leighbak", checking_wd)){
-  code_path <- "/Users/leighbak/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+} else if (grepl("leighbaker", checking_wd)){
+  code_path <- "/Users/leighbaker/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else {
   

@@ -14,9 +14,9 @@ if (grepl("juliegil", checking_wd)){
   
   starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
-} else if (grepl("leighbak", checking_wd)){
+} else if (grepl("leighbaker", checking_wd)){
   
-  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else {
   

@@ -168,7 +168,17 @@ for (each_file in cdc_file_list){
     #print("IVY4")
     #print(each_file)
     fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
+    
     fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
+    
+    if (any(!grepl("-", fileone$Collection.Date))){
+      fileone <- fileone %>% mutate(Collection.Date = case_when(grepl("/", Collection.Date) ~ as.character(as.POSIXct(Collection.Date, format = "%m/%d/%Y")), 
+                                                                !grepl("/", Collection.Date) & !grepl("-", Collection.Date) ~ as.character(as.Date(Collection.Date, origin = "1899-12-30")), 
+                                                                T ~ Collection.Date))
+    }
+    
+    fileone$Collection.Date <- as.character(paste0(substr(fileone$Collection.Date, 1, 4), "-", substr(fileone$Collection.Date, 6, 7), "-", substr(fileone$Collection.Date, 9, 10)))
+    
     
     ## change all column names to lowercase and remove leading/lagging white space
     ## to make it easier to process
@@ -222,7 +232,16 @@ for (each_file in cdc_file_list){
     #print("IVY")
     #print(each_file)
   fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
+  
   fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
+  
+  if (any(!grepl("-", fileone$Collection.Date))){
+    fileone <- fileone %>% mutate(Collection.Date = case_when(grepl("/", Collection.Date) ~ as.character(as.POSIXct(Collection.Date, format = "%m/%d/%Y")), 
+                                                              !grepl("/", Collection.Date) & !grepl("-", Collection.Date) ~ as.character(as.Date(Collection.Date, origin = "1899-12-30")), 
+                                                              T ~ Collection.Date))
+  }
+  
+  fileone$Collection.Date <- as.character(paste0(substr(fileone$Collection.Date, 1, 4), "-", substr(fileone$Collection.Date, 6, 7), "-", substr(fileone$Collection.Date, 9, 10)))
   
   ## change all column names to lowercase and remove leading/lagging white space
   ## to make it easier to process
@@ -311,6 +330,17 @@ cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "21
                                                                                 "ZZXACKB4", "ZZXACKB9", "ZZXACKBE", "ZZXACKBT",
                                                                                 "ZZXACKBY", "ZZXACKC3", "ZZXACKC8") ~ "Collection Date corrected from 2021 to 2022 on 1/25/2022",
                                                                T ~ as.character(flag)))
+
+## fill in missing ct values
+miss_ct <- read.csv(paste0(cdcivy_manifest_fp, "/Full_IVY_Set/fill_in_cts_new_28Apr2022.csv"), colClasses = "character")
+miss_ct <- miss_ct[, c(2:12)]
+colnames(miss_ct) <- c("position.#", "site.name", "study.id", "specimen.type", "collection.date", "aliquot.id",
+                       "rnp.ct", "covid-19.n1", "covid-19.n2", "freezer.box", "cell.#")
+miss_ct$collection.date <- as.character(as.POSIXct(miss_ct$collection.date, format = "%m/%d/%y"))
+miss_ct$collection.date <- as.character(paste0(substr(miss_ct$collection.date, 1, 4), "-", substr(miss_ct$collection.date, 6, 7), "-", substr(miss_ct$collection.date, 9, 10)))
+
+full_ivy <- filter(full_ivy, !aliquot.id %in% unique(miss_ct$aliquot.id))
+full_ivy <- rbind(full_ivy, miss_ct)
 
 ### write out full ivy set
 write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_manifest_list.csv"), row.names = FALSE, na = "")

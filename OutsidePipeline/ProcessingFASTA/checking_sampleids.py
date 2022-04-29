@@ -17,7 +17,7 @@ plate_run_name = str(sys.argv[1])
 
 ## first, get a list of all the sample_ids in the plate map we're checking
 #meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
-current_user <- os.getcwd()
+current_user = os.getcwd()
 
 if "juliegil" in current_user:
     meta_file_location = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"

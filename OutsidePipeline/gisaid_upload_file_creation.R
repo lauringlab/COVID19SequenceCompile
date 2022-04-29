@@ -17,7 +17,7 @@ if (grepl("juliegil", checking_wd)){
   starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else if (grepl("leighbaker", checking_wd)){
-  code_path <- "/Users/leighbaker/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
   starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else {
@@ -86,7 +86,7 @@ if (any(ff$sample_per_subject > 1)){
 #ff <- filter(ff, sample_per_subject == 1 | !subject_id %in% c("101437962"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, sample_id != "10041097200")
-#ff <- filter(ff, subject_id != "045447388" & subject_id != "101437962")
+#ff <- filter(ff, subject_id != "033646963" & subject_id != "025310652")
 
 ################################################################################
 ### fix date formatting
@@ -96,8 +96,20 @@ ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(a
 
 ################################################################################
 
-# enter GISAID username here
-ff$Submitter <- "juliegil"
+# enter GISAID username here 
+ff$Submitter <- 
+  if (grepl("juliegil", checking_wd)){
+  
+  Submitter <- "juliegil"
+  
+} else if (grepl("leighbaker", checking_wd)){
+  Submitter <- "Leighbaker"
+  
+} else {
+  
+  print("User not recognized.")
+  
+}
 
 # create FASTA filename string
 ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.final.gisaid.fasta")
@@ -205,7 +217,19 @@ ff$submitlabaddress <- "1137 Catherine Street, Ann Arbor, MI, USA"
 ff$submitlabsampleid <- ""
 
 ### Authors
-ff$authors <- "Gilbert"
+ff$authors <-
+if (grepl("juliegil", checking_wd)){
+  
+  authors <- "Gilbert"
+  
+} else if (grepl("leighbaker", checking_wd)){
+  authors <- "Baker"
+  
+} else {
+  
+  print("User not recognized.")
+  
+}
 
 ff$comment <- ""
 ff$commenticon <- ""
@@ -239,3 +263,4 @@ wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleM
 writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)
 
 saveWorkbook(wb, paste0(outputLOC, gufn, ".xlsx"), overwrite = TRUE)
+

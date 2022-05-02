@@ -14,7 +14,7 @@ library(janitor)
 ################################################################################
 
 # gisaid file path
-gisaid_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
+gisaid_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/new_gisaid_try")
 
 ### output location of gisaid files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
@@ -25,21 +25,26 @@ file_list <- list.files(pattern = "*.tsv", path = gisaid_fp)
 
 ## check here - there should only be one .tsv file in this folder location, the most
 # current gisaid file
-if (length(file_list) != 1){
-  stop(paste0("There is more than one .tsv file in ", gisaid_fp))
+#if (length(file_list) != 1){
+#  stop(paste0("There is more than one .tsv file in ", gisaid_fp))
+#}
+
+gisaid_storage <- data.frame()
+
+for (i in file_list){
+    gisaid_in <- read.delim(paste0(gisaid_fp, "/", i))
+    gisaid_storage <- rbind(gisaid_storage, gisaid_in)
 }
 
-gisaid_storage <- read.delim(paste0(gisaid_fp, "/", file_list[1]))
-  
 # remove any empty rows/columns that may come in
-gisaid_storage <- remove_empty(gisaid_storage)
+#gisaid_storage <- remove_empty(gisaid_storage)
   
 # select columns we care about
-gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Pango.lineage)
+gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Lineage)
 
 # create sample_id column
 gisaid_storage$sample_id <-  sapply(strsplit(as.character(gisaid_storage$Virus.name),'/'), "[", 3)
-gisaid_storage <- filter(gisaid_storage, grepl("MI-UM", Virus.name) | grepl("IVY", Virus.name) | grepl("RVTN", Virus.name))
+#gisaid_storage <- filter(gisaid_storage, grepl("MI-UM", Virus.name) | grepl("IVY", Virus.name) | grepl("RVTN", Virus.name))
 gisaid_storage$sample_id <-  sapply(strsplit(as.character(gisaid_storage$sample_id),'-'), "[", 3)
 
 ### rename columns 

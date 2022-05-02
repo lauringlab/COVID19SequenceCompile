@@ -38,7 +38,8 @@ for (i in file_list){
 
 # remove any empty rows/columns that may come in
 #gisaid_storage <- remove_empty(gisaid_storage)
-  
+#only keeping distinct rows 10,000 row limit for Gisaid
+gisaid_storage <- gisaid_storage %>% distinct()  
 # select columns we care about
 gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Lineage)
 

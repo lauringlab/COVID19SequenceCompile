@@ -80,7 +80,6 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | coll_date | sample_full_manifest_list.csv | date | | Date the sample was collected from the individual |
 | flag | sample_full_manifest_list.csv | character | | Notes for each sample, some warnings introduced by the pipeline |
 | received_source | sample_full_manifest_list.csv | character | | Place the sample was received from; options include = UHS, CBR, CSTP, Martin, etc. |
-| SiteName | sample_full_manifest_list.csv | character | | Research site where the sample was collected from; Only applicable for the CDC IVY study |
 | SampleBarcode | sample_full_plate_list.csv | character | | Barcode type identifier for a particular sample; Not all samples have a barcode style identifier |
 | PlateDate | sample_full_plate_list.csv | date | | Date the plate was created on |
 | PlatePlatform | sample_full_plate_list.csv | character | | Testing system the plate was run through; Options include = Nanopore, Illumina, etc. |
@@ -94,8 +93,11 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | nextclade_completeness | sample_full_nextclade_list.csv | numeric | | Percentage; how complete the nextclade coverage was of the sample genome |
 | gisaid_strain | sample_full_gisaid_list.csv | character | | Virus name, as listed on GISAID. Format is USA/MI-UM-sample_id/YYYY. |
 | gisaid_epi_isl | sample_full_gisaid_list.csv | character | | GISAID database accession number. General format is EPI_ISL_NNNNNN. |
+| gisaid_clade | sample_full_gisaid_list.csv | character | | Clade, as found in the GISAID metadata download | 
+| gisaid_pango_lineage | sample_full_gisaid_list.csv | character | | Pangolin lineage, as found in the GISAID metadata download | 
 | received_date | sample_full_manifest_list.csv | date | Yes | Date the sample was received at the lab from the received_source |
 | position | sample_full_manifest_list.csv | character | | Position the sample was in, in the box received from the received source |
+| SiteName | sample_full_manifest_list.csv | character | | Research site where the sample was collected from; Only applicable for the CDC IVY study |
 | subject_id_length | sample_full_manifest_list.csv | numeric | | Number of characters in the subject id; Calculated before a leading zero is added, so in some cases may be one short from the current length |
 | PlateName | sample_full_plate_list.csv | character | | Full plate name of the sample test run; generally corresponds to plate file name |
 | PlatePosition | sample_full_plate_list.csv | character | | Position the sample was in, in the plate that it was tested on |
@@ -116,6 +118,13 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | NanoporePangolin_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToPangolin is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 | IlluminaNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Illumina and PlateToNextclade is more than 8, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 | NanoporeNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToNextclade is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
+| sample_per_subject | {calculated in compile_components_code.R} | numeric | | Numbering of sample_ids per subject_id of the listed sample; samples are ordered by collection date and assigned a number based on 1st, 2nd, 3rd, etc. sampling | 
+| multiSamples | {calculated in compile_components_code.R} | numeric | | 1,0 binary; has a value of 1 if the max sample_per_subject of a given sample's subject_id is greater than 1, has a value of 0 if the subject_id has only one sample_id associated with it. | 
+| daysFromPrevious | {calculated in compile_components_code.R} | numeric | | Number of days since the previous sample coll_date to the current sample coll_date |
+| ninetyDayFromPrevious | {calculated in compile_components_code.R} | numeric | |  binary 1,0; if daysFromPrevious is greater than 90, then is equal to 1, otherwise it is 0 | 
+| previousLineageDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's pangolin_lineage value is different than the current pangolin_lineage, then has a value of 1, otherwise is 0 | 
+| previousCladeDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's nextclade_clade value is different than the current nextclade_clade, then has a value of 1, otherwise is 0 | 
+
 
 ---
 

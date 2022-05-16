@@ -81,12 +81,17 @@ if (any(ff$sample_per_subject > 1)){
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 
+#writes the original_full dataframe to a .csv file
+#the path will need to be changed to where you want the file to be written to
+#write_csv(df, 'path/to/df/export.csv')
+#write_csv(original_full, '~/Documents/Leigh_coding_projects/NP168.csv')
+
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1 | !subject_id %in% c("101437962"))
 #ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, sample_id != "10041097200")
-#ff <- filter(ff, subject_id != "033646963" & subject_id != "025310652")
+#ff <- filter(ff, sample_id != "10045297866")
+#ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
 
 ################################################################################
 ### fix date formatting

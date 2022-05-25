@@ -86,8 +86,6 @@ And put them all in the same folder on your computer. Use full_run_code.R to run
 
 Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file.
 
-For a complete record of the order of events to process a full run of data, visit the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
-
 ### Data Dictionary for Compiled File:
 
 The final created file is called <b>full_compiled_data.csv</b>.
@@ -162,7 +160,13 @@ The checking_compiled_files.R code file can be used to see if the "main" version
 
 #### Generating .csv File for RedCap Upload
 
-The cdc_ivy_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the CDC IVY RedCap database.
+The cdc_ivy_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the CDC IVY RedCap database. This code file creates two separate files, one for IVY3 and one for IVY4.
+
+The rvtn_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the RVTN RedCap database.
+
+#### Moving Files in an Automated Fashion
+
+The files moving_nextclade_output.R, moving_pangolin_output.R, and moving_plate_map_files.R are all used to find, move, and re-name files that are used within the pipeline, in order to limit human errors in copy and paste.
 
 #### Generating Excel File for GISAID Upload
 
@@ -195,12 +199,19 @@ The prep_fasta_NumberOne.py code turns the barcode label names into the subject_
 
 The SelectSequences.py code is used to get a subset of a .fasta file by ID.
 
+#### Checking Sample ID Naming
+
+The checking_sampleids.py code compares the sample id's listed in the plate map file to the sample ids's listed in the associated FASTA file for a single plate. This code was introduced in order to catch instances where the FASTA file may have been named incorrectly.
+
+#### Creating FASTA file for GISAID upload
+
+The prep_fasta_NumberTwo.py file curates and creates the final FASTA file used for GISAID submisison.
+
 ---
 
 ### Process
 
-Process is tracked here: https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit?usp=sharing
-
+For a complete record of the order of events to process a full run of data, visit the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
 Manifests are received from the following sources:
 
 * COVID-19 Sampling & Tracking Program (CSTP) - samples from this source are processed first by LynxDx
@@ -208,10 +219,13 @@ Manifests are received from the following sources:
 * University of Michigan Central Biorepository (CBR)
 * CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan
 * Michigan Medicine ED ID Now project (EDIDNOW)
-
-Dr. Adam Lauring / Will Fitzsimmons review these manifests, checks and renames columns as necessary, renames the file, and places them in the appropriate Manifests folder [within DropBox/MED-LauringLab/SequenceSampleMetadata/Manifests].
+* University Health Services (UHS)
+* CDC Respiratory Virus Transmission Network (RVTN)
 
 ---
+### Manifests
+
+Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/SequenceSampleMetadata/Manifests].
 
 ##### Manifest Column Format (for all except CDC IVY)
 
@@ -222,6 +236,11 @@ Dr. Adam Lauring / Will Fitzsimmons review these manifests, checks and renames c
 | subject_id | numeric | Identification number for the subject (individual) - there may be multiple samples per subject |
 | coll_date | date | Date the sample was collected on; M/D/YY format |
 | flag | character | Notes |
+
+##### Manifest Column Format (for IVY & RVTN)
+
+| Columns | Data Type	| Variable Description |
+| --- | --- | --- |
 
 ##### Manifest File Name Format
 

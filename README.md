@@ -223,6 +223,7 @@ Manifests are received from the following sources:
 * CDC Respiratory Virus Transmission Network (RVTN)
 
 ---
+
 ### Manifests
 
 Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/SequenceSampleMetadata/Manifests].

@@ -6,28 +6,34 @@
 
 Folder structure lives within the MED-LauringLab DropBox folder.
 
-* SequenceSampleMetadata
-    * FinalSummary: Contains the final compiled data full_compiled_data.csv
-        * ReportNotifications: Contains out_of_range_alert.csv
-        * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file
-        * CDC_IVY_UPLOADS: Contains the files created in order to upload to the CDC IVY RedCap database
-    * Manifests
-        * CBR: Contains manifest files from the University of Michigan Campus BioRepository
-        * CDCIVY: Contains manifest files from the CDC IVY project
-            * Full_IVY_Set: Contains IVY_sample_full_manifest_list.csv, the compiled CDC IVY manifest lists with all variables sent (a subset of these are kept for the final compiled sequence list)
-            * Keys: Contains CDC_SiteCodebook.csv, the list of CDC IVY sites, their locations, and their coded name
-        * CSTP: Contains manifest files from the COVID-19 Sampling & Tracking Program (ultimately from LynxDx)
-        * EDIDNOW: Contains manifest files from the ED IDnow testing program at Michigan Medicine
-        * Martin: Contains manifest files from the Martin Lab at the School of Public Health
-        * ManifestsComplete: Contains the manifest_output_report_YYYYMMDD.xlsx reports, as well as the compiled manifest list sample_full_manifest_list.csv
-    * PlateMaps: Contains all plate map files as YYYYMMDD_Illumina_Plate_##.xlsx or YYYYMMDD_Nanopore_Run_##.xlsx
-        * PlateMapsComplete: Contains the compiled plate map list sample_full_plate_list.csv
-    * PreviousLists: Contains the original processed sample list ProcessedSampleCumulativeList_20210326.csv maintained by Andrew Valesano prior to code implementation
-    * SequenceOutcomes
-        * gisaid: Contains the GISAID metadata file metadata_YYYY-MM-DD_MM-DD.tsv; also contains the GISAID upload template file (GISAID_UPLOAD_TEMPLATE.xls)
-        * nextclade: Contains the NextClade output files as either YYYYMMDD_Plate_##\_##\_nextclade.tsv or YYYYMMDD\_Nanopore\_Run_##_nextclade.tsv
-        * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv
-        * SequenceOutcomeComplete: Contains the sequence outcome final compiled files of sample_full_gisaid_list.csv, sample_full_nextclade_list.csv, and sample_full_pangolin_list.csv
+* INFLUENZA_A
+* SARSCOV2
+  * 2_PlateMaps: Original plate map files are first placed here by laboratory team
+  * 3_ProcessedGenomes: Original sequence files are placed here, organized by plate.
+    * Within each plate folder = .all.consensus.final.fasta (fasta file of sequences with >90% completeness), all.consensus.renamed.full.fasta (fasta file of all sequences)
+  * 4_SequenceSampleMetadata
+      * FinalSummary: Contains the final compiled data full_compiled_data.csv
+          * ReportNotifications: Contains out_of_range_alert.csv
+          * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file
+          * CDC_IVY_UPLOADS: Contains the files created in order to upload to the CDC IVY RedCap database
+      * Manifests: contains all manifest files, organized by received source
+          * CBR: Contains manifest files from the University of Michigan Campus BioRepository
+          * CDCIVY: Contains manifest files from the CDC IVY project
+              * Full_IVY_Set: Contains IVY_sample_full_manifest_list.csv, the compiled CDC IVY manifest lists with all variables sent (a subset of these are kept for the final compiled sequence list)
+              * Keys: Contains CDC_SiteCodebook.csv, the list of CDC IVY sites, their locations, and their coded name
+          * CSTP: Contains manifest files from the COVID-19 Sampling & Tracking Program (ultimately from LynxDx)
+          * EDIDNOW: Contains manifest files from the ED IDnow testing program at Michigan Medicine
+          * Martin: Contains manifest files from the Martin Lab at the School of Public Health
+          * ManifestsComplete: Contains the manifest_output_report_YYYYMMDD.xlsx reports, as well as the compiled manifest list sample_full_manifest_list.csv
+      * PlateMaps: Contains all plate map files as YYYYMMDD_Illumina_Plate_##.xlsx or YYYYMMDD_Nanopore_Run_##.xlsx
+          * PlateMapsComplete: Contains the compiled plate map list sample_full_plate_list.csv
+      * PreviousLists: Contains the original processed sample list ProcessedSampleCumulativeList_20210326.csv maintained by Andrew Valesano prior to code implementation
+      * SequenceOutcomes
+          * gisaid: Contains the GISAID metadata file metadata_YYYY-MM-DD_MM-DD.tsv; also contains the GISAID upload template file (GISAID_UPLOAD_TEMPLATE.xls)
+          * nextclade: Contains the NextClade output files as either YYYYMMDD_Plate_##\_##\_nextclade.tsv or YYYYMMDD\_Nanopore\_Run_##_nextclade.tsv
+          * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv
+          * SequenceOutcomeComplete: Contains the sequence outcome final compiled files of sample_full_gisaid_list.csv, sample_full_nextclade_list.csv, and sample_full_pangolin_list.csv
+    * 5_GISAID_Uploads: contains each plate's necessary files to submit for GISAID submission
 
 <b>R Libraries:</b>
 
@@ -93,8 +99,8 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | nextclade_completeness | sample_full_nextclade_list.csv | numeric | | Percentage; how complete the nextclade coverage was of the sample genome |
 | gisaid_strain | sample_full_gisaid_list.csv | character | | Virus name, as listed on GISAID. Format is USA/MI-UM-sample_id/YYYY. |
 | gisaid_epi_isl | sample_full_gisaid_list.csv | character | | GISAID database accession number. General format is EPI_ISL_NNNNNN. |
-| gisaid_clade | sample_full_gisaid_list.csv | character | | Clade, as found in the GISAID metadata download | 
-| gisaid_pango_lineage | sample_full_gisaid_list.csv | character | | Pangolin lineage, as found in the GISAID metadata download | 
+| gisaid_clade | sample_full_gisaid_list.csv | character | | Clade, as found in the GISAID metadata download |
+| gisaid_pango_lineage | sample_full_gisaid_list.csv | character | | Pangolin lineage, as found in the GISAID metadata download |
 | received_date | sample_full_manifest_list.csv | date | Yes | Date the sample was received at the lab from the received_source |
 | position | sample_full_manifest_list.csv | character | | Position the sample was in, in the box received from the received source |
 | SiteName | sample_full_manifest_list.csv | character | | Research site where the sample was collected from; Only applicable for the CDC IVY study |
@@ -118,12 +124,12 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | NanoporePangolin_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToPangolin is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 | IlluminaNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Illumina and PlateToNextclade is more than 8, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 | NanoporeNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToNextclade is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
-| sample_per_subject | {calculated in compile_components_code.R} | numeric | | Numbering of sample_ids per subject_id of the listed sample; samples are ordered by collection date and assigned a number based on 1st, 2nd, 3rd, etc. sampling | 
-| multiSamples | {calculated in compile_components_code.R} | numeric | | 1,0 binary; has a value of 1 if the max sample_per_subject of a given sample's subject_id is greater than 1, has a value of 0 if the subject_id has only one sample_id associated with it. | 
+| sample_per_subject | {calculated in compile_components_code.R} | numeric | | Numbering of sample_ids per subject_id of the listed sample; samples are ordered by collection date and assigned a number based on 1st, 2nd, 3rd, etc. sampling |
+| multiSamples | {calculated in compile_components_code.R} | numeric | | 1,0 binary; has a value of 1 if the max sample_per_subject of a given sample's subject_id is greater than 1, has a value of 0 if the subject_id has only one sample_id associated with it. |
 | daysFromPrevious | {calculated in compile_components_code.R} | numeric | | Number of days since the previous sample coll_date to the current sample coll_date |
-| ninetyDayFromPrevious | {calculated in compile_components_code.R} | numeric | |  binary 1,0; if daysFromPrevious is greater than 90, then is equal to 1, otherwise it is 0 | 
-| previousLineageDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's pangolin_lineage value is different than the current pangolin_lineage, then has a value of 1, otherwise is 0 | 
-| previousCladeDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's nextclade_clade value is different than the current nextclade_clade, then has a value of 1, otherwise is 0 | 
+| ninetyDayFromPrevious | {calculated in compile_components_code.R} | numeric | |  binary 1,0; if daysFromPrevious is greater than 90, then is equal to 1, otherwise it is 0 |
+| previousLineageDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's pangolin_lineage value is different than the current pangolin_lineage, then has a value of 1, otherwise is 0 |
+| previousCladeDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's nextclade_clade value is different than the current nextclade_clade, then has a value of 1, otherwise is 0 |
 
 
 ---

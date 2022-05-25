@@ -6,7 +6,7 @@
 
 Folder structure lives within the MED-LauringLab DropBox folder.
 
-* INFLUENZA_A
+* INFLUENZA_A: Code exists for this pipeline, but is not finalized.
 * SARSCOV2
   * 2_PlateMaps: Original plate map files are first placed here by laboratory team
   * 3_ProcessedGenomes: Original sequence files are placed here, organized by plate.
@@ -48,6 +48,7 @@ Folder structure lives within the MED-LauringLab DropBox folder.
 * janitor: https://cran.r-project.org/web/packages/janitor/index.html
 * withr: https://cran.r-project.org/web/packages/withr/index.html
 * openxlsx: https://cran.r-project.org/web/packages/openxlsx/index.html
+* reshape2: https://cran.r-project.org/web/packages/reshape2/index.html
 
 <b>Code:</b>
 
@@ -61,6 +62,17 @@ In order to run the compilation code pipeline, download the following code sets:
 * gisaid_code.R
 * compile_components_code.R
 * <span style="background-color: #F0B7B3">full_run_code.R</span>
+* <b>OutsidePipeline</b>
+  * checking_compiled_files.R
+  * gisaid_upload_file_creation.R
+  * moving_nextclade_output.R
+  * moving_pangolin_output.R
+  * moving_plate_map_files.R
+  * subset_compiled_for_fasta.R
+    * <b>ProcessingFASTA</b>
+      * checking_sampleids.py
+      * prep_fasta_NumberTwo.py
+      * prep_fasta_for_gisaid.py
 
 And put them all in the same folder on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
 

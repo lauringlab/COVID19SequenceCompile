@@ -78,20 +78,15 @@ And put them all in the same folder on your computer. Use full_run_code.R to run
 
 <b>Additional Notes:</b>
 
-* All code sets have a variable called ```starting_path``` that will need to be changed to your individual path to the level just above the  SampleMetaDataOrganization folder.
-* Ensure that you have access to either the LauringLab DropBox folder, or your own version of the pipeline folder structure, on your computer.
+* At the beginning of full_run_code.R, there is a section of code to set the ```starting_path```, ```code_path```, ```batch_path```, and ```influenza_path``` for your particular computer. This only works for adjusting the portions of the necessary code that are called from the full_run_code.R file. In any instance, always check all file paths before running code files.
+* Ensure that you have access to either the LauringLab DropBox folder, or your own version of the pipeline folder structure, from your computer.
 
 
 ### Code Order:
 
-Use full_run_code.R to run all the pieces of the pipeline in order. This order is:
+Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file.
 
-* manifest_code.R
-* plate_map_code.R
-* pangolin_code.R
-* nextclade_code.R
-* gisaid_code.R
-* compile_components_code.R
+For a complete record of the order of events to process a full run of data, visit the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
 
 ### Data Dictionary for Compiled File:
 
@@ -153,9 +148,9 @@ The final created file is called <b>full_compiled_data.csv</b>.
 ---
 
 <b>Additional Information</b>
-* https://cov-lineages.org/index.html
-* https://perkinelmer-appliedgenomics.com/wp-content/uploads/marketing/Coronavirus/NEXTFLEX_Variant-Seq_SARS-CoV-2_Software-from-CosmosID.pdf
-* https://github.com/nextstrain/nextclade
+* Latest epidemiological lineages of SARS-CoV-2: https://cov-lineages.org/index.html
+* Additional Definition Source: https://perkinelmer-appliedgenomics.com/wp-content/uploads/marketing/Coronavirus/NEXTFLEX_Variant-Seq_SARS-CoV-2_Software-from-CosmosID.pdf
+* Nextclade GitHub: https://github.com/nextstrain/nextclade
 
 ---
 

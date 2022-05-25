@@ -46,7 +46,8 @@ for (each_page in file_list){
 }
 
 #colnames(pang_storage)
-
+pang_storage <- pang_storage %>% mutate(status = case_when(status == "" | is.na(status) ~ qc_status,
+                                                           T ~ status))
 pang_storage <- pang_storage %>% select(taxon, lineage, probability, pangoLEARN_version, status, note, conflict, pango_version, pangolin_version, pang1_runDate) %>% distinct()
 ### rename columns 
 rename_columns <- c("SampleID", "pangolin_lineage", "pangolin_probability", "pangoLEARN_version", "pangolin_status", "pangolin_note", "pangolin_conflict", "pango_version", "pangolin_version", "pangolin_runDate")

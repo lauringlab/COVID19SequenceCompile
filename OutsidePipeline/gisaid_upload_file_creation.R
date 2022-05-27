@@ -19,7 +19,13 @@ if (grepl("juliegil", checking_wd)){
 } else if (grepl("leighbaker", checking_wd)){
   code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
   starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
+
+} else if (grepl("leighbak", checking_wd)){
   
+  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
+  batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
+    
 } else {
   
   print("User not recognized.")

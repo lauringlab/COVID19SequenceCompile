@@ -116,6 +116,9 @@ ff$Submitter <-
 } else if (grepl("leighbaker", checking_wd)){
   Submitter <- "Leighbaker"
   
+} else if (grepl("leighbak", checking_wd)){
+  Submitter <- "Leighbaker"
+  
 } else {
   
   print("User not recognized.")
@@ -235,6 +238,9 @@ if (grepl("juliegil", checking_wd)){
   
 } else if (grepl("leighbaker", checking_wd)){
   authors <- "Baker"
+  
+} else if (grepl("leighbak", checking_wd)){
+  authors <- "Baker" 
   
 } else {
   

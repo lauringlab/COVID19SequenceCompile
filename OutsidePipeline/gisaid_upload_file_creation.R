@@ -38,6 +38,9 @@ source(paste0(code_path, "pipeline_functions.R"))
 ################################################################################
 ### fill in some info
 
+#fill in the plate name below if running this code seperate and not after "full_run_code.R"
+#plate_name <- "20220524_SC2_Nanopore_Run_174"
+
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
 runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" options
@@ -114,6 +117,9 @@ ff$Submitter <-
   Submitter <- "juliegil"
   
 } else if (grepl("leighbaker", checking_wd)){
+  Submitter <- "Leighbaker"
+  
+} else if (grepl("leighbak", checking_wd)){
   Submitter <- "Leighbaker"
   
 } else {
@@ -235,6 +241,9 @@ if (grepl("juliegil", checking_wd)){
   
 } else if (grepl("leighbaker", checking_wd)){
   authors <- "Baker"
+  
+} else if (grepl("leighbak", checking_wd)){
+  authors <- "Baker" 
   
 } else {
   

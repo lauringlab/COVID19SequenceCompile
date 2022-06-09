@@ -329,6 +329,7 @@ cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "21
                                                                                 "ZZXACKA5", "ZZXACKAA", "ZZXACKAU", "ZZXACKAZ",
                                                                                 "ZZXACKB4", "ZZXACKB9", "ZZXACKBE", "ZZXACKBT",
                                                                                 "ZZXACKBY", "ZZXACKC3", "ZZXACKC8") ~ "Collection Date corrected from 2021 to 2022 on 1/25/2022",
+                                                               sample_id == "W13J44U2" ~ "GISAID identified as BA.1/BA.2 recombinant",
                                                                T ~ as.character(flag)))
 
 ## fill in missing ct values

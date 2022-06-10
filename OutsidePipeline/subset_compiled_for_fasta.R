@@ -7,7 +7,7 @@
 # load libraries
 library(tidyverse)
 library(lubridate)
-
+library(gt)
 ################################################################################
 # set paths 
 #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
@@ -23,6 +23,26 @@ seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSample
 # filter to plate run
 seq_list2 <- filter(seq_list, PlateNumber == strsplit(plate_name, "_")[[1]][5] & PlateDate == paste0(substr(strsplit(plate_name, "_")[[1]][1], 1, 4), "-", substr(strsplit(plate_name, "_")[[1]][1], 5, 6), "-", substr(strsplit(plate_name, "_")[[1]][1], 7, 8)))
 #puis <- filter(seq_list, grepl("pui", tolower(flag)) | grepl("pui", tolower(SampleSourceLocation)))
+
+######################################
+# check how current the samples are
+
+sample_years <- unique(year(as_date(seq_list2$coll_date))) 
+sample_years <- sample_years[!is.na(sample_years)] # have to remove NA from control well rows date listing
+current_year <- year(Sys.Date())
+
+if (any(!sample_years %in% current_year)){
+  message("Samples with collection dates not in current year")
+  show_samples <- filter(seq_list2, year(as_date(coll_date)) != current_year)
+  show_samples <- show_samples %>% select(sample_id, subject_id, coll_date, received_source, received_date)
+  print(show_samples %>% gt())
+  letter_value <- readline(prompt="If you'd like to proceed, press y, if you'd like to stop, press n: ")
+  if (letter_value[1] == "n"){
+    stop("Stopped code to correct collection dates.")
+  } 
+}
+
+######################################
 
 missing_subject_id <- nrow(filter(seq_list2, subject_id == "" | is.na(subject_id)))
 missing_collection_date <- nrow(filter(seq_list2, coll_date == "" | is.na(coll_date)))

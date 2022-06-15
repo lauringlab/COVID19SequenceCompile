@@ -20,10 +20,9 @@ uhs_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampl
 stj_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/STJ")
 mm_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/MM")
 puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/PUI_MISC")
+cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/CDCIVY")
 
-#cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
-
-manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, stj_manifest_fp, mm_manifest_fp, puimisc_manifest_fp)
+manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, stj_manifest_fp, mm_manifest_fp, puimisc_manifest_fp, cdcivy_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
@@ -43,101 +42,122 @@ manifest_storage <- data.frame()
 # will iterate through folders
 for (each_folder in manifest_folder_list){
   
+  if (each_folder == cdcivy_manifest_fp){
+        # process ivy manifest
+        
+        # read in manifests
+        file_list <- list.files(pattern = "*.xlsx", path = each_folder)
+        for (ivym in file_list){
+          file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
+          
+          # "position", "sample_id", "subject_id", "coll_date", "flag"
+          file_in <- file_in %>% select(`Position.#`, Aliquot.ID, `Study.ID`, `Collection.Date`, Comments)
+          colnames(file_in) <- c("position", "sample_id", "subject_id", "coll_date", "flag")
+          
+          # sometimes have to cut time off of collection date (from excel)
+          file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+          
+          # add in 2 new columns: received_date and received_source (from file name)
+          file_in$received_date <- date_from_file(ivym)
+          
+          
+          rec_source <- trimws(as.character(strsplit(ivym, "_")[[1]][1]))
+          file_in$received_source <- rec_source
+          
+          # bind all rows together
+          manifest_storage <- rbind(manifest_storage, file_in)
+          
+        }
+  } else {
+  
   ### get names of all .csv files in folder
   file_list <- list.files(pattern = "*.csv", path = each_folder)
   
-  if (length(file_list) != 0){
-    
-    # then iterate through files within each folder
-    for (each_file in file_list){
-      #print(each_file)
-      # read in the file
-      file_in <- read.csv(paste0(each_folder, "/", each_file), colClasses = "character")
+    if (length(file_list) != 0){
       
-      # turn any "" or " " into NA
-      file_in[file_in == ""] <- NA
-      file_in[file_in == " "] <- NA
-      
-      # remove any empty rows that may come in
-      file_in <- remove_empty(file_in, which = "rows")
-      
-      # check for column names: position, sample_id, subject_id, coll_date, flag
-      column_name_check <- colnames(file_in)
-      true_columns <- c("position", "sample_id", "subject_id", "coll_date", "flag")
-      
-      if (identical(true_columns, column_name_check)){
-        ## then do nothing
-        x <- 0
-      } else {
-        if (ncol(file_in) == 5){
-          colnames(file_in) <- true_columns
-        } else {
-          # find out which column is missing
-          whatsdifferent <- setdiff(true_columns, column_name_check)
-          print(whatsdifferent)
-          print("There is a column difference in")
-          print(each_file)
-          stop()
-        }
-      }
-      
-      # check that sample_id, subject_id, and coll_date are all filled in
-      
-      if(any(is.na(file_in$sample_id))){
-        print(each_file)
-        stop("There are missing sample ids.")
-      }
-      
-      if(any(is.na(file_in$subject_id))){
-        print(each_file)
-        stop("There are missing subject ids.")
-      }
-      
-      #check character count of date
-      # character_count_date <- unique(nchar(as.character(file_in$coll_date)))
-      # 
-      # if (character_count_date == 8){
-      #   print("dates in expected format")
-      #   print(each_file)
-      # } else {
-      #   print("dates in full year format")
-      #   print(each_file)
-      # }
-      ## reformat coll_date to YYYY-MM-DD format if necessary
-      test_date_format <- substr(as.character(file_in[1, 4]), 1, 4)
-      #print(test_date_format)
-      
-      if (is.na(as.numeric(test_date_format))){
-        #a <- file_in$coll_date
-        file_in$coll_date <- as.POSIXct(file_in$coll_date, format = "%m/%d/%y")
-      }
-      
-      if(any(is.na(file_in$coll_date))){
-        print(each_file)
-        print("There are missing collection dates.")
+          # then iterate through files within each folder
+          for (each_file in file_list){
+            #print(each_file)
+            # read in the file
+            file_in <- read.csv(paste0(each_folder, "/", each_file), colClasses = "character")
+            
+            # turn any "" or " " into NA
+            file_in[file_in == ""] <- NA
+            file_in[file_in == " "] <- NA
+            
+            # remove any empty rows that may come in
+            file_in <- remove_empty(file_in, which = "rows")
+            
+            # check for column names: position, sample_id, subject_id, coll_date, flag
+            column_name_check <- colnames(file_in)
+            true_columns <- c("position", "sample_id", "subject_id", "coll_date", "flag")
+            
+            if (identical(true_columns, column_name_check)){
+              ## then do nothing
+              x <- 0
+            } else {
+              if (ncol(file_in) == 5){
+                colnames(file_in) <- true_columns
+              } else {
+                # find out which column is missing
+                whatsdifferent <- setdiff(true_columns, column_name_check)
+                print(whatsdifferent)
+                print("There is a column difference in")
+                print(each_file)
+                stop()
+              }
+            }
+            
+            # check that sample_id, subject_id, and coll_date are all filled in
+            
+            if(any(is.na(file_in$sample_id))){
+              print(each_file)
+              stop("There are missing sample ids.")
+            }
+            
+            if(any(is.na(file_in$subject_id))){
+              print(each_file)
+              stop("There are missing subject ids.")
+            }
+            
+          
+            ## reformat coll_date to YYYY-MM-DD format if necessary
+            test_date_format <- substr(as.character(file_in[1, 4]), 1, 4)
+            #print(test_date_format)
+            
+            if (is.na(as.numeric(test_date_format))){
+              #a <- file_in$coll_date
+              file_in$coll_date <- as.POSIXct(file_in$coll_date, format = "%m/%d/%y")
+            }
+            
+            if(any(is.na(file_in$coll_date))){
+              print(each_file)
+              print("There are missing collection dates.")
+              
+              ## fill the missings with current date, and edit flag
+              file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ gsub("NA", "", paste0(flag, "Missing Date in Manifest - Replaced with Today Date")), 
+                                                             T ~ flag), 
+                                            coll_date = case_when(is.na(coll_date) ~ as.character(Sys.Date()), 
+                                                                  T ~ as.character(coll_date)))
+            }
+            
+            # add in 2 new columns: received_date and received_source (from file name)
+            file_in$received_date <- date_from_file(each_file)
+            
+            rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
+            file_in$received_source <- rec_source
+            
+            # bind all rows together
+            manifest_storage <- rbind(manifest_storage, file_in)
+          
+          }
+          
         
-        ## fill the missings with current date, and edit flag
-        file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ gsub("NA", "", paste0(flag, "Missing Date in Manifest - Replaced with Today Date")), 
-                                                       T ~ flag), 
-                                      coll_date = case_when(is.na(coll_date) ~ as.character(Sys.Date()), 
-                                                            T ~ as.character(coll_date)))
-      }
-      
-      # add in 2 new columns: received_date and received_source (from file name)
-      file_in$received_date <- date_from_file(each_file)
-      
-      rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
-      file_in$received_source <- rec_source
-      
-      # bind all rows together
-      manifest_storage <- rbind(manifest_storage, file_in)
-      
+          ### select only distinct rows
+          manifest_storage <- manifest_storage %>% distinct()
+    } else {
+      print(paste0("No files in folder = ", each_folder))
     }
-    
-    ### select only distinct rows
-    manifest_storage <- manifest_storage %>% distinct()
-  } else {
-    print(paste0("No files in folder = ", each_folder))
   }
 }
 

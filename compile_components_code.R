@@ -177,6 +177,12 @@ mppnc2 <- subject_id_length_QA(mppnc2, "CSTP")
 ################################################################################
 ## add a column to number multiple sample_ids per subject_id
 
+#if a failed run was processed through round2 of full_run_code.R
+#then the line below will need to be uncommented to pull out the failed run data before running 
+#gisaid_upload_file_creatin.R and the rest of this code will then need to be run
+#fill in the PlateDat and PlateNumber of the run that you DON'T want the data from
+#mppnc2 <- filter(mppnc2, PlateDate != "2022-06-06" | PlateNumber != "179")
+
 mppnc2 <- mppnc2 %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
 # add a column for indicating if a particular subject_id has multiple samples
@@ -269,3 +275,4 @@ write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_w
 
 write.csv(mppnc2, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc2, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")
+

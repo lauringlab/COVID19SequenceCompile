@@ -8,6 +8,8 @@
 # use in git bash
 #c:/users/juliegil/appdata/local/programs/python/python38/python.exe C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/ProcessingFASTA/prep_fasta_NumberOne.py --prefix "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/ProcessedGenomes/20210803_Nanopore_Run_37/20210803_Nanopore_Run_37"
 # python prep_fasta_NumberOne.py --prefix 20210519_Nanopore_Run_26
+# python3 replace_barcodes_fasta.py --prefix "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/20220613_SC2_Nanopore_Run_183/20220613_SC2_Nanopore_Run_183"
+
 #"""
 
 # ======================= Import modules ======================
@@ -39,7 +41,7 @@ def main():
     file_1 = args.prefix + ".all.consensus.renamed.full.fasta"
     file_2 = args.prefix + ".all.consensus.tmp.fasta"
     file_3 = args.prefix + ".2all.consensus.renamed.full.fasta" # This is the file to use in pangolin and nextclade.
-    meta_file = args.prefix + ".replace.meta.csv" # This is the full compiled list, or the subset that matches this run.
+    meta_file = args.prefix + "switch_ids.csv" # This is the full compiled list, or the subset that matches this run.
 
     # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
@@ -57,8 +59,8 @@ def main():
         id = id.split("/", 1)[0] ## removes excess info that comes through with barcode in some instances (NB01/ARTIC/nanopolish)
         print(id)
         try:
-            meta_sample = meta[meta.SampleBarcode == id]
-            new_ID = list(set(meta_sample.sample_id))[0]
+            meta_sample = meta[meta.SwitchID == id]
+            new_ID = list(set(meta_sample.SampleID))[0]
             print(new_ID)
 
             record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings

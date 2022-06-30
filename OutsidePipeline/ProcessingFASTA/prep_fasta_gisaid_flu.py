@@ -32,9 +32,10 @@ def main():
     ## takes the string after "--prefix" in the command line for use later
     #parser.add_argument('--prefix', action="store", dest="prefix")
     #args = parser.parse_args()
-    pn_date = "20220408"
-    pn_run = "16"
-    pn = pn_date + "_IAV_Nanopore_Run_" + pn_run
+    pn_date = "20220523"
+    pn_run = "21"
+    #pn = pn_date + "_IAV_Nanopore_Run_" + pn_run
+    pn = pn_date + "_IAV_Illumina_Run_" + pn_run
 
     sequence_folder = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/" + pn + "/Segment_sequences/"
     onlyfiles = [f for f in os.listdir(sequence_folder) if os.path.isfile(os.path.join(sequence_folder, f))]

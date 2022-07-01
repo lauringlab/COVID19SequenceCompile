@@ -86,13 +86,31 @@ mani_plate <- rbind(mani_plate, mani_plate2)
 
 # then, read in pangolin, gisaid, and next clade files
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
-gisaid <- read.csv(paste0(gisaid_fp, "/gisaid_epiflu_isolates.csv"), colClasses = "character")
 
-gisaid <- gisaid %>% select(Isolate_Id, HA.Segment_Id, Isolate_Name)
+
+### gisaid
+### read every .csv in that folder
+g_files <- list.files(gisaid_fp, pattern = "*.csv")
+
+gisaid <- data.frame()
+
+for (i in g_files){
+  gisaid_in <- read.csv(paste0(gisaid_fp, "/", i), colClasses = "character")
+  gisaid <- rbind(gisaid, gisaid_in)
+}
+
+gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+                            P3.Segment_Id, Isolate_Name)
 gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
 gisaid$id <- gsub("UOM", "", gisaid$id)
-gisaid <- gisaid %>% select(id, Isolate_Id, HA.Segment_Id, Isolate_Name)
-colnames(gisaid) <- c("sample_id", "Isolate_Id", "HA.Segment_Id", "Isolate_Name")
+gisaid$id <- gsub("IVY", "", gisaid$id)
+gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+                            P3.Segment_Id, Isolate_Name)
+colnames(gisaid) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id", 
+                      "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id", 
+                      "P3.Segment_Id", "Isolate_Name")
 
 mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
@@ -129,7 +147,9 @@ mppnc2 <- mppnc %>% select(sample_id, subject_id, coll_date,
                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
                            nextclade_HA_runDate, nextclade_HA_type, 
-                           Isolate_Id, HA.Segment_Id, Isolate_Name,              
+                           Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                           NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+                           P3.Segment_Id, Isolate_Name,              
                            subject_id_length, position, PlateName, PlatePosition,               
                            SampleSourceLocation, PlateToNextclade_days, 
                            sample_per_subject)

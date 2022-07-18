@@ -32,7 +32,7 @@ colnames(file_in)[6] <- "Barcode"
 colnames(file_in)[7] <- "Source"
 
 # need to remove negative control wells from consideration
-file_in_source <- filter(file_in, !grepl("control", tolower(file_in$Source)))
+file_in_source <- filter(file_in, !grepl("control", tolower(file_in$Source)) & !grepl("ctrl", tolower(file_in$Source)))
 ### check Source column for following format: <character string>, <space>, date as M-D-YYYY
 space_check <- grepl(" ", file_in_source$Source)
 if (any(space_check == FALSE)){

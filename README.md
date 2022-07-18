@@ -385,10 +385,19 @@ Email correspondence with the GISAID curators will determine the remainder of th
 
 Once email confirms sequence release, those will show up within the download portion of GISAID after 24 hours. When that time period has passed:
 
+~~1. Go to https://www.gisaid.org/ and log-in~~
+~~2. With the EpiCoV tab highlighted, click the "Downloads" tab~~
+~~3. Under the header "Download packages", click on the "metadata" box~~
+~~4. Accept the "Terms & Conditions" in the pop-up, and click "Download" - a file called metadata_tsv_YYYY_MM_DD.tar.xz will go to your Downloads folder~~
+~~5. Unzip the tar.xz file - This can be done by right-clicking on the file and using 7-Zip (on a Windows computer); You'll need to do it twice - once to get out of .xz, and once to get out of .tar~~
+~~6. Inside of these, will be a file called metadata.tsv. Copy that file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/gisaid] and rename it as metadata_YYYY-MM-DD.tsv~~
+~~7. Move the previous metadata_YYYY-MM-DD.tsv to the ARCHIVE folder (These files are large, so only keeping the 2-3 most recent in the ARCHIVE folder is sufficient)~~
+
 1. Go to https://www.gisaid.org/ and log-in
-2. With the EpiCoV tab highlighted, click the "Downloads" tab
-3. Under the header "Download packages", click on the "metadata" box
-4. Accept the "Terms & Conditions" in the pop-up, and click "Download" - a file called metadata_tsv_YYYY_MM_DD.tar.xz will go to your Downloads folder
-5. Unzip the tar.xz file - This can be done by right-clicking on the file and using 7-Zip (on a Windows computer); You'll need to do it twice - once to get out of .xz, and once to get out of .tar
-6. Inside of these, will be a file called metadata.tsv. Copy that file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/gisaid] and rename it as metadata_YYYY-MM-DD.tsv
-7. Move the previous metadata_YYYY-MM-DD.tsv to the ARCHIVE folder (These files are large, so only keeping the 2-3 most recent in the ARCHIVE folder is sufficient)
+2. With the EpiCoV tab highlighted, click the "Search" tab
+3. Under "Virus Name", search for "IVY", "RVTN", "MI-UM", select all the sequences, and click "Download" (Separately for each search term)
+
+Note: For "MI-UM", you will need to include a date range, as there is a max download limit of 10,000 sequences.
+
+4. Select "Patient Status Metadata" in the pop-up window, and click "Download".
+5. Move the file that is downloaded to [Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/new_gisaid_try] and add "_um", "_ivy", or "_rvtn" to the end of the file name. 

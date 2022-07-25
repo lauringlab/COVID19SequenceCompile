@@ -22,6 +22,7 @@ cstp_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleM
 edidnow_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/EDIDNOW")
 cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
 rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN")
+ivyic_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/IVYIC")
 
 henryford_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/HENRYFORD")
 puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/PUIMISC")
@@ -451,6 +452,94 @@ write.csv(full_rvtn, paste0(rvtn_manifest_fp, "/Full_RVTN_Set/RVTN_sample_full_m
 ### add onto main manifest file HERE
 manifest_storage <- rbind(manifest_storage, rvtn_storage)
 
+
+################################################################################
+# handle ivy ic (substudy) manifests
+
+# read in file names 
+ivyic_file_list <- list.files(pattern = "*.xlsx", path = ivyic_manifest_fp)
+
+ivyic_storage <- data.frame()
+#full_rvtn <- data.frame()
+
+for (i in ivyic_file_list){
+  file_in <- read.xlsx(paste0(ivyic_manifest_fp, "/", i), detectDates = TRUE)
+  
+  file_in <- file_in[, c(2, 4, 5, 6, 13)]
+  
+  # check column names 
+  if (grepl("posi", tolower(colnames(file_in)[1]))){
+    x <- "good"
+  } else {
+    message(i)
+    stop("Column 2 of IVY IC Manifest is not Position")
+  }
+  
+  if (grepl("study", tolower(colnames(file_in)[2]))){
+    x <- "good"
+  } else {
+    message(i)
+    stop("Column 4 of IVY IC Manifest is not Study ID")
+  }
+  
+  if (grepl("collect", tolower(colnames(file_in)[3]))){
+    x <- "good"
+  } else {
+    message(i)
+    stop("Column 5 of IVY IC Manifest is not Collection Date")
+  }
+  
+  if (grepl("aliq", tolower(colnames(file_in)[4]))){
+    x <- "good"
+  } else {
+    message(i)
+    stop("Column 6 of IVY IC Manifest is not Aliquot ID")
+  }
+  
+  if (grepl("comm", tolower(colnames(file_in)[5]))){
+    x <- "good"
+  } else {
+    message(i)
+    stop("Column 13 of IVY IC Manifest is not Comments")
+  }
+
+  colnames(file_in) <- c("position", "subject_id", "coll_date", "sample_id", "flag")
+  file_in$subject_id <- trimws(file_in$subject_id)
+  
+  file_in$received_date <- date_from_file(i)
+  
+  rec_source <- trimws(as.character(strsplit(i, "_")[[1]][1]))
+  file_in$received_source <- rec_source
+  
+  file_in <- file_in %>% mutate(site_number = case_when(substr(subject_id, 1, 2) == "EV" ~ as.numeric(substr(subject_id, 3, 4)), 
+                                                        T ~ NA_real_))
+  
+  if(any(is.na(file_in$site_number))){
+    message(i)
+    stop("Subject ID (Study ID) doesn't start with EV")
+  }
+  
+  check_site_codes <- file_in %>% select(subject_id, sample_id, site_number) 
+  check_site_codes <- merge(check_site_codes, cdc_sites, by.x = c("site_number"), by.y = c("Number"), all.x = TRUE)
+  
+  if(any(is.na(check_site_codes$Institution))){
+    message(each_file)
+    message(filter(check_site_codes, is.na(Institution)))
+    stop("No Site Numerical Match")
+  }
+  
+  site_bit <- cdc_sites %>% select(Number, SiteCode)
+  colnames(site_bit) <- c("Number", "SiteName")
+  file_in <- merge(file_in, site_bit, by.x = c("site_number"), by.y = c("Number"))  
+  
+  file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, SiteName)
+  
+  ivyic_storage <- rbind(ivyic_storage, file_in)
+}
+
+
+# merge all data onto big manifest file
+manifest_storage <- rbind(manifest_storage, ivyic_storage)
 
 
 ################################################################################

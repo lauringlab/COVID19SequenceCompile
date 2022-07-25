@@ -20,9 +20,9 @@ starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLa
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20220620" # plate date in YYYYMMDD format
-runtech <- "Illumina" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "25" # number, will match "PlateNumber" options
+plate_datef <- "20220419" # plate date in YYYYMMDD format
+runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
+runnum <- "17" # number, will match "PlateNumber" options
 
 seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
 
@@ -61,8 +61,8 @@ if (any(ff$sample_per_subject > 1)){
 }
 
 
-#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 
@@ -97,10 +97,10 @@ if (any(grepl("IVY", ff$received_source))){
   
 }
 
-ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
+ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
 
 if (any(grepl("IVY", ff$received_source))){
-ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
                                            grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
                                            T ~ "CHECK"
                     ))

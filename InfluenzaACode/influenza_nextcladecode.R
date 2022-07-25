@@ -51,6 +51,7 @@ for (each_page in file_list){
 rename_columns <- c("SampleID", "nextclade_HA_clade", "nextclade_HA_totalMissing", "nextclade_HA_qcOverallScore", "nextclade_HA_qcOverallStatus", "nextclade_HA_totalMutations", "nextclade_HA_totalNonACGTNs", "nextclade_HA_runDate", "nextclade_HA_type")
 colnames(nc_storage) <- rename_columns
 
+nc_storage <- nc_storage %>% mutate(SampleID = gsub("_HA", "", SampleID))
 ################################################################################
 ## calculate genome completeness. 
 # Completeness = 100*(genome_size - totalMissing)/genome_size

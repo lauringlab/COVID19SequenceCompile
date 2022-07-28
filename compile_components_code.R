@@ -102,6 +102,10 @@ mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id"), by.y = c("Sa
 ### add column for time in days from plate to nextclade
 mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_runDate, mppnc$PlateDate, units = "days")
 
+#### read in data from Emily's MHOME stuff
+mhome_in <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv")
+mppnc <- rbind(mppnc, mhome_in)
+
 ################################################################################
 # create indicator for if Plate to Nextclade or Plate to Pangolin is out of 
 # expected range. this will help detect potential "wrong matches" for sample_ids 

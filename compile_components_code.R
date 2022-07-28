@@ -103,7 +103,8 @@ mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id"), by.y = c("Sa
 mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_runDate, mppnc$PlateDate, units = "days")
 
 #### read in data from Emily's MHOME stuff
-mhome_in <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv")
+#mhome_in <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv")
+mhome_in <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv"))
 mppnc <- rbind(mppnc, mhome_in)
 
 ################################################################################

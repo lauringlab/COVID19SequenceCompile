@@ -9,7 +9,7 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/RVTN_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")

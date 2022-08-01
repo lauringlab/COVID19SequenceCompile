@@ -29,7 +29,7 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
                                 nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
                                 nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
 
-seq_list <- filter(seq_list, received_source == "RVTN")
+seq_list <- filter(seq_list, received_source == "RVTN" & !grepl("Missing Date", flag))
 
 
 if (length(unique(seq_list$sample_id)) != nrow(seq_list)){

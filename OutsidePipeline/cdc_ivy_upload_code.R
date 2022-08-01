@@ -46,7 +46,7 @@ nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,
 nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
 
 
-seq_list <- filter(seq_list, received_source == "CDCIVY" | received_source == "CDCIVY4")
+seq_list <- filter(seq_list, (received_source == "CDCIVY" | received_source == "CDCIVY4") & !grepl("Missing Date", flag))
 
 
 ## check for CDC IVY 4 samples (start with 22, ivy 3 == 21)

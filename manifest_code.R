@@ -537,6 +537,9 @@ for (i in ivyic_file_list){
   ivyic_storage <- rbind(ivyic_storage, file_in)
 }
 
+ivyic_storage$coll_date <- as.character(ivyic_storage$coll_date) # have to do this
+# ivyic dates come in as date types
+# convert to character so in binding to rest of manifest info, they keep their format
 
 # merge all data onto big manifest file
 manifest_storage <- rbind(manifest_storage, ivyic_storage)

@@ -460,10 +460,12 @@ manifest_storage <- rbind(manifest_storage, rvtn_storage)
 ivyic_file_list <- list.files(pattern = "*.xlsx", path = ivyic_manifest_fp)
 
 ivyic_storage <- data.frame()
-#full_rvtn <- data.frame()
+full_ivyic <- data.frame()
 
 for (i in ivyic_file_list){
+  
   file_in <- read.xlsx(paste0(ivyic_manifest_fp, "/", i), detectDates = TRUE)
+  full_ivyic <- rbind(full_ivyic, file_in[, c(1:15)])
   
   file_in <- file_in[, c(2, 4, 5, 6, 13)]
   
@@ -535,6 +537,7 @@ for (i in ivyic_file_list){
   file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, SiteName)
   
   ivyic_storage <- rbind(ivyic_storage, file_in)
+  
 }
 
 ivyic_storage$coll_date <- as.character(ivyic_storage$coll_date) # have to do this
@@ -543,6 +546,8 @@ ivyic_storage$coll_date <- as.character(ivyic_storage$coll_date) # have to do th
 
 # merge all data onto big manifest file
 manifest_storage <- rbind(manifest_storage, ivyic_storage)
+
+write.csv(full_ivyic, paste0(ivyic_manifest_fp, "/Full_IVY_Set/IVYIC_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
 
 
 ################################################################################

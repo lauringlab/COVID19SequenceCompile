@@ -152,6 +152,48 @@ for (each_folder in manifest_folder_list){
 
 manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
 
+
+################################################################################
+# handle MDHHS manifests
+
+mdhhs_files <- list.files(mdhhs_manifest_fp, pattern = "*.xlsx")
+
+full_mdhhs <- data.frame()
+manifest_for_mdhhs <- data.frame()
+
+for (each_mdhhs in mdhhs_files){
+  m_in <- read.xlsx(paste0(mdhhs_manifest_fp, "/", each_mdhhs), sheet = 1)
+  
+  # put full manifest listing from mdhhs into full list
+  full_mdhhs <- rbind(full_mdhhs, m_in)
+  # we'll write this out in full later, we'll need it for MDSS submissions
+  
+  # select only columns we care about
+  m_in <- m_in %>% select(position, sample_id, subject_id, flag, SPECIMEN_COLLECTION_DATE)
+ 
+  # we need to create a set with: 
+  # position, sample_id, subject_id, coll_date, flag, received_date, received_source
+  m_in <- m_in %>% mutate(subject_id = paste0(sample_id, "-19212"), 
+                          coll_date = paste0(substr(SPECIMEN_COLLECTION_DATE, 1, 4), "-", substr(SPECIMEN_COLLECTION_DATE, 5, 6), "-", substr(SPECIMEN_COLLECTION_DATE, 7, 8)))
+  
+  # add in 2 new columns: received_date and received_source (from file name)
+  m_in$received_date <- date_from_file(each_mdhhs)
+  
+  rec_source <- trimws(as.character(strsplit(each_mdhhs, "_")[[1]][1]))
+  m_in$received_source <- rec_source
+  
+  m_in <- m_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source)
+  
+  manifest_for_mdhhs <- rbind(manifest_for_mdhhs, m_in)
+  
+}
+
+# add mdhhs info onto big list
+manifest_storage <- rbind(manifest_storage, manifest_for_mdhhs)
+
+# write out full mdhhs info
+write.csv(full_mdhhs, paste0(mdhhs_manifest_fp, "/ARCHIVE/full_mdhhs_manifest_info.csv"), row.names = FALSE, na = "")
+
 ################################################################################
 ## handle cdc ivy manifests
 
@@ -549,6 +591,7 @@ ivyic_storage$coll_date <- as.character(ivyic_storage$coll_date) # have to do th
 manifest_storage <- rbind(manifest_storage, ivyic_storage)
 
 write.csv(full_ivyic, paste0(ivyic_manifest_fp, "/Full_IVY_Set/IVYIC_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
+
 
 
 ################################################################################

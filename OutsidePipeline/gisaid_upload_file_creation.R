@@ -88,6 +88,7 @@ if (any(ff$sample_per_subject > 1)){
 
 #samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
 #original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+# if they are IVYIC duplicates, let them all through regardless
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 
@@ -157,7 +158,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("N
 ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "CDCIVY4" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "RVTN" ~ paste0("hCoV-19/USA/", StateAbbrev, "-RVTN-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "IVYIC" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "IVYIC" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
                                           T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 
@@ -224,12 +225,12 @@ ff$Coverage <- ""
 ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Central Lab, Vanderbilt University Medical Center", 
                                           received_source == "CDCIVY4" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
                                           received_source == "RVTN" ~ "Vanderbilt University Medical Center",
-                                          received_source == "IVYIC" ~ "",
+                                          received_source == "IVYIC" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
                     originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "CDCIVY4" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "RVTN" ~ "Medical Center North CC303, 1161 21st Ave. S., Nashville, TN, USA",
-                                                 received_source == "IVYIC" ~ "",
+                                                 received_source == "IVYIC" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                   T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
 
 ff$originlabsampleid <- ""

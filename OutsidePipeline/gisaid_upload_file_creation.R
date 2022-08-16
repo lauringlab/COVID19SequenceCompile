@@ -159,6 +159,7 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           received_source == "CDCIVY4" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "RVTN" ~ paste0("hCoV-19/USA/", StateAbbrev, "-RVTN-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "IVYIC" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "MDHHS" ~ paste0("/hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4)),
                                           T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 
@@ -226,11 +227,13 @@ ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Ce
                                           received_source == "CDCIVY4" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
                                           received_source == "RVTN" ~ "Vanderbilt University Medical Center",
                                           received_source == "IVYIC" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
+                                          received_source == "MDHHS" ~ "Michigan Department of Health and Human Services, Bureau of Laboratories",
                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
                     originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "CDCIVY4" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "RVTN" ~ "Medical Center North CC303, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "IVYIC" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
+                                                 received_source == "MDHHS" ~ "3350 N Martin Luther King Jr Blvd",
                                                   T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
 
 ff$originlabsampleid <- ""

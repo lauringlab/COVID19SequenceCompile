@@ -45,7 +45,7 @@ if (any(!sample_years %in% current_year)){
 ######################################
 
 missing_subject_id <- nrow(filter(seq_list2, subject_id == "" | is.na(subject_id)))
-missing_collection_date <- nrow(filter(seq_list2, coll_date == "" | is.na(coll_date)))
+missing_collection_date <- nrow(filter(seq_list2, coll_date == "" | is.na(as_date(coll_date)) | is.na(coll_date)))
 missing_received_source <- nrow(filter(seq_list2, received_source == "" | is.na(received_source)))
 
 if (missing_subject_id > 3){

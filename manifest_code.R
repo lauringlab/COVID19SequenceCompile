@@ -20,6 +20,7 @@ uhs_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMe
 martin_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/Martin")
 cstp_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CSTP")
 edidnow_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/EDIDNOW")
+
 cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
 rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN")
 ivyic_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/IVYIC")
@@ -27,10 +28,12 @@ mdhhs_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSample
 
 henryford_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/HENRYFORD")
 puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/PUIMISC")
+trinity_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/TRINITY")
+
 
 
 manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, martin_manifest_fp, cstp_manifest_fp, 
-                          edidnow_manifest_fp, henryford_manifest_fp, puimisc_manifest_fp)
+                          edidnow_manifest_fp, henryford_manifest_fp, puimisc_manifest_fp, trinity_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
@@ -122,8 +125,8 @@ for (each_folder in manifest_folder_list){
           
           
           if(any(is.na(file_in$coll_date))){
-            print(each_file)
-            print("There are missing collection dates.")
+            #print(each_file)
+            #print("There are missing collection dates.")
             
             ## fill the missings with current date, and edit flag
             file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ gsub("NA", "", paste0(flag, "Missing Date in Manifest - Replaced with Today Date")), 

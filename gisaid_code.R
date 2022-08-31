@@ -46,7 +46,13 @@ gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Lin
 # create sample_id column
 gisaid_storage$sample_id <-  sapply(strsplit(as.character(gisaid_storage$Virus.name),'/'), "[", 3)
 #gisaid_storage <- filter(gisaid_storage, grepl("MI-UM", Virus.name) | grepl("IVY", Virus.name) | grepl("RVTN", Virus.name))
-gisaid_storage$sample_id <-  sapply(strsplit(as.character(gisaid_storage$sample_id),'-'), "[", 3)
+#gisaid_storage$sample_id2 <- sapply(strsplit(as.character(gisaid_storage$sample_id),'-'), "[", 3)
+gisaid_storage <- separate(gisaid_storage, col=sample_id, into=c('one', 'two', 'three', 'four'), sep='-')
+gisaid_storage$four[is.na(gisaid_storage$four)] <- ""
+gisaid_storage <- gisaid_storage %>% mutate(sample_id = case_when(four == "" ~ paste0(gisaid_storage$three, gisaid_storage$four), 
+                                                                  T ~ paste0(gisaid_storage$three, "-", gisaid_storage$four)))
+
+gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Lineage, sample_id)
 
 ### rename columns 
 rename_columns <- c("gisaid_strain", "gisaid_epi_isl", "gisaid_clade", "gisaid_pango_lineage", "sample_id")

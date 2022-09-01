@@ -1,6 +1,6 @@
 ################################################################################
 #                    COVID-19 Sequence Code Functions                          #
-#                         Last Updated: 05/19/2021                             #
+#                         Last Updated: 09/01/2022                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -60,13 +60,13 @@ date_from_file_FIRST <- function(file_name_in){
 ### turns the current date into a YYYYMMDD string for use in file name outputs
 current_date_string <- function(){
     # add leading zero to month
-    if (length(month(Sys.Date()))){
+    if (length(month(Sys.Date())) == 1){
       m <- paste0("0", month(Sys.Date()))
     } else {
       m <- month(Sys.Date())
     }
     # add leading zero to day
-    if (length(day(Sys.Date()))){
+    if (length(day(Sys.Date())) == 1){
       d <- paste0("0", day(Sys.Date()))
     } else {
       d <- day(Sys.Date())

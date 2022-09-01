@@ -25,15 +25,15 @@ cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampl
 rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN")
 ivyic_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/IVYIC")
 mdhhs_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/MDHHS")
+trinity_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/TRINITY")
 
 henryford_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/HENRYFORD")
 puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/PUIMISC")
-trinity_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/TRINITY")
 
 
 
 manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, martin_manifest_fp, cstp_manifest_fp, 
-                          edidnow_manifest_fp, henryford_manifest_fp, puimisc_manifest_fp, trinity_manifest_fp)
+                          edidnow_manifest_fp, henryford_manifest_fp, puimisc_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
@@ -196,6 +196,62 @@ manifest_storage <- rbind(manifest_storage, manifest_for_mdhhs)
 
 # write out full mdhhs info
 write.csv(full_mdhhs, paste0(mdhhs_manifest_fp, "/ARCHIVE/full_mdhhs_manifest_info.csv"), row.names = FALSE, na = "")
+
+
+################################################################################
+# handle trinity manifests
+
+trin_files <- list.files(trinity_manifest_fp, pattern = "*.xlsx")
+
+full_trin <- data.frame()
+manifest_for_trin <- data.frame()
+
+for (each_trin in trin_files){
+  t_in <- read.xlsx(paste0(trinity_manifest_fp, "/", each_trin), sheet = 1, detectDates = TRUE)
+  
+  t_in$PATIENT_DOB <- gsub("-", "", as.character(t_in$PATIENT_DOB))
+  t_in$SPECIMEN_COLLECTION_DATE <- gsub("-", "", as.character(t_in$SPECIMEN_COLLECTION_DATE))
+  t_in$ORDER_DATE <- gsub("-", "", as.character(t_in$ORDER_DATE))
+  
+  
+  # put full manifest listing from trinity into full list
+  full_trin <- rbind(full_trin, t_in)
+  # we'll write this out in full later, we'll need it for MDSS submissions
+  
+  # select only columns we care about
+  t_in <- t_in %>% select(SID, PATIENT_MRN, SPECIMEN_COLLECTION_DATE)
+  colnames(t_in) <- c("sample_id", "subject_id", "SPECIMEN_COLLECTION_DATE")
+  
+  t_in$flag <- ""
+  t_in$position <- ""
+  
+  # we need to create a set with: 
+  # position, sample_id, subject_id, coll_date, flag, received_date, received_source
+  t_in <- t_in %>% mutate(coll_date = paste0(substr(SPECIMEN_COLLECTION_DATE, 1, 4), "-", substr(SPECIMEN_COLLECTION_DATE, 5, 6), "-", substr(SPECIMEN_COLLECTION_DATE, 7, 8)))
+  
+  # add in 2 new columns: received_date and received_source (from file name)
+  t_in$received_date <- date_from_file(each_trin)
+  
+  rec_source <- trimws(as.character(strsplit(each_trin, "_")[[1]][1]))
+  t_in$received_source <- rec_source
+  
+  
+  
+  t_in <- t_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source)
+  
+  t_in <- filter(t_in, sample_id != "" & !is.na(sample_id))
+  
+  manifest_for_trin <- rbind(manifest_for_trin, t_in)
+  
+}
+
+# add trinity info onto big list
+manifest_storage <- rbind(manifest_storage, manifest_for_trin)
+
+# write out full trinity info
+write.csv(full_trin, paste0(trinity_manifest_fp, "/ARCHIVE/full_trinity_manifest_info.csv"), row.names = FALSE, na = "")
+
+
 
 ################################################################################
 ## handle cdc ivy manifests

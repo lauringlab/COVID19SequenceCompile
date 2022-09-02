@@ -22,8 +22,10 @@ mm_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSample
 puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/PUI_MISC")
 sph_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/SPH")
 cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/CDCIVY")
+rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN")
 
-manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, stj_manifest_fp, mm_manifest_fp, puimisc_manifest_fp, cdcivy_manifest_fp, sph_manifest_fp)
+manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, stj_manifest_fp, mm_manifest_fp, puimisc_manifest_fp, 
+                          cdcivy_manifest_fp, sph_manifest_fp, rvtn_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
@@ -43,7 +45,33 @@ manifest_storage <- data.frame()
 # will iterate through folders
 for (each_folder in manifest_folder_list){
   
-  if (each_folder == cdcivy_manifest_fp){
+  if (each_folder == rvtn_manifest_fp){
+    file_list <- list.files(pattern = "*.csv", path = each_folder)
+    for (rv in file_list){
+      file_in <- read.csv(paste0(each_folder, "/", rv))
+      
+      colnames(file_in) <- c("sample_id", "site", "subject_id", "coll_date", "specimen_type", "manifest_creation_date", "position")
+      file_in$flag <- file_in$site
+      
+      # "position", "sample_id", "subject_id", "coll_date", "flag"
+      file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag)
+      
+      ### fix date formatting
+      file_in$coll_date <- as.character(as.POSIXct(file_in$coll_date, format = "%d-%b-%y"))
+      
+      # add in 2 new columns: received_date and received_source (from file name)
+      file_in$received_date <- date_from_file(rv)
+      
+      
+      rec_source <- trimws(as.character(strsplit(rv, "_")[[1]][1]))
+      file_in$received_source <- rec_source
+      
+      # bind all rows together
+      manifest_storage <- rbind(manifest_storage, file_in)
+      
+    }
+    
+  } else if (each_folder == cdcivy_manifest_fp){
         # process ivy manifest
         
         # read in manifests
@@ -132,8 +160,8 @@ for (each_folder in manifest_folder_list){
             }
             
             if(any(is.na(file_in$coll_date))){
-              print(each_file)
-              print("There are missing collection dates.")
+              #print(each_file)
+              #print("There are missing collection dates.")
               
               ## fill the missings with current date, and edit flag
               file_in <- file_in %>% mutate(flag = case_when(is.na(coll_date) ~ gsub("NA", "", paste0(flag, "Missing Date in Manifest - Replaced with Today Date")), 

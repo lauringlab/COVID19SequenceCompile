@@ -20,9 +20,9 @@ starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLa
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20220419" # plate date in YYYYMMDD format
-runtech <- "Nanopore" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "17" # number, will match "PlateNumber" options
+plate_datef <- "20220726" # plate date in YYYYMMDD format
+runtech <- "Illumina" # nanopore or illumina, will match "PlatePlatform" options
+runnum <- "27" # number, will match "PlateNumber" options
 
 seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
 
@@ -97,6 +97,15 @@ if (any(grepl("IVY", ff$received_source))){
   ff <- merge(ff, site_bit, by.x = c("source_state_code"), by.y = c("Number"))
   ff$state <- ifelse(!grepl("IVY", ff$received_source), "", ff$state)
   
+} else {
+  state <- ""
+}
+
+if(any(grepl("RVTN", ff$received_source))){
+  
+  ff<- ff %>% mutate(state = case_when(grepl("RVTN", received_source) ~ state.abb[match(flag,state.name)], 
+                                       T ~ state))
+  
 }
 
 ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
@@ -104,8 +113,15 @@ ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIV
 if (any(grepl("IVY", ff$received_source))){
 ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
                                            grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
+                                           grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
                                            T ~ "CHECK"
                     ))
+} else if (any(grepl("RVTN", ff$received_source))){
+  ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+                                             grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
+                                             grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
+                                             T ~ "CHECK"
+  ))
 }
 
 if (any(ff$StrainName == "CHECK")){
@@ -167,7 +183,7 @@ ff_gisaid <- ff %>% select(IsolateID, SegmentIDs, StrainName, Subtype, Lineage,
 
 ff_gisaid[is.na(ff_gisaid)] <- ""
 
-write.csv(ff_gisaid, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
+write.csv(ff_gisaid, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
 
 #University of Michigan Clinical Microbiology Laboratory
 #2800 Plymouth Rd, Ann Arbor, MI, USA

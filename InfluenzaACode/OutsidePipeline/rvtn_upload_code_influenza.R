@@ -5,9 +5,9 @@ flu_file <- read.csv(paste0("C:/Users/juliegil/Dropbox (University of Michigan)/
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
-cdc_flu <- filter(flu_file, grepl("IVY", received_source) & !grepl("Missing Date", flag))
+rv_flu <- filter(flu_file, grepl("RVTN", received_source) & !grepl("Missing Date", flag))
 
-colnames(cdc_flu)
+colnames(rv_flu)
 
 #### segment ids in as blanks currently
 # cdc_flu <- cdc_flu %>% mutate(PB2.Segment_ID = "", 
@@ -19,14 +19,14 @@ colnames(cdc_flu)
 #                               NS.Segment_ID = "")
 
 
-cdc_flu <- cdc_flu %>% select(sample_id, subject_id, coll_date, flag, received_source, 
+rv_flu <- rv_flu %>% select(sample_id, subject_id, coll_date, flag, received_source, 
                               received_date, SampleBarcode, PlateName, nextclade_HA_clade, 
                               nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
                               nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs, 
                               nextclade_HA_type, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
                               NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, Isolate_Name)
 
-colnames(cdc_flu) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu", 
+colnames(rv_flu) <- c("sample_id", "subject_id", "coll_date_flu", "flag_flu", 
                        "received_source_flu", "received_date_flu", "sample_barcode_flu", 
                        "plate_name_flu", "nextclade_ha_clade_flu", "nextclade_ha_qcoverallscore_flu", 
                        "nextclade_ha_qcoverallstatus_flu", "nextclade_ha_totalmutations_flu", 
@@ -35,6 +35,6 @@ colnames(cdc_flu) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu",
                        "na_segment_id_flu", "mp_segment_id_flu", "ns_segment_id_flu", "isolate_name_flu")
 
 today_date <- gsub("-", "", Sys.Date())
-write.csv(cdc_flu, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(rv_flu, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                           "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
-                          "IVY_uploads/cdc_ivy_flu_", today_date, ".csv"), row.names = FALSE, na = "")
+                          "RVTN_uploads/rvtn_flu_", today_date, ".csv"), row.names = FALSE, na = "")

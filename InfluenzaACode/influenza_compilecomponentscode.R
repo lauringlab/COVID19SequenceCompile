@@ -105,6 +105,7 @@ gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segme
 gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
 gisaid$id <- gsub("UOM", "", gisaid$id)
 gisaid$id <- gsub("IVY", "", gisaid$id)
+gisaid$id <- gsub("RVTN", "", gisaid$id)
 gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
                             NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
                             P3.Segment_Id, Isolate_Name)

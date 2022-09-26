@@ -204,7 +204,7 @@ The SelectSequences.py code is used to get a subset of a .fasta file by ID.
 
 #### Checking Sample ID Naming
 
-The checking_sampleids.py code compares the sample id's listed in the plate map file to the sample ids's listed in the associated FASTA file for a single plate. This code was introduced in order to catch instances where the FASTA file may have been named incorrectly.
+The checking_sampleids.py code compares the sample id's listed in the plate map file to the sample ids's listed in the associated FASTA file for a single plate. This code was introduced in order to catch instances where the FASTA file may have been named incorrectly. When checking samples between platemap and FASTA files for Illumina runs there will be missing samples from the FASTA file as the Illumina sequencing machines have a minimum cutoff for producing FASTA files.
 
 #### Creating FASTA file for GISAID upload
 
@@ -215,15 +215,17 @@ The prep_fasta_NumberTwo.py file curates and creates the final FASTA file used f
 ### Process
 
 For a complete record of the order of events to process a full run of data, visit the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
+
 Manifests are received from the following sources:
 
 * COVID-19 Sampling & Tracking Program (CSTP) - samples from this source are processed first by LynxDx
 * Martin Lab at the University of Michigan School of Public Health (Martin)
 * University of Michigan Central Biorepository (CBR)
-* CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan
+* CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan (Currenlty IVY4 as of Sept. 2022)
 * Michigan Medicine ED ID Now project (EDIDNOW)
 * University Health Services (UHS)
 * CDC Respiratory Virus Transmission Network (RVTN)
+* Michigan Sequencing Academic Partnership for Public Health Innovation and Response (MI-SAPPHIRE) - samples from Henry Ford, Trinity, and Ascension health systems 
 
 ---
 

@@ -17,18 +17,21 @@ Folder structure lives within the MED-LauringLab DropBox folder.
           * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file
           * CDC_IVY_UPLOADS: Contains the files created in order to upload to the CDC IVY RedCap database
       * Manifests: contains all manifest files, organized by received source
-          * ASCENSION
+          * ASCENSION: Contains manifests from Ascension Hospital system, one of the MI-SAPPHIRE sites
           * CBR: Contains manifest files from the University of Michigan Campus BioRepository
           * CDCIVY: Contains manifest files from the CDC IVY project
               * Full_IVY_Set: Contains IVY_sample_full_manifest_list.csv, the compiled CDC IVY manifest lists with all variables sent (a subset of these are kept for the final compiled sequence list)
               * Keys: Contains CDC_SiteCodebook.csv, the list of CDC IVY sites, their locations, and their coded name
           * CSTP: Contains manifest files from the COVID-19 Sampling & Tracking Program (ultimately from LynxDx)
           * EDIDNOW: Contains manifest files from the ED IDnow testing program at Michigan Medicine
-          * HENRYFORD
+          * HENRYFORD: Contains manifests from the Henry Ford Health System, one of the MI-SAPPHIRE sites
+          * IVYIC: Contains manifests from and IVY4 sub study on immunocompromised individuals
           * Martin: Contains manifest files from the Martin Lab at the School of Public Health
+          * MDHHS: Contains manifests from the Michigan Department of Health and Human Services
           * PUIMISC: Contains manifests for one-off projects, PUIs, etc.
           * RVTN: Contains manifest files from the RCTN project
           * RVTN_test: Contains manifests from initial RVTN test round
+          * TRINITY: Contains manifests ffrom the Trinity Health System, one of the MI-SAPPHIRE sites
           * UHS: Contains manfests from University Health Services samples
           * ManifestsComplete: Contains the manifest_output_report_YYYYMMDD.xlsx reports, as well as the compiled manifest list sample_full_manifest_list.csv
       * PlateMaps: Contains all plate map files as YYYYMMDD_Illumina_Plate_##.xlsx or YYYYMMDD_Nanopore_Run_##.xlsx

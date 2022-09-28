@@ -34,7 +34,7 @@ Folder structure lives within the MED-LauringLab DropBox folder.
           * TRINITY: Contains manifests ffrom the Trinity Health System, one of the MI-SAPPHIRE sites
           * UHS: Contains manfests from University Health Services samples
           * ManifestsComplete: Contains the manifest_output_report_YYYYMMDD.xlsx reports, as well as the compiled manifest list sample_full_manifest_list.csv
-      * PlateMaps: Contains all plate map files as YYYYMMDD_Illumina_Plate_##.xlsx or YYYYMMDD_Nanopore_Run_##.xlsx
+      * PlateMaps: Contains all plate map files as YYYYMMDD_SC2_Illumina_Plate_##.xlsx or YYYYMMDD_SC2_Nanopore_Run_##.xlsx
           * PlateMapsComplete: Contains the compiled plate map list sample_full_plate_list.csv
       * PreviousLists: Contains the original processed sample list ProcessedSampleCumulativeList_20210326.csv maintained by Andrew Valesano prior to code implementation
       * SequenceOutcomes
@@ -174,6 +174,7 @@ The files moving_nextclade_output.R, moving_pangolin_output.R, and moving_plate_
 #### Generating Excel File for GISAID Upload
 
 The gisaid_upload_file_creation.R code is used to generate a properly structured Excel document to use for batch uploading to the GISAID system. This is completed in batches corresponding to plate runs. Only non-duplicate samples should be uploaded, with >= 90% NextClade sequence completeness.
+* Gisaid upload file will need to be double checked that the data is correct (look at dates and sources), as well as being saved in the correct format ".xls" that Gisaid accepts
 
 #### Subsetting Main File for Data Processing/FASTA Steps
 
@@ -209,6 +210,7 @@ The checking_sampleids.py code compares the sample id's listed in the plate map 
 #### Creating FASTA file for GISAID upload
 
 The prep_fasta_NumberTwo.py file curates and creates the final FASTA file used for GISAID submisison.
+* This file is generated in the 3_ProcessedGenome run folder and will need to be copied over the 5_GISAID_Uploads run folder
 
 ---
 
@@ -231,9 +233,10 @@ Manifests are received from the following sources:
 
 ### Manifests
 
-Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/SequenceSampleMetadata/Manifests].
+Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/4_SequenceSampleMetadata/Manifests].
+* Manifest from the various MI-SAPPHIRE sites will need to be formatted for use in processing after they are received. 
 
-##### Manifest Column Format (for all except CDC IVY)
+##### Manifest Column Format (for UHS and CBR)
 
 | Columns | Data Type	| Variable Description |
 | --- | --- | --- |
@@ -250,9 +253,9 @@ Manifests are reviewed, checked and renamed as necessary, and placed in the appr
 
 ##### Manifest File Name Format
 
-nameOfSource_YYYYMMDD_#.csv
+nameOfSource_YYYYMMDD_#.csv or nameOf Source_YYYYMMDD_#.xlsx
 
-nameOfSource = Where the samples came from, corresponds to the name of the project folders inside the Manifests folder (CBR, CSTP, Martin, CDCIVY, EDIDNOW)
+nameOfSource = Where the samples came from, corresponds to the name of the project folders inside the Manifests folder (CBR, CSTP, Martin, CDCIVY, EDIDNOW, etc.)
 
 YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file was received
 
@@ -262,7 +265,7 @@ YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file wa
 
 ##### Samples
 
-Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generated, matching samples to their location on those plates. Original plate map files are placed in [DropBox/MED-LauringLab/Plate Maps] as .xlsx files. Before running the data compilation pipleline, these files will need to be copied to [DropBox/MED-LauringLab/SequenceSampleMetadata/PlateMaps] and checked for format in column order/naming and file naming.
+Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generated, matching samples to their location on those plates. Original plate map files are placed in [DropBox/MED-LauringLab/Plate Maps] as .xlsx files. 
 
 ---
 

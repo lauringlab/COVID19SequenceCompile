@@ -35,6 +35,6 @@ colnames(cdc_flu) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu",
                        "na_segment_id_flu", "mp_segment_id_flu", "ns_segment_id_flu", "isolate_name_flu")
 
 today_date <- gsub("-", "", Sys.Date())
-write.csv(cdc_flu, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(cdc_flu, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                           "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                           "IVY_uploads/cdc_ivy_flu_", today_date, ".csv"), row.names = FALSE, na = "")

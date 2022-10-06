@@ -112,16 +112,16 @@ mppnc <- rbind(mppnc, mhome_in)
 # expected range. this will help detect potential "wrong matches" for sample_ids 
 # that are sent to us twice & re-run through process
 
-mppnc$IlluminaPangolin_OutOfRange <- ifelse(mppnc$PlatePlatform == "Illumina" & mppnc$PlateToPangolin_days > 8, 1, 0)
-mppnc$NanoporePangolin_OutOfRange <- ifelse(mppnc$PlatePlatform == "Nanopore" & mppnc$PlateToPangolin_days > 4, 1, 0)
-mppnc$IlluminaNextclade_OutOfRange <- ifelse(mppnc$PlatePlatform == "Illumina" & mppnc$PlateToNextclade_days > 8, 1, 0)
-mppnc$NanoporeNextclade_OutOfRange <- ifelse(mppnc$PlatePlatform == "Nanopore" & mppnc$PlateToNextclade_days > 4, 1, 0)
-
-outofrangeset <- filter(mppnc, IlluminaPangolin_OutOfRange == 1 | NanoporePangolin_OutOfRange == 1 | IlluminaNextclade_OutOfRange == 1 | NanoporeNextclade_OutOfRange == 1)
-
-outofrange_output <- filter(mppnc, sample_id %in% outofrangeset$sample_id)
-
-write.csv(outofrange_output, paste0(outputLOC, "/ReportNotifications/out_of_range_alert.csv"), row.names = FALSE, na = "")
+# mppnc$IlluminaPangolin_OutOfRange <- ifelse(mppnc$PlatePlatform == "Illumina" & mppnc$PlateToPangolin_days > 8, 1, 0)
+# mppnc$NanoporePangolin_OutOfRange <- ifelse(mppnc$PlatePlatform == "Nanopore" & mppnc$PlateToPangolin_days > 4, 1, 0)
+# mppnc$IlluminaNextclade_OutOfRange <- ifelse(mppnc$PlatePlatform == "Illumina" & mppnc$PlateToNextclade_days > 8, 1, 0)
+# mppnc$NanoporeNextclade_OutOfRange <- ifelse(mppnc$PlatePlatform == "Nanopore" & mppnc$PlateToNextclade_days > 4, 1, 0)
+# 
+# outofrangeset <- filter(mppnc, IlluminaPangolin_OutOfRange == 1 | NanoporePangolin_OutOfRange == 1 | IlluminaNextclade_OutOfRange == 1 | NanoporeNextclade_OutOfRange == 1)
+# 
+# outofrange_output <- filter(mppnc, sample_id %in% outofrangeset$sample_id)
+# 
+# write.csv(outofrange_output, paste0(outputLOC, "/ReportNotifications/out_of_range_alert.csv"), row.names = FALSE, na = "")
 
 ################################################################################
 ## Want to combine with previous 2021 data
@@ -249,8 +249,9 @@ mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, co
                                                        pango_version, pangolin_version, pangolin_runDate,            
                                                        PlateToPangolin_days, nextclade_qcOverallScore, nextclade_qcOverallStatus,  
                                                        nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate,          
-                                                       PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
-                                                       IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, sample_per_subject, 
+                                                       PlateToNextclade_days, #IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
+                                                       #IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, 
+                                                       sample_per_subject, 
                                                        multiSamples, daysFromPrevious, ninetyDayFromPrevious, previousLineageDifferentThanCurrent, 
                                                        previousCladeDifferentThanCurrent)
 

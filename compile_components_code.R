@@ -261,6 +261,16 @@ mppnc2 <- mppnc2 %>% mutate(coll_date = case_when(grepl("/", coll_date) & substr
                                                       grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
                                                       T ~ NA_character_))
 
+
+################################################################################
+
+# get full pangolin file
+#list.files(path = "", pattern = "*_pangolin.csv")
+# only select the sample id and lineage call
+# pull the date portion out and attach that
+# name that lineage call == most_current_pangolin, date portion == most_current_pangolin_as_of_date
+# merge that data onto full set
+
 ################################################################################
 ### negative control well warning
 

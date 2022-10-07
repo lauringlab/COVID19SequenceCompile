@@ -50,6 +50,13 @@ outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata
 
 ################################################################################
 
+# read in list of manifest files that have already been processed in prev file
+processed_manifest_file_names <- loadRDS(paste0(outputLOC, "/current_manifest_list.RDS"))
+
+
+################################################################################
+
+
 manifest_storage <- data.frame()
 #duplicate_ssc <- data.frame()
 
@@ -57,7 +64,16 @@ manifest_storage <- data.frame()
 for (each_folder in manifest_folder_list){
     
     ### get names of all .csv files in folder
-    file_list <- list.files(pattern = "*.csv", path = each_folder)
+    file_list22 <- list.files(pattern = "*.csv", path = each_folder)
+    
+    file_list <- c()
+    for (each_file in file_list22){
+      if (each_file %in% processed_manifest_file_names){
+        xx <- "skip it"
+      } else {
+        file_list <- c(file_list, each_file)
+      }
+    }
     
     if (length(file_list) != 0){
     
@@ -162,7 +178,20 @@ manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
 ################################################################################
 # handle MDHHS manifests
 
-mdhhs_files <- list.files(mdhhs_manifest_fp, pattern = "*.xlsx")
+#mdhhs_files <- list.files(mdhhs_manifest_fp, pattern = "*.xlsx")
+
+### get names of all .csv files in folder
+mdhhs_files22 <- list.files(mdhhs_manifest_fp, pattern = "*.xlsx")
+
+mdhhs_files <- c()
+for (each_file in mdhhs_files22){
+  if (each_file %in% processed_manifest_file_names){
+    xx <- "skip it"
+  } else {
+    mdhhs_files<- c(mdhhs_files, each_file)
+  }
+}
+
 
 full_mdhhs <- data.frame()
 manifest_for_mdhhs <- data.frame()
@@ -696,6 +725,12 @@ manifest_storage <- subject_id_length_QA(manifest_storage, "CSTP")
 ################################################################################
 #                           File Write-Outs                                    #
 ################################################################################
+
+### read in previous manifest list
+prev_mani_stor <- read.csv(paste0(outputLOC, "/sample_full_manifest_list_prev.csv"))
+
+manifest_storage <- rbind(prev_mani_stor, manifest_storage)
+
 
 ### write compiled manifest file out
 ### in this case, we'll always overwrite the old file, if it does exist

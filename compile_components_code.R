@@ -303,6 +303,7 @@ mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id", "coll_da
 ################################################################################
 
 # get full pangolin file
+#/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate
 #list.files(path = "", pattern = "*_pangolin.csv")
 # only select the sample id and lineage call
 # pull the date portion out and attach that

@@ -10,9 +10,22 @@ import os
 
 def main():
 
+    current_user = os.getcwd()
+
+    if "juliegil" in current_user:
+        root='/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes'
+        writeout_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate/complete_set.all.consensus.renamed.full.fasta"
+    elif "leighbaker" in current_user:
+        root='/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes'
+        writeout_path = "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate/complete_set.all.consensus.renamed.full.fasta"
+    elif "leighbak" in current_user:
+        root='/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes'
+        writeout_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate/complete_set.all.consensus.renamed.full.fasta"
+    else:
+        print("User not recognized.")
 
     # get every folder name
-    root='/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes'
+
     dirlist = [ item for item in os.listdir(root) if os.path.isdir(os.path.join(root, item)) ]
     #dirlist.sort()
     #dirlist = dirlist[len(dirlist)-184:len(dirlist)]
@@ -31,7 +44,7 @@ def main():
             print("No File for " + each_folder)
 
     if x == 1:
-        writeout_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate/complete_set.all.consensus.renamed.full.fasta"
+
         with open(writeout_path, 'w') as corrected:
             SeqIO.write(all_fasta, corrected, "fasta")
 

@@ -233,7 +233,19 @@ write.csv(full_mdhhs, paste0(mdhhs_manifest_fp, "/ARCHIVE/full_mdhhs_manifest_in
 ################################################################################
 # handle trinity manifests
 
-trin_files <- list.files(trinity_manifest_fp, pattern = "*.xlsx")
+#trin_files <- list.files(trinity_manifest_fp, pattern = "*.xlsx")
+
+trin_files22 <- list.files(trinity_manifest_fp, pattern = "*.xlsx")
+
+trin_files <- c()
+for (each_file in trin_files22){
+  if (each_file %in% processed_manifest_file_names){
+    xx <- "skip it"
+  } else {
+    trin_files <- c(trin_files, each_file)
+  }
+}
+
 
 full_trin <- data.frame()
 manifest_for_trin <- data.frame()

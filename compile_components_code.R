@@ -263,6 +263,35 @@ mppnc2 <- mppnc2 %>% mutate(coll_date = case_when(grepl("/", coll_date) & substr
 
 ################################################################################
 
+###
+# pull in covid RVTN data
+seq <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
+
+# only keep RVTN
+seq <- filter(seq, received_source == "RVTN")
+
+# read in already assigned sequences
+already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
+
+### only keep items in seq that are NOT already assigned
+seq2 <- filter(seq, !sample_id %in% unique(already_assigned$sample_id))
+
+# filter out already_assigned so only non-assigned lauring labels are present
+not_assigned <- filter(already_assigned, is.na(subject_id)) %>% select(sample_id_lauring)
+
+# pull out sample & subject id, add to full_set
+seq3 <- seq2 %>% select(subject_id, sample_id, coll_date)
+fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)))
+colnames(fillup) <- colnames(seq3)
+seq3 <- rbind(seq3, fillup)
+
+full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned rvtn stuff, plus all the unassigned ids
+
+full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_set2)
+
+write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
+
+
 # read in and attach RVTN re-codes
 rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
 #colnames(rvtn_recodes)

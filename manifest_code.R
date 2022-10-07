@@ -492,19 +492,19 @@ cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "21
                                                                T ~ as.character(flag)))
 
 ## fill in missing ct values
-miss_ct <- read.csv(paste0(cdcivy_manifest_fp, "/Full_IVY_Set/fill_in_cts_new_28Apr2022.csv"), colClasses = "character")
-miss_ct <- miss_ct[, c(2:12)]
-colnames(miss_ct) <- c("position.#", "site.name", "study.id", "specimen.type", "collection.date", "aliquot.id",
-                       "rnp.ct", "covid-19.n1", "covid-19.n2", "freezer.box", "cell.#")
-miss_ct$collection.date <- as.character(as.POSIXct(miss_ct$collection.date, format = "%m/%d/%y"))
-miss_ct$collection.date <- as.character(paste0(substr(miss_ct$collection.date, 1, 4), "-", substr(miss_ct$collection.date, 6, 7), "-", substr(miss_ct$collection.date, 9, 10)))
-
-full_ivy <- filter(full_ivy, !aliquot.id %in% unique(miss_ct$aliquot.id))
-full_ivy <- rbind(full_ivy, miss_ct)
+# miss_ct <- read.csv(paste0(cdcivy_manifest_fp, "/Full_IVY_Set/fill_in_cts_new_28Apr2022.csv"), colClasses = "character")
+# miss_ct <- miss_ct[, c(2:12)]
+# colnames(miss_ct) <- c("position.#", "site.name", "study.id", "specimen.type", "collection.date", "aliquot.id",
+#                        "rnp.ct", "covid-19.n1", "covid-19.n2", "freezer.box", "cell.#")
+# miss_ct$collection.date <- as.character(as.POSIXct(miss_ct$collection.date, format = "%m/%d/%y"))
+# miss_ct$collection.date <- as.character(paste0(substr(miss_ct$collection.date, 1, 4), "-", substr(miss_ct$collection.date, 6, 7), "-", substr(miss_ct$collection.date, 9, 10)))
+# 
+# full_ivy <- filter(full_ivy, !aliquot.id %in% unique(miss_ct$aliquot.id))
+# full_ivy <- rbind(full_ivy, miss_ct)
 
 ### write out full ivy set
-write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
-write.csv(full_ivy4, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY4_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
+write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_manifest_list22.csv"), row.names = FALSE, na = "")
+write.csv(full_ivy4, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY4_sample_full_manifest_list22.csv"), row.names = FALSE, na = "")
 
 ### add onto main manifest file HERE
 manifest_storage$SiteName <- NA

@@ -626,7 +626,18 @@ manifest_storage <- rbind(manifest_storage, rvtn_storage)
 # handle ivy ic (substudy) manifests
 
 # read in file names 
-ivyic_file_list <- list.files(pattern = "*.xlsx", path = ivyic_manifest_fp)
+#ivyic_file_list <- list.files(pattern = "*.xlsx", path = ivyic_manifest_fp)
+
+ivyic_file_list22 <- list.files(pattern = "*.xlsx", path = ivyic_manifest_fp)
+
+ivyic_file_list <- c()
+for (each_file in ivyic_file_list22){
+  if (each_file %in% processed_manifest_file_names){
+    xx <- "skip it"
+  } else {
+    ivyic_file_list <- c(ivyic_file_list, each_file)
+  }
+}
 
 ivyic_storage <- data.frame()
 full_ivyic <- data.frame()

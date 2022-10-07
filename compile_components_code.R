@@ -261,6 +261,15 @@ mppnc2 <- mppnc2 %>% mutate(coll_date = case_when(grepl("/", coll_date) & substr
                                                       grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
                                                       T ~ NA_character_))
 
+################################################################################
+
+# read in and attach RVTN re-codes
+rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
+#colnames(rvtn_recodes)
+#colnames(mppnc2)
+
+mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id", "coll_date"), all.x = TRUE)
+
 
 ################################################################################
 

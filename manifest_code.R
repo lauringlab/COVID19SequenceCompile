@@ -303,7 +303,19 @@ write.csv(full_trin, paste0(trinity_manifest_fp, "/ARCHIVE/full_trinity_manifest
 # read in cdc ivy site code list 
 cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), colClasses = "character")
 
-cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
+#cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
+
+cdc_file_list22 <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
+
+cdc_file_list <- c()
+for (each_file in cdc_file_list22){
+  if (each_file %in% processed_manifest_file_names){
+    xx <- "skip it"
+  } else {
+    cdc_file_list <- c(cdc_file_list, each_file)
+  }
+}
+
 
 cdc_ivy_storage <- data.frame()
 full_ivy <- data.frame()

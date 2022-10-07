@@ -309,11 +309,19 @@ mppnc2 <- mppnc2 %>% mutate(data_quality_rule = case_when((pangolin_status %in% 
 
 # get full pangolin file
 #/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate
-#list.files(path = "", pattern = "*_pangolin.csv")
+full_pangolin_new <- list.files(path = paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate"), pattern = "lineage_report*")
+fpn <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/pangolin/CompleteFastaUpToDate/", full_pangolin_new))
+
 # only select the sample id and lineage call
+fpn <- fpn %>% select(taxon, lineage)
+colnames(fpn) <- c("sample_id", "newest_pangolin_lineage")
+
 # pull the date portion out and attach that
-# name that lineage call == most_current_pangolin, date portion == most_current_pangolin_as_of_date
+date_bit <- substr(full_pangolin_new, 16, 23)
+fpn$newest_pangolin_date <- date_bit
+
 # merge that data onto full set
+mpnnc2 <- merge(mpnnc2, fpn, by = c("sample_id"), all.x = TRUE)
 
 ################################################################################
 ### negative control well warning

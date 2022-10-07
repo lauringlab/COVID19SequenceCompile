@@ -299,6 +299,11 @@ rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceS
 
 mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id", "coll_date"), all.x = TRUE)
 
+################################################################################
+
+### add in data quality rule
+mppnc2 <- mppnc2 %>% mutate(data_quality_rule = case_when((pangolin_status %in% c("pass", "passed_qc")) & (nextclade_qcOverallStatus %in% c("good", "mediocre")) & (nextclade_completeness > 80) ~ "pass", 
+                                                          T ~ "not passed"))
 
 ################################################################################
 

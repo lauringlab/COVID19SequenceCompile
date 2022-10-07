@@ -514,7 +514,18 @@ manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 ################################################################################
 ## handle rvtn manifests
 
-rvtn_file_list <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
+#rvtn_file_list <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
+
+rvtn_file_list22 <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
+
+rvtn_file_list <- c()
+for (each_file in rvtn_file_list22){
+  if (each_file %in% processed_manifest_file_names){
+    xx <- "skip it"
+  } else {
+    rvtn_file_list <- c(rvtn_file_list, each_file)
+  }
+}
 
 rvtn_storage <- data.frame()
 full_rvtn <- data.frame()

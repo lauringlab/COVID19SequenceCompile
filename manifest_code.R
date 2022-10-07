@@ -51,7 +51,7 @@ outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata
 ################################################################################
 
 # read in list of manifest files that have already been processed in prev file
-processed_manifest_file_names <- loadRDS(paste0(outputLOC, "/current_manifest_list.RDS"))
+processed_manifest_file_names <- readRDS(paste0(outputLOC, "/current_manifest_list.RDS"))
 
 
 ################################################################################
@@ -168,7 +168,7 @@ for (each_folder in manifest_folder_list){
       ### select only distinct rows
       manifest_storage <- manifest_storage %>% distinct()
     } else {
-      print(paste0("No files in folder = ", each_folder))
+      print(paste0("No files/No new files in folder = ", each_folder))
     }
 }
 
@@ -227,7 +227,7 @@ for (each_mdhhs in mdhhs_files){
 manifest_storage <- rbind(manifest_storage, manifest_for_mdhhs)
 
 # write out full mdhhs info
-write.csv(full_mdhhs, paste0(mdhhs_manifest_fp, "/ARCHIVE/full_mdhhs_manifest_info.csv"), row.names = FALSE, na = "")
+write.csv(full_mdhhs, paste0(mdhhs_manifest_fp, "/ARCHIVE/full_mdhhs_manifest_info22.csv"), row.names = FALSE, na = "")
 
 
 ################################################################################
@@ -293,7 +293,7 @@ for (each_trin in trin_files){
 manifest_storage <- rbind(manifest_storage, manifest_for_trin)
 
 # write out full trinity info
-write.csv(full_trin, paste0(trinity_manifest_fp, "/ARCHIVE/full_trinity_manifest_info.csv"), row.names = FALSE, na = "")
+write.csv(full_trin, paste0(trinity_manifest_fp, "/ARCHIVE/full_trinity_manifest_info22.csv"), row.names = FALSE, na = "")
 
 
 
@@ -474,22 +474,25 @@ for (each_file in cdc_file_list){
   cdc_ivy_storage <- rbind(cdc_ivy_storage, fileone)
 }
 
-cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "2108074UR" | subject_id == "2103143UR" ~ "Withdrawn from study", 
-                                                               subject_id == "2102015UR" ~ "IVY Counterpart is 2102007UR", 
-                                                               subject_id == "2102016UR" ~ "IVY Counterpart is 2102008UR", 
-                                                               sample_id %in% c("ZZX9LL2N","ZZX9LL3W",
-                                                                                 "ZZX9LL5K","ZZX9LL5O","ZZX9LL5U","ZZX9LL28",
-                                                                                 "ZZX9LL32","ZZX9LL41","ZZX9LL46","ZZX9LL54") ~ "Location previously incorrect to Univ. of Wash_WA; corrected to Washington_MO on 12/14/2021",
-                                                               subject_id == "2110107UR" ~ "Subject ID corrected from 211107UR on 12/14/2021",
-                                                               subject_id == "2112117UR" ~ "Subject ID corrected from 2122117UR on 12/14/2021",
-                                                               subject_id == "2112119UR" ~ "Subject ID corrected from 2122119UR on 12/14/2021",
-                                                               sample_id %in% c("ZZX9KRY2", "ZZX9KRY7", "ZZX9KRYC", "ZZX9KRYH", "ZZX9KRYM") ~ "Subject ID corrected from Iowa Code to Emory Code on 12/22/2021",
-                                                               sample_id %in% c("ZZXACK96", "ZZXACK9Q", "ZZXACK9V", "ZZXACKA0",
-                                                                                "ZZXACKA5", "ZZXACKAA", "ZZXACKAU", "ZZXACKAZ",
-                                                                                "ZZXACKB4", "ZZXACKB9", "ZZXACKBE", "ZZXACKBT",
-                                                                                "ZZXACKBY", "ZZXACKC3", "ZZXACKC8") ~ "Collection Date corrected from 2021 to 2022 on 1/25/2022",
-                                                               sample_id == "W13J44U2" ~ "GISAID identified as BA.1/BA.2 recombinant",
-                                                               T ~ as.character(flag)))
+if (nrow(cdc_ivy_storage) > 0){
+
+    cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "2108074UR" | subject_id == "2103143UR" ~ "Withdrawn from study", 
+                                                                   subject_id == "2102015UR" ~ "IVY Counterpart is 2102007UR", 
+                                                                   subject_id == "2102016UR" ~ "IVY Counterpart is 2102008UR", 
+                                                                   sample_id %in% c("ZZX9LL2N","ZZX9LL3W",
+                                                                                     "ZZX9LL5K","ZZX9LL5O","ZZX9LL5U","ZZX9LL28",
+                                                                                     "ZZX9LL32","ZZX9LL41","ZZX9LL46","ZZX9LL54") ~ "Location previously incorrect to Univ. of Wash_WA; corrected to Washington_MO on 12/14/2021",
+                                                                   subject_id == "2110107UR" ~ "Subject ID corrected from 211107UR on 12/14/2021",
+                                                                   subject_id == "2112117UR" ~ "Subject ID corrected from 2122117UR on 12/14/2021",
+                                                                   subject_id == "2112119UR" ~ "Subject ID corrected from 2122119UR on 12/14/2021",
+                                                                   sample_id %in% c("ZZX9KRY2", "ZZX9KRY7", "ZZX9KRYC", "ZZX9KRYH", "ZZX9KRYM") ~ "Subject ID corrected from Iowa Code to Emory Code on 12/22/2021",
+                                                                   sample_id %in% c("ZZXACK96", "ZZXACK9Q", "ZZXACK9V", "ZZXACKA0",
+                                                                                    "ZZXACKA5", "ZZXACKAA", "ZZXACKAU", "ZZXACKAZ",
+                                                                                    "ZZXACKB4", "ZZXACKB9", "ZZXACKBE", "ZZXACKBT",
+                                                                                    "ZZXACKBY", "ZZXACKC3", "ZZXACKC8") ~ "Collection Date corrected from 2021 to 2022 on 1/25/2022",
+                                                                   sample_id == "W13J44U2" ~ "GISAID identified as BA.1/BA.2 recombinant",
+                                                                   T ~ as.character(flag)))
+}
 
 ## fill in missing ct values
 # miss_ct <- read.csv(paste0(cdcivy_manifest_fp, "/Full_IVY_Set/fill_in_cts_new_28Apr2022.csv"), colClasses = "character")
@@ -507,7 +510,9 @@ write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_ma
 write.csv(full_ivy4, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY4_sample_full_manifest_list22.csv"), row.names = FALSE, na = "")
 
 ### add onto main manifest file HERE
-manifest_storage$SiteName <- NA
+if (nrow(manifest_storage) > 0){
+    manifest_storage$SiteName <- NA
+}
 manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 
 
@@ -615,7 +620,7 @@ for (each_file in rvtn_file_list){
 
 rvtn_storage$coll_date <- as.character(rvtn_storage$coll_date)
 ### write out full ivy set
-write.csv(full_rvtn, paste0(rvtn_manifest_fp, "/Full_RVTN_Set/RVTN_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
+write.csv(full_rvtn, paste0(rvtn_manifest_fp, "/Full_RVTN_Set/RVTN_sample_full_manifest_list22.csv"), row.names = FALSE, na = "")
 
 
 ### add onto main manifest file HERE
@@ -727,33 +732,35 @@ ivyic_storage$coll_date <- as.character(ivyic_storage$coll_date) # have to do th
 # merge all data onto big manifest file
 manifest_storage <- rbind(manifest_storage, ivyic_storage)
 
-write.csv(full_ivyic, paste0(ivyic_manifest_fp, "/Full_IVY_Set/IVYIC_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
+write.csv(full_ivyic, paste0(ivyic_manifest_fp, "/Full_IVY_Set/IVYIC_sample_full_manifest_list22.csv"), row.names = FALSE, na = "")
 
 
 
 ################################################################################
 # check for sample_id/subject_id/coll_date duplicates
 # count of unique sample_id, subject_id, coll_date combinations
-unique_ids <- nrow(manifest_storage %>% select(sample_id, subject_id, coll_date) %>% distinct())
 
-if (unique_ids != nrow(manifest_storage)){
-  # identify duplicates
-  dupes <- manifest_storage %>% group_by(sample_id, subject_id, coll_date) %>% summarize(count_unique = length(sample_id))
-  # merge with the original file
-  mfs <- merge(manifest_storage, dupes, by = c("sample_id", "subject_id", "coll_date"), all.x = TRUE)
-  # filter that down to a set of duplicates, to use in the output report
-  duplicate_ssc <- filter(mfs, count_unique != 1)
-  ### alter flag column in original file to note the duplication
-  manifest_storage$flag <- ifelse(is.na(manifest_storage$flag), "", manifest_storage$flag)
-  manifest_storage$flag <- ifelse(manifest_storage$sample_id %in% duplicate_ssc$sample_id & manifest_storage$subject_id %in% duplicate_ssc$subject_id 
-                                  & manifest_storage$coll_date %in% duplicate_ssc$coll_date, 
-                                  paste0(manifest_storage$flag, " ", "Duplicate Sample - Subject - Collection"), manifest_storage$flag)
-  manifest_storage$flag <- trimws(manifest_storage$flag)
-  manifest_storage$flag <- ifelse(manifest_storage$flag == "", NA, manifest_storage$flag)
-  
-  #duplicate_ssc <- rbind(duplicate_ssc, duplicate_ssc2)
+if (nrow(manifest_storage) > 0){
+    unique_ids <- nrow(manifest_storage %>% select(sample_id, subject_id, coll_date) %>% distinct())
+    
+    if (unique_ids != nrow(manifest_storage)){
+      # identify duplicates
+      dupes <- manifest_storage %>% group_by(sample_id, subject_id, coll_date) %>% summarize(count_unique = length(sample_id))
+      # merge with the original file
+      mfs <- merge(manifest_storage, dupes, by = c("sample_id", "subject_id", "coll_date"), all.x = TRUE)
+      # filter that down to a set of duplicates, to use in the output report
+      duplicate_ssc <- filter(mfs, count_unique != 1)
+      ### alter flag column in original file to note the duplication
+      manifest_storage$flag <- ifelse(is.na(manifest_storage$flag), "", manifest_storage$flag)
+      manifest_storage$flag <- ifelse(manifest_storage$sample_id %in% duplicate_ssc$sample_id & manifest_storage$subject_id %in% duplicate_ssc$subject_id 
+                                      & manifest_storage$coll_date %in% duplicate_ssc$coll_date, 
+                                      paste0(manifest_storage$flag, " ", "Duplicate Sample - Subject - Collection"), manifest_storage$flag)
+      manifest_storage$flag <- trimws(manifest_storage$flag)
+      manifest_storage$flag <- ifelse(manifest_storage$flag == "", NA, manifest_storage$flag)
+      
+      #duplicate_ssc <- rbind(duplicate_ssc, duplicate_ssc2)
+    }
 }
-
 
 ################################################################################
 # check for instances where leading zeros may have been dropped from subject id
@@ -775,8 +782,26 @@ manifest_storage <- subject_id_length_QA(manifest_storage, "CSTP")
 ### read in previous manifest list
 prev_mani_stor <- read.csv(paste0(outputLOC, "/sample_full_manifest_list_prev.csv"))
 
-manifest_storage <- rbind(prev_mani_stor, manifest_storage)
-
+if (nrow(manifest_storage) > 0){
+  
+    # ensure column data types are the same
+    manifest_storage$position <- as.character(anifest_storage$position)
+    manifest_storage$sample_id <- as.character(anifest_storage$position)
+    manifest_storage$subject_id <- as.character(anifest_storage$position)
+    manifest_storage$coll_date <- as.character(anifest_storage$position)
+    manifest_storage$flag <- as.character(anifest_storage$position)
+    manifest_storage$received_date <- as.character(anifest_storage$position)
+    manifest_storage$received_source <- as.character(anifest_storage$position)
+    manifest_storage$SiteName <- as.character(anifest_storage$position)
+    manifest_storage$subject_id_length <- as.numeric(manifest_storage$subject_id_length)
+  
+    manifest_storage <- rbind(prev_mani_stor, manifest_storage)
+    
+} else {
+    # there was nothing new to process, so we just set the old compiled set 
+    # as the original full to writeout 
+    manifest_storage <- prev_mani_stor
+}
 
 ### write compiled manifest file out
 ### in this case, we'll always overwrite the old file, if it does exist

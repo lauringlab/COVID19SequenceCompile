@@ -704,27 +704,27 @@ write.csv(manifest_storage, paste0(outputLOC, "/sample_full_manifest_list.csv"),
 ### write output report
 
 ### create date formatting
-today <- current_date_string()
-
-wb <- loadWorkbook(paste0(outputLOC, "/manifest_output_report_template.xlsx"))
-
-writeData(wb, today, sheet = "SUMMARY", startRow = 1, startCol = 2)
-
-#writeData(wb, each_file_row_count, sheet = "SUMMARY", startRow = 3, startCol = 2)
-writeData(wb, nrow(manifest_storage), sheet = "SUMMARY", startRow = 4, startCol = 2)
-
-writeData(wb, ncol(manifest_storage), sheet = "SUMMARY", startRow = 6, startCol = 2)
-
-if (exists("duplicate_ssc")){
-  writeData(wb, duplicate_ssc, sheet = "DUPLICATES",   
-                 startRow = 1, startCol = 1)
-}
-
-zeros <- rbind(filter(manifest_storage, grepl("MRN < 9", flag)), filter(manifest_storage, grepl("UMID < 8", flag)))
-writeData(wb, zeros, sheet = "RESTORE_ZEROS",   
-          startRow = 1, startCol = 1)
-
-miss_dats <- filter(manifest_storage, grepl("Missing Date", flag))
-writeData(wb, miss_dats, sheet = "MISSING_DATES", startRow = 1, startCol = 1)
-
-saveWorkbook(wb, paste0(outputLOC, "/manifest_output_report_", today, ".xlsx"), overwrite = TRUE)
+# today <- current_date_string()
+# 
+# wb <- loadWorkbook(paste0(outputLOC, "/manifest_output_report_template.xlsx"))
+# 
+# writeData(wb, today, sheet = "SUMMARY", startRow = 1, startCol = 2)
+# 
+# #writeData(wb, each_file_row_count, sheet = "SUMMARY", startRow = 3, startCol = 2)
+# writeData(wb, nrow(manifest_storage), sheet = "SUMMARY", startRow = 4, startCol = 2)
+# 
+# writeData(wb, ncol(manifest_storage), sheet = "SUMMARY", startRow = 6, startCol = 2)
+# 
+# if (exists("duplicate_ssc")){
+#   writeData(wb, duplicate_ssc, sheet = "DUPLICATES",   
+#                  startRow = 1, startCol = 1)
+# }
+# 
+# zeros <- rbind(filter(manifest_storage, grepl("MRN < 9", flag)), filter(manifest_storage, grepl("UMID < 8", flag)))
+# writeData(wb, zeros, sheet = "RESTORE_ZEROS",   
+#           startRow = 1, startCol = 1)
+# 
+# miss_dats <- filter(manifest_storage, grepl("Missing Date", flag))
+# writeData(wb, miss_dats, sheet = "MISSING_DATES", startRow = 1, startCol = 1)
+# 
+# saveWorkbook(wb, paste0(outputLOC, "/manifest_output_report_", today, ".xlsx"), overwrite = TRUE)

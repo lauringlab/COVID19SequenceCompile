@@ -94,13 +94,13 @@ gisaid <- read.csv(paste0(gisaid_fp, "/sample_full_gisaid_list.csv"), colClasses
 mani_plate_pang <- merge(mani_plate, pangolin, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 
 ### add column for time in days from plate to pangolin
-mani_plate_pang$PlateToPangolin_days <- difftime(mani_plate_pang$pangolin_runDate, mani_plate_pang$PlateDate, units = "days")
+#mani_plate_pang$PlateToPangolin_days <- difftime(mani_plate_pang$pangolin_runDate, mani_plate_pang$PlateDate, units = "days")
 
 mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 
 ### add column for time in days from plate to nextclade
-mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_runDate, mppnc$PlateDate, units = "days")
+#mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_runDate, mppnc$PlateDate, units = "days")
 
 #### read in data from Emily's MHOME stuff
 #mhome_in <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv")
@@ -247,9 +247,10 @@ mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, co
                                                        subject_id_length, PlateName, PlatePosition,               
                                                        SampleSourceLocation, pangoLEARN_version, pangolin_conflict,           
                                                        pango_version, pangolin_version, pangolin_runDate,            
-                                                       PlateToPangolin_days, nextclade_qcOverallScore, nextclade_qcOverallStatus,  
+                                                       #PlateToPangolin_days, 
+                                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,  
                                                        nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate,          
-                                                       PlateToNextclade_days, #IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
+                                                       #PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
                                                        #IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, 
                                                        sample_per_subject, 
                                                        multiSamples, daysFromPrevious, ninetyDayFromPrevious, previousLineageDifferentThanCurrent, 

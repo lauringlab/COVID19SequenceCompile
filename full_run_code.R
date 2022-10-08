@@ -6,14 +6,14 @@
 
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-  batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
-  #influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+  #batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+  influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  #influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   
@@ -60,11 +60,14 @@ plate_name <- "20220720_SC2_Illumina_Run_58"
 source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
 source(paste0(code_path, "manifest_code.R"))
+# time = 1.06s
 
 source(paste0(code_path, "plate_map_code.R"))
 # note: this doesn't run if any plate map excel files are open
+# time = 10.56s
 
 source(paste0(code_path, "compile_components_code.R"))
+# time = 79.45s
 
 source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
 

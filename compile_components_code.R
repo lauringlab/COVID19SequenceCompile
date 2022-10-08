@@ -321,7 +321,7 @@ date_bit <- substr(full_pangolin_new, 16, 23)
 fpn$newest_pangolin_date <- date_bit
 
 # merge that data onto full set
-mpnnc2 <- merge(mpnnc2, fpn, by = c("sample_id"), all.x = TRUE)
+mppnc2 <- merge(mppnc2, fpn, by = c("sample_id"), all.x = TRUE)
 
 ################################################################################
 ### negative control well warning

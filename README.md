@@ -110,17 +110,18 @@ In order to run the compilation code pipeline, download the following code sets:
     * <b>UpToDatePangolin</b>
       * compile_all_fastas.py
 
-And put them all in the same folder on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
+And put them all in the same folder structure on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
 
 <b>Additional Notes:</b>
 
 * At the beginning of full_run_code.R, there is a section of code to set the ```starting_path```, ```code_path```, ```batch_path```, and ```influenza_path``` for your particular computer. This only works for adjusting the portions of the necessary code that are called from the full_run_code.R file. In any instance, always check all file paths before running code files.
 * Ensure that you have access to either the LauringLab DropBox folder, or your own version of the pipeline folder structure, from your computer.
 
+---
 
-### Code Order:
+### SARS-CoV-2 Processing Code Order:
 
-Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file.
+Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file. These steps are also outlined within the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
 
 ### Data Dictionary for Compiled File:
 
@@ -167,16 +168,16 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | nextclade_totalNonACGTNs | sample_full_nextclade_list.csv | numeric | | Number of ambiguous nucleotide characters, i.e. not A, C, T, G, or N. |
 | nextclade_runDate | sample_full_nextclade_list.csv | date | | Date of nextclade output receipt; pulled from the nextclade filename the sample_id was reported on |
 | PlateToNextclade_days | {calculated in compile_components_code.R} | numeric | | Number of days between nextclade_runDate and PlateDate; Put in place to add more context for samples when joining multiple sources, as some sample aliquots are received more than once from the same source |
-| IlluminaPangolin_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Illumina and PlateToPangolin is more than 8, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
-| NanoporePangolin_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToPangolin is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
-| IlluminaNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Illumina and PlateToNextclade is more than 8, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
-| NanoporeNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToNextclade is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 | sample_per_subject | {calculated in compile_components_code.R} | numeric | | Numbering of sample_ids per subject_id of the listed sample; samples are ordered by collection date and assigned a number based on 1st, 2nd, 3rd, etc. sampling |
 | multiSamples | {calculated in compile_components_code.R} | numeric | | 1,0 binary; has a value of 1 if the max sample_per_subject of a given sample's subject_id is greater than 1, has a value of 0 if the subject_id has only one sample_id associated with it. |
 | daysFromPrevious | {calculated in compile_components_code.R} | numeric | | Number of days since the previous sample coll_date to the current sample coll_date |
 | ninetyDayFromPrevious | {calculated in compile_components_code.R} | numeric | |  binary 1,0; if daysFromPrevious is greater than 90, then is equal to 1, otherwise it is 0 |
 | previousLineageDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's pangolin_lineage value is different than the current pangolin_lineage, then has a value of 1, otherwise is 0 |
 | previousCladeDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's nextclade_clade value is different than the current nextclade_clade, then has a value of 1, otherwise is 0 |
+| sample_id_lauring | | character | | "L" followed by 13 digits, used to hide sample ids in public sequence information  when necessary |
+| data_quality_rule | | character | | |
+| newest_pangolin_lineage | | character | | |
+| newest_pangolin_date | | numeric | | | 
 
 
 ---

@@ -4,18 +4,32 @@
 
 <b>Folder Structure:</b>
 
-Folder structure lives within the MED-LauringLab DropBox folder.
+Folder structure lives within the MED-LauringLab/SEQUENCING DropBox folder.
 
-* INFLUENZA_A: Code exists for this pipeline, but is not finalized.
+* INFLUENZA_A
+  * 0_ProcessingScripts
+  * 2_Plate_Maps
+  * 3_ProcessedGenomes
+  * 4_SequenceSampleMetadata
+  * 5_GISAID_Uploads
+  * 6_SampleSheets
+  * 7_BarcodeMaps
 * SARSCOV2
+  * 00_ARCHIVE_SarsCoV2_2020: Contains sample analysis from early 2020 sequencing work
+  * 0_ProcessingScripts: Contains processing code used in original sequence processing
+  * 1_OriginalManifests_CBR: Original manifest documents provided by CBR
+  * 1_OriginalManifests_Lynx: Original manifest documents provided by LynxDx
+  * 1_OriginalManifests_SPH: Original manifest documents provided by SPH
+  * 1_OriginalManifests_UHS: Original manifest documents provided by UHS
   * 2_PlateMaps: Original plate map files are first placed here by laboratory team
   * 3_ProcessedGenomes: Original sequence files are placed here, organized by plate.
     * Within each plate folder = .all.consensus.final.fasta (fasta file of sequences with >90% completeness), all.consensus.renamed.full.fasta (fasta file of all sequences)
   * 4_SequenceSampleMetadata
       * FinalSummary: Contains the final compiled data full_compiled_data.csv
-          * ReportNotifications: Contains out_of_range_alert.csv
+          * ReportNotifications: Contains negative_control_warnings.tsv
           * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file
           * CDC_IVY_UPLOADS: Contains the files created in order to upload to the CDC IVY RedCap database
+          * RVTN_UPLOADS: Contains the files created in order to upload to the RVTN RedCap database
       * Manifests: contains all manifest files, organized by received source
           * ASCENSION: Contains manifests from Ascension Hospital system, one of the MI-SAPPHIRE sites
           * CBR: Contains manifest files from the University of Michigan Campus BioRepository
@@ -30,19 +44,27 @@ Folder structure lives within the MED-LauringLab DropBox folder.
           * MDHHS: Contains manifests from the Michigan Department of Health and Human Services
           * PUIMISC: Contains manifests for one-off projects, PUIs, etc.
           * RVTN: Contains manifest files from the RCTN project
-          * RVTN_test: Contains manifests from initial RVTN test round
+          * RVTN_TEST: Contains manifests from initial RVTN test round
           * TRINITY: Contains manifests ffrom the Trinity Health System, one of the MI-SAPPHIRE sites
           * UHS: Contains manfests from University Health Services samples
-          * ManifestsComplete: Contains the manifest_output_report_YYYYMMDD.xlsx reports, as well as the compiled manifest list sample_full_manifest_list.csv
+          * VIEW: Contains manifest files from the VIEW study
+          * ManifestsComplete: Contains the compiled manifest list sample_full_manifest_list.csv, the archived manifest list sample_full_manifest_list_prev.csv, and the list of archived manifest files as current_manifest_list.RDS
       * PlateMaps: Contains all plate map files as YYYYMMDD_SC2_Illumina_Plate_##.xlsx or YYYYMMDD_SC2_Nanopore_Run_##.xlsx
           * PlateMapsComplete: Contains the compiled plate map list sample_full_plate_list.csv
       * PreviousLists: Contains the original processed sample list ProcessedSampleCumulativeList_20210326.csv maintained by Andrew Valesano prior to code implementation
       * SequenceOutcomes
           * gisaid: Contains the GISAID metadata file metadata_YYYY-MM-DD_MM-DD.tsv; also contains the GISAID upload template file (GISAID_UPLOAD_TEMPLATE.xls)
           * nextclade: Contains the NextClade output files as either YYYYMMDD_Plate_##\_##\_nextclade.tsv or YYYYMMDD\_Nanopore\_Run_##_nextclade.tsv
-          * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv
+          * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv; also contains the code and file(s) for the updated current pangolin status system
           * SequenceOutcomeComplete: Contains the sequence outcome final compiled files of sample_full_gisaid_list.csv, sample_full_nextclade_list.csv, and sample_full_pangolin_list.csv
     * 5_GISAID_Uploads: contains each plate's necessary files to submit for GISAID submission
+    * 6_Sequencing_ReportsAndCharts
+    * 7_QAQC_CDCIVY
+    * 8_QPCR_IVY
+    * 9_Coverage
+    * 10_transfer
+    * 11_GridION_RunReports
+    * 12_SampleSheets
 
 <b>R Libraries Necessary:</b>
 
@@ -227,14 +249,14 @@ Manifests are received from the following sources:
 * Michigan Medicine ED ID Now project (EDIDNOW)
 * University Health Services (UHS)
 * CDC Respiratory Virus Transmission Network (RVTN)
-* Michigan Sequencing Academic Partnership for Public Health Innovation and Response (MI-SAPPHIRE) - samples from Henry Ford, Trinity, and Ascension health systems 
+* Michigan Sequencing Academic Partnership for Public Health Innovation and Response (MI-SAPPHIRE) - samples from Henry Ford, Trinity, and Ascension health systems
 
 ---
 
 ### Manifests
 
 Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/4_SequenceSampleMetadata/Manifests].
-* Manifest from the various MI-SAPPHIRE sites will need to be formatted for use in processing after they are received. 
+* Manifest from the various MI-SAPPHIRE sites will need to be formatted for use in processing after they are received.
 
 ##### Manifest Column Format (for UHS and CBR)
 
@@ -265,7 +287,7 @@ YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file wa
 
 ##### Samples
 
-Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generated, matching samples to their location on those plates. Original plate map files are placed in [DropBox/MED-LauringLab/Plate Maps] as .xlsx files. 
+Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generated, matching samples to their location on those plates. Original plate map files are placed in [DropBox/MED-LauringLab/Plate Maps] as .xlsx files.
 
 ---
 
@@ -408,4 +430,4 @@ Once email confirms sequence release, those will show up within the download por
 Note: For "MI-UM", you will need to include a date range, as there is a max download limit of 10,000 sequences.
 
 4. Select "Patient Status Metadata" in the pop-up window, and click "Download".
-5. Move the file that is downloaded to [Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/new_gisaid_try] and add "_um", "_ivy", or "_rvtn" to the end of the file name. 
+5. Move the file that is downloaded to [Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/new_gisaid_try] and add "_um", "_ivy", or "_rvtn" to the end of the file name.

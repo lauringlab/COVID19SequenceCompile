@@ -175,9 +175,9 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | previousLineageDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's pangolin_lineage value is different than the current pangolin_lineage, then has a value of 1, otherwise is 0 |
 | previousCladeDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's nextclade_clade value is different than the current nextclade_clade, then has a value of 1, otherwise is 0 |
 | sample_id_lauring | | character | | "L" followed by 13 digits, used to hide sample ids in public sequence information  when necessary |
-| data_quality_rule | | character | | |
+| data_quality_rule | {calculated in compile_components_code.R} | character | | "pass" or "not passed"; in order to pass, the sequence must have (pangolin_status %in% c("pass", "passed_qc")) & (nextclade_qcOverallStatus %in% c("good", "mediocre")) & (nextclade_completeness > 80) |
 | newest_pangolin_lineage | | character | | |
-| newest_pangolin_date | | numeric | | | 
+| newest_pangolin_date | | numeric | | |
 
 
 ---

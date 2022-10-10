@@ -85,19 +85,30 @@ In order to run the compilation code pipeline, download the following code sets:
 * pangolin_code.R
 * nextclade_code.R
 * gisaid_code.R
+* determine_current_manifest_state.R
 * compile_components_code.R
 * <span style="background-color: #F0B7B3">full_run_code.R</span>
 * <b>OutsidePipeline</b>
+  * cdc_ivy_upload_code.R
   * checking_compiled_files.R
   * gisaid_upload_file_creation.R
   * moving_nextclade_output.R
   * moving_pangolin_output.R
   * moving_plate_map_files.R
+  * rvtn_upload_code.R
   * subset_compiled_for_fasta.R
+  * <span style="background-color: #8AA29E">summary_report_samples.Rmd</span>
+  * <span style="background-color: #8AA29E">who_variant_crosswalk.csv</span>
     * <b>ProcessingFASTA</b>
       * checking_sampleids.py
       * prep_fasta_NumberTwo.py
       * prep_fasta_for_gisaid.py
+      * prep_fasta_gisaid_flu.py
+      * prep_fasta_NumberOne_2.py
+      * replace_barcodes_fasta.py
+      * SelectSequences.py
+    * <b>UpToDatePangolin</b>
+      * compile_all_fastas.py
 
 And put them all in the same folder on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
 

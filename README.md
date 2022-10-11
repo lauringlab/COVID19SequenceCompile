@@ -75,6 +75,16 @@ Folder structure lives within the MED-LauringLab/SEQUENCING DropBox folder.
 * openxlsx: https://cran.r-project.org/web/packages/openxlsx/index.html
 * reshape2: https://cran.r-project.org/web/packages/reshape2/index.html
 
+<b>Python Libraries Necessary:</b>
+
+* import argparse: https://docs.python.org/3/library/argparse.html
+* import glob: https://docs.python.org/3/library/glob.html
+* import pandas as pd: https://pandas.pydata.org/
+* from Bio import SeqIO: https://biopython.org/wiki/SeqIO
+* from Bio.Seq import Seq: https://biopython.org/docs/1.75/api/Bio.Seq.html
+* from Bio.SeqRecord import SeqRecord https://biopython.org/docs/1.75/api/Bio.SeqRecord.html
+* import os: https://docs.python.org/3/library/os.html
+
 <b>Code:</b>
 
 In order to run the compilation code pipeline, download the following code sets:

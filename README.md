@@ -119,11 +119,7 @@ And put them all in the same folder structure on your computer. Use full_run_cod
 
 ---
 
-### SARS-CoV-2 Processing Code Order:
-
-Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file. These steps are also outlined within the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
-
-### Data Dictionary for Compiled File:
+### Data Dictionary for SARS-CoV-2 Compiled File:
 
 The final created file is called <b>full_compiled_data.csv</b>.
 
@@ -190,94 +186,34 @@ The final created file is called <b>full_compiled_data.csv</b>.
 
 ---
 
-## Outside the Pipeline
+### SARS-CoV-2 Processing Code Order:
 
-#### Checking Compiled Files
-
-The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data. The code will only tell you if the two are different. Further investigation would be necessary to determine the extent and character of the differences.
-
-#### Generating .csv File for RedCap Upload
-
-The cdc_ivy_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the CDC IVY RedCap database. This code file creates two separate files, one for IVY3 and one for IVY4.
-
-The rvtn_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the RVTN RedCap database.
-
-#### Moving Files in an Automated Fashion
-
-The files moving_nextclade_output.R, moving_pangolin_output.R, and moving_plate_map_files.R are all used to find, move, and re-name files that are used within the pipeline, in order to limit human errors in copy and paste.
-
-#### Generating Excel File for GISAID Upload
-
-The gisaid_upload_file_creation.R code is used to generate a properly structured Excel document to use for batch uploading to the GISAID system. This is completed in batches corresponding to plate runs. Only non-duplicate samples should be uploaded, with >= 90% NextClade sequence completeness.
-* Gisaid upload file will need to be double checked that the data is correct (look at dates and sources), as well as being saved in the correct format ".xls" that Gisaid accepts
-
-#### Subsetting Main File for Data Processing/FASTA Steps
-
-The subset_compiled_for_fasta.R code is used to generate a smaller meta.csv file to use in matching the consensus sequence barcode to the proper sample ID.
-
-### Folder: ProcessingFASTA
-
-<b>Python Libraries Needed:</b>
-* import argparse: https://docs.python.org/3/library/argparse.html
-* import glob: https://docs.python.org/3/library/glob.html
-* import pandas as pd: https://pandas.pydata.org/
-* from Bio import SeqIO: https://biopython.org/wiki/SeqIO
-* from Bio.Seq import Seq: https://biopython.org/docs/1.75/api/Bio.Seq.html
-* from Bio.SeqRecord import SeqRecord https://biopython.org/docs/1.75/api/Bio.SeqRecord.html
-* import os: https://docs.python.org/3/library/os.html
-
-#### Converting Names in .FASTA files (DEPRECATED)
-
-The prep_fasta_for_gisaid.py code converts the genome names within .fasta files for use in pangolin/nextclade/gisaid.
-
-#### Converting Barcode to Sample ID
-
-The prep_fasta_NumberOne.py code turns the barcode label names into the subject_id string for the corresponding sample for each sequence. This file is used for Pangolin and NextClade processing.
-
-#### Subset .FASTA files by ID
-
-The SelectSequences.py code is used to get a subset of a .fasta file by ID.
-
-#### Checking Sample ID Naming
-
-The checking_sampleids.py code compares the sample id's listed in the plate map file to the sample ids's listed in the associated FASTA file for a single plate. This code was introduced in order to catch instances where the FASTA file may have been named incorrectly. When checking samples between platemap and FASTA files for Illumina runs there will be missing samples from the FASTA file as the Illumina sequencing machines have a minimum cutoff for producing FASTA files.
-
-#### Creating FASTA file for GISAID upload
-
-The prep_fasta_NumberTwo.py file curates and creates the final FASTA file used for GISAID submisison.
-* This file is generated in the 3_ProcessedGenome run folder and will need to be copied over the 5_GISAID_Uploads run folder
-
----
-
-### Process
-
-For a complete record of the order of events to process a full run of data, visit the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
-
-Manifests are received from the following sources:
-
-* COVID-19 Sampling & Tracking Program (CSTP) - samples from this source are processed first by LynxDx
-* Martin Lab at the University of Michigan School of Public Health (Martin)
-* University of Michigan Central Biorepository (CBR)
-* CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan (Currenlty IVY4 as of Sept. 2022)
-* Michigan Medicine ED ID Now project (EDIDNOW)
-* University Health Services (UHS)
-* CDC Respiratory Virus Transmission Network (RVTN)
-* Michigan Sequencing Academic Partnership for Public Health Innovation and Response (MI-SAPPHIRE) - samples from Henry Ford, Trinity, and Ascension health systems
+Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file. These steps are also outlined within the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
 
 ---
 
 ### Manifests
 
-Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/4_SequenceSampleMetadata/Manifests].
-* Manifest from the various MI-SAPPHIRE sites will need to be formatted for use in processing after they are received.
+Manifests are received from the following sources:
 
-##### Manifest Column Format (for UHS and CBR)
+* Martin Lab at the University of Michigan School of Public Health (Martin)
+* University of Michigan Central Biorepository (CBR)
+* CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan (Currently IVY4 as of Sept. 2022)
+* CDC IVY Sub-study of Viral Evolution in Immunocompromised Individuals (IVYIC)
+* University Health Services (UHS)
+* CDC Respiratory Virus Transmission Network (RVTN)
+* Michigan Sequencing Academic Partnership for Public Health Innovation and Response (MI-SAPPHIRE) - samples from Henry Ford, Trinity, and Ascension health systems
+* VIEW Project
+
+Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/4_SequenceSampleMetadata/Manifests]. Manifest documentation to exchange with new testing sites, go to Dropbox (University of Michigan)/MED-LauringLab/LabManagement/Documentation_Notes/ManifestFileFormatting.
+
+##### Basic Manifest Column Format
 
 | Columns | Data Type	| Variable Description |
 | --- | --- | --- |
 | position | character | Where the sample is located in the box sent |
 | sample_id | numeric | Identification number for the sample; unique |
-| subject_id | numeric | Identification number for the subject (individual) - there may be multiple samples per subject |
+| subject_id | numeric | Identification number for the subject (individual) - there may be multiple samples per subject; Should not be identifiable; Should be available with barcode scan |
 | coll_date | date | Date the sample was collected on; M/D/YY format |
 | flag | character | Notes |
 

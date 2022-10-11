@@ -785,14 +785,14 @@ prev_mani_stor <- read.csv(paste0(outputLOC, "/sample_full_manifest_list_prev.cs
 if (nrow(manifest_storage) > 0){
   
     # ensure column data types are the same
-    manifest_storage$position <- as.character(anifest_storage$position)
-    manifest_storage$sample_id <- as.character(anifest_storage$position)
-    manifest_storage$subject_id <- as.character(anifest_storage$position)
-    manifest_storage$coll_date <- as.character(anifest_storage$position)
-    manifest_storage$flag <- as.character(anifest_storage$position)
-    manifest_storage$received_date <- as.character(anifest_storage$position)
-    manifest_storage$received_source <- as.character(anifest_storage$position)
-    manifest_storage$SiteName <- as.character(anifest_storage$position)
+    manifest_storage$position <- as.character(manifest_storage$position)
+    manifest_storage$sample_id <- as.character(manifest_storage$position)
+    manifest_storage$subject_id <- as.character(manifest_storage$position)
+    manifest_storage$coll_date <- as.character(manifest_storage$position)
+    manifest_storage$flag <- as.character(manifest_storage$position)
+    manifest_storage$received_date <- as.character(manifest_storage$position)
+    manifest_storage$received_source <- as.character(manifest_storage$position)
+    manifest_storage$SiteName <- as.character(manifest_storage$position)
     manifest_storage$subject_id_length <- as.numeric(manifest_storage$subject_id_length)
   
     manifest_storage <- rbind(prev_mani_stor, manifest_storage)

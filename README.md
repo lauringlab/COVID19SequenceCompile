@@ -229,8 +229,24 @@ Manifests are reviewed, checked and renamed as necessary, and placed in the appr
 
 ##### Manifest Column Format (for IVY & RVTN)
 
+Note: these manifests are generally send as Excel files.
+
 | Columns | Data Type	| Variable Description |
 | --- | --- | --- |
+| Box # | Numeric | The identifying number on the box sent to the laboratory |
+| Position # | Numeric | Location of the individual sample within the shipping box |
+| Site Name | Character | Hidden; Can be left blank, as site can be determined from study ID, filled with site name the sample came from |
+| Study ID | Numeric | Identifying subject number |
+| Collection Date | Date | Date the sample was collected on |
+| Aliquot ID | Alpha-numeric | Sample ID, non identifying |
+| Specimen Type | Character | Type of sample collected (e.g. "Upper Respiratory") |
+| FluSC2 RNP Ct | NA | Hidden, blank |
+| SC2 Ct | NA | Hidden, blank |
+| RNP Ct | Numeric | Ct value for the sample |
+| Covid-19 N1 | Numeric	| Ct value for the sample |
+| Covid-19 N2 | Numeric | Ct value for the sample | 	
+| Comments | Character | Any notes on the sample, if provided; Can be blank | 
+
 
 ##### Manifest File Name Format
 

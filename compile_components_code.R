@@ -325,6 +325,9 @@ fpn <- fpn %>% group_by(sample_id) %>% mutate(count = length(sample_id)) %>% dis
 #fpn <- filter(fpn, count == 1)
 fpn <- fpn %>% select(sample_id, newest_pangolin_lineage, newest_pangolin_date)
 
+### remove out any negative controls, etc.
+fpn <- filter(fpn, !grepl("NC_", sample_id) & !grepl("HeLa", sample_id))
+
 # merge that data onto full set
 mppnc2 <- merge(mppnc2, fpn, by = c("sample_id"), all.x = TRUE, all.y = FALSE)
 

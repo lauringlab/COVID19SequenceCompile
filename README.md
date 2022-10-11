@@ -4,18 +4,32 @@
 
 <b>Folder Structure:</b>
 
-Folder structure lives within the MED-LauringLab DropBox folder.
+Folder structure lives within the MED-LauringLab/SEQUENCING DropBox folder.
 
-* INFLUENZA_A: Code exists for this pipeline, but is not finalized.
+* INFLUENZA_A
+  * 0_ProcessingScripts
+  * 2_Plate_Maps
+  * 3_ProcessedGenomes
+  * 4_SequenceSampleMetadata
+  * 5_GISAID_Uploads
+  * 6_SampleSheets
+  * 7_BarcodeMaps
 * SARSCOV2
+  * 00_ARCHIVE_SarsCoV2_2020: Contains sample analysis from early 2020 sequencing work
+  * 0_ProcessingScripts: Contains processing code used in original sequence processing
+  * 1_OriginalManifests_CBR: Original manifest documents provided by CBR
+  * 1_OriginalManifests_Lynx: Original manifest documents provided by LynxDx
+  * 1_OriginalManifests_SPH: Original manifest documents provided by SPH
+  * 1_OriginalManifests_UHS: Original manifest documents provided by UHS
   * 2_PlateMaps: Original plate map files are first placed here by laboratory team
   * 3_ProcessedGenomes: Original sequence files are placed here, organized by plate.
     * Within each plate folder = .all.consensus.final.fasta (fasta file of sequences with >90% completeness), all.consensus.renamed.full.fasta (fasta file of all sequences)
   * 4_SequenceSampleMetadata
       * FinalSummary: Contains the final compiled data full_compiled_data.csv
-          * ReportNotifications: Contains out_of_range_alert.csv
+          * ReportNotifications: Contains negative_control_warnings.tsv
           * secret: Contains a duplicate final file (full_compiled_data.csv) for comparison in case of changes made manually to the compiled file
           * CDC_IVY_UPLOADS: Contains the files created in order to upload to the CDC IVY RedCap database
+          * RVTN_UPLOADS: Contains the files created in order to upload to the RVTN RedCap database
       * Manifests: contains all manifest files, organized by received source
           * ASCENSION: Contains manifests from Ascension Hospital system, one of the MI-SAPPHIRE sites
           * CBR: Contains manifest files from the University of Michigan Campus BioRepository
@@ -30,19 +44,27 @@ Folder structure lives within the MED-LauringLab DropBox folder.
           * MDHHS: Contains manifests from the Michigan Department of Health and Human Services
           * PUIMISC: Contains manifests for one-off projects, PUIs, etc.
           * RVTN: Contains manifest files from the RCTN project
-          * RVTN_test: Contains manifests from initial RVTN test round
+          * RVTN_TEST: Contains manifests from initial RVTN test round
           * TRINITY: Contains manifests ffrom the Trinity Health System, one of the MI-SAPPHIRE sites
           * UHS: Contains manfests from University Health Services samples
-          * ManifestsComplete: Contains the manifest_output_report_YYYYMMDD.xlsx reports, as well as the compiled manifest list sample_full_manifest_list.csv
+          * VIEW: Contains manifest files from the VIEW study
+          * ManifestsComplete: Contains the compiled manifest list sample_full_manifest_list.csv, the archived manifest list sample_full_manifest_list_prev.csv, and the list of archived manifest files as current_manifest_list.RDS
       * PlateMaps: Contains all plate map files as YYYYMMDD_SC2_Illumina_Plate_##.xlsx or YYYYMMDD_SC2_Nanopore_Run_##.xlsx
           * PlateMapsComplete: Contains the compiled plate map list sample_full_plate_list.csv
       * PreviousLists: Contains the original processed sample list ProcessedSampleCumulativeList_20210326.csv maintained by Andrew Valesano prior to code implementation
       * SequenceOutcomes
           * gisaid: Contains the GISAID metadata file metadata_YYYY-MM-DD_MM-DD.tsv; also contains the GISAID upload template file (GISAID_UPLOAD_TEMPLATE.xls)
           * nextclade: Contains the NextClade output files as either YYYYMMDD_Plate_##\_##\_nextclade.tsv or YYYYMMDD\_Nanopore\_Run_##_nextclade.tsv
-          * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv
+          * pangolin: Contains the Pangolin output files as either YYYYMMDD_Plate_##\_##\_pangolin.csv or YYYYMMDD\_Nanopore\_Run_##_pangolin.csv; also contains the code and file(s) for the updated current pangolin status system
           * SequenceOutcomeComplete: Contains the sequence outcome final compiled files of sample_full_gisaid_list.csv, sample_full_nextclade_list.csv, and sample_full_pangolin_list.csv
     * 5_GISAID_Uploads: contains each plate's necessary files to submit for GISAID submission
+    * 6_Sequencing_ReportsAndCharts
+    * 7_QAQC_CDCIVY
+    * 8_QPCR_IVY
+    * 9_Coverage
+    * 10_transfer
+    * 11_GridION_RunReports
+    * 12_SampleSheets
 
 <b>R Libraries Necessary:</b>
 
@@ -52,6 +74,16 @@ Folder structure lives within the MED-LauringLab DropBox folder.
 * withr: https://cran.r-project.org/web/packages/withr/index.html
 * openxlsx: https://cran.r-project.org/web/packages/openxlsx/index.html
 * reshape2: https://cran.r-project.org/web/packages/reshape2/index.html
+
+<b>Python Libraries Necessary:</b>
+
+* import argparse: https://docs.python.org/3/library/argparse.html
+* import glob: https://docs.python.org/3/library/glob.html
+* import pandas as pd: https://pandas.pydata.org/
+* from Bio import SeqIO: https://biopython.org/wiki/SeqIO
+* from Bio.Seq import Seq: https://biopython.org/docs/1.75/api/Bio.Seq.html
+* from Bio.SeqRecord import SeqRecord https://biopython.org/docs/1.75/api/Bio.SeqRecord.html
+* import os: https://docs.python.org/3/library/os.html
 
 <b>Code:</b>
 
@@ -63,33 +95,41 @@ In order to run the compilation code pipeline, download the following code sets:
 * pangolin_code.R
 * nextclade_code.R
 * gisaid_code.R
+* determine_current_manifest_state.R
 * compile_components_code.R
 * <span style="background-color: #F0B7B3">full_run_code.R</span>
 * <b>OutsidePipeline</b>
+  * cdc_ivy_upload_code.R
   * checking_compiled_files.R
   * gisaid_upload_file_creation.R
   * moving_nextclade_output.R
   * moving_pangolin_output.R
   * moving_plate_map_files.R
+  * rvtn_upload_code.R
   * subset_compiled_for_fasta.R
+  * <span style="background-color: #8AA29E">summary_report_samples.Rmd</span>
+  * <span style="background-color: #8AA29E">who_variant_crosswalk.csv</span>
     * <b>ProcessingFASTA</b>
       * checking_sampleids.py
       * prep_fasta_NumberTwo.py
       * prep_fasta_for_gisaid.py
+      * prep_fasta_gisaid_flu.py
+      * prep_fasta_NumberOne_2.py
+      * replace_barcodes_fasta.py
+      * SelectSequences.py
+    * <b>UpToDatePangolin</b>
+      * compile_all_fastas.py
 
-And put them all in the same folder on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
+And put them all in the same folder structure on your computer. Use full_run_code.R to run everything in the correct order. Ensure that all file paths and folder names mentioned in each code set are correct.
 
 <b>Additional Notes:</b>
 
 * At the beginning of full_run_code.R, there is a section of code to set the ```starting_path```, ```code_path```, ```batch_path```, and ```influenza_path``` for your particular computer. This only works for adjusting the portions of the necessary code that are called from the full_run_code.R file. In any instance, always check all file paths before running code files.
 * Ensure that you have access to either the LauringLab DropBox folder, or your own version of the pipeline folder structure, from your computer.
 
+---
 
-### Code Order:
-
-Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file.
-
-### Data Dictionary for Compiled File:
+### Data Dictionary for SARS-CoV-2 Compiled File:
 
 The final created file is called <b>full_compiled_data.csv</b>.
 
@@ -134,16 +174,16 @@ The final created file is called <b>full_compiled_data.csv</b>.
 | nextclade_totalNonACGTNs | sample_full_nextclade_list.csv | numeric | | Number of ambiguous nucleotide characters, i.e. not A, C, T, G, or N. |
 | nextclade_runDate | sample_full_nextclade_list.csv | date | | Date of nextclade output receipt; pulled from the nextclade filename the sample_id was reported on |
 | PlateToNextclade_days | {calculated in compile_components_code.R} | numeric | | Number of days between nextclade_runDate and PlateDate; Put in place to add more context for samples when joining multiple sources, as some sample aliquots are received more than once from the same source |
-| IlluminaPangolin_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Illumina and PlateToPangolin is more than 8, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
-| NanoporePangolin_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToPangolin is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
-| IlluminaNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Illumina and PlateToNextclade is more than 8, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
-| NanoporeNextclade_OutOfRange | {calculated in compile_components_code.R} | numeric | | 1,0 binary; If PlatePlatform is Nanopore and PlateToNextclade is more than 4, then the column is marked (1) as potentially being out of range/an incorrect sample to data match; Marked rows are output in SampleMetadataOrganization/FinalSummary/ReportNotifications/out_of_range_alert.csv |
 | sample_per_subject | {calculated in compile_components_code.R} | numeric | | Numbering of sample_ids per subject_id of the listed sample; samples are ordered by collection date and assigned a number based on 1st, 2nd, 3rd, etc. sampling |
 | multiSamples | {calculated in compile_components_code.R} | numeric | | 1,0 binary; has a value of 1 if the max sample_per_subject of a given sample's subject_id is greater than 1, has a value of 0 if the subject_id has only one sample_id associated with it. |
 | daysFromPrevious | {calculated in compile_components_code.R} | numeric | | Number of days since the previous sample coll_date to the current sample coll_date |
 | ninetyDayFromPrevious | {calculated in compile_components_code.R} | numeric | |  binary 1,0; if daysFromPrevious is greater than 90, then is equal to 1, otherwise it is 0 |
 | previousLineageDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's pangolin_lineage value is different than the current pangolin_lineage, then has a value of 1, otherwise is 0 |
 | previousCladeDifferentThanCurrent | {calculated in compile_components_code.R} | numeric | | binary 1,0; If the previous sample's nextclade_clade value is different than the current nextclade_clade, then has a value of 1, otherwise is 0 |
+| sample_id_lauring | {calculated in compile_components_code.R} | character | | "L" followed by 13 digits, used to hide sample ids in public sequence information  when necessary |
+| data_quality_rule | {calculated in compile_components_code.R} | character | | "pass" or "not passed"; in order to pass, the sequence must have (pangolin_status %in% c("pass", "passed_qc")) & (nextclade_qcOverallStatus %in% c("good", "mediocre")) & (nextclade_completeness > 80) |
+| newest_pangolin_lineage | {compiled in compile_components_code.R} | character | | updated pangolin lineage based on newest available pangolin program |
+| newest_pangolin_date | {calculated in compile_components_code.R} | numeric | | date in YYYYMMDD format of when the sample's fasta file was re-run through pangolin |
 
 
 ---
@@ -152,104 +192,61 @@ The final created file is called <b>full_compiled_data.csv</b>.
 * Latest epidemiological lineages of SARS-CoV-2: https://cov-lineages.org/index.html
 * Additional Definition Source: https://perkinelmer-appliedgenomics.com/wp-content/uploads/marketing/Coronavirus/NEXTFLEX_Variant-Seq_SARS-CoV-2_Software-from-CosmosID.pdf
 * Nextclade GitHub: https://github.com/nextstrain/nextclade
+* CDC's Monitoring of Variant Proportions : https://covid.cdc.gov/covid-data-tracker/#variant-proportions
 
 ---
 
-## Outside the Pipeline
+### SARS-CoV-2 Processing Code Order:
 
-#### Checking Compiled Files
-
-The checking_compiled_files.R code file can be used to see if the "main" version of full_compiled_data.csv matches the "secret" version. The two files should always be the same, but it is possible that the "main" version could differ if individuals manually change the data. The code will only tell you if the two are different. Further investigation would be necessary to determine the extent and character of the differences.
-
-#### Generating .csv File for RedCap Upload
-
-The cdc_ivy_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the CDC IVY RedCap database. This code file creates two separate files, one for IVY3 and one for IVY4.
-
-The rvtn_upload_code.R code file is used to generate the new rows of data that need to be manually uploaded to the RVTN RedCap database.
-
-#### Moving Files in an Automated Fashion
-
-The files moving_nextclade_output.R, moving_pangolin_output.R, and moving_plate_map_files.R are all used to find, move, and re-name files that are used within the pipeline, in order to limit human errors in copy and paste.
-
-#### Generating Excel File for GISAID Upload
-
-The gisaid_upload_file_creation.R code is used to generate a properly structured Excel document to use for batch uploading to the GISAID system. This is completed in batches corresponding to plate runs. Only non-duplicate samples should be uploaded, with >= 90% NextClade sequence completeness.
-* Gisaid upload file will need to be double checked that the data is correct (look at dates and sources), as well as being saved in the correct format ".xls" that Gisaid accepts
-
-#### Subsetting Main File for Data Processing/FASTA Steps
-
-The subset_compiled_for_fasta.R code is used to generate a smaller meta.csv file to use in matching the consensus sequence barcode to the proper sample ID.
-
-### Folder: ProcessingFASTA
-
-<b>Python Libraries Needed:</b>
-* import argparse: https://docs.python.org/3/library/argparse.html
-* import glob: https://docs.python.org/3/library/glob.html
-* import pandas as pd: https://pandas.pydata.org/
-* from Bio import SeqIO: https://biopython.org/wiki/SeqIO
-* from Bio.Seq import Seq: https://biopython.org/docs/1.75/api/Bio.Seq.html
-* from Bio.SeqRecord import SeqRecord https://biopython.org/docs/1.75/api/Bio.SeqRecord.html
-* import os: https://docs.python.org/3/library/os.html
-
-#### Converting Names in .FASTA files (DEPRECATED)
-
-The prep_fasta_for_gisaid.py code converts the genome names within .fasta files for use in pangolin/nextclade/gisaid.
-
-#### Converting Barcode to Sample ID
-
-The prep_fasta_NumberOne.py code turns the barcode label names into the subject_id string for the corresponding sample for each sequence. This file is used for Pangolin and NextClade processing.
-
-#### Subset .FASTA files by ID
-
-The SelectSequences.py code is used to get a subset of a .fasta file by ID.
-
-#### Checking Sample ID Naming
-
-The checking_sampleids.py code compares the sample id's listed in the plate map file to the sample ids's listed in the associated FASTA file for a single plate. This code was introduced in order to catch instances where the FASTA file may have been named incorrectly. When checking samples between platemap and FASTA files for Illumina runs there will be missing samples from the FASTA file as the Illumina sequencing machines have a minimum cutoff for producing FASTA files.
-
-#### Creating FASTA file for GISAID upload
-
-The prep_fasta_NumberTwo.py file curates and creates the final FASTA file used for GISAID submisison.
-* This file is generated in the 3_ProcessedGenome run folder and will need to be copied over the 5_GISAID_Uploads run folder
-
----
-
-### Process
-
-For a complete record of the order of events to process a full run of data, visit the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
-
-Manifests are received from the following sources:
-
-* COVID-19 Sampling & Tracking Program (CSTP) - samples from this source are processed first by LynxDx
-* Martin Lab at the University of Michigan School of Public Health (Martin)
-* University of Michigan Central Biorepository (CBR)
-* CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan (Currenlty IVY4 as of Sept. 2022)
-* Michigan Medicine ED ID Now project (EDIDNOW)
-* University Health Services (UHS)
-* CDC Respiratory Virus Transmission Network (RVTN)
-* Michigan Sequencing Academic Partnership for Public Health Innovation and Response (MI-SAPPHIRE) - samples from Henry Ford, Trinity, and Ascension health systems 
+Use full_run_code.R to run all the pieces of the pipeline in order. This order is outlined within the full_run_code.R file. These steps are also outlined within the [Google Tracking Document for SARS-CoV-2](<https://docs.google.com/spreadsheets/d/1GuPIPou3Y15_TH2cZbNJ1Y6BLTHNllD-2yvwmuPhfEM/edit#gid=744361978>)
 
 ---
 
 ### Manifests
 
-Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/4_SequenceSampleMetadata/Manifests].
-* Manifest from the various MI-SAPPHIRE sites will need to be formatted for use in processing after they are received. 
+Manifests are received from the following sources:
 
-##### Manifest Column Format (for UHS and CBR)
+* Martin Lab at the University of Michigan School of Public Health (Martin)
+* University of Michigan Central Biorepository (CBR)
+* CDC IVY Project (CDCIVY) - samples from 21 sites sent to Vanderbilt, then to University of Michigan (Currently IVY4 as of Sept. 2022)
+* CDC IVY Sub-study of Viral Evolution in Immunocompromised Individuals (IVYIC)
+* University Health Services (UHS)
+* CDC Respiratory Virus Transmission Network (RVTN)
+* Michigan Sequencing Academic Partnership for Public Health Innovation and Response (MI-SAPPHIRE) - samples from Henry Ford, Trinity, and Ascension health systems
+* VIEW Project
+
+Manifests are reviewed, checked and renamed as necessary, and placed in the appropriate Manifests folder [within DropBox/MED-LauringLab/4_SequenceSampleMetadata/Manifests]. Manifest documentation to exchange with new testing sites, go to Dropbox (University of Michigan)/MED-LauringLab/LabManagement/Documentation_Notes/ManifestFileFormatting.
+
+##### Basic Manifest Column Format
 
 | Columns | Data Type	| Variable Description |
 | --- | --- | --- |
 | position | character | Where the sample is located in the box sent |
 | sample_id | numeric | Identification number for the sample; unique |
-| subject_id | numeric | Identification number for the subject (individual) - there may be multiple samples per subject |
+| subject_id | numeric | Identification number for the subject (individual) - there may be multiple samples per subject; Should not be identifiable; Should be available with barcode scan |
 | coll_date | date | Date the sample was collected on; M/D/YY format |
 | flag | character | Notes |
 
 ##### Manifest Column Format (for IVY & RVTN)
 
+Note: these manifests are generally send as Excel files.
+
 | Columns | Data Type	| Variable Description |
 | --- | --- | --- |
+| Box # | Numeric | The identifying number on the box sent to the laboratory |
+| Position # | Numeric | Location of the individual sample within the shipping box |
+| Site Name | Character | Hidden; Can be left blank, as site can be determined from study ID, filled with site name the sample came from |
+| Study ID | Numeric | Identifying subject number |
+| Collection Date | Date | Date the sample was collected on |
+| Aliquot ID | Alpha-numeric | Sample ID, non identifying |
+| Specimen Type | Character | Type of sample collected (e.g. "Upper Respiratory") |
+| FluSC2 RNP Ct | NA | Hidden, blank |
+| SC2 Ct | NA | Hidden, blank |
+| RNP Ct | Numeric | Ct value for the sample |
+| Covid-19 N1 | Numeric	| Ct value for the sample |
+| Covid-19 N2 | Numeric | Ct value for the sample | 	
+| Comments | Character | Any notes on the sample, if provided; Can be blank | 
+
 
 ##### Manifest File Name Format
 
@@ -265,7 +262,7 @@ YYYYMMDD = Year, Month, and Day of when the samples arrived/the manifest file wa
 
 ##### Samples
 
-Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generated, matching samples to their location on those plates. Original plate map files are placed in [DropBox/MED-LauringLab/Plate Maps] as .xlsx files. 
+Samples are received, and sequenced on plates using Nanopore or Illumina systems. Plate Map files are generated, matching samples to their location on those plates. Original plate map files are placed in [DropBox/MED-LauringLab/Plate Maps] as .xlsx files.
 
 ---
 
@@ -408,4 +405,4 @@ Once email confirms sequence release, those will show up within the download por
 Note: For "MI-UM", you will need to include a date range, as there is a max download limit of 10,000 sequences.
 
 4. Select "Patient Status Metadata" in the pop-up window, and click "Download".
-5. Move the file that is downloaded to [Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/new_gisaid_try] and add "_um", "_ivy", or "_rvtn" to the end of the file name. 
+5. Move the file that is downloaded to [Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/new_gisaid_try] and add "_um", "_ivy", or "_rvtn" to the end of the file name.

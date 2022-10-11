@@ -321,8 +321,12 @@ colnames(fpn) <- c("sample_id", "newest_pangolin_lineage")
 date_bit <- substr(full_pangolin_new, 16, 23)
 fpn$newest_pangolin_date <- date_bit
 
+fpn <- fpn %>% group_by(sample_id) %>% mutate(count = length(sample_id)) %>% distinct()
+#fpn <- filter(fpn, count == 1)
+fpn <- fpn %>% select(sample_id, newest_pangolin_lineage, newest_pangolin_date)
+
 # merge that data onto full set
-mppnc2 <- merge(mppnc2, fpn, by = c("sample_id"), all.x = TRUE)
+mppnc2 <- merge(mppnc2, fpn, by = c("sample_id"), all.x = TRUE, all.y = FALSE)
 
 ################################################################################
 ### negative control well warning

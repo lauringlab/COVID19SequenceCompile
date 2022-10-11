@@ -27,7 +27,8 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
                                 pangoLEARN_version, pangolin_conflict, pango_version,               
                                 pangolin_version, pangolin_runDate, PlateToPangolin_days,        
                                 nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
-                                nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
+                                nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)#, sample_id_lauring, 
+                                #data_quality_rule, newest_pangolin_lineage, newest_pangolin_date)
 
 seq_list <- filter(seq_list, received_source == "RVTN" & !grepl("Missing Date", flag))
 
@@ -69,7 +70,8 @@ rvtn <- seq_list %>% select(sample_id, subject_id, coll_date,
                             received_date, position, platename, plateposition, samplesourcelocation,
                                  pangolearn_version,
                                 pango_version, pangolin_version,  nextclade_qcoverallscore, nextclade_qcoverallstatus, 
-                                nextclade_totalmutations, nextclade_totalnonacgtns)
+                                nextclade_totalmutations, nextclade_totalnonacgtns)#, sample_id_lauring, 
+                            #data_quality_rule, newest_pangolin_lineage, newest_pangolin_date)
 
 
 #seq_list <- filter(seq_list, platenumber <= 49)

@@ -30,7 +30,19 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
                                 nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
                                 nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
 
-
+### for ivy 5
+# seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
+#                                 flag, received_source, SiteName, SampleBarcode,                
+#                                 PlateDate, PlatePlatform, PlateNumber,                 
+#                                 pangolin_lineage, pangolin_probability, pangolin_status,             
+#                                 pangolin_note, nextclade_clade, nextclade_totalMissing,      
+#                                 nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
+#                                 received_date, position,          
+#                                 PlateName, PlatePosition, SampleSourceLocation,        
+#                                 pangoLEARN_version, pangolin_conflict, pango_version,               
+#                                 pangolin_version, pangolin_runDate,         
+#                                 nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
+#                                 nextclade_totalNonACGTNs, nextclade_runDate, data_quality_rule, newest_pangolin_lineage, newest_pangolin_date)
 
 # seq_list_o <- seq_list_o %>% select(sample_id, subject_id, coll_date,
 #                                flag, received_source, SiteName, SampleBarcode,

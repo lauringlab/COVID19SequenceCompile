@@ -12,14 +12,14 @@ library(lubridate)
 # set paths 
 starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 ## set run folder accordingly
-outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20220726_IAV_Illumina_Run_27/")
+outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/20220926_IAV_Illumina_Run_28/")
 
 # read in compiled dataset
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
 ################################################################################
 # filter to plate run
-seq_list2 <- filter(seq_list, PlateNumber == "27" & PlateDate == "2022-07-26")
+seq_list2 <- filter(seq_list, PlateNumber == "28" & PlateDate == "2022-09-26")
 #puis <- filter(seq_list, grepl("pui", tolower(flag)) | grepl("pui", tolower(SampleSourceLocation)))
 
 # for use for identifying missing manifests
@@ -27,4 +27,4 @@ seq_list2 <- filter(seq_list, PlateNumber == "27" & PlateDate == "2022-07-26")
 # write.csv(out, "C:/Users/juliegil/Dropbox (University of Michigan)/Personal_DropBox/2021/MissingManifests/run40_20210823.csv", row.names = FALSE, na = "")
 
 # write out that file as the .meta.csv file - change name as appropriate
-write.csv(seq_list2, paste0(outputLOC, "20220726_IAV_Illumina_Run_27.meta.csv"), row.names = FALSE, na = "")
+write.csv(seq_list2, paste0(outputLOC, "20220926_IAV_Illumina_Run_28.meta.csv"), row.names = FALSE, na = "")

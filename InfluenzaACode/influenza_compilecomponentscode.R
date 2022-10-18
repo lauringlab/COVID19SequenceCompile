@@ -37,6 +37,9 @@ plate_map <- read.csv(paste0(plate_fp, "/sample_full_plate_list.csv"), colClasse
 plate_map <- filter(plate_map, SampleID != "" & !is.na(SampleID)) # remove any rows where sample ID is missing on the plate map
 #plate_map$SampleID <- as.character(trimws(plate_map$SampleID))
 
+
+plate_map <- filter(plate_map, !grepl("IBV", SampleSourceLocation))
+
 # store unique number of sample ids 
 plate_map_ids <- nrow(plate_map %>% group_by(SampleID, SampleSourceDate) %>% summarize(count = length(SampleID)))
 

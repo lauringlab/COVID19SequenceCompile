@@ -1,7 +1,7 @@
 #### Influenza CDC IVY Upload
 
 #### Read in influenza full file
-flu_file <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+flu_file <- read.csv(paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
@@ -35,6 +35,6 @@ colnames(rv_flu) <- c("sample_id", "subject_id", "coll_date_flu", "flag_flu",
                        "na_segment_id_flu", "mp_segment_id_flu", "ns_segment_id_flu", "isolate_name_flu")
 
 today_date <- gsub("-", "", Sys.Date())
-write.csv(rv_flu, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(rv_flu, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                           "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                           "RVTN_uploads/rvtn_flu_", today_date, ".csv"), row.names = FALSE, na = "")

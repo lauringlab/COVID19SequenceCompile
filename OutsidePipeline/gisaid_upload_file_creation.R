@@ -230,6 +230,7 @@ ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Ce
                                           received_source == "MDHHS" ~ "Michigan Department of Health and Human Services, Bureau of Laboratories",
                                           received_source == "TRINITY" ~ "Warde Medical Laboratory",
                                           received_source == "ASC" ~ "TMCIDR Lab",
+                                          received_source == "HFHS" ~ "Henry Ford Health Microbiology Laboratory",
                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
                     originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "CDCIVY4" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
@@ -238,6 +239,7 @@ ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Ce
                                                  received_source == "MDHHS" ~ "3350 N Martin Luther King Jr Blvd",
                                                  received_source == "TRINITY" ~ "300 West Textile Rd, Ann Arbor, MI 48108",
                                                  received_source == "ASC" ~ "19251 Mack Avenue Suite 575, Grosse Pointe Woods, MI 48236",
+                                                 received_source == "HFHS" ~ "2799 West Grand Blvd., 6065 E&R Building, Detroit, MI 48202",
                                                   T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
 
 ff$originlabsampleid <- ""

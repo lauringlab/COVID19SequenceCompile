@@ -52,7 +52,7 @@ outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata
 
 # read in list of manifest files that have already been processed in prev file
 processed_manifest_file_names <- readRDS(paste0(outputLOC, "/current_manifest_list.RDS"))
-
+processed_manifest_file_names <- Filter(function(x) !any(grepl("TRIN", x)), processed_manifest_file_names)
 
 ################################################################################
 
@@ -781,6 +781,7 @@ manifest_storage <- subject_id_length_QA(manifest_storage, "CSTP")
 
 ### read in previous manifest list
 prev_mani_stor <- read.csv(paste0(outputLOC, "/sample_full_manifest_list_prev.csv"))
+prev_mani_stor <- filter(prev_mani_stor, received_source != "TRINITY")
 
 if (nrow(manifest_storage) > 0){
   

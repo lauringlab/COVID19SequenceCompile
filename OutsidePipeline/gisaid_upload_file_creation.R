@@ -157,7 +157,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("N
 # hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
 ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "CDCIVY4" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "RVTN" ~ paste0("hCoV-19/USA/", StateAbbrev, "-RVTN-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "RVTN" ~ paste0("hCoV-19/USA/", StateAbbrev, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           received_source == "IVYIC" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "MDHHS" ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4)),
                                           T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))

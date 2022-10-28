@@ -273,6 +273,7 @@ seq <- filter(seq, received_source == "RVTN")
 
 # read in already assigned sequences
 already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
+already_assigned <- already_assigned %>% select(sample_id_lauring, sample_id, subject_id)
 
 ### only keep items in seq that are NOT already assigned
 seq2 <- filter(seq, !sample_id %in% unique(already_assigned$sample_id))
@@ -281,8 +282,8 @@ seq2 <- filter(seq, !sample_id %in% unique(already_assigned$sample_id))
 not_assigned <- filter(already_assigned, is.na(subject_id)) %>% select(sample_id_lauring)
 
 # pull out sample & subject id, add to full_set
-seq3 <- seq2 %>% select(subject_id, sample_id, coll_date)
-fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)))
+seq3 <- seq2 %>% select(subject_id, sample_id)
+fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)))
 colnames(fillup) <- colnames(seq3)
 seq3 <- rbind(seq3, fillup)
 
@@ -294,11 +295,12 @@ write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/SARSCOV2/4_Seque
 
 
 # read in and attach RVTN re-codes
-rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
+rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
+rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id, subject_id)
 #colnames(rvtn_recodes)
 #colnames(mppnc2)
 
-mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id", "coll_date"), all.x = TRUE)
+mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE)
 
 ################################################################################
 

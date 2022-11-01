@@ -44,7 +44,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20221027_SC2_Nanopore_Run_246"
+plate_name <- "20221026_SC2_Nanopore_Run_244"
 #=======
 plate_name <- "20220720_SC2_Illumina_Run_58"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f

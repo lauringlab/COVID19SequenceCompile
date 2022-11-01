@@ -6,14 +6,14 @@
 
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
-  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-  #batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
-  influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  #influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  #batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+  batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+  #influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   
@@ -44,7 +44,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20221026_SC2_Nanopore_Run_244"
+plate_name <- "20221027_SC2_Nanopore_Run_246"
 #=======
 plate_name <- "20220720_SC2_Illumina_Run_58"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f

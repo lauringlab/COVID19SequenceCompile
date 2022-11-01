@@ -538,7 +538,7 @@ full_rvtn <- data.frame()
 for (each_file in rvtn_file_list){
   
     fileone <- read.csv(paste0(rvtn_manifest_fp, "/", each_file), colClasses = "character")
-    colnames(fileone) <- gsub("ï..", "", colnames(fileone))
+    #colnames(fileone) <- gsub("?..", "", colnames(fileone))
     fileone <- filter(fileone, study_id != "" & specimen_id != "")
     #fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
     

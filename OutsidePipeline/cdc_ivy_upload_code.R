@@ -9,7 +9,7 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
@@ -26,9 +26,9 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
                                 received_date, position,          
                                 PlateName, PlatePosition, SampleSourceLocation,        
                                 pangoLEARN_version, pangolin_conflict, pango_version,               
-                                pangolin_version, pangolin_runDate, PlateToPangolin_days,        
+                                pangolin_version, pangolin_runDate, #PlateToPangolin_days,        
                                 nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
-                                nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
+                                nextclade_totalNonACGTNs, nextclade_runDate)#, PlateToNextclade_days)
 
 ### for ivy 5
 # seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
@@ -123,7 +123,7 @@ if (nchar(day(Sys.Date())) == 1){
 today <- paste0(year(Sys.Date()), m, d)
 
 
-ivy3 <- filter(seq_list, substr(subject_id, 1, 2) == 21)
+#ivy3 <- filter(seq_list, substr(subject_id, 1, 2) == 21)
 ivy4 <- filter(seq_list, substr(subject_id, 1, 2) == 22)
 
 
@@ -141,7 +141,7 @@ ivy4 <- ivy4 %>% select(sample_id, subject_id, coll_date,
 names(ivy4)[names(ivy4) == 'subject_id'] <- 'study_id'
 
 #seq_list <- filter(seq_list, platenumber <= 49)
-write.csv(ivy3, paste0(outputLOC, "cdc_ivy3_", today, ".csv"), row.names = FALSE, na = "")
+#write.csv(ivy3, paste0(outputLOC, "cdc_ivy3_", today, ".csv"), row.names = FALSE, na = "")
 write.csv(ivy4, paste0(outputLOC, "cdc_ivy4_", today, ".csv"), row.names = FALSE, na = "")
 
 #table(seq_list$pangolin_lineage)

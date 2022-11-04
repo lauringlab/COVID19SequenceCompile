@@ -90,13 +90,19 @@ pangolin <- read.csv(paste0(pang_fp, "/sample_full_pangolin_list.csv"), colClass
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
 gisaid <- read.csv(paste0(gisaid_fp, "/sample_full_gisaid_list.csv"), colClasses = "character")
 
+gisaid_secret <- filter(gisaid, grepl("RVTN", gisaid_strain))
+#gisaid <- filter(gisaid, !grepl("RVTN", gisaid_strain))
+
 # merge these onto mani_plate, always keeping everything from mani_plate
 mani_plate_pang <- merge(mani_plate, pangolin, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
-
+#mani_plate_pang <- filter(mani_plate_pang, received_source != "RVTN")
+#mani_plate_pang_secret <- filter(mani_plate_pang, received_source == "RVTN")
 ### add column for time in days from plate to pangolin
 #mani_plate_pang$PlateToPangolin_days <- difftime(mani_plate_pang$pangolin_runDate, mani_plate_pang$PlateDate, units = "days")
 
 mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+#mani_plate_pang_g_secret <- merge(mani_plate_pang_secret, gisaid_secret, by.x = c(" "), by.y = c("sample_id"), all.x = TRUE)
+
 mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 
 ### add column for time in days from plate to nextclade
@@ -301,6 +307,60 @@ rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id, subject_id
 #colnames(mppnc2)
 
 mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE)
+
+################################################################################
+
+# add in RVTN gisaid
+mppnc2_rvtn <- filter(mppnc2, received_source == "RVTN")
+mppnc2 <- filter(mppnc2, received_source != "RVTN")
+
+mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
+                                      received_source, SampleBarcode,                     
+                                      PlateDate, PlatePlatform,                      
+                                      PlateNumber, pangolin_lineage,                  
+                                      pangolin_probability, pangolin_status,                    
+                                      pangolin_note, nextclade_clade,                    
+                                      nextclade_totalMissing, nextclade_completeness,             
+                                      received_date, position,                           
+                                      SiteName, subject_id_length,                  
+                                      PlateName, PlatePosition,                      
+                                      SampleSourceLocation, pangoLEARN_version,                
+                                      pangolin_conflict, pango_version,                     
+                                      pangolin_version, pangolin_runDate,                   
+                                      nextclade_qcOverallScore, nextclade_qcOverallStatus,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_runDate, sample_per_subject,                 
+                                      multiSamples, daysFromPrevious,                  
+                                      ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
+                                      previousCladeDifferentThanCurrent, sample_id_lauring)
+
+mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
+
+mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
+                                      received_source, SampleBarcode,                     
+                                      PlateDate, PlatePlatform,                      
+                                      PlateNumber, pangolin_lineage,                  
+                                      pangolin_probability, pangolin_status,                    
+                                      pangolin_note, nextclade_clade,                    
+                                      nextclade_totalMissing, nextclade_completeness,             
+                                      gisaid_strain, gisaid_epi_isl,                     
+                                      gisaid_clade, gisaid_pango_lineage,               
+                                      received_date, position,                           
+                                      SiteName, subject_id_length,                  
+                                      PlateName, PlatePosition,                      
+                                      SampleSourceLocation, pangoLEARN_version,                
+                                      pangolin_conflict, pango_version,                     
+                                      pangolin_version, pangolin_runDate,                   
+                                      nextclade_qcOverallScore, nextclade_qcOverallStatus,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_runDate, sample_per_subject,                 
+                                      multiSamples, daysFromPrevious,                  
+                                      ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
+                                      previousCladeDifferentThanCurrent, sample_id_lauring)
+
+mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
+
+rm(mppnc2_rvtn)
 
 ################################################################################
 

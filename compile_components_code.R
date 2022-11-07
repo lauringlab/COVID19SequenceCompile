@@ -311,8 +311,8 @@ mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id"), all.x =
 ################################################################################
 
 # add in RVTN gisaid
-mppnc2_rvtn <- filter(mppnc2, received_source == "RVTN")
-mppnc2 <- filter(mppnc2, received_source != "RVTN")
+mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
+mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RVTN")
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
                                       received_source, SampleBarcode,                     

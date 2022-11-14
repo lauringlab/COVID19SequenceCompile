@@ -323,7 +323,7 @@ full_ivy4 <- data.frame()
 
 for (each_file in cdc_file_list){
   
-  if (grepl("CDCIVY4", each_file)){
+  if (grepl("CDCIVY4", each_file) | grepl("CDCIVY5", each_file)){
     #print("IVY4")
     #print(each_file)
     fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)

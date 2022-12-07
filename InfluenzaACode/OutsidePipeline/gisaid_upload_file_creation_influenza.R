@@ -104,7 +104,8 @@ if (any(grepl("IVY", ff$received_source))){
 if(any(grepl("RVTN", ff$received_source))){
   
   ff<- ff %>% mutate(state = case_when(grepl("RVTN", received_source) ~ state.abb[match(flag,state.name)], 
-                                       T ~ state))
+                                       T ~ state), 
+                     sample_id = sample_id_lauring)
   
 }
 

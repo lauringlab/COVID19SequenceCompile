@@ -32,8 +32,8 @@ def main():
     ## takes the string after "--prefix" in the command line for use later
     #parser.add_argument('--prefix', action="store", dest="prefix")
     #args = parser.parse_args()
-    pn_date = "20220726"
-    pn_run = "27"
+    pn_date = "20220926"
+    pn_run = "28"
     #pn = pn_date + "_IAV_Nanopore_Run_" + pn_run
     pn = pn_date + "_IAV_Illumina_Run_" + pn_run
 

@@ -94,7 +94,7 @@ if (any(grepl("IVY", ff$received_source))){
   cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), colClasses = "character") %>% separate(SiteCode, into = c("site", "state"), sep = "_")
   site_bit <- cdc_sites %>% select(Number, state)
   #colnames(site_bit) <- c("Number", "state")
-  ff <- merge(ff, site_bit, by.x = c("source_state_code"), by.y = c("Number"))
+  ff <- merge(ff, site_bit, by.x = c("source_state_code"), by.y = c("Number"), all.x = TRUE)
   ff$state <- ifelse(!grepl("IVY", ff$received_source), "", ff$state)
   
 } else {
@@ -105,20 +105,21 @@ if(any(grepl("RVTN", ff$received_source))){
   
   ff<- ff %>% mutate(state = case_when(grepl("RVTN", received_source) ~ state.abb[match(flag,state.name)], 
                                        T ~ state), 
-                     sample_id = sample_id_lauring)
+                     sample_id = case_when(grepl("RVTN", received_source) ~ sample_id_lauring, 
+                                           T ~ sample_id))
   
 }
 
-ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
+ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
 
 if (any(grepl("IVY", ff$received_source))){
-ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
                                            grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
                                            grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
                                            T ~ "CHECK"
                     ))
 } else if (any(grepl("RVTN", ff$received_source))){
-  ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+  ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
                                              grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
                                              grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
                                              T ~ "CHECK"

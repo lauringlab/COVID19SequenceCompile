@@ -57,7 +57,11 @@ for (each_folder in manifest_folder_list){
       file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag)
       
       ### fix date formatting
-      file_in$coll_date <- as.character(as.POSIXct(file_in$coll_date, format = "%d-%b-%y"))
+      file_in$coll_date1 <- as.character(as.POSIXct(file_in$coll_date, format = "%d-%b-%y"))
+      file_in$coll_date2 <- as.character(as.POSIXct(file_in$coll_date, format = "%Y-%m-%d"))
+      
+      file_in$coll_date <- ifelse(is.na(file_in$coll_date1), file_in$coll_date2, file_in$coll_date1)
+      file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag)
       
       # add in 2 new columns: received_date and received_source (from file name)
       file_in$received_date <- date_from_file(rv)

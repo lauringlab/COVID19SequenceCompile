@@ -102,19 +102,37 @@ for (i in g_files){
   gisaid <- rbind(gisaid, gisaid_in)
 }
 
+gisaid_secret <- filter(gisaid, grepl("RVTN", Isolate_Name))
+
 gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
                             NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
                             P3.Segment_Id, Isolate_Name)
+gisaid_secret <- gisaid_secret %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+                            P3.Segment_Id, Isolate_Name)
+
 gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
+gisaid_secret <- separate(data = gisaid_secret, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
+
 gisaid$id <- gsub("UOM", "", gisaid$id)
 gisaid$id <- gsub("IVY", "", gisaid$id)
 gisaid$id <- gsub("RVTN", "", gisaid$id)
+gisaid_secret$id <- gsub("RVTN", "", gisaid_secret$id)
+
 gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
                             NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
                             P3.Segment_Id, Isolate_Name)
 colnames(gisaid) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id", 
                       "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id", 
                       "P3.Segment_Id", "Isolate_Name")
+
+gisaid_secret <- gisaid_secret %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+                            P3.Segment_Id, Isolate_Name)
+colnames(gisaid_secret) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id", 
+                      "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id", 
+                      "P3.Segment_Id", "Isolate_Name")
+
 
 mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
@@ -137,14 +155,96 @@ mppnc <- subject_id_length_QA(mppnc, "CBR")
 mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
 ################################################################################
+### rvtn recode set-up
+
+###
+# pull in flu RVTN data
+seq <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
+
+# only keep RVTN
+seq <- filter(seq, received_source == "RVTN")
+
+# read in already assigned sequences
+already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
+already_assigned <- already_assigned %>% select(sample_id_lauring, sample_id, subject_id)
+
+### only keep items in seq that are NOT already assigned
+seq2 <- filter(seq, !sample_id %in% unique(already_assigned$sample_id))
+
+# filter out already_assigned so only non-assigned lauring labels are present
+not_assigned <- filter(already_assigned, is.na(subject_id)) %>% select(sample_id_lauring)
+
+# pull out sample & subject id, add to full_set
+seq3 <- seq2 %>% select(subject_id, sample_id)
+fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)))
+colnames(fillup) <- colnames(seq3)
+seq3 <- rbind(seq3, fillup)
+
+full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned rvtn stuff, plus all the unassigned ids
+
+full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_set2)
+
+write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
+
+
+# read in and attach RVTN re-codes
+rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
+rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id, subject_id)
+#colnames(rvtn_recodes)
+#colnames(mppnc2)
+
+mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE)
+
+################################################################################
+
+# add in RVTN gisaid
+# mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
+# mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RVTN")
+# 
+# mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,                   
+#                                       flag, received_source, received_date, SampleBarcode,               
+#                                       PlateDate, PlatePlatform, PlateNumber,
+#                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
+#                                       nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+#                                       nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+#                                       nextclade_HA_runDate, nextclade_HA_type, 
+#                                       subject_id_length, position, PlateName, PlatePosition,               
+#                                       SampleSourceLocation, PlateToNextclade_days, 
+#                                       sample_per_subject, sample_id_lauring)
+# 
+# mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
+
+#colnames(mppnc2_rvtn)
+
+# mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,                   
+#                                       flag, received_source, received_date, SampleBarcode,               
+#                                       PlateDate, PlatePlatform, PlateNumber,
+#                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
+#                                       nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+#                                       nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+#                                       nextclade_HA_runDate, nextclade_HA_type, 
+#                                       Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+#                                       NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+#                                       P3.Segment_Id, Isolate_Name,              
+#                                       subject_id_length, position, PlateName, PlatePosition,               
+#                                       SampleSourceLocation, PlateToNextclade_days, 
+#                                       sample_per_subject, sample_id_lauring)
+# 
+# mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
+# 
+# rm(mppnc2_rvtn)
+
+
+
+################################################################################
 ## apply logic for mis-matched pangolin/nextclade info
 ## necessary for instances where a sample was run on two different plates
 ## unsure how this logic will work for flu, since not everything gets a nextclade entry
 
-colnames(mppnc)
+#colnames(mppnc)
 
 
-mppnc2 <- mppnc %>% select(sample_id, subject_id, coll_date,                   
+mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,                   
                            flag, received_source, received_date, SampleBarcode,               
                            PlateDate, PlatePlatform, PlateNumber,
                            nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
@@ -156,7 +256,7 @@ mppnc2 <- mppnc %>% select(sample_id, subject_id, coll_date,
                            P3.Segment_Id, Isolate_Name,              
                            subject_id_length, position, PlateName, PlatePosition,               
                            SampleSourceLocation, PlateToNextclade_days, 
-                           sample_per_subject)
+                           sample_per_subject, sample_id_lauring)
 
 ################################################################################
 ### negative control well warning
@@ -177,5 +277,5 @@ mppnc2 <- mppnc %>% select(sample_id, subject_id, coll_date,
 
 ################################################################################
 
-write.csv(mppnc2, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
-write.csv(mppnc2, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")
+write.csv(mppnc3, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
+write.csv(mppnc3, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")

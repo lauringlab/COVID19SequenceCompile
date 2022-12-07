@@ -33,15 +33,17 @@ gisaid_storage <- data.frame()
 
 for (i in file_list){
     gisaid_in <- read.delim(paste0(gisaid_fp, "/", i))
+    print(filter(gisaid_in, grepl("10043602408", Virus.name)))
+    print(i)
     gisaid_storage <- rbind(gisaid_storage, gisaid_in)
 }
 
 # remove any empty rows/columns that may come in
 #gisaid_storage <- remove_empty(gisaid_storage)
 #only keeping distinct rows 10,000 row limit for Gisaid
-gisaid_storage <- gisaid_storage %>% distinct()  
 # select columns we care about
 gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Lineage)
+gisaid_storage <- gisaid_storage %>% distinct()  
 
 # create sample_id column
 gisaid_storage$sample_id <-  sapply(strsplit(as.character(gisaid_storage$Virus.name),'/'), "[", 3)

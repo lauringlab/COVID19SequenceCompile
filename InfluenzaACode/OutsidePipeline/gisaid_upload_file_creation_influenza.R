@@ -20,9 +20,9 @@ starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLa
 ################################################################################
 ### fill in some info manually
 
-plate_datef <- "20220726" # plate date in YYYYMMDD format
+plate_datef <- "20220926" # plate date in YYYYMMDD format
 runtech <- "Illumina" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "27" # number, will match "PlateNumber" options
+runnum <- "28" # number, will match "PlateNumber" options
 
 seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
 
@@ -184,7 +184,7 @@ ff_gisaid <- ff %>% select(IsolateID, SegmentIDs, StrainName, Subtype, Lineage,
 
 ff_gisaid[is.na(ff_gisaid)] <- ""
 
-write.csv(ff_gisaid, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
+write.csv(ff_gisaid, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
 
 #University of Michigan Clinical Microbiology Laboratory
 #2800 Plymouth Rd, Ann Arbor, MI, USA

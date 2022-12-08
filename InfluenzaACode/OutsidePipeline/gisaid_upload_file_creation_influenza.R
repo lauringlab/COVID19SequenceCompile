@@ -93,6 +93,9 @@ if (any(grepl("IVY", ff$received_source))){
   cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
   cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), colClasses = "character") %>% separate(SiteCode, into = c("site", "state"), sep = "_")
   site_bit <- cdc_sites %>% select(Number, state)
+  # add leading zeros to site
+  site_bit <- site_bit %>% mutate(Number = case_when(nchar(Number) == 1 ~ paste0("0", Number), 
+                                                     T ~ Number))
   #colnames(site_bit) <- c("Number", "state")
   ff <- merge(ff, site_bit, by.x = c("source_state_code"), by.y = c("Number"), all.x = TRUE)
   ff$state <- ifelse(!grepl("IVY", ff$received_source), "", ff$state)

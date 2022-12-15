@@ -23,6 +23,7 @@ edidnow_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSamp
 
 cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
 rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN")
+view_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/VIEW")
 ivyic_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/IVYIC")
 mdhhs_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/MDHHS")
 trinity_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/TRINITY")
@@ -522,6 +523,9 @@ manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 #rvtn_file_list <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
 
 rvtn_file_list22 <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
+view_file_list <- list.files(pattern = "*.csv", path = view_manifest_fp)
+
+rvtn_file_list22 <- c(rvtn_file_list22, view_file_list)
 
 rvtn_file_list <- c()
 for (each_file in rvtn_file_list22){

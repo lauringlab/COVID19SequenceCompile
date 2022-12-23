@@ -90,7 +90,7 @@ pangolin <- read.csv(paste0(pang_fp, "/sample_full_pangolin_list.csv"), colClass
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
 gisaid <- read.csv(paste0(gisaid_fp, "/sample_full_gisaid_list.csv"), colClasses = "character")
 
-gisaid_secret <- filter(gisaid, grepl("RVTN", gisaid_strain))
+gisaid_secret <- filter(gisaid, grepl("RVTN", gisaid_strain) | grepl("VIEW", gisaid_strain))
 #gisaid <- filter(gisaid, !grepl("RVTN", gisaid_strain))
 
 # merge these onto mani_plate, always keeping everything from mani_plate
@@ -274,8 +274,8 @@ mppnc2 <- mppnc2 %>% mutate(coll_date = case_when(grepl("/", coll_date) & substr
 # pull in covid RVTN data
 seq <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
 
-# only keep RVTN
-seq <- filter(seq, received_source == "RVTN")
+# only keep RVTN and VIEW
+seq <- filter(seq, received_source %in% c("RVTN", "VIEW"))
 
 # read in already assigned sequences
 already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
@@ -312,7 +312,8 @@ mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id"), all.x =
 
 # add in RVTN gisaid
 mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
-mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RVTN")
+mppnc2_view <- filter(mppnc2, grepl("VIEW", received_source))
+mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source) & !grepl("VIEW", received_source)) #received_source != "RVTN")
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
                                       received_source, SampleBarcode,                     
@@ -334,7 +335,28 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
 
+mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,                               
+                                      received_source, SampleBarcode,                     
+                                      PlateDate, PlatePlatform,                      
+                                      PlateNumber, pangolin_lineage,                  
+                                      pangolin_probability, pangolin_status,                    
+                                      pangolin_note, nextclade_clade,                    
+                                      nextclade_totalMissing, nextclade_completeness,             
+                                      received_date, position,                           
+                                      SiteName, subject_id_length,                  
+                                      PlateName, PlatePosition,                      
+                                      SampleSourceLocation, pangoLEARN_version,                
+                                      pangolin_conflict, pango_version,                     
+                                      pangolin_version, pangolin_runDate,                   
+                                      nextclade_qcOverallScore, nextclade_qcOverallStatus,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_runDate, sample_per_subject,                 
+                                      multiSamples, daysFromPrevious,                  
+                                      ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
+                                      previousCladeDifferentThanCurrent, sample_id_lauring)
+
 mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
+mppnc2_view <- merge(mppnc2_view, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
                                       received_source, SampleBarcode,                     
@@ -358,9 +380,34 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
 
+mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,                               
+                                      received_source, SampleBarcode,                     
+                                      PlateDate, PlatePlatform,                      
+                                      PlateNumber, pangolin_lineage,                  
+                                      pangolin_probability, pangolin_status,                    
+                                      pangolin_note, nextclade_clade,                    
+                                      nextclade_totalMissing, nextclade_completeness,             
+                                      gisaid_strain, gisaid_epi_isl,                     
+                                      gisaid_clade, gisaid_pango_lineage,               
+                                      received_date, position,                           
+                                      SiteName, subject_id_length,                  
+                                      PlateName, PlatePosition,                      
+                                      SampleSourceLocation, pangoLEARN_version,                
+                                      pangolin_conflict, pango_version,                     
+                                      pangolin_version, pangolin_runDate,                   
+                                      nextclade_qcOverallScore, nextclade_qcOverallStatus,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_runDate, sample_per_subject,                 
+                                      multiSamples, daysFromPrevious,                  
+                                      ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
+                                      previousCladeDifferentThanCurrent, sample_id_lauring)
+
+
 mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
+mppnc2 <- rbind(mppnc2, mppnc2_view)
 
 rm(mppnc2_rvtn)
+rm(mppnc2_view)
 
 ################################################################################
 

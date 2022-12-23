@@ -64,6 +64,8 @@ manifest_storage <- data.frame()
 # will iterate through folders
 for (each_folder in manifest_folder_list){
     
+    print(paste0("Processing manifests in: ", each_folder))
+  
     ### get names of all .csv files in folder
     file_list22 <- list.files(pattern = "*.csv", path = each_folder)
     
@@ -184,6 +186,8 @@ manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
 ### get names of all .csv files in folder
 mdhhs_files22 <- list.files(mdhhs_manifest_fp, pattern = "*.xlsx")
 
+print("Processing MDHHS Manifests")
+
 mdhhs_files <- c()
 for (each_file in mdhhs_files22){
   if (each_file %in% processed_manifest_file_names){
@@ -237,6 +241,8 @@ write.csv(full_mdhhs, paste0(mdhhs_manifest_fp, "/ARCHIVE/full_mdhhs_manifest_in
 #trin_files <- list.files(trinity_manifest_fp, pattern = "*.xlsx")
 
 trin_files22 <- list.files(trinity_manifest_fp, pattern = "*.xlsx")
+
+print("Processing TRINITY Manifests")
 
 trin_files <- c()
 for (each_file in trin_files22){
@@ -307,6 +313,8 @@ cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), 
 #cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
 
 cdc_file_list22 <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
+
+print("Processing CDCIVY Manifests")
 
 cdc_file_list <- c()
 for (each_file in cdc_file_list22){
@@ -525,6 +533,8 @@ manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 rvtn_file_list22 <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
 view_file_list <- list.files(pattern = "*.csv", path = view_manifest_fp)
 
+print("Processing RVTN and VIEW Manifests")
+
 rvtn_file_list22 <- c(rvtn_file_list22, view_file_list)
 
 rvtn_file_list <- c()
@@ -542,7 +552,8 @@ full_rvtn <- data.frame()
 for (each_file in rvtn_file_list){
   
     fileone <- read.csv(paste0(rvtn_manifest_fp, "/", each_file), colClasses = "character")
-    #colnames(fileone) <- gsub("?..", "", colnames(fileone))
+    colnames(fileone) <- c("specimen_id", "site", "study_id", "date_of_collection", 
+                           "specimen_type", "manifest_creation_date", "record_id")
     fileone <- filter(fileone, study_id != "" & specimen_id != "")
     #fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
     
@@ -639,6 +650,8 @@ manifest_storage <- rbind(manifest_storage, rvtn_storage)
 #ivyic_file_list <- list.files(pattern = "*.xlsx", path = ivyic_manifest_fp)
 
 ivyic_file_list22 <- list.files(pattern = "*.xlsx", path = ivyic_manifest_fp)
+
+print("Processing IVYIC Manifests")
 
 ivyic_file_list <- c()
 for (each_file in ivyic_file_list22){

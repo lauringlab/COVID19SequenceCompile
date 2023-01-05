@@ -152,12 +152,22 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20221116_IAV_Illumina_Run_29"
 
 ################################################################################
+# ROUND 1
+################################################################################
 
 source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
 source(paste0(influenza_path, "influenza_manifestcode.R"))
 
 source(paste0(influenza_path, "influenza_platemapcode.R"))
+
+source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
+
+source(paste0(influenza_path, "OutsidePipeline/subset_compiled_influenza.R"))
+
+################################################################################
+# ROUND 2
+################################################################################
 
 source(paste0(influenza_path, "influenza_nextcladecode.R"))
 

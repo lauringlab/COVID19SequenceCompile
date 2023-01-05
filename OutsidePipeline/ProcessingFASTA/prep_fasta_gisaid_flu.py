@@ -29,19 +29,29 @@ import numpy as np
 
 def main():
 
-    #parser = argparse.ArgumentParser()
-    ## takes the string after "--prefix" in the command line for use later
-    #parser.add_argument('--prefix', action="store", dest="prefix")
-    #args = parser.parse_args()
-    pn_date = "20220926"
-    pn_run = "28"
-    #pn = pn_date + "_IAV_Nanopore_Run_" + pn_run
-    pn = pn_date + "_IAV_Illumina_Run_" + pn_run
+    if ("juliegil" in os.getcwd()):
+        s_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/"
+        full_loc = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
+    else if ("leighbak" in os.getcwd()):
+        s_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/"
+        full_loc = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
+    else:
+        print("Current working directory username not recognized.")
 
-    sequence_folder = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/" + pn + "/Segment_sequences/"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--prefix', action="store", dest="prefix")
+    args = parser.parse_args()
+
+    #pn_date = "20220926"
+    #pn_run = "28"
+    #pn = pn_date + "_IAV_Nanopore_Run_" + pn_run
+    pn = args.prefix
+    pn_date = pn[0:10]
+
+    sequence_folder = s_path + pn + "/Segment_sequences/"
     onlyfiles = [f for f in os.listdir(sequence_folder) if os.path.isfile(os.path.join(sequence_folder, f))]
 
-    loc90 = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/" + pn + "/"
+    loc90 = s_path + pn + "/"
     keep90s = list()
     #library_checker = {}
     file90 = loc90 + pn + ".90.consensus.fasta"
@@ -58,7 +68,7 @@ def main():
     df_out = pd.DataFrame(keep90s, columns=[""])
     df_out.to_csv(('{}gisaid_90keeps.csv').format(sequence_folder), index=False)
 
-    seq_hide_rvtn = pd.read_csv("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv")
+    seq_hide_rvtn = pd.read_csv(full_loc)
     seq_hide_rvtn = seq_hide_rvtn[['sample_id', 'sample_id_lauring']]
     # merge keeps90 version in df_out with seq_hide_rvtn
     sq_hide2 = pd.merge(df_out, seq_hide_rvtn, left_on = "", right_on = "sample_id")

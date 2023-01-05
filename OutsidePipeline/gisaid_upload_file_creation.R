@@ -208,7 +208,7 @@ ff$Treatment <- ""
 
 
 # Oxford Nanopore, Illumina MiSeq
-ff$SequencingTechnology <- ifelse(ff$PlatePlatform == "Nanopore", "Oxford Nanopore", 
+ff$SequencingTechnology <- ifelse(ff$PlatePlatform == "Nanopore", "Oxford Nanopore Midnight", 
                                   ifelse(ff$PlatePlatform == "Illumina", "Illumina MiSeq", "Unknown"))
 
 unknown_tech <- filter(ff, SequencingTechnology == "Unknown")
@@ -218,7 +218,7 @@ if (nrow(unknown_tech) != 0){
 }
 
 ### Assembly Method
-ff$AssemblyMethod <- ifelse(ff$PlatePlatform == "Nanopore", "ARTIC Network pipeline", 
+ff$AssemblyMethod <- ifelse(ff$PlatePlatform == "Nanopore", "ARTIC Network pipeline Midnight", 
                             ifelse(ff$PlatePlatform == "Illumina", "BWA-MEM, iVar", "Unknown"))
 
 unknown_assembly <- filter(ff, AssemblyMethod == "Unknown")

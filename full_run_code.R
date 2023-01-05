@@ -149,6 +149,12 @@ source(paste0(code_path, "compile_components_code.R"))
 # INFLUENZA COMPONENT
 ################################################################################
 
+plate_name <- "20221116_IAV_Illumina_Run_29"
+
+################################################################################
+
+source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
+
 source(paste0(influenza_path, "influenza_manifestcode.R"))
 
 source(paste0(influenza_path, "influenza_platemapcode.R"))

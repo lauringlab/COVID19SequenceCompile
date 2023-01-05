@@ -8,13 +8,30 @@ options(scipen=999)
 # and drop it in
 # Dropbox (University of Michigan)\MED-LauringLab\SEQUENCING\SARSCOV2\4_SequenceSampleMetadata\PlateMaps
 
-file.copy(from = paste0(starting_path, "SEQUENCING/SARSCOV2/2_PlateMaps/", plate_name, ".xlsx"),
-            to = paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), 
-          overwrite = TRUE)
+if (grepl("_SC2_", plate_name)){
+
+    file.copy(from = paste0(starting_path, "SEQUENCING/SARSCOV2/2_PlateMaps/", plate_name, ".xlsx"),
+                to = paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), 
+              overwrite = TRUE)
+  
+    # then, read in that excel file that we moved to the inner pipeline set
+    file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), sheet = 1)
+  
+  
+} else if (grepl("_IAV_", plate_name)){
+    file.copy(from = paste0(starting_path, "SEQUENCING/INFLUENZA_A/2_Plate_Maps/", plate_name, ".xlsx"),
+              to = paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), 
+              overwrite = TRUE)
+  
+    # then, read in that excel file that we moved to the inner pipeline set
+    file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), sheet = 1)
+  
+  
+} else {
+    stop("Plate name does not contain recognized phrase (IAV/SC2).")
+}
 
 
-# then, read in that excel file that we moved to the inner pipeline set
-file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), sheet = 1)
 
 file_in$Sample.ACCN <- ifelse(grepl('\\.', file_in$Sample.ACCN) & grepl('E', file_in$Sample.ACCN), as.numeric(file_in$Sample.ACCN), file_in$Sample.ACCN)
 
@@ -47,5 +64,19 @@ if (any(is.na(date_part))){
   print("Warning: There are some records without date information in Source column.")
 }
 
-# write the excel file back out
-write.xlsx(file_in, paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), overwrite = TRUE)
+
+if (grepl("_SC2_", plate_name)){
+  
+  # write the excel file back out
+  write.xlsx(file_in, paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), overwrite = TRUE)
+  
+  
+} else if (grepl("_IAV_", plate_name)){
+  
+  # write the excel file back out
+  write.xlsx(file_in, paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/PlateMaps/", plate_name, ".xlsx"), overwrite = TRUE)
+  
+} else {
+  stop("Plate name does not contain recognized phrase (IAV/SC2).")
+}
+

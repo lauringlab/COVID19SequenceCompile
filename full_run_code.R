@@ -169,11 +169,12 @@ source(paste0(influenza_path, "OutsidePipeline/subset_compiled_influenza.R"))
 # ROUND 2
 ################################################################################
 
+source(paste0(influenza_path, "influenza_manifestcode.R"))
+
+source(paste0(influenza_path, "influenza_platemapcode.R"))
+
 source(paste0(influenza_path, "influenza_nextcladecode.R"))
 
-### will need a piece to incorporate gisaid returns
-
-### need to compile everything
 source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 
 ################################################################################

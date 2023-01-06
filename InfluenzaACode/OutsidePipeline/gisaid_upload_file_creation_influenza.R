@@ -11,8 +11,32 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+checking_wd <- getwd()
+if (grepl("juliegil", checking_wd)){
+  
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  
+} else if (grepl("leighbaker", checking_wd)){
+  code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
+  starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
+  
+} else if (grepl("leighbak", checking_wd)){
+  
+  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
+  batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
+  
+} else {
+  
+  print("User not recognized.")
+  
+}
+
+
 source(paste0(code_path, "pipeline_functions.R"))
+
 
 # set starting path
 starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"

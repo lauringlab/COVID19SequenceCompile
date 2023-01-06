@@ -46,7 +46,7 @@ def main():
     #pn_run = "28"
     #pn = pn_date + "_IAV_Nanopore_Run_" + pn_run
     pn = args.prefix
-    pn_date = pn[0:10]
+    pn_date = pn[0:8]
 
     sequence_folder = s_path + pn + "/Segment_sequences/"
     onlyfiles = [f for f in os.listdir(sequence_folder) if os.path.isfile(os.path.join(sequence_folder, f))]

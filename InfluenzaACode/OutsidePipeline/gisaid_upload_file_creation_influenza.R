@@ -11,26 +11,38 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
+plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
+runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
+runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" options
+
+
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
   
   #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
   code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
   starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+  code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  
   
 } else if (grepl("leighbaker", checking_wd)){
   code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
   starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
+  seq_list_path <- ""
+  code_path2 <- ""
   
 } else if (grepl("leighbak", checking_wd)){
   
   starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
   code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
   batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
+  seq_list_path <- ""
+  code_path2 <- ""
   
 } else {
   
-  print("User not recognized.")
+  stop("User not recognized.")
   
 }
 
@@ -38,23 +50,16 @@ if (grepl("juliegil", checking_wd)){
 source(paste0(code_path, "pipeline_functions.R"))
 
 
-# set starting path
-starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-
 ################################################################################
-### fill in some info manually
 
-plate_datef <- "20220926" # plate date in YYYYMMDD format
-runtech <- "Illumina" # nanopore or illumina, will match "PlatePlatform" options
-runnum <- "28" # number, will match "PlateNumber" options
 
-seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+# create gisaid directory
+dir.create(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum))
 
 ################################################################################
 
 # run comparison code file first, to be sure full_compiled_data matches the one
 # in the secret folder
-code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
 source(paste0(code_path2, "OutsidePipeline/comparing_full_secret_influenza.R"))
 
 # set output path for gisaid upload file
@@ -212,7 +217,7 @@ ff_gisaid <- ff %>% select(IsolateID, SegmentIDs, StrainName, Subtype, Lineage,
 
 ff_gisaid[is.na(ff_gisaid)] <- ""
 
-write.csv(ff_gisaid, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
+write.csv(ff_gisaid, paste0(starting_path, "SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
 
 #University of Michigan Clinical Microbiology Laboratory
 #2800 Plymouth Rd, Ann Arbor, MI, USA

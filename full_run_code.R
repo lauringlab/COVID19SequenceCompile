@@ -178,5 +178,10 @@ source(paste0(influenza_path, "influenza_nextcladecode.R"))
 source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 
 ################################################################################
+# ROUND 3
+################################################################################
 
+source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
+
+################################################################################
 

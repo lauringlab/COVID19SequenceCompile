@@ -150,6 +150,7 @@ source(paste0(code_path, "compile_components_code.R"))
 ################################################################################
 
 plate_name <- "20221116_IAV_Illumina_Run_29"
+#plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 ################################################################################
 # ROUND 1

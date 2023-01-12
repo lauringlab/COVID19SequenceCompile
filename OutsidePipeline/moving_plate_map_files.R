@@ -13,6 +13,8 @@ platform <- strsplit(plate_name, "_")[[1]][3]
 
 if (platform == "Illumina"){
   plate_name2 <- paste(strsplit(plate_name, "_")[[1]][1], strsplit(plate_name, "_")[[1]][2], strsplit(plate_name, "_")[[1]][3], strsplit(plate_name, "_")[[1]][4], strsplit(plate_name, "_")[[1]][5], sep = "_")
+} else {
+  plate_name2 <- plate_name
 }
 
 if (grepl("_SC2_", plate_name)){
@@ -87,3 +89,4 @@ if (grepl("_SC2_", plate_name)){
   stop("Plate name does not contain recognized phrase (IAV/SC2).")
 }
 
+plate_name <- plate_name2

@@ -39,37 +39,33 @@ manifest_storage <- data.frame()
 # will iterate through folders
 for (each_folder in manifest_folder_list){
   
-  if (each_folder == rvtn_manifest_fp){
-    file_list <- list.files(pattern = "*.csv", path = each_folder)
-    for (rv in file_list){
-      file_in <- read.csv(paste0(each_folder, "/", rv))
-      
-      colnames(file_in) <- c("sample_id", "site", "subject_id", "coll_date", "specimen_type", "manifest_creation_date", "position")
-      file_in$flag <- file_in$site
+  if (each_folder == ivy4_manifest_fp){
+    # process ivy manifest
+    
+    # read in manifests
+    file_list <- list.files(pattern = "*.xlsx", path = each_folder)
+    for (ivym in file_list){
+      file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
       
       # "position", "sample_id", "subject_id", "coll_date", "flag"
-      file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag)
+      file_in <- file_in %>% select(`Position.#`, Aliquot.ID, `Study.ID`, `Collection.Date`, Comments)
+      colnames(file_in) <- c("position", "sample_id", "subject_id", "coll_date", "flag")
       
-      ### fix date formatting
-      file_in$coll_date1 <- as.character(as.POSIXct(file_in$coll_date, format = "%d-%b-%y"))
-      file_in$coll_date2 <- as.character(as.POSIXct(file_in$coll_date, format = "%Y-%m-%d"))
-      
-      file_in$coll_date <- ifelse(is.na(file_in$coll_date1), file_in$coll_date2, file_in$coll_date1)
-      file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag)
+      # sometimes have to cut time off of collection date (from excel)
+      file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
       
       # add in 2 new columns: received_date and received_source (from file name)
-      file_in$received_date <- date_from_file(rv)
+      file_in$received_date <- date_from_file(ivym)
       
       
-      rec_source <- trimws(as.character(strsplit(rv, "_")[[1]][1]))
+      rec_source <- trimws(as.character(strsplit(ivym, "_")[[1]][1]))
       file_in$received_source <- rec_source
       
       # bind all rows together
       manifest_storage <- rbind(manifest_storage, file_in)
       
     }
-    
-  } else if (each_folder == cdcivy_manifest_fp){
+  } else if (each_folder == ivy5_manifest_fp){
         # process ivy manifest
         
         # read in manifests
@@ -188,80 +184,8 @@ for (each_folder in manifest_folder_list){
   }
 }
 
+manifest_storage <- filter(manifest_storage, !is.na(sample_id) & !is.na(subject_id))
 manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
-
-################################################################################
-## handle cdc ivy manifests
-
-# read in cdc ivy site code list 
-# cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), colClasses = "character")
-# 
-# cdc_file_list <- list.files(pattern = "*.xlsx", path = cdcivy_manifest_fp)
-# 
-# cdc_ivy_storage <- data.frame()
-# full_ivy <- data.frame()
-# 
-# for (each_file in cdc_file_list){
-#   fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
-#   fileone <- filter(fileone, !is.na(as.numeric(`Position.#`)))
-#   
-#   ## change all column names to lowercase and remove leading/lagging white space
-#   ## to make it easier to process
-#   cdc_names <- colnames(fileone)
-#   new_names <- c()
-#   for (i in cdc_names){
-#     new_names <- c(new_names, tolower(trimws(i)))
-#   }
-#   colnames(fileone) <- new_names
-#   
-#   #fileone <- janitor::remove_empty(fileone, which = "cols")
-#   
-#   ## keep full set of cdc ivy rows separate, for back checks on full data
-#   full_ivy <- rbind(full_ivy, fileone)
-#   
-#   fileone <- fileone %>% select(`position.#`, site.name, study.id, collection.date, aliquot.id)
-#   
-#   colnames(fileone) <- c("position", "SiteName", "subject_id", "coll_date", "sample_id")
-#   fileone$coll_date <- as.character(fileone$coll_date)
-#   
-#   ### site name checks
-#   fileone$SiteName_check <- ifelse(fileone$SiteName %in% cdc_sites$SiteCode, 0, 1)
-#   
-#   if (sum(fileone$SiteName_check, na.rm = TRUE) != 0){
-#     print(each_file)
-#     stop("There are incorrect site names in the manifest.")
-#   } else {
-#     fileone <- fileone %>% select(position, SiteName, subject_id, coll_date, sample_id)
-#   }
-#   
-#   # add in 2 new columns: received_date and received_source (from file name)
-#   #rec_date <- trimws(as.character(strsplit(each_file, "_")[[1]][2]))
-#   #rec_date <- paste0(substr(rec_date, 1, 4), "-", substr(rec_date, 5, 6), "-", substr(rec_date, 7, 8))
-#   fileone$received_date <- date_from_file(each_file)
-#   
-#   rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
-#   fileone$received_source <- rec_source
-#   
-#   ### add in "regular" manifest columns
-#   fileone$flag <- NA
-#   
-#   ### re-arrange variables
-#   fileone <- fileone %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, SiteName)
-#   
-#   cdc_ivy_storage <- rbind(cdc_ivy_storage, fileone)
-# }
-# 
-# cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "2108074UR" | subject_id == "2103143UR" ~ "Withdrawn from study", 
-#                                                                subject_id == "2102015UR" ~ "IVY Counterpart is 2102007UR", 
-#                                                                subject_id == "2102016UR" ~ "IVY Counterpart is 2102008UR", 
-#                                                                T ~ as.character(flag)))
-# 
-# ### write out full ivy set
-# write.csv(full_ivy, paste0(cdcivy_manifest_fp, "/Full_IVY_Set/IVY_sample_full_manifest_list.csv"), row.names = FALSE, na = "")
-
-# ### add onto main manifest file HERE
-# manifest_storage$SiteName <- NA
-# manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 
 
 ################################################################################
@@ -299,7 +223,6 @@ manifest_storage$subject_id_length <- nchar(manifest_storage$subject_id)
 
 manifest_storage <- subject_id_length_QA(manifest_storage, "CBR")
 
-
 ################################################################################
 #                           File Write-Outs                                    #
 ################################################################################
@@ -311,27 +234,27 @@ write.csv(manifest_storage, paste0(outputLOC, "/sample_full_manifest_list.csv"),
 ### write output report
 
 ### create date formatting
-today <- current_date_string()
-
-wb <- loadWorkbook(paste0(outputLOC, "/manifest_output_report_template.xlsx"))
-
-writeData(wb, today, sheet = "SUMMARY", startRow = 1, startCol = 2)
-
-#writeData(wb, each_file_row_count, sheet = "SUMMARY", startRow = 3, startCol = 2)
-writeData(wb, nrow(manifest_storage), sheet = "SUMMARY", startRow = 4, startCol = 2)
-
-writeData(wb, ncol(manifest_storage), sheet = "SUMMARY", startRow = 6, startCol = 2)
-
-if (exists("duplicate_ssc")){
-  writeData(wb, duplicate_ssc, sheet = "DUPLICATES",   
-            startRow = 1, startCol = 1)
-}
-
-zeros <- rbind(filter(manifest_storage, grepl("MRN < 9", flag)), filter(manifest_storage, grepl("UMID < 8", flag)))
-writeData(wb, zeros, sheet = "RESTORE_ZEROS",   
-          startRow = 1, startCol = 1)
-
-miss_dats <- filter(manifest_storage, grepl("Missing Date", flag))
-writeData(wb, miss_dats, sheet = "MISSING_DATES", startRow = 1, startCol = 1)
-
-saveWorkbook(wb, paste0(outputLOC, "/manifest_output_report_", today, ".xlsx"), overwrite = TRUE)
+# today <- current_date_string()
+# 
+# wb <- loadWorkbook(paste0(outputLOC, "/manifest_output_report_template.xlsx"))
+# 
+# writeData(wb, today, sheet = "SUMMARY", startRow = 1, startCol = 2)
+# 
+# #writeData(wb, each_file_row_count, sheet = "SUMMARY", startRow = 3, startCol = 2)
+# writeData(wb, nrow(manifest_storage), sheet = "SUMMARY", startRow = 4, startCol = 2)
+# 
+# writeData(wb, ncol(manifest_storage), sheet = "SUMMARY", startRow = 6, startCol = 2)
+# 
+# if (exists("duplicate_ssc")){
+#   writeData(wb, duplicate_ssc, sheet = "DUPLICATES",   
+#             startRow = 1, startCol = 1)
+# }
+# 
+# zeros <- rbind(filter(manifest_storage, grepl("MRN < 9", flag)), filter(manifest_storage, grepl("UMID < 8", flag)))
+# writeData(wb, zeros, sheet = "RESTORE_ZEROS",   
+#           startRow = 1, startCol = 1)
+# 
+# miss_dats <- filter(manifest_storage, grepl("Missing Date", flag))
+# writeData(wb, miss_dats, sheet = "MISSING_DATES", startRow = 1, startCol = 1)
+# 
+# saveWorkbook(wb, paste0(outputLOC, "/manifest_output_report_", today, ".xlsx"), overwrite = TRUE)

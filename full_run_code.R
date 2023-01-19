@@ -199,5 +199,10 @@ source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 plate_name <- "20221116_RSV_Illumina_Run_29"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
+################################################################################
+# ROUND 1
+################################################################################
+
+source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
 

@@ -201,7 +201,7 @@ ff$SeqID_P3 <- ""
 
 ff$SubmittingSampleID <- ""
 ff$Authors <- ""
-ff <- ff %>% mutate(OriginatingLabID = case_when(received_source %in% c("CDCIVY", "CDCIVY4", "RVTN") ~ "1960",
+ff <- ff %>% mutate(OriginatingLabID = case_when(received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5", "RVTN") ~ "1960",
                                                  received_source == "HFHS" ~ "",
                                                  T ~ "3201")) # clicical micro lab
 ff$OriginatingSampleID <- ""

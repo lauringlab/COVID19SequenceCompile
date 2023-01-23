@@ -28,6 +28,7 @@ if (grepl("_SC2_", plate_name)){
   
   
 } else if (grepl("_IAV_", plate_name)){
+  # /Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/2_Plate_Maps
     file.copy(from = paste0(starting_path, "SEQUENCING/INFLUENZA_A/2_Plate_Maps/", plate_name, ".xlsx"),
               to = paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), 
               overwrite = TRUE)
@@ -57,6 +58,10 @@ file_in$Sample.ACCN <- ifelse(grepl('\\.', file_in$Sample.ACCN) & grepl('E', fil
 drop_columns <- c("Well.Position")
 file_in <- file_in[!names(file_in) %in% drop_columns]
 
+if (grepl("_IAV_", plate_name)){
+  file_in <- file_in[, c(1:6, 10)]
+} 
+
 # Rename first 7 columns
 colnames(file_in)[1] <- "Processing Plate"
 colnames(file_in)[2] <- "Slot"
@@ -65,6 +70,7 @@ colnames(file_in)[4] <- "Sample MRN"
 colnames(file_in)[5] <- "Sample Order#"
 colnames(file_in)[6] <- "Barcode"
 colnames(file_in)[7] <- "Source"
+
 
 # need to remove negative control wells from consideration
 file_in_source <- filter(file_in, !grepl("control", tolower(file_in$Source)) & !grepl("ctrl", tolower(file_in$Source)))

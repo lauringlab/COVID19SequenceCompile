@@ -6,14 +6,14 @@
 
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
-  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-  #batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
-  influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  #influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  #batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+  batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+  #influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   
@@ -149,7 +149,7 @@ source(paste0(code_path, "compile_components_code.R"))
 # INFLUENZA COMPONENT
 ################################################################################
 
-plate_name <- "20221116_IAV_Illumina_Run_29"
+plate_name <- "20221116_IAV_Illumina_Run_29_SETA"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 ################################################################################

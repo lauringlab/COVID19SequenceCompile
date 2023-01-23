@@ -7,6 +7,7 @@
 # load libraries
 library(tidyverse)
 library(lubridate)
+library(gt)
 
 ################################################################################
 # set paths 

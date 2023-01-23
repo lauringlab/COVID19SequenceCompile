@@ -113,7 +113,7 @@ for (each_folder in manifest_folder_list){
             #print(each_file)
             # read in the file
             file_in <- read.csv(paste0(each_folder, "/", each_file), colClasses = "character")
-            
+            file_in <- file_in[, c(1:5)]
             # turn any "" or " " into NA
             file_in[file_in == ""] <- NA
             file_in[file_in == " "] <- NA

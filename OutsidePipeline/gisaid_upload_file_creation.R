@@ -155,6 +155,7 @@ ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.ab
 
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", State), 
                                          received_source == "CDCIVY4" ~ paste0("North America / USA / ", State), 
+                                         received_source == "CDCIVY5" ~ paste0("North America / USA / ", State), 
                                          received_source == "IVYIC" ~ paste0("North America / USA / ", State),
                                          received_source == "RVTN" ~ paste0("North America / USA / ", State), 
                                          received_source == "VIEW" ~ paste0("North America / USA / ", State), 
@@ -165,6 +166,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("N
 # hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
 ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "CDCIVY4" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "CDCIVY5" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "RVTN" ~ paste0("hCoV-19/USA/", StateAbbrev, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           received_source == "VIEW" ~ paste0("hCoV-19/USA/", StateAbbrev, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           received_source == "IVYIC" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
@@ -178,7 +180,7 @@ ff$Host <- "Human"
 ff$AdditionalHost <- ""
 
 ff <- ff %>% mutate(SamplingStrategy = case_when(sample_per_subject > 1 ~ "Warning", 
-                                                 received_source %in% c("CDCIVY", "MHOME") ~ "", 
+                                                 received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5", "MHOME") ~ "", 
                                                  grepl("PUI", flag) ~ "", 
                                                  received_source == "RVTN" ~ "Research",
                                                  received_source == "VIEW" ~ "Research",
@@ -235,6 +237,7 @@ ff$Coverage <- ""
 ### Originating Lab
 ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Central Lab, Vanderbilt University Medical Center", 
                                           received_source == "CDCIVY4" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
+                                          received_source == "CDCIVY5" ~ "IVY5 Central Lab, Vanderbilt University Medical Center",
                                           received_source == "RVTN" ~ "Vanderbilt University Medical Center",
                                           received_source == "VIEW" ~ "Vanderbilt University Medical Center",
                                           received_source == "IVYIC" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
@@ -246,6 +249,7 @@ ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Ce
                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
                     originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "CDCIVY4" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
+                                                 received_source == "CDCIVY5" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "RVTN" ~ "Medical Center North CC303, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "VIEW" ~ "Medical Center North CC303, 1161 21st Ave. S., Nashville, TN, USA",
                                                  received_source == "IVYIC" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",

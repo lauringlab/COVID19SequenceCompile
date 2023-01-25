@@ -6,7 +6,7 @@ flu_file <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/ME
                             "full_compiled_data.csv"), colClasses = c("character"))
 
 cdc_flu <- filter(flu_file, grepl("IVY", received_source) & !grepl("Missing Date", flag))
-
+table(cdc_flu$received_source)
 colnames(cdc_flu)
 
 #### segment ids in as blanks currently
@@ -35,6 +35,11 @@ colnames(cdc_flu) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu",
                        "na_segment_id_flu", "mp_segment_id_flu", "ns_segment_id_flu", "isolate_name_flu")
 
 today_date <- gsub("-", "", Sys.Date())
-write.csv(cdc_flu, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+
+write.csv(filter(cdc_flu, received_source_flu == "CDCIVY4"), paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                           "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                           "IVY_uploads/cdc_ivy_flu_", today_date, ".csv"), row.names = FALSE, na = "")
+
+write.csv(filter(cdc_flu, received_source_flu == "CDCIVY5"), paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+                                                                    "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
+                                                                    "IVY_uploads/cdc_ivy5_flu_", today_date, ".csv"), row.names = FALSE, na = "")

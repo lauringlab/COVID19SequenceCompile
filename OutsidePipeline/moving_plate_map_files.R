@@ -58,7 +58,7 @@ file_in$Sample.ACCN <- ifelse(grepl('\\.', file_in$Sample.ACCN) & grepl('E', fil
 drop_columns <- c("Well.Position")
 file_in <- file_in[!names(file_in) %in% drop_columns]
 
-if (grepl("_IAV_", plate_name)){
+if (grepl("_Illumina_", plate_name)){
   file_in <- file_in[, c(1:6, 10)]
 } 
 

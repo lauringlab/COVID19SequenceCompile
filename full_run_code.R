@@ -46,7 +46,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 #<<<<<<< HEAD
 plate_name <- "20221220_SC2_Nanopore_Run_274"
 #=======
-plate_name <- "20221115_SC2_Illumina_Run_71"
+plate_name <- "20230104_SC2_Illumina_Run_72"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
 
 ################################################################################

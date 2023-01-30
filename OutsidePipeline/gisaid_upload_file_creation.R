@@ -213,7 +213,7 @@ ff$Treatment <- ""
 
 # Oxford Nanopore, Illumina MiSeq
 ff$SequencingTechnology <- ifelse(ff$PlatePlatform == "Nanopore", "Oxford Nanopore Midnight", 
-                                  ifelse(ff$PlatePlatform == "Illumina", "Illumina MiSeq", "Unknown"))
+                                  ifelse(ff$PlatePlatform == "Illumina", "Illumina NextSeq 1000", "Unknown"))
 
 unknown_tech <- filter(ff, SequencingTechnology == "Unknown")
 

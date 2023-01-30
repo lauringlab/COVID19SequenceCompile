@@ -152,7 +152,7 @@ ivy5 <- ivy5 %>% select(sample_id, subject_id, coll_date,
                         pango_version, pangolin_version, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
                         nextclade_totalmutations, nextclade_totalnonacgtns)
 
-names(ivy5)[names(ivy5) == 'subject_id'] <- 'study_id'
+#names(ivy5)[names(ivy5) == 'subject_id'] <- 'study_id'
 
 
 #seq_list <- filter(seq_list, platenumber <= 49)

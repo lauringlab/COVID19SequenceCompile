@@ -17,18 +17,18 @@ seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSample
 
 ################################################################################
 
-seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
-                                flag, received_source, SiteName, SampleBarcode,                
-                                PlateDate, PlatePlatform, PlateNumber,                 
-                                pangolin_lineage, pangolin_probability, pangolin_status,             
-                                pangolin_note, nextclade_clade, nextclade_totalMissing,      
-                                nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
-                                received_date, position,          
-                                PlateName, PlatePosition, SampleSourceLocation,        
-                                pangoLEARN_version, pangolin_conflict, pango_version,               
-                                pangolin_version, pangolin_runDate, #PlateToPangolin_days,        
-                                nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
-                                nextclade_totalNonACGTNs, nextclade_runDate)#, PlateToNextclade_days)
+# seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
+#                                 flag, received_source, SiteName, SampleBarcode,                
+#                                 PlateDate, PlatePlatform, PlateNumber,                 
+#                                 pangolin_lineage, pangolin_probability, pangolin_status,             
+#                                 pangolin_note, nextclade_clade, nextclade_totalMissing,      
+#                                 nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
+#                                 received_date, position,          
+#                                 PlateName, PlatePosition, SampleSourceLocation,        
+#                                 pangoLEARN_version, pangolin_conflict, pango_version,               
+#                                 pangolin_version, pangolin_runDate, #PlateToPangolin_days,        
+#                                 nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
+#                                 nextclade_totalNonACGTNs, nextclade_runDate)#, PlateToNextclade_days)
 
 ### for ivy 5
 # seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
@@ -150,7 +150,8 @@ ivy5 <- ivy5 %>% select(sample_id, subject_id, coll_date,
                         gisaid_strain, gisaid_epi_isl, received_date, position, platename,
                         plateposition, samplesourcelocation, pangolearn_version,
                         pango_version, pangolin_version, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
-                        nextclade_totalmutations, nextclade_totalnonacgtns)
+                        nextclade_totalmutations, nextclade_totalnonacgtns, 
+                        data_quality_rule, newest_pangolin_lineage, newest_pangolin_date)
 
 #names(ivy5)[names(ivy5) == 'subject_id'] <- 'study_id'
 

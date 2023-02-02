@@ -44,9 +44,9 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20221220_SC2_Nanopore_Run_274"
+plate_name <- "20230130_SC2_Nanopore_Run_286"
 #=======
-plate_name <- "20230104_SC2_Illumina_Run_72"
+plate_name <- "20221222_SC2_Illumina_Run_75"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
 
 ################################################################################
@@ -149,7 +149,7 @@ source(paste0(code_path, "compile_components_code.R"))
 # INFLUENZA COMPONENT
 ################################################################################
 
-plate_name <- "20221201_IAV_Illumina_Run_30_SETB"
+plate_name <- "20221209_IAV_Illumina_Run_31_SETA"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 ################################################################################

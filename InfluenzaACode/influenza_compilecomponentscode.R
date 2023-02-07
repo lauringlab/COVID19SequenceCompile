@@ -102,6 +102,8 @@ for (i in g_files){
   gisaid <- rbind(gisaid, gisaid_in)
 }
 
+colnames(gisaid)[1] <- "Isolate_Id"
+
 gisaid_secret <- filter(gisaid, grepl("RVTN", Isolate_Name))
 
 gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 

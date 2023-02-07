@@ -146,12 +146,14 @@ ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIV
 
 if (any(grepl("IVY", ff$received_source))){
 ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+                                           received_source %in% c("HFHS") ~ paste0("A/Michigan/HFHS", sample_id, "/", year(coll_date)),
                                            grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
                                            grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
                                            T ~ "CHECK"
                     ))
 } else if (any(grepl("RVTN", ff$received_source))){
   ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+                                             received_source %in% c("HFHS") ~ paste0("A/Michigan/HFHS", sample_id, "/", year(coll_date)),
                                              grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
                                              grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
                                              T ~ "CHECK"
@@ -202,7 +204,7 @@ ff$SeqID_P3 <- ""
 ff$SubmittingSampleID <- ""
 ff$Authors <- ""
 ff <- ff %>% mutate(OriginatingLabID = case_when(received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5", "RVTN") ~ "1960",
-                                                 received_source == "HFHS" ~ "",
+                                                 received_source == "HFHS" ~ "3559",
                                                  T ~ "3201")) # clicical micro lab
 ff$OriginatingSampleID <- ""
 

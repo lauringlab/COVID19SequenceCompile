@@ -14,10 +14,10 @@ checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
   
   #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else if (grepl("leighbaker", checking_wd)){
   code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
@@ -78,7 +78,7 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
 table(ff$received_source, useNA = "always")
-#ff <- filter(ff, received_source != "")
+#ff <- filter(ff, received_source != "BSL3")
 ################################################################################
 # set up alert to duplicate items
 
@@ -102,9 +102,9 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("011718425", "022382986",
-#                                                              "028140711", "045019901",
-#                                                              "101044617", "101472932"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("017838404", "030452124", 
+#                                                              "032982827", "045586418", 
+#                                                              "100422404"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")

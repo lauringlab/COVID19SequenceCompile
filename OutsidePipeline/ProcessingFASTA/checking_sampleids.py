@@ -20,7 +20,7 @@ plate_run_name = str(sys.argv[1])
 current_user = os.getcwd()
 
 if "juliegil" in current_user:
-    meta_file_location = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
+    meta_file_location = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
 elif "leighbaker" in current_user:
     meta_file_location = "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
 elif "leighbak" in current_user:

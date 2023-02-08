@@ -23,9 +23,10 @@ puimisc_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceS
 sph_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/SPH")
 cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/CDCIVY")
 rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN")
+hfhs_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/HENRYFORD")
 
 manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, stj_manifest_fp, mm_manifest_fp, puimisc_manifest_fp, 
-                          cdcivy_manifest_fp, sph_manifest_fp, rvtn_manifest_fp)
+                          cdcivy_manifest_fp, sph_manifest_fp, rvtn_manifest_fp, hfhs_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")

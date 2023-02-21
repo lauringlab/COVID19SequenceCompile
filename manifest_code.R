@@ -486,7 +486,7 @@ for (each_file in cdc_file_list){
 if (nrow(cdc_ivy_storage) > 0){
 
     cdc_ivy_storage <- cdc_ivy_storage %>% mutate(flag = case_when(subject_id == "2108074UR" | subject_id == "2103143UR" ~ "Withdrawn from study",
-                                                                   subject_id == "23200126" | subject_id == "23201027" ~ "Withdrawn from study", #feb.14
+                                                                   #subject_id == "23200126" | subject_id == "23201027" ~ "Withdrawn from study", #feb.14
                                                                    subject_id == "2102015UR" ~ "IVY Counterpart is 2102007UR", 
                                                                    subject_id == "2102016UR" ~ "IVY Counterpart is 2102008UR", 
                                                                    sample_id %in% c("ZZX9LL2N","ZZX9LL3W",

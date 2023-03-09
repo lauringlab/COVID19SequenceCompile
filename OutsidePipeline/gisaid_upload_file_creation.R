@@ -109,6 +109,9 @@ if (any(ff$sample_per_subject > 1)){
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
 
+## filter option for when missing subject_id and need to remove sample from list
+## for example when we sequence a sample not on the manifest and only have sample_id
+#ff <- filter(ff, sample_id != "101074339")
 ################################################################################
 ### fix date formatting
 ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 

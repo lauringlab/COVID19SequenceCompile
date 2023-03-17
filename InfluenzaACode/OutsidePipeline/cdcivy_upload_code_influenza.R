@@ -1,4 +1,6 @@
 #### Influenza CDC IVY Upload
+library(tidyverse)
+library(lubridate)
 
 #### Read in influenza full file
 flu_file <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 

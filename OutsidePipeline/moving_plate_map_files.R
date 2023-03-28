@@ -38,7 +38,7 @@ if (grepl("_SC2_", plate_name)){
   
   
 } else if (grepl("_RSVA_", plate_name)){
-  file.copy(from = paste0(starting_path, "SEQUENCING/RSV_A/2_Plate_Maps/", plate_name, ".xlsx"),
+  file.copy(from = paste0(starting_path, "SEQUENCING/RSV_A/2_PlateMaps/", plate_name, ".xlsx"),
             to = paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), 
             overwrite = TRUE)
   

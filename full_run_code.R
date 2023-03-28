@@ -1,19 +1,19 @@
 ################################################################################
 #               Complete Run - COVID-19 Genetic Data Compilation               #
-#                         Last Updated: 02/03/2021                             #
+#                         Last Updated: 03/28/2023                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-  batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
-  #influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+  #batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+  influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  #influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   
@@ -40,6 +40,17 @@ if (grepl("juliegil", checking_wd)){
 options(scipen=999)
 source(paste0(code_path, "pipeline_functions.R"))
 
+
+
+
+
+
+
+
+
+
+################################################################################
+# SARS-CoV-2 COMPONENT
 ################################################################################
 
 # sars-cov-2 plate
@@ -193,10 +204,10 @@ source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 
 
 ################################################################################
-# RSV COMPONENT
+# RSVA COMPONENT
 ################################################################################
 
-plate_name <- "20221116_RSV_Illumina_Run_29"
+plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 ################################################################################
@@ -205,4 +216,15 @@ plate_name <- "20221116_RSV_Illumina_Run_29"
 
 source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
+
+source(paste0(code_path, "RSVACode/rsva_manifestcode.R"))
+
+source(paste0(code_path, "RSVACode/rsva_platemapcode.R"))
+
+source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
+
+
+
+
+source(paste0(code_path, "OutsidePipeline/subset_compiled_for_fasta.R"))
 

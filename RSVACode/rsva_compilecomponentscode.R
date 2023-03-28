@@ -80,12 +80,7 @@ if (nrow(mani_plate2) != nrow(dc)){
 
 mani_plate <- rbind(mani_plate, mani_plate2)
 
-#if (nrow(mani_plate) != plate_map_ids){
-#  stop("There are more or less rows in our manifest + plate combination than there were date/sample id combinations in the original plate map file")
-#}
-
-#missings <- filter(mani_plate, is.na(subject_id))
-#write.csv(missings, "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/check_miss_subjects.csv", na = "", row.names = FALSE)
+################################################################################
 
 # then, read in gisaid and next clade files
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
@@ -93,25 +88,23 @@ nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClass
 
 ### gisaid
 ### read every .csv in that folder
-g_files <- list.files(gisaid_fp, pattern = "*.csv")
-
-gisaid <- data.frame()
-
-for (i in g_files){
-  gisaid_in <- read.csv(paste0(gisaid_fp, "/", i), colClasses = "character")
-  gisaid <- rbind(gisaid, gisaid_in)
-}
-
-colnames(gisaid)[1] <- "Isolate_Id"
-
-
+# g_files <- list.files(gisaid_fp, pattern = "*.csv")
+# 
+# gisaid <- data.frame()
+# 
+# for (i in g_files){
+#   gisaid_in <- read.csv(paste0(gisaid_fp, "/", i), colClasses = "character")
+#   gisaid <- rbind(gisaid, gisaid_in)
+# }
+# 
+# colnames(gisaid)[1] <- "Isolate_Id"
 
 
-mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
-mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 
-### add column for time in days from plate to nextclade
-mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_HA_runDate, mppnc$PlateDate, units = "days")
+
+#mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mppnc <- merge(mani_plate, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
+
 
 ################################################################################
 ## Additional subject_id length check (leading zeros)
@@ -127,45 +120,23 @@ mppnc <- subject_id_length_QA(mppnc, "CBR")
 
 mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
-
 ################################################################################
-## apply logic for mis-matched pangolin/nextclade info
-## necessary for instances where a sample was run on two different plates
-## unsure how this logic will work for flu, since not everything gets a nextclade entry
-
-#colnames(mppnc)
 
 
-mppnc3 <- mppnc %>% select(sample_id, subject_id, coll_date,                   
-                           flag, received_source, received_date, SampleBarcode,               
-                           PlateDate, PlatePlatform, PlateNumber,
-                           nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
-                           nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
-                           nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
-                           nextclade_HA_runDate, nextclade_HA_type, 
-                           Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-                           NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-                           P3.Segment_Id, Isolate_Name,              
-                           subject_id_length, position, PlateName, PlatePosition,               
-                           SampleSourceLocation, PlateToNextclade_days, 
-                           sample_per_subject, sample_id_lauring)
-
-################################################################################
-### negative control well warning
-### this doesn't work with nextclade system
-
-# neg_control <- unique(filter(mppnc2, grepl("NC_", sample_id) & is.na(as.numeric(sample_id)))$sample_id)
-# helas <- unique(filter(mppnc2, grepl("hela", tolower(sample_id)))$sample_id)
-# 
-# check_NCs <- filter(mppnc2, sample_id %in% neg_control | sample_id %in% helas)
-# 
-# # We want to make sure with each plate that the three negative controls have ???10% of genome covered. 
-# 
-# check_NCs$neg_control_warning <- ifelse(check_NCs$nextclade_completeness >= 10, 1, 0)
-# 
-# keep_NCs <- table(check_NCs$PlateName, check_NCs$neg_control_warning)
-# 
-# write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_warnings.tsv"), sep = "\t")
+mppnc3 <- mppnc 
+# %>% select(sample_id, subject_id, coll_date,                   
+#                            flag, received_source, received_date, SampleBarcode,               
+#                            PlateDate, PlatePlatform, PlateNumber,
+#                            nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
+#                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+#                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+#                            nextclade_HA_runDate, nextclade_HA_type, 
+#                            Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+#                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+#                            P3.Segment_Id, Isolate_Name,              
+#                            subject_id_length, position, PlateName, PlatePosition,               
+#                            SampleSourceLocation, PlateToNextclade_days, 
+#                            sample_per_subject, sample_id_lauring)
 
 ################################################################################
 

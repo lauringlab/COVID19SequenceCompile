@@ -33,8 +33,8 @@ for (each_page in file_list){
     nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs)
   } else {
     ### nextclade update changed column totalMutations to totalSubstitutions (near 6/18/2021)
-    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs)
-    colnames(nc1) <- c("seqName", "clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs")
+    nc1 <- nc1 %>% select(seqName, clade, G_clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs)
+    colnames(nc1) <- c("seqName", "clade", "G_clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs")
   }
   
   ### add date column from file name
@@ -47,14 +47,14 @@ for (each_page in file_list){
 nc_storage$clade <- gsub(",", "", nc_storage$clade)
 
 ### rename columns 
-rename_columns <- c("SampleID", "nextclade_clade", "nextclade_totalMissing", "nextclade_qcOverallScore", "nextclade_qcOverallStatus", "nextclade_totalMutations", "nextclade_totalNonACGTNs", "nextclade_runDate")
+rename_columns <- c("SampleID", "nextclade_clade", "nextclade_Gclade", "nextclade_totalMissing", "nextclade_qcOverallScore", "nextclade_qcOverallStatus", "nextclade_totalMutations", "nextclade_totalNonACGTNs", "nextclade_runDate")
 colnames(nc_storage) <- rename_columns
 
 ################################################################################
-## calculate genome completeness. genome size = 15,277
+## calculate genome completeness. genome size = 15,225 (gisaid reference sequence)
 # Completeness = 100*(genome_size - totalMissing)/genome_size
 
-nc_storage$nextclade_completeness <- 100*(15277 - as.numeric(nc_storage$nextclade_totalMissing)) / 15277
+nc_storage$nextclade_completeness <- 100*(15225 - as.numeric(nc_storage$nextclade_totalMissing)) / 15225
 
 ################################################################################
 

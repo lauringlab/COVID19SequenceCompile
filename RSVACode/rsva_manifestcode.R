@@ -60,6 +60,7 @@ for (each_folder in manifest_folder_list){
       
       rec_source <- trimws(as.character(strsplit(ivym, "_")[[1]][1]))
       file_in$received_source <- rec_source
+      file_in$coll_date <- as.character(file_in$coll_date)
       
       # bind all rows together
       manifest_storage <- rbind(manifest_storage, file_in)
@@ -86,6 +87,7 @@ for (each_folder in manifest_folder_list){
           
           rec_source <- trimws(as.character(strsplit(ivym, "_")[[1]][1]))
           file_in$received_source <- rec_source
+          file_in$coll_date <- as.character(file_in$coll_date)
           
           # bind all rows together
           manifest_storage <- rbind(manifest_storage, file_in)
@@ -170,6 +172,8 @@ for (each_folder in manifest_folder_list){
             rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
             file_in$received_source <- rec_source
             
+            file_in$coll_date <- as.character(file_in$coll_date)
+            
             # bind all rows together
             manifest_storage <- rbind(manifest_storage, file_in)
           
@@ -211,6 +215,13 @@ if (unique_ids != nrow(manifest_storage)){
   #duplicate_ssc <- rbind(duplicate_ssc, duplicate_ssc2)
 }
 
+
+####################
+# collection date formatting
+
+# manifest_storage <- manifest_storage %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
+#                                           grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
+#                                           T ~ NA_character_))
 
 ################################################################################
 # check for instances where leading zeros may have been dropped from subject id

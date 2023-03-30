@@ -41,6 +41,8 @@ def main():
     file_1 = args.prefix + ".all.consensus.fasta"
     file_2 = args.prefix + ".all.consensus.tmp.fasta"
     file_3 = args.prefix + ".all.consensus.renamed.full.fasta" # This is the file to use in pangolin and nextclade.
+
+
     meta_file = args.prefix + ".meta.csv" # This is the full compiled list, or the subset that matches this run.
 
     # read in meta file, which is the compiled file (full_compiled_data.csv)
@@ -72,6 +74,7 @@ def main():
     os.system("rm " + file_2) # remove the file_2 name
 
     ### Make filtered fasta file ready for GISAID. Length filtering step occurred in Nanopore script in lab (90% completeness, or 27000 bases).
+
 
     file_1 = args.prefix + ".all.consensus.final.fasta"
     file_2 = args.prefix + ".all.consensus.final.tmp.fasta"

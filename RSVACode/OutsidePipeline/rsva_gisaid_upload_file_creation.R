@@ -142,34 +142,53 @@ ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.final.gisaid.fasta")
 ff$Subtype <- "A"
 ff$Passage <- "Original"
 
-### create location from state collection location
-ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"), fill = "right")
-#ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
-ff <- ff %>% mutate(State = case_when(received_source == "RVTN" ~ Site, 
-                                      received_source == "VIEW" ~ Site, 
-                                      T ~ state.name[match(ff$StateAbbrev,state.abb)]))
 
-ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.abb[match(ff$State,state.name)],
-                                            received_source == "VIEW" ~ state.abb[match(ff$State,state.name)], 
-                                      T ~ StateAbbrev))
+if (any(grepl("IVY", ff$received_source))){
+  
+  ff$source_state_code <- substr(ff$subject_id, 3, 4)
+  cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
+  cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), colClasses = "character") %>% separate(SiteCode, into = c("site", "state"), sep = "_")
+  site_bit <- cdc_sites %>% select(Number, state)
+  # add leading zeros to site
+  site_bit <- site_bit %>% mutate(Number = case_when(nchar(Number) == 1 ~ paste0("0", Number), 
+                                                     T ~ Number))
+  #colnames(site_bit) <- c("Number", "state")
+  ff <- merge(ff, site_bit, by.x = c("source_state_code"), by.y = c("Number"), all.x = TRUE)
+  ff$state <- ifelse(!grepl("IVY", ff$received_source), "", ff$state)
+  
+} else {
+  state <- ""
+}
 
-ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", State), 
-                                         received_source == "CDCIVY4" ~ paste0("North America / USA / ", State), 
-                                         received_source == "CDCIVY5" ~ paste0("North America / USA / ", State), 
-                                         received_source == "IVYIC" ~ paste0("North America / USA / ", State),
-                                         received_source == "RVTN" ~ paste0("North America / USA / ", State), 
-                                         received_source == "VIEW" ~ paste0("North America / USA / ", State), 
+
+# ### create location from state collection location
+# ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"), fill = "right")
+# #ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
+# ff <- ff %>% mutate(State = case_when(received_source == "RVTN" ~ Site, 
+#                                       received_source == "VIEW" ~ Site, 
+#                                       T ~ state.name[match(ff$StateAbbrev,state.abb)]))
+
+# ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.abb[match(ff$State,state.name)],
+#                                             received_source == "VIEW" ~ state.abb[match(ff$State,state.name)], 
+#                                       T ~ StateAbbrev))
+
+ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
+                                         received_source == "CDCIVY4" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
+                                         received_source == "CDCIVY5" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
+                                         received_source == "IVYIC" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]),
+                                         received_source == "RVTN" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
+                                         received_source == "VIEW" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
                                          T ~ "North America / USA / Michigan"))
 
 # create virus name
 # hCoV-19/USA/MI-UM-10037140915/2020
 # hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
-ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hRSV/A/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "CDCIVY4" ~ paste0("hRSV/A/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "CDCIVY5" ~ paste0("hRSV/A/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "RVTN" ~ paste0("hRSV/A/USA/", StateAbbrev, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-                                          received_source == "VIEW" ~ paste0("hRSV/A/USA/", StateAbbrev, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-                                          received_source == "IVYIC" ~ paste0("hRSV/A/USA/", StateAbbrev, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
+ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hRSV/A/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "CDCIVY4" ~ paste0("hRSV/A/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "CDCIVY5" ~ paste0("hRSV/A/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          #received_source == "RVTN" ~ paste0("hRSV/A/USA/", state, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
+                                          #received_source == "VIEW" ~ paste0("hRSV/A/USA/", state, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
+                                          received_source == "IVYIC" ~ paste0("hRSV/A/USA/", state, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
                                           received_source == "MDHHS" ~ paste0("hRSV/A/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4)),
                                           T ~ paste0("hRSV/A/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
@@ -298,7 +317,7 @@ ff_crosswalk <- ff %>% select(sample_id, VirusName)
 write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/RSV_A/3_ProcessedGenomes/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, "/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
-ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Type, Passage,  coll_date, Location, 
+ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Subtype, Passage,  coll_date, Location, 
                              AdditionalLoc, Host, AdditionalHost, SamplingStrategy, Gender, Age, Status, 
                              SpecimenSource, Outbreak, lastVaccinated, Treatment, SequencingTechnology, 
                              AssemblyMethod, Coverage, originlab, originlabaddress, originlabsampleid, 
@@ -312,7 +331,7 @@ today <- current_date_string()
 gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum) 
 
 ## write to excel file (follow format)
-wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE2.xlsx"))
+wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))
 
 # fill in the submissions tab with built data frame
 writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)

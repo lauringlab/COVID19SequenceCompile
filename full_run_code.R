@@ -212,6 +212,8 @@ plate_name <- "20230307_RSVA_Illumina_Run_1"
 #plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
+num_rsvs_on_plate <- 93
+
 ################################################################################
 # ROUND 1
 ################################################################################
@@ -244,4 +246,6 @@ source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 ################################################################################
 # ROUND 3
 ################################################################################
+
+source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 

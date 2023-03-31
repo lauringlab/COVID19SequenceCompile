@@ -99,11 +99,13 @@ nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClass
 # 
 # colnames(gisaid)[1] <- "Isolate_Id"
 
+gisaid <- read.csv(paste0(gisaid_fp, "/gisaid_back_info.csv"), colClasses = "character")
+gisaid <- gisaid %>% select(sample_id, epi_isl)
 
 
 
-#mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
-mppnc <- merge(mani_plate, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
+mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 
 
 ################################################################################

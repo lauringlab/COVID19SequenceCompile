@@ -67,9 +67,10 @@ def main():
     # user_df['name'].str.split(pat = ' ', expand = True)
     # >hRSV/A/USA/MA-IVY-D13J37N6/2022|EPI_ISL_17367997|2022-11-04
 
-    fasta_headers[['organism', 'subtype', 'id_string', 'year_tag_date']] = fasta_headers['headers'].str.split(pat = "/", expand = True)
+    fasta_headers[['organism', 'subtype', 'country', 'id_string', 'year_tag_date']] = fasta_headers['headers'].str.split(pat = "/", expand = True)
     fasta_headers[['year', 'epi_isl', 'date']] = fasta_headers['year_tag_date'].str.split(pat = "|", expand = True)
-
+    fasta_headers[['state', 'project', 'sample_id']] = fasta_headers['id_string'].str.split(pat = "-", expand = True)
+    
     # Write
     #with open(file_2, 'w') as corrected:
     #    SeqIO.write(all_fasta, corrected, "fasta")

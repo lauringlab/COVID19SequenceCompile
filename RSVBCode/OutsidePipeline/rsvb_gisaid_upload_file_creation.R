@@ -51,7 +51,7 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 ################################################################################
 
 # create gisaid directory
-dir.create(paste0(starting_path, "/SEQUENCING/RSV_A/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum))
+dir.create(paste0(starting_path, "/SEQUENCING/RSV_B/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum))
 
 ################################################################################
 
@@ -61,12 +61,12 @@ source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
 
 # set output path for gisaid upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
+outputLOC <- paste0(starting_path, "SEQUENCING/RSV_B/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
 
 ################################################################################
 
 # read in full compiled pile
-finalfileLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary")
+finalfileLOC <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary")
 final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
 
 final_file <- filter(final_file, !grepl("Missing Date in Manifest", flag))
@@ -139,7 +139,7 @@ ff$Submitter <-
 ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.final.gisaid.fasta")
 
 ### constants
-ff$Subtype <- "A"
+ff$Subtype <- "B"
 ff$Passage <- "Original"
 
 
@@ -183,14 +183,14 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("N
 # create virus name
 # hCoV-19/USA/MI-UM-10037140915/2020
 # hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
-ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hRSV/A/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "CDCIVY4" ~ paste0("hRSV/A/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "CDCIVY5" ~ paste0("hRSV/A/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hRSV/B/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "CDCIVY4" ~ paste0("hRSV/B/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "CDCIVY5" ~ paste0("hRSV/B/USA/", state, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                           #received_source == "RVTN" ~ paste0("hRSV/A/USA/", state, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           #received_source == "VIEW" ~ paste0("hRSV/A/USA/", state, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-                                          received_source == "IVYIC" ~ paste0("hRSV/A/USA/", state, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "MDHHS" ~ paste0("hRSV/A/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          T ~ paste0("hRSV/A/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
+                                          received_source == "IVYIC" ~ paste0("hRSV/B/USA/", state, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          received_source == "MDHHS" ~ paste0("hRSV/B/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4)),
+                                          T ~ paste0("hRSV/B/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 
 ### constants
@@ -314,7 +314,7 @@ ff$commenticon <- ""
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName)
 
-write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/RSV_A/3_ProcessedGenomes/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, "/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
+write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/RSV_B/3_ProcessedGenomes/", plate_datef, "_RSVB_", runtech, "_Run_", runnum, "/", plate_datef, "_RSVB_", runtech, "_Run_", runnum, ".forgisaid.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
 ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Subtype, Passage,  coll_date, Location, 
@@ -331,7 +331,7 @@ today <- current_date_string()
 gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum) 
 
 ## write to excel file (follow format)
-wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))
+wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))
 
 # fill in the submissions tab with built data frame
 writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)

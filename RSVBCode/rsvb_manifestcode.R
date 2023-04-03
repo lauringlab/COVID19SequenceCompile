@@ -15,14 +15,14 @@ library(withr)
 ################################################################################
 
 # Manifest file paths (there should be a path per source)
-ivy4_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/CDCIVY4")
-ivy5_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/CDCIVY5")
-hive_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/HIVE")
+#ivy4_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/CDCIVY4")
+ivy5_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/CDCIVY5")
+hive_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/HIVE")
 
-manifest_folder_list <- c(ivy4_manifest_fp, ivy5_manifest_fp, hive_manifest_fp)
+manifest_folder_list <- c(ivy5_manifest_fp, hive_manifest_fp)
 
 ### output location of manifest files, all together
-outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
 
 # each manifest provider will have their own folder, with all files inside
 # don't want to re-build the entire thing every time, so will eventually need a 

@@ -14,10 +14,10 @@ library(janitor)
 ################################################################################
 
 # nextclade file path
-nc_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/nextclade")
+nc_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/nextclade")
 
 ### output location of nextclade files, all together
-outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
 ################################################################################
 

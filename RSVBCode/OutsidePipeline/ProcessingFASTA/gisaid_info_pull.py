@@ -32,10 +32,10 @@ import os
 def main():
 
     if ("juliegil" in os.getcwd()):
-        s_path = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/"
+        s_path = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/"
         #full_loc = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     elif ("leighbak" in os.getcwd()):
-        s_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/"
+        s_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/"
         #full_loc = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     else:
         print("Current working directory username not recognized.")
@@ -70,7 +70,7 @@ def main():
     fasta_headers[['organism', 'subtype', 'country', 'id_string', 'year_tag_date']] = fasta_headers['headers'].str.split(pat = "/", expand = True)
     fasta_headers[['year', 'epi_isl', 'date']] = fasta_headers['year_tag_date'].str.split(pat = "|", expand = True)
     fasta_headers[['state', 'project', 'sample_id']] = fasta_headers['id_string'].str.split(pat = "-", expand = True)
-    
+
     # Write
     #with open(file_2, 'w') as corrected:
     #    SeqIO.write(all_fasta, corrected, "fasta")

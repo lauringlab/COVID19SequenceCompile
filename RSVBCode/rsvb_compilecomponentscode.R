@@ -13,18 +13,18 @@ library(withr)
 ################################################################################
 
 # manifest file path
-manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
+manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
 # platemap file path
-plate_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/PlateMaps/PlateMapsComplete")
+plate_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/PlateMaps/PlateMapsComplete")
 # nextclade file path
-nc_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+nc_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # gisaid file path
-gisaid_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
+gisaid_fp <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
 # previous 2021 file path
 #prev_2021 <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PreviousLists")
 
 ### output location for files, all together
-outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary")
+outputLOC <- paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary")
 
 ################################################################################
 

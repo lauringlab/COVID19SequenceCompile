@@ -14,10 +14,10 @@ library(gt)
 #"/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 
 ## set run folder accordingly
-outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/3_ProcessedGenomes/", plate_name, "/")
+outputLOC <- paste0(starting_path, "SEQUENCING/RSV_B/3_ProcessedGenomes/", plate_name, "/")
 
 # read in compiled dataset
-seq_list <- read.csv(paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
+seq_list <- read.csv(paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
 ################################################################################
 # filter to plate run

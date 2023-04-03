@@ -249,3 +249,58 @@ source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 
 source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 
+
+
+
+
+
+
+
+################################################################################
+# RSVB COMPONENT
+################################################################################
+
+plate_name <- "20230307_RSVB_Illumina_Run_1"
+#plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
+#plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
+
+num_rsvs_on_plate <- 93
+
+################################################################################
+# ROUND 1
+################################################################################
+
+source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
+
+
+source(paste0(code_path, "RSVBCode/rsvb_manifestcode.R"))
+
+source(paste0(code_path, "RSVBCode/rsvb_platemapcode.R"))
+
+source(paste0(code_path, "RSVBCode/rsvb_compilecomponentscode.R"))
+
+
+source(paste0(code_path, "RSVBCode/rsvb_subset_compiled_for_fasta.R"))
+
+################################################################################
+# ROUND 2
+################################################################################
+
+source(paste0(code_path, "RSVBCode/rsvb_manifestcode.R"))
+
+source(paste0(code_path, "RSVBCode/rsvb_platemapcode.R"))
+# note: this doesn't run if any plate map excel files are open
+
+source(paste0(code_path, "RSVBCode/rsvb_nextclade_code.R"))
+
+source(paste0(code_path, "RSVBCode/rsvb_compilecomponentscode.R"))
+
+################################################################################
+# ROUND 3
+################################################################################
+
+source(paste0(code_path, "RSVBCode/rsvb_compilecomponentscode.R"))
+
+
+
+

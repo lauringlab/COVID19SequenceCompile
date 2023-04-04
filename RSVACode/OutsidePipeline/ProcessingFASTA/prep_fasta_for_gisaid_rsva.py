@@ -50,7 +50,7 @@ def main():
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
     meta.columns = meta.columns.astype(str)
 
-    file_1 = s_path + args.prefix + ".full.consensus.fasta"
+    file_1 = s_path + args.prefix + ".90.consensus.fasta"
     file_2 = s_path + args.prefix + ".all.consensus.final.tmp.fasta"
     file_3 = s_path + args.prefix + ".all.consensus.final.gisaid.fasta"
 

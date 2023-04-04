@@ -51,10 +51,10 @@ rename_columns <- c("SampleID", "nextclade_clade", "nextclade_Gclade", "nextclad
 colnames(nc_storage) <- rename_columns
 
 ################################################################################
-## calculate genome completeness. genome size = 15,225 (gisaid reference sequence)
+## calculate genome completeness. genome size = 15,222 (gisaid reference sequence)
 # Completeness = 100*(genome_size - totalMissing)/genome_size
 
-nc_storage$nextclade_completeness <- 100*(15225 - as.numeric(nc_storage$nextclade_totalMissing)) / 15225
+nc_storage$nextclade_completeness <- 100*(15222 - as.numeric(nc_storage$nextclade_totalMissing)) / 15222
 
 ################################################################################
 

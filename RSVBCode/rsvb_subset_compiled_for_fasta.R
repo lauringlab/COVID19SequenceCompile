@@ -66,7 +66,7 @@ if (missing_received_source > (96 - num_rsvs_on_plate)){
   stop("Received Sources Missing")
 }
 
-if (nrow(seq_list2) != num_rsvs_on_plate){
+if (nrow(seq_list2) != num_rsvs_on_plate + 3){
   print(paste0("There are not ", num_rsvs_on_plate, " samples on this plate:"))
   print(plate_name)
   print(paste0("Plate rows = ", nrow(seq_list2)))

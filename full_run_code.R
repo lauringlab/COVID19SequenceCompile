@@ -161,7 +161,7 @@ source(paste0(code_path, "compile_components_code.R"))
 # INFLUENZA COMPONENT
 ################################################################################
 
-plate_name <- "20230315_IAV_Illumina_Run_50_SETB"
+plate_name <- "20230317_IAV_Illumina_Run_52_SETD"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 ################################################################################

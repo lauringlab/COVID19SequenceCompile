@@ -9,7 +9,7 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
@@ -72,6 +72,8 @@ if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
 
 ## remove study withdraws
 seq_list <- filter(seq_list, flag != "Withdrawn from study")
+seq_list <- filter(seq_list, !grepl("Withdrawn from study", flag))
+
 
 ################################################################################
 ### fix date formatting

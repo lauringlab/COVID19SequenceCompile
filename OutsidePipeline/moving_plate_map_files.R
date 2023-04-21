@@ -52,7 +52,7 @@ if (grepl("_SC2_", plate_name)){
             overwrite = TRUE)
   
   # then, read in that excel file that we moved to the inner pipeline set
-  file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), sheet = 1)
+  file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), sheet = 1)
   
   
 } else {

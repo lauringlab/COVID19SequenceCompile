@@ -11,7 +11,7 @@
 #c:/users/juliegil/appdata/local/programs/python/python38/python.exe C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/OutsidePipeline/ProcessingFASTA/prep_fasta_for_gisaid.py --prefix "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/20210517_Nanopore_Run_25/20210517_Nanopore_Run_25"
 
 
-# python prep_fasta_for_gisaid.py --prefix 20210519_Nanopore_Run_26
+# python prep_fasta_for_gisaid.py --prefix 20230323_RSVA_Illumina_Run_3/20230323_RSVA_Illumina_Run_3
 
 #"""
 
@@ -32,7 +32,8 @@ import os
 def main():
 
     if ("juliegil" in os.getcwd()):
-        s_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/3_ProcessedGenomes/"
+        s_path = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/3_ProcessedGenomes/"
+        #s_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/3_ProcessedGenomes/"
         #full_loc = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     elif ("leighbak" in os.getcwd()):
         s_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/3_ProcessedGenomes/"
@@ -45,7 +46,7 @@ def main():
     args = parser.parse_args()
 
     meta_file = s_path + args.prefix + ".forgisaid.meta.csv"
-
+    #print(meta_file)
     # read in meta file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
     meta.columns = meta.columns.astype(str)

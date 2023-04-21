@@ -14,6 +14,17 @@ rsv_a5 <- filter(rsv_a, received_source == "CDCIVY5")
 rsv_a4$subtype <- "A"
 rsv_a5$subtype <- "A"
 
+rsv_b <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv", colClasses = "character")
+
+rsv_b4 <- filter(rsv_b, received_source == "CDCIVY4")
+rsv_b5 <- filter(rsv_b, received_source == "CDCIVY5")
+
+rsv_b4$subtype <- "B"
+rsv_b5$subtype <- "B"
+
+rsv_a4 <- rbind(rsv_a4, rsv_b4)
+rsv_a5 <- rbind(rsv_a5, rsv_b5)
+
 rsv_a_out4 <- rsv_a4 %>% select(subject_id, sample_id, coll_date, flag, 
                               received_source, received_date, position, 
                               PlateName, PlatePosition, SampleSourceLocation, 

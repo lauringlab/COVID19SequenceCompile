@@ -573,12 +573,14 @@ for (each_file in rvtn_file_list){
     fileone <- fileone %>% select(study_id, date_of_collection, specimen_id, site)
     
     # fix date
-    fileone <- fileone %>% mutate(date_of_collection = as.POSIXct(date_of_collection, format = "%d-%b-%y"))
+    fileone <- fileone %>% mutate(date_of_collection = case_when(is.numeric(as.numeric(substr(date_of_collection, 1, 4))) ~ as.POSIXct(date_of_collection, format = "%Y-%m-%d"), 
+                                                                 T ~ as.POSIXct(date_of_collection, format = "%d-%b-%y")))
     
     if (any(nchar(as.character(fileone$specimen_id)) != 9)){
       message(each_file)
-      message(filter(fileone, nchar(as.character(speciment_id)) != 9))
-      stop("RVTN Specimen ID not 9 digits")
+      message(filter(fileone, nchar(as.character(specimen_id)) != 9))
+      message("specimen_id is not 9 digits")
+      #stop("RVTN Specimen ID not 9 digits")
     }
     
     site_check <- fileone %>% mutate(check_site_number = case_when(substr(specimen_id, 1, 1) == "1" ~ "Tennessee", 

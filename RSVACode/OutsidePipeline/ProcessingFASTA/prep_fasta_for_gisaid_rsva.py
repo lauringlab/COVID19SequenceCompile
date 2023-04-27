@@ -32,7 +32,7 @@ import os
 def main():
 
     if ("juliegil" in os.getcwd()):
-        s_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/3_ProcessedGenomes/"
+        s_path = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/3_ProcessedGenomes/"
         #s_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/3_ProcessedGenomes/"
         #full_loc = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     elif ("leighbak" in os.getcwd()):
@@ -45,35 +45,38 @@ def main():
     parser.add_argument('--prefix', action="store", dest="prefix")
     args = parser.parse_args()
 
-    meta_file = s_path + args.prefix + ".forgisaid.meta.csv"
+    meta_file = s_path + args.prefix + ".forgisaid.meta2.csv"
     #print(meta_file)
     # read in meta file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
     meta.columns = meta.columns.astype(str)
 
-    file_1 = s_path + args.prefix + ".90.consensus.fasta"
+    #file_1 = s_path + args.prefix + ".90.consensus.fasta"
+    file_1 = s_path + args.prefix + ".full.consensus.fasta"
     file_2 = s_path + args.prefix + ".all.consensus.final.tmp.fasta"
-    file_3 = s_path + args.prefix + ".all.consensus.final.gisaid.fasta"
+    file_3 = s_path + args.prefix + ".all.consensus.final2.gisaid.fasta"
 
     all_fasta = list()
     for record in SeqIO.parse(file_1, "fasta"):
 
-        id = str(record.id)
-        print(id)
+        id = str(record.id).split()[0]
+        #print(id)
 
         meta_sample = meta[meta.sample_id == id]
-        new_ID = list(set(meta_sample.VirusName))[0]
+        if not meta_sample.empty:
 
-        record.id = new_ID
-        all_fasta.append(record)
+            new_ID = list(set(meta_sample.VirusName))[0]
+
+            record.id = new_ID
+            all_fasta.append(record)
 
     # Write
-    with open(file_2, 'w') as corrected:
+    with open(file_3, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
-    sed_cmd = """ sed '/^>/ s/ .*//' """ + "'" + file_2 + "'" + " > " + "'" + file_3 + "'"
-    print(sed_cmd)
-    os.system(sed_cmd)
-    os.system("rm '" + file_2 + "'")
+    #sed_cmd = """ sed '/^>/ s/ .*//' """ + "'" + file_2 + "'" + " > " + "'" + file_3 + "'"
+    #print(sed_cmd)
+    #os.system(sed_cmd)
+    #os.system("rm '" + file_2 + "'")
 
 if __name__ == "__main__":
     main()

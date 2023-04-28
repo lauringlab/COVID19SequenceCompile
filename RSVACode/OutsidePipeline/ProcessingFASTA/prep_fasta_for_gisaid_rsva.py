@@ -45,7 +45,7 @@ def main():
     parser.add_argument('--prefix', action="store", dest="prefix")
     args = parser.parse_args()
 
-    meta_file = s_path + args.prefix + ".forgisaid.meta2.csv"
+    meta_file = s_path + args.prefix + ".forgisaid.meta.csv"
     #print(meta_file)
     # read in meta file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
@@ -54,7 +54,7 @@ def main():
     #file_1 = s_path + args.prefix + ".90.consensus.fasta"
     file_1 = s_path + args.prefix + ".full.consensus.fasta"
     file_2 = s_path + args.prefix + ".all.consensus.final.tmp.fasta"
-    file_3 = s_path + args.prefix + ".all.consensus.final2.gisaid.fasta"
+    file_3 = s_path + args.prefix + ".all.consensus.final.gisaid.fasta"
 
     all_fasta = list()
     for record in SeqIO.parse(file_1, "fasta"):

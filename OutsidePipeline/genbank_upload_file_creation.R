@@ -121,22 +121,22 @@ ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(a
 ################################################################################
 
 # enter GISAID username here 
-ff$Submitter <- 
-  if (grepl("juliegil", checking_wd)){
-  
-  Submitter <- "juliegil"
-  
-} else if (grepl("leighbaker", checking_wd)){
-  Submitter <- "Leighbaker"
-  
-} else if (grepl("leighbak", checking_wd)){
-  Submitter <- "Leighbaker"
-  
-} else {
-  
-  print("User not recognized.")
-  
-}
+# ff$Submitter <- 
+#   if (grepl("juliegil", checking_wd)){
+#   
+#   Submitter <- "juliegil"
+#   
+# } else if (grepl("leighbaker", checking_wd)){
+#   Submitter <- "Leighbaker"
+#   
+# } else if (grepl("leighbak", checking_wd)){
+#   Submitter <- "Leighbaker"
+#   
+# } else {
+#   
+#   print("User not recognized.")
+#   
+# }
 
 # create FASTA filename string
 #ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.final.gisaid.fasta")
@@ -177,13 +177,13 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("N
 #                                           T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 
-ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "CDCIVY4" ~ paste0("IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "CDCIVY5" ~ paste0("IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "RVTN" ~ paste0("RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-                                          received_source == "VIEW" ~ paste0("VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-                                          received_source == "IVYIC" ~ paste0("IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
-                                          received_source == "MDHHS" ~ paste0("UM-", sample_id, "/", substr(coll_date, 1, 4)),
+ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("IVY-", sample_id),
+                                          received_source == "CDCIVY4" ~ paste0("IVY-", sample_id),
+                                          received_source == "CDCIVY5" ~ paste0("IVY-", sample_id),
+                                          received_source == "RVTN" ~ paste0("RVTN-", sample_id_lauring),
+                                          received_source == "VIEW" ~ paste0("VIEW-", sample_id_lauring),
+                                          received_source == "IVYIC" ~ paste0("IVYIC-", sample_id),
+                                          received_source == "MDHHS" ~ paste0("UM-", sample_id),
                                           T ~ paste0("UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 

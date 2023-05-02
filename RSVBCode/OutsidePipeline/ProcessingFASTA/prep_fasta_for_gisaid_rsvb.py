@@ -32,7 +32,7 @@ import os
 def main():
 
     if ("juliegil" in os.getcwd()):
-        s_path = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/3_ProcessedGenomes/"
+        s_path = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/3_ProcessedGenomes/"
         #full_loc = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     elif ("leighbak" in os.getcwd()):
         s_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/3_ProcessedGenomes/"
@@ -50,29 +50,35 @@ def main():
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
     meta.columns = meta.columns.astype(str)
 
-    file_1 = s_path + args.prefix + ".90.consensus.fasta"
+    #file_1 = s_path + args.prefix + ".90.consensus.fasta"
+    file_1 = s_path + args.prefix + ".full.consensus.fasta"
     file_2 = s_path + args.prefix + ".all.consensus.final.tmp.fasta"
     file_3 = s_path + args.prefix + ".all.consensus.final.gisaid.fasta"
 
     all_fasta = list()
     for record in SeqIO.parse(file_1, "fasta"):
 
-        id = str(record.id)
-        print(id)
+        id = str(record.id).split()[0]
+        #print(id)
 
         meta_sample = meta[meta.sample_id == id]
-        new_ID = list(set(meta_sample.VirusName))[0]
+        if not meta_sample.empty:
 
-        record.id = new_ID
-        all_fasta.append(record)
+            #meta_sample = meta[meta.sample_id == id]
+            new_ID = list(set(meta_sample.VirusName))[0]
+
+            record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
+            print(record.id)
+            all_fasta.append(record)
 
     # Write
     with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
-    sed_cmd = """ sed '/^>/ s/ .*//' """ + "'" + file_2 + "'" + " > " + "'" + file_3 + "'"
+
+    sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"' # need quotes around file names with spaces in them (from the dropbox folder)
     print(sed_cmd)
     os.system(sed_cmd)
-    os.system("rm '" + file_2 + "'")
+    os.system("rm " + '"' + file_2 + '"') # remove the .all.consensus.tmp.fasta
 
 if __name__ == "__main__":
     main()

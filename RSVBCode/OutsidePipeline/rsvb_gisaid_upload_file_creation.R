@@ -14,10 +14,10 @@ checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
   
   #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else if (grepl("leighbaker", checking_wd)){
   code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
@@ -42,7 +42,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20220524_SC2_Nanopore_Run_174"
+#plate_name <- "20230323_RSVB_Illumina_Run_1"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -51,7 +51,7 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 ################################################################################
 
 # create gisaid directory
-dir.create(paste0(starting_path, "/SEQUENCING/RSV_B/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum))
+dir.create(paste0(starting_path, "SEQUENCING/RSV_B/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum))
 
 ################################################################################
 
@@ -72,7 +72,7 @@ final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClass
 final_file <- filter(final_file, !grepl("Missing Date in Manifest", flag))
 
 # only keep rows with completeness > 90%
-ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
+ff <- filter(final_file, as.numeric(nextclade_completeness) >= 80)
 
 # select run of choice
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
@@ -331,7 +331,7 @@ today <- current_date_string()
 gufn <- paste0(today, "_Lauring_gisaid_upload_metadata_run_", runnum) 
 
 ## write to excel file (follow format)
-wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))
+wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))
 
 # fill in the submissions tab with built data frame
 writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)

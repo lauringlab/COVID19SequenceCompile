@@ -42,7 +42,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20220524_SC2_Nanopore_Run_174"
+#plate_name <- "20230307_RSVA_Illumina_Run_1"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -72,7 +72,7 @@ final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClass
 final_file <- filter(final_file, !grepl("Missing Date in Manifest", flag))
 
 # only keep rows with completeness > 90%
-ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
+ff <- filter(final_file, as.numeric(nextclade_completeness) >= 80)
 
 # select run of choice
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)

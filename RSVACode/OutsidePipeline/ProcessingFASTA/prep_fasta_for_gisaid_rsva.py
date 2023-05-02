@@ -45,7 +45,7 @@ def main():
     parser.add_argument('--prefix', action="store", dest="prefix")
     args = parser.parse_args()
 
-    meta_file = s_path + args.prefix + ".forgisaid.meta.csv"
+    meta_file = s_path + args.prefix + ".forgisaid2.meta.csv"
     #print(meta_file)
     # read in meta file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
@@ -54,7 +54,7 @@ def main():
     #file_1 = s_path + args.prefix + ".90.consensus.fasta"
     file_1 = s_path + args.prefix + ".full.consensus.fasta"
     file_2 = s_path + args.prefix + ".all.consensus.final.tmp.fasta"
-    file_3 = s_path + args.prefix + ".all.consensus.final.gisaid.fasta"
+    file_3 = s_path + args.prefix + ".all.consensus.final.gisaid2.fasta"
 
     all_fasta = list()
     for record in SeqIO.parse(file_1, "fasta"):
@@ -65,18 +65,21 @@ def main():
         meta_sample = meta[meta.sample_id == id]
         if not meta_sample.empty:
 
+            #meta_sample = meta[meta.sample_id == id]
             new_ID = list(set(meta_sample.VirusName))[0]
 
-            record.id = new_ID
+            record.id = str(new_ID) # needed to change numeric sample_ids to be recognized as character strings
+            print(record.id)
             all_fasta.append(record)
 
     # Write
-    with open(file_3, 'w') as corrected:
+    with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
-    #sed_cmd = """ sed '/^>/ s/ .*//' """ + "'" + file_2 + "'" + " > " + "'" + file_3 + "'"
-    #print(sed_cmd)
-    #os.system(sed_cmd)
-    #os.system("rm '" + file_2 + "'")
+
+    sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"' # need quotes around file names with spaces in them (from the dropbox folder)
+    print(sed_cmd)
+    os.system(sed_cmd)
+    os.system("rm " + '"' + file_2 + '"') # remove the .all.consensus.tmp.fasta
 
 if __name__ == "__main__":
     main()

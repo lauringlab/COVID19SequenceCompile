@@ -33,6 +33,7 @@ def main():
 
     if ("juliegil" in os.getcwd()):
         s_path = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/"
+        s_path2 = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/"
         #full_loc = "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     elif ("leighbak" in os.getcwd()):
         s_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/"
@@ -52,6 +53,7 @@ def main():
 
     file_1 = s_path + "gisaid_rsv.fasta"
     file_2 = s_path + "gisaid_back_info.csv"
+    file_2b = s_path2 + "gisaid_back_info.csv"
     #file_3 = s_path + args.prefix + ".all.consensus.final.gisaid.fasta"
 
     all_fasta = list()
@@ -70,11 +72,12 @@ def main():
     fasta_headers[['organism', 'subtype', 'country', 'id_string', 'year_tag_date']] = fasta_headers['headers'].str.split(pat = "/", expand = True)
     fasta_headers[['year', 'epi_isl', 'date']] = fasta_headers['year_tag_date'].str.split(pat = "|", expand = True)
     fasta_headers[['state', 'project', 'sample_id']] = fasta_headers['id_string'].str.split(pat = "-", expand = True)
-    
+
     # Write
     #with open(file_2, 'w') as corrected:
     #    SeqIO.write(all_fasta, corrected, "fasta")
     fasta_headers.to_csv(file_2, encoding='utf-8', index=False)
+    fasta_headers.to_csv(file_2b, encoding='utf-8', index=False)
 
 
 if __name__ == "__main__":

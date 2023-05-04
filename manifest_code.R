@@ -552,7 +552,15 @@ full_rvtn <- data.frame()
 
 for (each_file in rvtn_file_list){
   
-    fileone <- read.csv(paste0(rvtn_manifest_fp, "/", each_file), colClasses = "character")
+    if (grepl("VIEW", each_file)){
+      fileone <- read.csv(paste0(view_manifest_fp, "/", each_file), colClasses = "character")
+      fileone$site <- ""
+      fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
+                                    specimen_type, manifest_creation_date, record_id)
+    } else {
+      fileone <- read.csv(paste0(rvtn_manifest_fp, "/", each_file), colClasses = "character")
+    }
+  
     colnames(fileone) <- c("specimen_id", "site", "study_id", "date_of_collection", 
                            "specimen_type", "manifest_creation_date", "record_id")
     fileone <- filter(fileone, study_id != "" & specimen_id != "")
@@ -591,11 +599,12 @@ for (each_file in rvtn_file_list){
                                                                    substr(specimen_id, 1, 1) == "6" ~ "Wisconsin",
                                                                    substr(specimen_id, 1, 1) == "7" ~ "New York",
                                                                    T ~ "Unknown"))
-    
-    if (any(site_check$check_site_number != site_check$site)){
-      message(each_file)
-      message(filter(site_check, check_site_number != site))
-      stop("Study ID number doesn't correspond to manifest site listed.")
+    if (grepl("RVTN", each_file)){
+      if (any(site_check$check_site_number != site_check$site)){
+        message(each_file)
+        message(filter(site_check, check_site_number != site))
+        stop("Study ID number doesn't correspond to manifest site listed.")
+      }
     }
     
     # 1, Tennessee

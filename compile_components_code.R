@@ -94,16 +94,18 @@ gisaid_secret <- filter(gisaid, grepl("RVTN", gisaid_strain) | grepl("VIEW", gis
 #gisaid <- filter(gisaid, !grepl("RVTN", gisaid_strain))
 
 # merge these onto mani_plate, always keeping everything from mani_plate
-mani_plate_pang <- merge(mani_plate, pangolin, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
+mani_plate_pang <- merge(mani_plate, pangolin, by.x = c("sample_id", "PlateDate"), by.y = c("SampleID", "pangolin_runDate"), all.x = TRUE)
 #mani_plate_pang <- filter(mani_plate_pang, received_source != "RVTN")
 #mani_plate_pang_secret <- filter(mani_plate_pang, received_source == "RVTN")
 ### add column for time in days from plate to pangolin
 #mani_plate_pang$PlateToPangolin_days <- difftime(mani_plate_pang$pangolin_runDate, mani_plate_pang$PlateDate, units = "days")
 
+#table(mani_plate_pang$received_source)
+
 mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 #mani_plate_pang_g_secret <- merge(mani_plate_pang_secret, gisaid_secret, by.x = c(" "), by.y = c("sample_id"), all.x = TRUE)
 
-mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
+mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id", "PlateDate"), by.y = c("SampleID", "nextclade_runDate"), all.x = TRUE)
 
 ### add column for time in days from plate to nextclade
 #mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_runDate, mppnc$PlateDate, units = "days")

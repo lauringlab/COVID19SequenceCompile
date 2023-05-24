@@ -245,28 +245,49 @@ mppnc2 <- merge(mppnc2, multiple_samples, all.x = TRUE)
 # mppnc_look$correct_matched <- ifelse(mppnc_look$PlateDate == mppnc_look$pangolin_runDate & mppnc_look$PlateDate == mppnc_look$nextclade_runDate, 1, 0)
 # 
 #a <- filter(mppnc2, sample_id == "10041282602")
+# 
+# mppnc2 <- mppnc2 %>% mutate(correct_matched = case_when(PlateDate == pangolin_runDate & PlateDate == nextclade_runDate ~ 1, 
+#                                                         T ~ 0))
+# 
+# mppnc2 <- mppnc2 %>% group_by(sample_id) %>% mutate(count_platedates = length(unique(PlateDate)), 
+#                                                     count_platedates2 = length(PlateDate),
+#                                                     sum_matched = sum(correct_matched, na.rm = T))
+# 
+# mppnc2 <- mppnc2 %>% mutate(keeps = case_when(count_platedates == sum_matched ~ 1, 
+#                                               T ~ 0))
+# 
+# mppnc2_outs <- filter(mppnc2, count_platedates2 %% 4 == 0 & sample_id != "")
+# mppnc2_outs_keep <- filter(mppnc2_outs, correct_matched == 1)
+# 
+# goal <- nrow(mppnc2) - nrow(mppnc2_outs)
+# mppnc2_t <- filter(mppnc2, count_platedates2 %% 4 != 0 | (count_platedates2 %% 4 == 0 & sample_id == ""))
+# 
+# if (nrow(mppnc2_t) != goal){
+#   stop("Filter & Keep did not work properly")
+# }
+# 
+# mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, coll_date,                   
+#                                                        flag, received_source, SampleBarcode,               
+#                                                        PlateDate, PlatePlatform, PlateNumber,                 
+#                                                        pangolin_lineage, pangolin_probability, pangolin_status,             
+#                                                        pangolin_note, nextclade_clade, nextclade_totalMissing,      
+#                                                        nextclade_completeness, gisaid_strain, gisaid_epi_isl, 
+#                                                        gisaid_clade, gisaid_pango_lineage, 
+#                                                        received_date, position, SiteName,                    
+#                                                        subject_id_length, PlateName, PlatePosition,               
+#                                                        SampleSourceLocation, pangoLEARN_version, pangolin_conflict,           
+#                                                        pango_version, pangolin_version, pangolin_runDate,            
+#                                                        #PlateToPangolin_days, 
+#                                                        nextclade_qcOverallScore, nextclade_qcOverallStatus,  
+#                                                        nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate,          
+#                                                        #PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
+#                                                        #IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, 
+#                                                        sample_per_subject, 
+#                                                        multiSamples, daysFromPrevious, ninetyDayFromPrevious, previousLineageDifferentThanCurrent, 
+#                                                        previousCladeDifferentThanCurrent)
 
-mppnc2 <- mppnc2 %>% mutate(correct_matched = case_when(PlateDate == pangolin_runDate & PlateDate == nextclade_runDate ~ 1, 
-                                                        T ~ 0))
 
-mppnc2 <- mppnc2 %>% group_by(sample_id) %>% mutate(count_platedates = length(unique(PlateDate)), 
-                                                    count_platedates2 = length(PlateDate),
-                                                    sum_matched = sum(correct_matched, na.rm = T))
-
-mppnc2 <- mppnc2 %>% mutate(keeps = case_when(count_platedates == sum_matched ~ 1, 
-                                              T ~ 0))
-
-mppnc2_outs <- filter(mppnc2, count_platedates2 %% 4 == 0 & sample_id != "")
-mppnc2_outs_keep <- filter(mppnc2_outs, correct_matched == 1)
-
-goal <- nrow(mppnc2) - nrow(mppnc2_outs)
-mppnc2_t <- filter(mppnc2, count_platedates2 %% 4 != 0 | (count_platedates2 %% 4 == 0 & sample_id == ""))
-
-if (nrow(mppnc2_t) != goal){
-  stop("Filter & Keep did not work properly")
-}
-
-mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, coll_date,                   
+mppnc2 <- mppnc2 %>% select(sample_id, subject_id, coll_date,                   
                                                        flag, received_source, SampleBarcode,               
                                                        PlateDate, PlatePlatform, PlateNumber,                 
                                                        pangolin_lineage, pangolin_probability, pangolin_status,             
@@ -276,16 +297,15 @@ mppnc2 <- rbind(mppnc2_t, mppnc2_outs_keep) %>% select(sample_id, subject_id, co
                                                        received_date, position, SiteName,                    
                                                        subject_id_length, PlateName, PlatePosition,               
                                                        SampleSourceLocation, pangoLEARN_version, pangolin_conflict,           
-                                                       pango_version, pangolin_version, pangolin_runDate,            
+                                                       pango_version, pangolin_version, #pangolin_runDate,            
                                                        #PlateToPangolin_days, 
                                                        nextclade_qcOverallScore, nextclade_qcOverallStatus,  
-                                                       nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_runDate,          
+                                                       nextclade_totalMutations, nextclade_totalNonACGTNs, #nextclade_runDate,          
                                                        #PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
                                                        #IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, 
                                                        sample_per_subject, 
                                                        multiSamples, daysFromPrevious, ninetyDayFromPrevious, previousLineageDifferentThanCurrent, 
                                                        previousCladeDifferentThanCurrent)
-
 
 mppnc2 <- mppnc2 %>% mutate(coll_date = case_when(grepl("/", coll_date) & substr(coll_date, nchar(coll_date) - 2, nchar(coll_date) - 2) != "/" ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
                                                   grepl("/", coll_date) & substr(coll_date, nchar(coll_date) - 2, nchar(coll_date) - 2) == "/" ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%y")), 
@@ -351,10 +371,12 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,
                                       PlateName, PlatePosition,                      
                                       SampleSourceLocation, pangoLEARN_version,                
                                       pangolin_conflict, pango_version,                     
-                                      pangolin_version, pangolin_runDate,                   
+                                      pangolin_version, 
+                                      #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
                                       nextclade_totalMutations, nextclade_totalNonACGTNs,          
-                                      nextclade_runDate, sample_per_subject,                 
+                                      #nextclade_runDate, 
+                                      sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
@@ -371,10 +393,12 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       PlateName, PlatePosition,                      
                                       SampleSourceLocation, pangoLEARN_version,                
                                       pangolin_conflict, pango_version,                     
-                                      pangolin_version, pangolin_runDate,                   
+                                      pangolin_version, 
+                                      #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
                                       nextclade_totalMutations, nextclade_totalNonACGTNs,          
-                                      nextclade_runDate, sample_per_subject,                 
+                                      #nextclade_runDate, 
+                                      sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
@@ -412,10 +436,12 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,
                                       PlateName, PlatePosition,                      
                                       SampleSourceLocation, pangoLEARN_version,                
                                       pangolin_conflict, pango_version,                     
-                                      pangolin_version, pangolin_runDate,                   
+                                      pangolin_version, 
+                                      #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
                                       nextclade_totalMutations, nextclade_totalNonACGTNs,          
-                                      nextclade_runDate, sample_per_subject,                 
+                                      #nextclade_runDate, 
+                                      sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
@@ -434,10 +460,12 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       PlateName, PlatePosition,                      
                                       SampleSourceLocation, pangoLEARN_version,                
                                       pangolin_conflict, pango_version,                     
-                                      pangolin_version, pangolin_runDate,                   
+                                      pangolin_version, 
+                                      #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
                                       nextclade_totalMutations, nextclade_totalNonACGTNs,          
-                                      nextclade_runDate, sample_per_subject,                 
+                                      #nextclade_runDate, 
+                                      sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)

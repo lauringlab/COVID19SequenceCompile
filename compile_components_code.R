@@ -132,6 +132,9 @@ if (nrow(mppnc) > nrow(mani_plate_pang_g )){
 #### read in data from Emily's MHOME stuff
 #mhome_in <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv")
 mhome_in <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv"))
+mhome_in$loc_code <- "UM"
+mhome_in <- mhome_in %>% select(colnames(mppnc))
+
 mppnc <- rbind(mppnc, mhome_in)
 
 ################################################################################

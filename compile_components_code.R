@@ -95,6 +95,11 @@ gisaid_secret <- filter(gisaid, grepl("RVTN", gisaid_strain) | grepl("VIEW", gis
 
 # merge these onto mani_plate, always keeping everything from mani_plate
 mani_plate_pang <- merge(mani_plate, pangolin, by.x = c("sample_id", "PlateDate"), by.y = c("SampleID", "pangolin_runDate"), all.x = TRUE)
+
+if (nrow(mani_plate_pang) > nrow(mani_plate)){
+  stop("Merging of Pangolin Data onto mainfest+plate maps = too many rows")
+}
+
 #mani_plate_pang <- filter(mani_plate_pang, received_source != "RVTN")
 #mani_plate_pang_secret <- filter(mani_plate_pang, received_source == "RVTN")
 ### add column for time in days from plate to pangolin
@@ -102,10 +107,24 @@ mani_plate_pang <- merge(mani_plate, pangolin, by.x = c("sample_id", "PlateDate"
 
 #table(mani_plate_pang$received_source)
 
-mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mani_plate_pang <- mani_plate_pang %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
+                                          received_source == "CDCIVY4" ~ "IVY",
+                                          received_source == "CDCIVY5" ~ "IVY",
+                                          received_source == "RVTN" ~ "RVTN",
+                                          received_source == "VIEW" ~ "VIEW",
+                                          received_source == "IVYIC" ~ "IVYIC",
+                                          T ~ "UM"))
+
+
+mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 #mani_plate_pang_g_secret <- merge(mani_plate_pang_secret, gisaid_secret, by.x = c(" "), by.y = c("sample_id"), all.x = TRUE)
 
 mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id", "PlateDate"), by.y = c("SampleID", "nextclade_runDate"), all.x = TRUE)
+
+if (nrow(mppnc) > nrow(mani_plate_pang_g )){
+  stop("Merging of Nextclade Data onto mainfest+plate maps+pangolin+gisaid = too many rows")
+}
+
 
 ### add column for time in days from plate to nextclade
 #mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_runDate, mppnc$PlateDate, units = "days")
@@ -357,8 +376,24 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
 
-mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
-mppnc2_view <- merge(mppnc2_view, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
+mppnc2_rvtn <- mppnc2_rvtn %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
+                                                                   received_source == "CDCIVY4" ~ "IVY",
+                                                                   received_source == "CDCIVY5" ~ "IVY",
+                                                                   received_source == "RVTN" ~ "RVTN",
+                                                                   received_source == "VIEW" ~ "VIEW",
+                                                                   received_source == "IVYIC" ~ "IVYIC",
+                                                                   T ~ "UM"))
+
+mppnc2_view <- mppnc2_view %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
+                                                                   received_source == "CDCIVY4" ~ "IVY",
+                                                                   received_source == "CDCIVY5" ~ "IVY",
+                                                                   received_source == "RVTN" ~ "RVTN",
+                                                                   received_source == "VIEW" ~ "VIEW",
+                                                                   received_source == "IVYIC" ~ "IVYIC",
+                                                                   T ~ "UM"))
+
+mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
+mppnc2_view <- merge(mppnc2_view, gisaid_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
                                       received_source, SampleBarcode,                     

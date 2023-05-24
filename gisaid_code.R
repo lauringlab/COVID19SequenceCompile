@@ -33,8 +33,8 @@ gisaid_storage <- data.frame()
 
 for (i in file_list){
     gisaid_in <- read.delim(paste0(gisaid_fp, "/", i))
-    print(filter(gisaid_in, grepl("10043602408", Virus.name)))
-    print(i)
+    #print(filter(gisaid_in, grepl("10043602408", Virus.name)))
+    #print(i)
     gisaid_storage <- rbind(gisaid_storage, gisaid_in)
 }
 
@@ -54,10 +54,10 @@ gisaid_storage$four[is.na(gisaid_storage$four)] <- ""
 gisaid_storage <- gisaid_storage %>% mutate(sample_id = case_when(four == "" ~ paste0(gisaid_storage$three, gisaid_storage$four), 
                                                                   T ~ paste0(gisaid_storage$three, "-", gisaid_storage$four)))
 
-gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Lineage, sample_id)
+gisaid_storage <- gisaid_storage %>% select(Virus.name, Accession.ID, Clade, Lineage, sample_id, two)
 
 ### rename columns 
-rename_columns <- c("gisaid_strain", "gisaid_epi_isl", "gisaid_clade", "gisaid_pango_lineage", "sample_id")
+rename_columns <- c("gisaid_strain", "gisaid_epi_isl", "gisaid_clade", "gisaid_pango_lineage", "sample_id", "loc_code")
 colnames(gisaid_storage) <- rename_columns
 
 # write out the compiled file

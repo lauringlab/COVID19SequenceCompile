@@ -49,6 +49,7 @@ for (each_folder in manifest_folder_list){
   if (each_folder == rvtn_manifest_fp){
     file_list <- list.files(pattern = "*.csv", path = each_folder)
     for (rv in file_list){
+      #print(rv)
       file_in <- read.csv(paste0(each_folder, "/", rv))
       
       colnames(file_in) <- c("sample_id", "site", "subject_id", "coll_date", "specimen_type", "manifest_creation_date", "position")
@@ -82,6 +83,7 @@ for (each_folder in manifest_folder_list){
         # read in manifests
         file_list <- list.files(pattern = "*.xlsx", path = each_folder)
         for (ivym in file_list){
+          #print(ivym)
           file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
           
           # "position", "sample_id", "subject_id", "coll_date", "flag"

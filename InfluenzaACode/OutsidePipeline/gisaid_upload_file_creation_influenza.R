@@ -102,7 +102,7 @@ original_full <- filter(final_file, subject_id %in% unique(samples_previous$subj
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, sample_per_subject == 1 | sample_id == "10042234896")
+#ff <- filter(ff, sample_per_subject == 1 | subject_id == "100432897")
 #ff <- filter(ff, sample_id != "10041097200")
 
 ################################################################################

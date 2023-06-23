@@ -9,8 +9,8 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/RVTN_UPLOADS/")
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/VIEW_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
@@ -30,7 +30,7 @@ seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,
                                 nextclade_totalNonACGTNs, 
                                 data_quality_rule, newest_pangolin_lineage, newest_pangolin_date, sample_id_lauring)
 
-seq_list <- filter(seq_list, received_source == "RVTN" & !grepl("Missing Date", flag))
+seq_list <- filter(seq_list, received_source == "VIEW")
 
 
 if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
@@ -43,25 +43,9 @@ seq_list <- seq_list %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as
                                           grepl("-", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%Y-%m-%d")), 
                                           T ~ NA_character_))
 
+today <- gsub("-", "", Sys.Date())
 
-#colnames(seq_list) <- tolower(colnames(seq_list))
-
-# add leading zero to month
-if (nchar(month(Sys.Date())) == 1){
-  m <- paste0("0", month(Sys.Date()))
-} else {
-  m <- month(Sys.Date())
-}
-# add leading zero to day
-if (nchar(day(Sys.Date())) == 1){
-  d <- paste0("0", day(Sys.Date()))
-} else {
-  d <- day(Sys.Date())
-}
-
-today <- paste0(year(Sys.Date()), m, d)
-
-rvtn <- seq_list %>% select(sample_id, subject_id, coll_date,                    
+view1 <- seq_list %>% select(sample_id, subject_id, coll_date,                    
                             flag, received_source, SiteName, SampleBarcode,                
                             PlateDate, PlatePlatform, PlateNumber,                 
                             pangolin_lineage, pangolin_probability, pangolin_status,             
@@ -75,7 +59,7 @@ rvtn <- seq_list %>% select(sample_id, subject_id, coll_date,
                             nextclade_totalNonACGTNs, 
                             data_quality_rule, newest_pangolin_lineage, newest_pangolin_date, sample_id_lauring)
 
-colnames(rvtn) <- c("sample_id", "subject_id", "coll_date",                    
+colnames(view1) <- c("sample_id", "subject_id", "coll_date",                    
                     "flag", "received_source", "sitename", "samplebarcode",                
                     "platedate", "plateplatform", "platenumber",                 
                     "pangolin_lineage", "pangolin_probability", "pangolin_status",             
@@ -91,6 +75,6 @@ colnames(rvtn) <- c("sample_id", "subject_id", "coll_date",
 
 
 #seq_list <- filter(seq_list, platenumber <= 49)
-write.csv(rvtn, paste0(outputLOC, "rvtn_", today, ".csv"), row.names = FALSE, na = "")
+write.csv(view1, paste0(outputLOC, "view_", today, ".csv"), row.names = FALSE, na = "")
 
 #table(seq_list$pangolin_lineage)

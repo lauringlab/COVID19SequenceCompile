@@ -346,11 +346,12 @@ write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/SARSCOV2/4_Seque
 
 # read in and attach RVTN re-codes
 rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
-rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id, subject_id)
+rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id)
+rvtn_recodes <- filter(rvtn_recodes, sample_id != "")
 #colnames(rvtn_recodes)
 #colnames(mppnc2)
 
-mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE)
+mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("sample_id"), all.x = TRUE)
 
 ################################################################################
 

@@ -13,11 +13,11 @@ library(openxlsx)
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
   
+  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else if (grepl("leighbaker", checking_wd)){
   code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
@@ -78,6 +78,7 @@ ff <- filter(final_file, as.numeric(nextclade_completeness) >= 90)
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
 table(ff$received_source, useNA = "always")
+#ff <- filter(ff, coll_date != "")
 #ff <- filter(ff, received_source != "BSL3")
 ################################################################################
 # set up alert to duplicate items
@@ -89,8 +90,8 @@ if (any(ff$sample_per_subject > 1)){
 
 
 
-#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 # if they are IVYIC duplicates, let them all through regardless
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
@@ -104,7 +105,7 @@ if (any(ff$sample_per_subject > 1)){
 ### to remove these: 
 # ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("029884559", "040440987", 
 #                                                               "100191789"))
-#ff <- filter(ff, sample_per_subject == 1)
+ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
 
@@ -148,7 +149,7 @@ ff$Passage <- "Original"
 ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"), fill = "right")
 #ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
 ff <- ff %>% mutate(State = case_when(received_source == "RVTN" ~ Site, 
-                                      received_source == "VIEW" ~ Site, 
+                                      received_source == "VIEW" ~ "Tennessee", 
                                       T ~ state.name[match(ff$StateAbbrev,state.abb)]))
 
 ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.abb[match(ff$State,state.name)],

@@ -667,11 +667,11 @@ print("Processing IVYIC Manifests")
 
 ivyic_file_list <- c()
 for (each_file in ivyic_file_list22){
-  if (each_file %in% processed_manifest_file_names){
-    xx <- "skip it"
-  } else {
-    ivyic_file_list <- c(ivyic_file_list, each_file)
-  }
+#  if (each_file %in% processed_manifest_file_names){
+#    xx <- "skip it"
+#  } else {
+ivyic_file_list <- c(ivyic_file_list, each_file)
+#  }
 }
 
 ivyic_storage <- data.frame()

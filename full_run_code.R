@@ -7,14 +7,14 @@
 checking_wd <- getwd()
 
 if (grepl("juliegil", checking_wd)){
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-  batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
-  #influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+  #batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+  influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  #influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   
@@ -167,6 +167,18 @@ plate_name <- "20230402_IAV_Illumina_Run_56_SETD"
 plate_name <- "20230614_IAV_Nanopore_Run_28"
 
 num_iavs_on_plate <- 93
+
+################################################################################
+### first check, see if any fasta files made for negative control wells
+all_fastas <- list.files(paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
+
+if (any(grepl("NC", all_fastas))){
+  stop("Negative Control Well generated fasta files.")
+}
+
+if (any(grepl("HeLa", all_fastas))){
+  stop("HeLa Control Well generated fasta files.")
+}
 
 ################################################################################
 # ROUND 1

@@ -37,7 +37,16 @@ colnames(rv_flu) <- c("sample_id", "subject_id", "coll_date_flu", "flag_flu",
                        "pb1_segment_id_flu", "pa_segment_id_flu", "ha_segment_id_flu", "np_segment_id_flu", 
                        "na_segment_id_flu", "mp_segment_id_flu", "ns_segment_id_flu", "isolate_name_flu")
 
+
+
+rv_flu_out <- filter(rv_flu, plate_name_flu == "20230315_IAV_Illumina_Run_49")
+rv_flu_out[, c(9:24)] <- ""
+rv_flu_out$flag_flu <- "Removed - Failed Negative Control Well Check"
+rv_flu <- filter(rv_flu, plate_name_flu != "20230315_IAV_Illumina_Run_49")
+flu_all <- rbind(rv_flu, rv_flu_out)
+
+
 today_date <- gsub("-", "", Sys.Date())
-write.csv(rv_flu, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(flu_all, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                           "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                           "RVTN_uploads/rvtn_flu_", today_date, ".csv"), row.names = FALSE, na = "")

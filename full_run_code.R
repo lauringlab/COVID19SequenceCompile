@@ -61,6 +61,7 @@ plate_name <- "20230501_SC2_Nanopore_Run_312"
 plate_name <- "20230605_SC2_Illumina_Run_108"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
 
+
 ################################################################################
 #                                 ROUND 1                                      #
 ################################################################################
@@ -164,7 +165,7 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20230402_IAV_Illumina_Run_56_SETD"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20230614_IAV_Nanopore_Run_28"
+plate_name <- "20230621_IAV_Nanopore_Run_29"
 
 num_iavs_on_plate <- 93
 

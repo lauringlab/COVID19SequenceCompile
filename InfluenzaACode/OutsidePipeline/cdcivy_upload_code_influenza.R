@@ -7,6 +7,8 @@ flu_file <- read.csv(paste0("C:/Users/juliegil/Dropbox (University of Michigan)/
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
+#flu_file <- filter(flu_file, PlateName != "20230315_IAV_Illumina_Run_49")
+
 cdc_flu <- filter(flu_file, grepl("IVY", received_source) & !grepl("Missing Date", flag))
 table(cdc_flu$received_source)
 colnames(cdc_flu)
@@ -42,6 +44,14 @@ write.csv(filter(cdc_flu, received_source_flu == "CDCIVY4"), paste0("/Users/juli
                           "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                           "IVY_uploads/cdc_ivy_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 
-write.csv(filter(cdc_flu, received_source_flu == "CDCIVY5"), paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+
+flu5 <- filter(cdc_flu, received_source_flu == "CDCIVY5")
+flu5_out <- filter(flu5, plate_name_flu == "20230315_IAV_Illumina_Run_49")
+flu5_out[, c(9:24)] <- ""
+flu5_out$flag_flu <- "Removed - Failed Negative Control Well Check"
+flu5 <- filter(flu5, plate_name_flu != "20230315_IAV_Illumina_Run_49")
+flu_all <- rbind(flu5, flu5_out)
+
+write.csv(flu_all, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                                                                     "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                                                                     "IVY_uploads/cdc_ivy5_flu_", today_date, ".csv"), row.names = FALSE, na = "")

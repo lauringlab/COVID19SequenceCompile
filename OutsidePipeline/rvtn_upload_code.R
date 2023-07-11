@@ -9,7 +9,7 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/RVTN_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
@@ -74,6 +74,13 @@ rvtn <- seq_list %>% select(sample_id, subject_id, coll_date,
                             nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
                             nextclade_totalNonACGTNs, 
                             data_quality_rule, newest_pangolin_lineage, newest_pangolin_date, sample_id_lauring)
+
+
+rvtn_out <- filter(rvtn, PlateName %in% c("20220722_SC2_Illumina_Run_60", "20220823_SC2_Illumina_Run_64", "20221004_SC2_Illumina_Run_68"))
+rvtn_out[, c(11:36)] <- ""
+rvtn_out$flag <- "Removed - Failed Negative Control Well Check"
+rvtn <- filter(rvtn, !PlateName %in% c("20220722_SC2_Illumina_Run_60", "20220823_SC2_Illumina_Run_64", "20221004_SC2_Illumina_Run_68"))
+rvtn <- rbind(rvtn, rvtn_out)
 
 colnames(rvtn) <- c("sample_id", "subject_id", "coll_date",                    
                     "flag", "received_source", "sitename", "samplebarcode",                

@@ -140,6 +140,14 @@ ivy4 <- ivy4 %>% select(sample_id, subject_id, coll_date,
                         pango_version, pangolin_version, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
                                 nextclade_totalmutations, nextclade_totalnonacgtns)
 
+ivy4_out <- filter(ivy4, platename %in% c("20220817_SC2_Illumina_Run_63"))
+ivy4_out[, c(11:30)] <- ""
+ivy4_out$flag <- "Removed - Failed Negative Control Well Check"
+ivy4 <- filter(ivy4, !platename %in% c("20220817_SC2_Illumina_Run_63"))
+ivy4 <- rbind(ivy4, ivy4_out)
+
+
+
 names(ivy4)[names(ivy4) == 'subject_id'] <- 'study_id'
 
 
@@ -154,6 +162,12 @@ ivy5 <- ivy5 %>% select(sample_id, subject_id, coll_date,
                         pango_version, pangolin_version, nextclade_qcoverallscore, nextclade_qcoverallstatus, 
                         nextclade_totalmutations, nextclade_totalnonacgtns, 
                         data_quality_rule, newest_pangolin_lineage, newest_pangolin_date)
+
+ivy5_out <- filter(ivy5, platename %in% c("20230124_SC2_Illumina_Run_78", "20230330_SC2_Illumina_Run_95", "20230523_SC2_Illumina_Run_106"))
+ivy5_out[, c(11:33)] <- ""
+ivy5_out$flag <- "Removed - Failed Negative Control Well Check"
+ivy5 <- filter(ivy5, !platename %in% c("20230124_SC2_Illumina_Run_78", "20230330_SC2_Illumina_Run_95", "20230523_SC2_Illumina_Run_106"))
+ivy5 <- rbind(ivy5, ivy5_out)
 
 #names(ivy5)[names(ivy5) == 'subject_id'] <- 'study_id'
 

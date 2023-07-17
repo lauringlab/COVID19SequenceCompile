@@ -11,6 +11,8 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
+#plate_name <- "20230623_IAV_Illumina_Run_58"
+
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
 runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" options
@@ -19,12 +21,12 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
   
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
-  code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
-  #code_path2 <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  seq_list_path <- paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+  #code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  code_path2 <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
@@ -147,8 +149,8 @@ if(any(grepl("RVTN", ff$received_source))){
 ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
 
 
-ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
-                                           received_source %in% c("HFHS") ~ paste0("A/Michigan/HFHS", sample_id, "/", year(coll_date)),
+ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM", "MHOME") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+                                           received_source %in% c("HFHS", "ASJ") ~ paste0("A/Michigan/MISAPPHIRE", sample_id, "/", year(coll_date)),
                                            grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
                                            grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
                                            T ~ "CHECK"
@@ -200,6 +202,7 @@ ff$SubmittingSampleID <- ""
 ff$Authors <- ""
 ff <- ff %>% mutate(OriginatingLabID = case_when(received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5", "RVTN") ~ "1960",
                                                  received_source == "HFHS" ~ "3559",
+                                                 received_source == "ASJ" ~ "",
                                                  T ~ "3201")) # clicical micro lab
 ff$OriginatingSampleID <- ""
 

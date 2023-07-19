@@ -3,7 +3,7 @@ library(tidyverse)
 library(lubridate)
 
 #### Read in influenza full file
-flu_file <- read.csv(paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+flu_file <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
@@ -46,12 +46,12 @@ write.csv(filter(cdc_flu, received_source_flu == "CDCIVY4"), paste0("/Users/juli
 
 
 flu5 <- filter(cdc_flu, received_source_flu == "CDCIVY5")
-flu5_out <- filter(flu5, plate_name_flu %in% c("20230315_IAV_Illumina_Run_49", "20230316_IAV_Illumina_Run_51"))
-flu5_out[, c(9:24)] <- ""
-flu5_out$flag_flu <- "Removed - Failed Negative Control Well Check"
-flu5 <- filter(flu5, !plate_name_flu %in% c("20230315_IAV_Illumina_Run_49", "20230316_IAV_Illumina_Run_51"))
-flu_all <- rbind(flu5, flu5_out)
+# flu5_out <- filter(flu5, plate_name_flu %in% c("20230315_IAV_Illumina_Run_49", "20230316_IAV_Illumina_Run_51"))
+# flu5_out[, c(9:24)] <- ""
+# flu5_out$flag_flu <- "Removed - Failed Negative Control Well Check"
+# flu5 <- filter(flu5, !plate_name_flu %in% c("20230315_IAV_Illumina_Run_49", "20230316_IAV_Illumina_Run_51"))
+# flu_all <- rbind(flu5, flu5_out)
 
-write.csv(flu_all, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(flu5, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                                                                     "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                                                                     "IVY_uploads/cdc_ivy5_flu_", today_date, ".csv"), row.names = FALSE, na = "")

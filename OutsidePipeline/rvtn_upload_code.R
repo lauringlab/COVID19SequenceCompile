@@ -1,6 +1,6 @@
 ################################################################################
 #          Creation of RVTN Upload Dataset for COVID-19 Genetic Sampling       #
-#                         Last Updated: 03/07/2022                             #
+#                         Last Updated: 07/20/2023                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -76,11 +76,11 @@ rvtn <- seq_list %>% select(sample_id, subject_id, coll_date,
                             data_quality_rule, newest_pangolin_lineage, newest_pangolin_date, sample_id_lauring)
 
 
-rvtn_out <- filter(rvtn, PlateName %in% c("20220722_SC2_Illumina_Run_60", "20220823_SC2_Illumina_Run_64", "20221004_SC2_Illumina_Run_68"))
-rvtn_out[, c(11:36)] <- ""
-rvtn_out$flag <- "Removed - Failed Negative Control Well Check"
-rvtn <- filter(rvtn, !PlateName %in% c("20220722_SC2_Illumina_Run_60", "20220823_SC2_Illumina_Run_64", "20221004_SC2_Illumina_Run_68"))
-rvtn <- rbind(rvtn, rvtn_out)
+# rvtn_out <- filter(rvtn, PlateName %in% c("20220722_SC2_Illumina_Run_60", "20220823_SC2_Illumina_Run_64", "20221004_SC2_Illumina_Run_68"))
+# rvtn_out[, c(11:36)] <- ""
+# rvtn_out$flag <- "Removed - Failed Negative Control Well Check"
+# rvtn <- filter(rvtn, !PlateName %in% c("20220722_SC2_Illumina_Run_60", "20220823_SC2_Illumina_Run_64", "20221004_SC2_Illumina_Run_68"))
+# rvtn <- rbind(rvtn, rvtn_out)
 
 colnames(rvtn) <- c("sample_id", "subject_id", "coll_date",                    
                     "flag", "received_source", "sitename", "samplebarcode",                

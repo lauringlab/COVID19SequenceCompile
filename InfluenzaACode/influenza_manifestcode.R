@@ -56,8 +56,10 @@ outputLOCb <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMeta
 
 i_folderlists <- c(manifest_folder_list, manifest_b_folder_list)
 
+manifest_storage <- data.frame()
+
 for (each_list in i_folderlists){
-      manifest_storage <- data.frame()
+      
       
       if (grepl("INFLUENZA_B", each_list)){
         add_on <- "B"
@@ -68,8 +70,8 @@ for (each_list in i_folderlists){
       
       # will iterate through folders
       for (each_folder in each_list){
-        
-        if (each_folder == rvtn_manifest_fp){
+        #print(each_folder)
+        if (each_folder %in% c(rvtn_manifest_fp, rvtn_manifestb_fp)){
           file_list <- list.files(pattern = "*.csv", path = each_folder)
           for (rv in file_list){
             #print(rv)
@@ -102,7 +104,7 @@ for (each_list in i_folderlists){
             
           }
           
-        } else if (each_folder == cdcivy_manifest_fp){
+        } else if (each_folder %in% c(cdcivy_manifest_fp, cdcivy_manifestb_fp)){
               # process ivy manifest
               
               # read in manifests
@@ -207,7 +209,10 @@ for (each_list in i_folderlists){
                   
                   rec_source <- trimws(as.character(strsplit(each_file, "_")[[1]][1]))
                   file_in$received_source <- rec_source
+                  #print(colnames(file_in))
                   file_in$flu_type <- add_on
+                  #print(colnames(file_in))
+                  #print(colnames(manifest_storage))
                   # bind all rows together
                   manifest_storage <- rbind(manifest_storage, file_in)
                 
@@ -222,6 +227,7 @@ for (each_list in i_folderlists){
         }
       }
       
+}
       manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
       
       ################################################################################
@@ -338,7 +344,7 @@ for (each_list in i_folderlists){
       #                           File Write-Outs                                    #
       ################################################################################
       
-      flu_a <- filter(manifest_storage, add_on == A) %>% select(position,sample_id,subject_id,coll_date,flag,received_date,received_source,subject_id_length)
+      flu_a <- filter(manifest_storage, add_on == "A") %>% select(position,sample_id,subject_id,coll_date,flag,received_date,received_source,subject_id_length)
       flu_b <- filter(manifest_storage, add_on == "B") %>% select(position,sample_id,subject_id,coll_date,flag,received_date,received_source,subject_id_length)
       
       ### write compiled manifest file out
@@ -373,4 +379,3 @@ for (each_list in i_folderlists){
       # writeData(wb, miss_dats, sheet = "MISSING_DATES", startRow = 1, startCol = 1)
       # 
       # saveWorkbook(wb, paste0(outputLOC, "/manifest_output_report_", today, ".xlsx"), overwrite = TRUE)
-}

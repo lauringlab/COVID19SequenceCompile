@@ -37,6 +37,16 @@ if (grepl("_SC2_", plate_name)){
     file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), sheet = 1)
   
   
+} else if (grepl("_IBV_", plate_name)){
+  # /Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/2_Plate_Maps
+  file.copy(from = paste0(starting_path, "SEQUENCING/INFLUENZA_B/2_Plate_Maps/", plate_name, ".xlsx"),
+            to = paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), 
+            overwrite = TRUE)
+  
+  # then, read in that excel file that we moved to the inner pipeline set
+  file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), sheet = 1)
+  
+  
 } else if (grepl("_RSVA_", plate_name)){
   file.copy(from = paste0(starting_path, "SEQUENCING/RSV_A/2_PlateMaps/", plate_name, ".xlsx"),
             to = paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), 
@@ -108,6 +118,11 @@ if (grepl("_SC2_", plate_name)){
   
   # write the excel file back out
   write.xlsx(file_in, paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), overwrite = TRUE)
+  
+} else if (grepl("_IBV_", plate_name)){
+  
+  # write the excel file back out
+  write.xlsx(file_in, paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), overwrite = TRUE)
   
 } else if (grepl("_RSVA_", plate_name)){
   

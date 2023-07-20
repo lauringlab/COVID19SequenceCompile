@@ -1,20 +1,20 @@
 ################################################################################
 #               Complete Run - COVID-19 Genetic Data Compilation               #
-#                         Last Updated: 03/28/2023                             #
+#                         Last Updated: 07/20/2023                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
 checking_wd <- getwd()
 
 if (grepl("juliegil", checking_wd)){
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-  batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
-  #influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+  #batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+  influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  #influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   
@@ -165,13 +165,17 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20230620_IAV_Illumina_Run_57_SETC"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20230628_IAV_Nanopore_Run_33"
+plate_name <- "20230710_IAV_Nanopore_Run_36"
 
 num_iavs_on_plate <- 93
 
 ################################################################################
 ### first check, see if any fasta files made for negative control wells
-all_fastas <- list.files(paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
+if (grepl("IAV", plate_name)){
+  all_fastas <- list.files(paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
+} else {
+  all_fastas <- list.files(paste0(starting_path, "SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
+}
 
 if (any(grepl("NC", all_fastas))){
   stop("Negative Control Well generated fasta files.")
@@ -180,6 +184,9 @@ if (any(grepl("NC", all_fastas))){
 if (any(grepl("HeLa", all_fastas))){
   stop("HeLa Control Well generated fasta files.")
 }
+
+#### if anything prompts a notification, confirm with lab technicians/underworld
+#### that plate passed negative control well checks
 
 ################################################################################
 # ROUND 1

@@ -79,7 +79,7 @@ if (nrow(mani_plate2) != nrow(dc)){
 mani_plate <- rbind(mani_plate, mani_plate2)
 
 # # then, read in pangolin, gisaid, and next clade files
-# nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
+nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
 # 
 # 
 # ### gisaid
@@ -130,7 +130,7 @@ mani_plate <- rbind(mani_plate, mani_plate2)
 # 
 # 
 # mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
-# mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
+mppnc <- merge(mani_plate, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 # 
 # ### add column for time in days from plate to nextclade
 # mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_HA_runDate, mppnc$PlateDate, units = "days")
@@ -139,7 +139,7 @@ mani_plate <- rbind(mani_plate, mani_plate2)
 ## Additional subject_id length check (leading zeros)
 ## CSTP == 8 (UMIDs), CBR == 9 (MRNs)
 
-mppnc <- mani_plate
+
 # add a column to check length of subject_id
 mppnc$subject_id_length <- nchar(mppnc$subject_id)
 

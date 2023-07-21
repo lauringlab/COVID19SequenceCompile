@@ -13,12 +13,20 @@ library(janitor)
 #                 NextClade Files - Upload and Data Checks                     #
 ################################################################################
 
+if (grepl("IAV", plate_name)){
 # nextclade file path
 nc_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/SequenceOutcomes/nextclade")
 
 ### output location of nextclade files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
-
+} else {
+  # nextclade file path
+  nc_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/nextclade")
+  
+  ### output location of nextclade files, all together
+  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+  
+}
 ################################################################################
 
 file_list <- list.files(pattern = "*.tsv", path = nc_fp)
@@ -66,6 +74,8 @@ nc_storage <- nc_storage %>% mutate(SampleID = gsub("_HA", "", SampleID))
 
 nc_storage <- nc_storage %>% mutate(nextclade_HA_completeness = case_when(nextclade_HA_type == "H3" ~ 100*(1737 - as.numeric(nextclade_HA_totalMissing)) / 1737, 
                                                                        nextclade_HA_type == "H1" ~ 100*(1752 - as.numeric(nextclade_HA_totalMissing)) / 1752, 
+                                                                       nextclade_HA_type == "victoria" ~ 100*(1749 - as.numeric(nextclade_HA_totalMissing)) / 1749, 
+                                                                       nextclade_HA_type == "yamagata" ~ 100*(1749 - as.numeric(nextclade_HA_totalMissing)) / 1749,
                                                                        T ~ NA_real_))
 
 ################################################################################

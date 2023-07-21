@@ -162,7 +162,7 @@ source(paste0(code_path, "compile_components_code.R"))
 # INFLUENZA COMPONENT
 ################################################################################
 
-plate_name <- "20230620_IBV_Illumina_Run_2_SETB"
+plate_name <- "20230620_IBV_Illumina_Run_2"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 plate_name <- "20230710_IAV_Nanopore_Run_36"

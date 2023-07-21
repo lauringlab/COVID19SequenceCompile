@@ -23,6 +23,26 @@ if (grepl("SC2", plate_name)){
                     overwrite = TRUE)
     }
   
+} else if (grepl("IBV", plate_name)){
+  
+  # check for victoria file
+  if (file.exists(paste0(starting_path, "SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_name, "/", plate_name, "_HA_victoria_nextclade.tsv"))){
+    
+    file.copy(from = paste0(starting_path, "SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_name, "/", plate_name, "_HA_victoria_nextclade.tsv"),
+              to = paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/", plate_name, "_HA_victoria_nextclade.tsv"), 
+              overwrite = TRUE)
+    
+    
+  } 
+  
+  # check for yamagata file
+  if (file.exists(paste0(starting_path, "SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_name, "/", plate_name, "_HA_yamagata_nextclade.tsv"))){
+    
+    file.copy(from = paste0(starting_path, "SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_name, "/", plate_name, "_HA_yamagata_nextclade.tsv"),
+              to = paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/", plate_name, "_HA_yamagata_nextclade.tsv"), 
+              overwrite = TRUE)
+  } 
+    
 } else if (grepl("IAV", plate_name)){
   # check for H1 file
   if (file.exists(paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_name, "/", plate_name, "_HA_H1_nextclade.tsv"))){

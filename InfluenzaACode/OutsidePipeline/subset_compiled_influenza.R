@@ -1,6 +1,6 @@
 ################################################################################
 #       Creation of Subsetting Compiled File for Checking Completion           #
-#                            Created: 11/19/2021                               #
+#                            Updated: 2023-07-21                               #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 
@@ -9,6 +9,7 @@ library(tidyverse)
 library(lubridate)
 library(gt)
 
+if (grepl("IAV", plate_name)){
 ################################################################################
 # set paths 
 #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
@@ -17,7 +18,13 @@ outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/",
 
 # read in compiled dataset
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
-
+} else {
+  ## set run folder accordingly
+  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_name, "/")
+  
+  # read in compiled dataset
+  seq_list <- read.csv(paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
+}
 ################################################################################
 # filter to plate run
 seq_list2 <- filter(seq_list, PlateNumber == strsplit(plate_name, "_")[[1]][5] & PlateDate == paste0(substr(strsplit(plate_name, "_")[[1]][1], 1, 4), "-", substr(strsplit(plate_name, "_")[[1]][1], 5, 6), "-", substr(strsplit(plate_name, "_")[[1]][1], 7, 8)))

@@ -202,7 +202,8 @@ ff$SubmittingSampleID <- ""
 ff$Authors <- ""
 ff <- ff %>% mutate(OriginatingLabID = case_when(received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5", "RVTN") ~ "1960",
                                                  received_source == "HFHS" ~ "3559",
-                                                 received_source == "ASJ" ~ "",
+                                                 received_source == "ASJ" ~ "3774",
+                                                 received_source == "ASC" ~ "3774",
                                                  T ~ "3201")) # clicical micro lab
 ff$OriginatingSampleID <- ""
 

@@ -344,8 +344,8 @@ for (each_list in i_folderlists){
       #                           File Write-Outs                                    #
       ################################################################################
       
-      flu_a <- filter(manifest_storage, add_on == "A") %>% select(position,sample_id,subject_id,coll_date,flag,received_date,received_source,subject_id_length)
-      flu_b <- filter(manifest_storage, add_on == "B") %>% select(position,sample_id,subject_id,coll_date,flag,received_date,received_source,subject_id_length)
+      flu_a <- filter(manifest_storage, flu_type == "A") %>% select(position,sample_id,subject_id,coll_date,flag,received_date,received_source,subject_id_length)
+      flu_b <- filter(manifest_storage, flu_type == "B") %>% select(position,sample_id,subject_id,coll_date,flag,received_date,received_source,subject_id_length)
       
       ### write compiled manifest file out
       ### in this case, we'll always overwrite the old file, if it does exist

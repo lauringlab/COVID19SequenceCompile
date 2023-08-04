@@ -19,60 +19,112 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 
 
 checking_wd <- getwd()
-if (grepl("juliegil", checking_wd)){
+if (grepl("IAV", plate_name)){
+    if (grepl("juliegil", checking_wd)){
+      
+      code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+      #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+      starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+      seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+      code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+      #code_path2 <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+      
+    } else if (grepl("leighbaker", checking_wd)){
+      code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
+      starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
+      seq_list_path <- ""
+      code_path2 <- ""
+      
+    } else if (grepl("leighbak", checking_wd)){
+      
+      starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+      code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
+      batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
+      seq_list_path <- ""
+      code_path2 <- ""
+      
+    } else {
+      
+      stop("User not recognized.")
+      
+    }
+} else if (grepl("IBV", plate_name)){
+  if (grepl("juliegil", checking_wd)){
+    
+    code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+    #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+    starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+    seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+    #code_path2 <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+    
+  } else if (grepl("leighbaker", checking_wd)){
+    code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
+    starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
+    seq_list_path <- ""
+    code_path2 <- ""
+    
+  } else if (grepl("leighbak", checking_wd)){
+    
+    starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+    code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
+    batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
+    seq_list_path <- ""
+    code_path2 <- ""
+    
+  } else {
+    
+    stop("User not recognized.")
+    
+  }
   
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  seq_list_path <- paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
-  code_path2 <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
-  #code_path2 <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  
-} else if (grepl("leighbaker", checking_wd)){
-  code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
-  starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
-  seq_list_path <- ""
-  code_path2 <- ""
-  
-} else if (grepl("leighbak", checking_wd)){
-  
-  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
-  code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
-  batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
-  seq_list_path <- ""
-  code_path2 <- ""
-  
-} else {
-  
-  stop("User not recognized.")
   
 }
-
 
 source(paste0(code_path, "pipeline_functions.R"))
 
 
 ################################################################################
 
+if (grepl("IBV", plate_name)){
+  dir.create(paste0(starting_path, "/SEQUENCING/INFLUENZA_B/5_GISAID_Uploads/upload_", plate_datef, "_ibv_", tolower(runtech), "_run_", runnum))
+  # run comparison code file first, to be sure full_compiled_data matches the one
+  # in the secret folder
+  source(paste0(code_path2, "OutsidePipeline/comparing_full_secret_influenzaB.R"))
+  
+  # set output path for gisaid upload file
+  # will need to add appropriate folder name at the end of this path
+  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/")
+  
+  ################################################################################
+  
+  # read in full compiled pile
+  finalfileLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary")
+  final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
+  
+} else if (grepl("IAV", plate_name)){
+  # create gisaid directory
+  dir.create(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum))
 
-# create gisaid directory
-dir.create(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum))
-
-################################################################################
-
-# run comparison code file first, to be sure full_compiled_data matches the one
-# in the secret folder
-source(paste0(code_path2, "OutsidePipeline/comparing_full_secret_influenza.R"))
-
-# set output path for gisaid upload file
-# will need to add appropriate folder name at the end of this path
-outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/")
-
-################################################################################
-
-# read in full compiled pile
-finalfileLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary")
-final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
+  ################################################################################
+  
+  # run comparison code file first, to be sure full_compiled_data matches the one
+  # in the secret folder
+  source(paste0(code_path2, "OutsidePipeline/comparing_full_secret_influenza.R"))
+  
+  
+  # set output path for gisaid upload file
+  # will need to add appropriate folder name at the end of this path
+  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/")
+  
+  ################################################################################
+  
+  # read in full compiled pile
+  finalfileLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary")
+  final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
+  
+  
+  }
 
 # remove any with missing collection date
 final_file <- filter(final_file, !grepl("Replaced with Today Date", flag) & received_source != "WW")
@@ -146,16 +198,37 @@ if(any(grepl("RVTN", ff$received_source))){
   
 }
 
-ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
+if (grepl("IAV", plate_name)){
+    ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM"), paste0("A/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
 
 
-ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM", "MHOME") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
-                                           received_source %in% c("HFHS", "ASJ") ~ paste0("A/Michigan/MISAPPHIRE", sample_id, "/", year(coll_date)),
-                                           grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
-                                           grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
-                                           T ~ "CHECK"
-                    ))
 
+    ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM", "MHOME") ~ paste0("A/Michigan/UOM", sample_id, "/", year(coll_date)),
+                                               received_source %in% c("HFHS", "ASJ") ~ paste0("A/Michigan/MISAPPHIRE", sample_id, "/", year(coll_date)),
+                                               grepl("IVY", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
+                                               grepl("RVTN", received_source) ~ paste0("A/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
+                                               T ~ "CHECK"
+                        ))
+    
+    ff$Subtype <- ifelse(ff$nextclade_HA_type == "H3", "H3N2", #H3N2
+                         ifelse(ff$nextclade_HA_type == "H1", "H1N1", "CHECK")) #H1N1
+
+} else if (grepl("IBV", plate_name)){
+  
+  ff$StrainName <- ifelse(ff$received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM"), paste0("B/Michigan/UOM", ff$sample_id, "/", year(ff$coll_date)), "CHECK")
+  
+  
+  ff <- ff %>% mutate(StrainName = case_when(received_source %in% c("CBR", "UHS", "EPIDIAV", "MFIVE", "HIVE", "MM", "STJ", "UOM", "MHOME") ~ paste0("B/Michigan/UOM", sample_id, "/", year(coll_date)),
+                                             received_source %in% c("HFHS", "ASJ") ~ paste0("B/Michigan/MISAPPHIRE", sample_id, "/", year(coll_date)),
+                                             grepl("IVY", received_source) ~ paste0("B/", state.name[match(state,state.abb)] , "/IVY", sample_id, "/", year(coll_date)),
+                                             grepl("RVTN", received_source) ~ paste0("B/", state.name[match(state,state.abb)] , "/RVTN", sample_id, "/", year(coll_date)),
+                                             T ~ "CHECK"
+                                              ))
+  
+  ff$Subtype <- "B"
+  
+  
+}
 
 if (any(ff$StrainName == "CHECK")){
   stop("Unexpected received source!")
@@ -164,8 +237,7 @@ if (any(ff$StrainName == "CHECK")){
 #
 #ff$Type <- "A"
 #ff$SubtypeH <- gsub("H", "", ff$nextclade_HA_type)
-ff$Subtype <- ifelse(ff$nextclade_HA_type == "H3", "H3N2", #H3N2
-                      ifelse(ff$nextclade_HA_type == "H1", "H1N1", "CHECK")) #H1N1
+
 
 if(any(ff$Subtype == "CHECK")){
   stop("Issue with subtype assignment")
@@ -220,8 +292,15 @@ ff_gisaid <- ff %>% select(IsolateID, SegmentIDs, StrainName, Subtype, Lineage,
 
 ff_gisaid[is.na(ff_gisaid)] <- ""
 
-write.csv(ff_gisaid, paste0(starting_path, "SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
+if (grepl("IAV", plate_name)){
+  
+    write.csv(ff_gisaid, paste0(starting_path, "SEQUENCING/INFLUENZA_A/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
 
+  } else if (grepl("IBV", plate_name)){
+    
+  write.csv(ff_gisaid, paste0(starting_path, "SEQUENCING/INFLUENZA_B/5_GISAID_Uploads/upload_", plate_datef, "_ibv_", tolower(runtech), "_run_", runnum, "/gisaid_base.csv"), row.names = FALSE, na = "")
+
+  }
 #University of Michigan Clinical Microbiology Laboratory
 #2800 Plymouth Rd, Ann Arbor, MI, USA
 

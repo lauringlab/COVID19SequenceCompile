@@ -150,46 +150,46 @@ mppnc <- subject_id_length_QA(mppnc, "CBR")
 
 mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
-# ################################################################################
-# ### rvtn recode set-up
-# 
-# ###
-# # pull in flu RVTN data
-# seq <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
-# 
-# # only keep RVTN
-# seq <- filter(seq, received_source == "RVTN")
-# 
-# # read in already assigned sequences
-# already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
-# already_assigned <- already_assigned %>% select(sample_id_lauring, sample_id, subject_id)
-# 
-# ### only keep items in seq that are NOT already assigned
-# seq2 <- filter(seq, !sample_id %in% unique(already_assigned$sample_id))
-# 
-# # filter out already_assigned so only non-assigned lauring labels are present
-# not_assigned <- filter(already_assigned, is.na(subject_id)) %>% select(sample_id_lauring)
-# 
-# # pull out sample & subject id, add to full_set
-# seq3 <- seq2 %>% select(subject_id, sample_id)
-# fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)))
-# colnames(fillup) <- colnames(seq3)
-# seq3 <- rbind(seq3, fillup)
-# 
-# full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned rvtn stuff, plus all the unassigned ids
-# 
-# full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_set2)
-# 
-# write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
-# 
-# 
-# # read in and attach RVTN re-codes
-# rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
-# rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id, subject_id)
-# #colnames(rvtn_recodes)
-# #colnames(mppnc2)
-# 
-# mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE)
+################################################################################
+### rvtn recode set-up
+
+###
+# pull in flu RVTN data
+seq <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
+
+# only keep RVTN
+seq <- filter(seq, received_source == "RVTN")
+
+# read in already assigned sequences
+already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
+already_assigned <- already_assigned %>% select(sample_id_lauring, sample_id, subject_id)
+
+### only keep items in seq that are NOT already assigned
+seq2 <- filter(seq, !sample_id %in% unique(already_assigned$sample_id))
+
+# filter out already_assigned so only non-assigned lauring labels are present
+not_assigned <- filter(already_assigned, is.na(subject_id)) %>% select(sample_id_lauring)
+
+# pull out sample & subject id, add to full_set
+seq3 <- seq2 %>% select(subject_id, sample_id)
+fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)))
+colnames(fillup) <- colnames(seq3)
+seq3 <- rbind(seq3, fillup)
+
+full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned rvtn stuff, plus all the unassigned ids
+
+full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_set2)
+
+write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
+
+
+# read in and attach RVTN re-codes
+rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
+rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id, subject_id)
+#colnames(rvtn_recodes)
+#colnames(mppnc2)
+
+mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE)
 
 ################################################################################
 
@@ -239,7 +239,7 @@ mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample
 
 #colnames(mppnc)
 
-mppnc2 <- mppnc
+#mppnc2 <- mppnc
 mppnc3 <- mppnc2 
 # %>% select(sample_id, subject_id, coll_date,                   
 #                            flag, received_source, received_date, SampleBarcode,               

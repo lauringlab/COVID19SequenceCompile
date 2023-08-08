@@ -19,7 +19,7 @@ plate_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetada
 # nextclade file path
 nc_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # gisaid file path
-gisaid_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
+gisaid_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
 
 ### output location for files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary")
@@ -82,55 +82,56 @@ mani_plate <- rbind(mani_plate, mani_plate2)
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
 # 
 # 
-# ### gisaid
-# ### read every .csv in that folder
-# g_files <- list.files(gisaid_fp, pattern = "*.csv")
-# 
-# gisaid <- data.frame()
-# 
-# for (i in g_files){
-#   gisaid_in <- read.csv(paste0(gisaid_fp, "/", i), colClasses = "character")
-#   gisaid <- rbind(gisaid, gisaid_in)
-# }
-# 
-# colnames(gisaid)[1] <- "Isolate_Id"
-# 
-# gisaid_secret <- filter(gisaid, grepl("RVTN", Isolate_Name))
-# gisaid <- filter(gisaid, !grepl("RVTN", Isolate_Name))
-# 
-# gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-#                             NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-#                             P3.Segment_Id, Isolate_Name)
-# gisaid_secret <- gisaid_secret %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-#                             NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-#                             P3.Segment_Id, Isolate_Name)
-# 
-# gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
-# gisaid_secret <- separate(data = gisaid_secret, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
-# 
-# gisaid$id <- gsub("UOM", "", gisaid$id)
-# gisaid$id <- gsub("IVY", "", gisaid$id)
-# gisaid$id <- gsub("HFHS", "", gisaid$id)
-# gisaid$id <- gsub("RVTN", "", gisaid$id)
-# gisaid_secret$id <- gsub("RVTN", "", gisaid_secret$id)
-# 
-# gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-#                             NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-#                             P3.Segment_Id, Isolate_Name)
-# colnames(gisaid) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id", 
-#                       "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id", 
-#                       "P3.Segment_Id", "Isolate_Name")
-# 
-# gisaid_secret <- gisaid_secret %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-#                             NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-#                             P3.Segment_Id, Isolate_Name)
-# colnames(gisaid_secret) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id", 
-#                       "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id", 
-#                       "P3.Segment_Id", "Isolate_Name")
-# 
-# 
-# mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
-mppnc <- merge(mani_plate, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE) %>% distinct()
+### gisaid
+### read every .csv in that folder
+g_files <- list.files(gisaid_fp, pattern = "*.csv")
+
+gisaid <- data.frame()
+
+for (i in g_files){
+  gisaid_in <- read.csv(paste0(gisaid_fp, "/", i), colClasses = "character")
+  gisaid <- rbind(gisaid, gisaid_in)
+}
+
+colnames(gisaid)[1] <- "Isolate_Id"
+
+gisaid_secret <- filter(gisaid, grepl("RVTN", Isolate_Name))
+gisaid <- filter(gisaid, !grepl("RVTN", Isolate_Name))
+
+gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                            P3.Segment_Id, Isolate_Name)
+gisaid_secret <- gisaid_secret %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                            P3.Segment_Id, Isolate_Name)
+
+gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
+gisaid_secret <- separate(data = gisaid_secret, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
+
+gisaid$id <- gsub("UOM", "", gisaid$id)
+gisaid$id <- gsub("MISAPPHIRE", "", gisaid$id)
+gisaid$id <- gsub("IVY", "", gisaid$id)
+gisaid$id <- gsub("HFHS", "", gisaid$id)
+gisaid$id <- gsub("RVTN", "", gisaid$id)
+gisaid_secret$id <- gsub("RVTN", "", gisaid_secret$id)
+
+gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                            P3.Segment_Id, Isolate_Name)
+colnames(gisaid) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id",
+                      "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id",
+                      "P3.Segment_Id", "Isolate_Name")
+
+gisaid_secret <- gisaid_secret %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                            P3.Segment_Id, Isolate_Name)
+colnames(gisaid_secret) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id",
+                      "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id",
+                      "P3.Segment_Id", "Isolate_Name")
+
+
+mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE) %>% distinct()
 # 
 # ### add column for time in days from plate to nextclade
 # mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_HA_runDate, mppnc$PlateDate, units = "days")
@@ -195,41 +196,41 @@ mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = 
 ################################################################################
 
 # # add in RVTN gisaid
-# mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
-# mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RVTN")
-#  
-# mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,                   
-#                                       flag, received_source, received_date, SampleBarcode,
-#                                       PlateDate, PlatePlatform, PlateNumber,
-#                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
-#                                       nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
-#                                       nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
-#                                       nextclade_HA_runDate, nextclade_HA_type,
-#                                       subject_id_length, position, PlateName, PlatePosition,
-#                                       SampleSourceLocation, PlateToNextclade_days,
-#                                       sample_per_subject, sample_id_lauring)
-#  
-# mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
-# 
-# #colnames(mppnc2_rvtn)
-# 
-# mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
-#                                       flag, received_source, received_date, SampleBarcode,
-#                                       PlateDate, PlatePlatform, PlateNumber,
-#                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
-#                                       nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
-#                                       nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
-#                                       nextclade_HA_runDate, nextclade_HA_type,
-#                                       Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
-#                                       NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
-#                                       P3.Segment_Id, Isolate_Name,
-#                                       subject_id_length, position, PlateName, PlatePosition,
-#                                       SampleSourceLocation, PlateToNextclade_days,
-#                                       sample_per_subject, sample_id_lauring)
-# 
-# mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
-# 
-# rm(mppnc2_rvtn)
+mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
+mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RVTN")
+
+mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
+                                      flag, received_source, received_date, SampleBarcode,
+                                      PlateDate, PlatePlatform, PlateNumber,
+                                      nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
+                                      nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
+                                      nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                                      nextclade_HA_runDate, nextclade_HA_type,
+                                      subject_id_length, position, PlateName, PlatePosition,
+                                      SampleSourceLocation, #PlateToNextclade_days,
+                                      sample_per_subject, sample_id_lauring)
+
+mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
+
+#colnames(mppnc2_rvtn)
+
+mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
+                                      flag, received_source, received_date, SampleBarcode,
+                                      PlateDate, PlatePlatform, PlateNumber,
+                                      nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
+                                      nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
+                                      nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                                      nextclade_HA_runDate, nextclade_HA_type,
+                                      Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                                      NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                                      P3.Segment_Id, Isolate_Name,
+                                      subject_id_length, position, PlateName, PlatePosition,
+                                      SampleSourceLocation, #PlateToNextclade_days,
+                                      sample_per_subject, sample_id_lauring)
+
+mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
+
+rm(mppnc2_rvtn)
 
 
 
@@ -241,20 +242,19 @@ mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = 
 #colnames(mppnc)
 
 #mppnc2 <- mppnc
-mppnc3 <- mppnc2
-# %>% select(sample_id, subject_id, coll_date,                   
-#                            flag, received_source, received_date, SampleBarcode,               
-#                            PlateDate, PlatePlatform, PlateNumber,
-#                            nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
-#                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
-#                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
-#                            nextclade_HA_runDate, nextclade_HA_type, 
-#                            Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-#                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-#                            P3.Segment_Id, Isolate_Name,              
-#                            subject_id_length, position, PlateName, PlatePosition,               
-#                            SampleSourceLocation, PlateToNextclade_days, 
-#                            sample_per_subject, sample_id_lauring)
+mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
+                           flag, received_source, received_date, SampleBarcode,
+                           PlateDate, PlatePlatform, PlateNumber,
+                           nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
+                           nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
+                           nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                           nextclade_HA_runDate, nextclade_HA_type,
+                           Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                           NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                           P3.Segment_Id, Isolate_Name,
+                           subject_id_length, position, PlateName, PlatePosition,
+                           SampleSourceLocation, #PlateToNextclade_days,
+                           sample_per_subject, sample_id_lauring)
 
 ################################################################################
 ### negative control well warning

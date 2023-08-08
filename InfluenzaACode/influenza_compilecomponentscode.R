@@ -121,6 +121,7 @@ gisaid$id <- gsub("UOM", "", gisaid$id)
 gisaid$id <- gsub("IVY", "", gisaid$id)
 gisaid$id <- gsub("HFHS", "", gisaid$id)
 gisaid$id <- gsub("RVTN", "", gisaid$id)
+gisaid$id <- gsub("MISAPPHIRE", "", gisaid$id)
 gisaid_secret$id <- gsub("RVTN", "", gisaid_secret$id)
 
 gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 

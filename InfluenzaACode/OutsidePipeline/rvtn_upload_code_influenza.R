@@ -8,7 +8,12 @@ flu_file <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/ME
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
+flu_fileB <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+                            "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/", 
+                            "full_compiled_data.csv"), colClasses = c("character"))
+
 rv_flu <- filter(flu_file, grepl("RVTN", received_source) & !grepl("Missing Date", flag))
+rv_fluB <- filter(flu_fileB, grepl("RVTN", received_source) & !grepl("Missing Date", flag))
 
 colnames(rv_flu)
 
@@ -28,6 +33,15 @@ rv_flu <- rv_flu %>% select(sample_id, subject_id, coll_date, flag, received_sou
                               nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs, 
                               nextclade_HA_type, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
                               NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, Isolate_Name)
+
+rv_fluB <- rv_fluB %>% select(sample_id, subject_id, coll_date, flag, received_source, 
+                            received_date, SampleBarcode, PlateName, nextclade_HA_clade, 
+                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs, 
+                            nextclade_HA_type, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, Isolate_Name)
+
+rv_flu <- rbind(rv_flu, rv_fluB)
 
 colnames(rv_flu) <- c("sample_id", "subject_id", "coll_date_flu", "flag_flu", 
                        "received_source_flu", "received_date_flu", "sample_barcode_flu", 

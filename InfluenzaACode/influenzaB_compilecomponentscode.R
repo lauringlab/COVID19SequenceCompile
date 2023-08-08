@@ -130,7 +130,7 @@ nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClass
 # 
 # 
 # mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
-mppnc <- merge(mani_plate, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
+mppnc <- merge(mani_plate, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE) %>% distinct()
 # 
 # ### add column for time in days from plate to nextclade
 # mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_HA_runDate, mppnc$PlateDate, units = "days")
@@ -152,7 +152,7 @@ mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample
 
 ################################################################################
 ### rvtn recode set-up
-
+# 
 ###
 # pull in flu RVTN data
 seq <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
@@ -162,6 +162,7 @@ seq <- filter(seq, received_source == "RVTN")
 
 # read in already assigned sequences
 already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
+#already_assigned <- filter(already_assigned, !sample_id %in% rvtn_holdouts)
 already_assigned <- already_assigned %>% select(sample_id_lauring, sample_id, subject_id)
 
 ### only keep items in seq that are NOT already assigned
@@ -182,14 +183,14 @@ full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_se
 
 write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
 
-
+# 
 # read in and attach RVTN re-codes
 rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
 rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id, subject_id)
 #colnames(rvtn_recodes)
 #colnames(mppnc2)
 
-mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE)
+mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = TRUE) %>% distinct()
 
 ################################################################################
 
@@ -240,7 +241,7 @@ mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = 
 #colnames(mppnc)
 
 #mppnc2 <- mppnc
-mppnc3 <- mppnc2 
+mppnc3 <- mppnc2
 # %>% select(sample_id, subject_id, coll_date,                   
 #                            flag, received_source, received_date, SampleBarcode,               
 #                            PlateDate, PlatePlatform, PlateNumber,

@@ -7,10 +7,16 @@ flu_file <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/ME
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
+flu_fileB <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+                            "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/", 
+                            "full_compiled_data.csv"), colClasses = c("character"))
 #flu_file <- filter(flu_file, PlateName != "20230315_IAV_Illumina_Run_49")
 
+
 cdc_flu <- filter(flu_file, grepl("IVY", received_source) & !grepl("Missing Date", flag))
+cdc_fluB <- filter(flu_fileB, grepl("IVY", received_source) & !grepl("Missing Date", flag))
 table(cdc_flu$received_source)
+table(cdc_fluB$received_source)
 colnames(cdc_flu)
 
 #### segment ids in as blanks currently
@@ -29,6 +35,15 @@ cdc_flu <- cdc_flu %>% select(sample_id, subject_id, coll_date, flag, received_s
                               nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs, 
                               nextclade_HA_type, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
                               NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, Isolate_Name)
+
+cdc_fluB <- cdc_fluB %>% select(sample_id, subject_id, coll_date, flag, received_source, 
+                              received_date, SampleBarcode, PlateName, nextclade_HA_clade, 
+                              nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+                              nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs, 
+                              nextclade_HA_type, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                              NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, Isolate_Name)
+
+cdc_flu <- rbind(cdc_flu, cdc_fluB)
 
 colnames(cdc_flu) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu", 
                        "received_source_flu", "received_date_flu", "sample_barcode_flu", 

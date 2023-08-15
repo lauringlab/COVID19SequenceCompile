@@ -77,7 +77,7 @@ def main():
     sq_hide2['new_keeps'] = np.where(sq_hide2['sample_id_lauring'].notnull(), sq_hide2['sample_id_lauring'], sq_hide2[''])
     #print(sq_hide2.head())
     #keep90s = list(sq_hide2['new_keeps'])
-
+    print(list(sq_hide2['new_keeps']))
 
 
     not_used = 0
@@ -85,13 +85,14 @@ def main():
     ids_only = list()
     for file_in in onlyfiles:
         file_next = sequence_folder + file_in
-        #print(file_in)
+        print(file_in)
 
         for record in SeqIO.parse(file_next, "fasta"):
+            #print(str(record.id).split("_"))
             if str(record.id).split("_")[0] in keep90s:
 
                 original = sq_hide2[sq_hide2['sample_id']==str(record.id).split("_")[0]]['new_keeps'].values[0] + "_" + record.id.split("_")[1]
-                print(original)
+                #print(original)
                 record.id = str(original) + "_" + pn_date
                 all_fasta.append(">" + record.id)
                 ids_only.append(record.id)

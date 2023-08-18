@@ -37,7 +37,7 @@ def main():
     # create set of file names
     file_1 = args.prefix + ".all.consensus.renamed.full.fasta"
     file_2 = args.prefix + ".all.consensus.tmp.fasta"
-    file_3 = args.prefix + ".all.consensus.final.genbank.fasta" # This is the file to use in gisaid
+    file_3 = args.prefix + ".all.consensus.final.genbank.fasta" # This is the file to use in genbank
     meta_file = args.prefix + ".forgenbank.meta.csv" # This is made in gisaid file prep code - just uploaded names + sample ifs
 
     # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)

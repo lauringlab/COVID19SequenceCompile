@@ -51,7 +51,7 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 ################################################################################
 
 # create gisaid directory
-dir.create(paste0(starting_path, "/SEQUENCING/SARSCOV2/5_GISAID_Uploads/upload_genbank_", plate_datef, "_", tolower(runtech), "_run_", runnum))
+dir.create(paste0(starting_path, "/SEQUENCING/SARSCOV2/6_GenBank_Uploads/upload_genbank_", plate_datef, "_", tolower(runtech), "_run_", runnum))
 
 ################################################################################
 
@@ -198,6 +198,7 @@ ff <- ff %>% mutate(Sequence_ID = VirusName,
                     host = "Homo sapiens", 
                     collection_date = as.character(coll_date), 
                     isolation_source = "")
+
 
 
 ### constants

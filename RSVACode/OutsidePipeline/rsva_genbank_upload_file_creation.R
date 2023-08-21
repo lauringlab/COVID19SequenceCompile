@@ -61,7 +61,7 @@ source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
 
 # set output path for gisaid upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/5_GISAID_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
+outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/6_GenBank_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
 
 ################################################################################
 
@@ -316,6 +316,13 @@ if (grepl("juliegil", checking_wd)){
 ff$comment <- ""
 ff$commenticon <- ""
 
+
+ff$Sequence_ID <- ff$VirusName
+ff$Collection_date <- paste0(day(ff$coll_date), "-", month(ff$coll_date, label = TRUE), "-", year(ff$coll_date))
+ff$Country <- "USA"
+ff$Strain <- "A"
+
+
 ################################################################################
 
 ### write out VirusName + sample_id crosswalk for use in making 
@@ -325,20 +332,17 @@ ff_crosswalk <- ff %>% select(sample_id, VirusName)
 
 write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/RSV_A/3_ProcessedGenomes/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, "/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, ".forgenbank.meta.csv"), row.names = FALSE, na = "")
 
-# ## select variables
-# ff_writeout <- ff %>% select(Submitter, FASTAfilename, VirusName,Subtype, Passage,  coll_date, Location, 
-#                              AdditionalLoc, Host, AdditionalHost, SamplingStrategy, Gender, Age, Status, 
-#                              SpecimenSource, Outbreak, lastVaccinated, Treatment, SequencingTechnology, 
-#                              AssemblyMethod, Coverage, originlab, originlabaddress, originlabsampleid, 
-#                              submitlab, submitlabaddress, submitlabsampleid, authors, 
-#                              comment, commenticon)
-# 
-# ff_writeout <- ff_writeout %>% distinct()
-# 
-# ## gisaid upload file name
-# today <- current_date_string()
-# gufn <- paste0(today, "_Lauring_genbank_upload_metadata_run_", runnum) 
-# 
+## select variables
+ff_writeout <- ff %>% select(Sequence_ID, Collection_date, Country, Host, Strain)
+
+ff_writeout <- ff_writeout %>% distinct()
+
+## gisaid upload file name
+today <- current_date_string()
+gufn <- paste0(today, "_Lauring_genbank_upload_metadata_run_", runnum)
+
+write.table(ff_writeout, paste0(outputLOC, gufn, ".txt"), sep = "\t", row.names = FALSE, na = "")
+
 # ## write to excel file (follow format)
 # wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))
 # 

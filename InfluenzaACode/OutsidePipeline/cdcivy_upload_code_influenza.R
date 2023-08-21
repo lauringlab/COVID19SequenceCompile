@@ -53,6 +53,9 @@ colnames(cdc_flu) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu",
                        "pb1_segment_id_flu", "pa_segment_id_flu", "ha_segment_id_flu", "np_segment_id_flu", 
                        "na_segment_id_flu", "mp_segment_id_flu", "ns_segment_id_flu", "isolate_name_flu")
 
+cdc_flu <- cdc_flu %>% mutate(study_id = case_when(sample_id == "G43Q59U6" ~ "23240105-01", 
+                                                   T ~ study_id))
+
 today_date <- gsub("-", "", Sys.Date())
 
 write.csv(filter(cdc_flu, received_source_flu == "CDCIVY4"), paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 

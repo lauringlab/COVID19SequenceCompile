@@ -551,9 +551,10 @@ rvtn_storage <- data.frame()
 full_rvtn <- data.frame()
 
 for (each_file in rvtn_file_list){
-  
+    #print(each_file)
     if (grepl("VIEW", each_file)){
       fileone <- read.csv(paste0(view_manifest_fp, "/", each_file), colClasses = "character")
+      colnames(fileone)[1] <- "specimen_id"
       fileone$site <- ""
       fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
                                     specimen_type, manifest_creation_date, record_id)

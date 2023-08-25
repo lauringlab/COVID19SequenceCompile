@@ -341,7 +341,7 @@ ff_writeout <- ff_writeout %>% distinct()
 today <- current_date_string()
 gufn <- paste0(today, "_Lauring_genbank_upload_metadata_run_", runnum)
 
-write.table(ff_writeout, paste0(outputLOC, gufn, ".txt"), sep = "\t", row.names = FALSE, na = "")
+write.table(ff_writeout, paste0(outputLOC, gufn, ".txt"), sep = "\t", row.names = FALSE, na = "", quote = FALSE)
 
 # ## write to excel file (follow format)
 # wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))

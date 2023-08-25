@@ -2,7 +2,7 @@
 
 location1 <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/6_GenBank_Uploads/FEATURE_TABLES/test"
 
-full_list_in <- read.csv(paste0(location1, "/RSVA_codon_positions.csv"))
+full_list_in <- read.csv(paste0(location1, "/RSVA_codon_positions2.csv"))
 
 ### need to melt this dataset
 
@@ -16,11 +16,11 @@ set_of_lines <- c()
 ### for every sample in full_melt, i need to make a txt file formatted entry
 ### all concatenated into one set
 for (every_sample in unique(full_melt$variable)){
-    one_sample <- filter(full_melt, variable == every_sample) %>% arrange(value)
+    one_sample <- filter(full_melt, variable == every_sample) %>% arrange(gene, position)
     
     # first write the header 
     
-    set_of_lines <- c(set_of_lines, paste0(">", unique(one_sample$variable)))
+    set_of_lines <- c(set_of_lines, paste0(">Feature ", unique(one_sample$variable)))
     
     
     # move down rows

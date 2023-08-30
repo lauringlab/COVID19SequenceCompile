@@ -125,7 +125,7 @@ mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id", "loc_c
 #mani_plate_pang_g_secret <- merge(mani_plate_pang_secret, gisaid_secret, by.x = c(" "), by.y = c("sample_id"), all.x = TRUE)
 
 genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
-mani_plate_pang_g2 <- merge(mani_plate_pang_g, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mani_plate_pang_g2 <- merge(mani_plate_pang_g, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 #mani_plate_pang_g2 <- merge(mani_plate_pang_g, gisaid, by.x = c("sample_id", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 
 
@@ -143,6 +143,8 @@ if (nrow(mppnc) > nrow(mani_plate_pang_g )){
 #mhome_in <- read.csv("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv")
 mhome_in <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/10_transfer/MHome_HIVE/together.csv"))
 mhome_in$loc_code <- "UM"
+mhome_in$genbank_Accession <- ""
+mhome_in$genbank_SequenceID <- ""
 mhome_in <- mhome_in %>% select(colnames(mppnc))
 
 mppnc <- rbind(mppnc, mhome_in)
@@ -377,7 +379,8 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,
                                       PlateNumber, pangolin_lineage,                  
                                       pangolin_probability, pangolin_status,                    
                                       pangolin_note, nextclade_clade,                    
-                                      nextclade_totalMissing, nextclade_completeness,             
+                                      nextclade_totalMissing, nextclade_completeness,
+                                      genbank_SequenceID, genbank_Accession,
                                       received_date, position,                           
                                       SiteName, subject_id_length,                  
                                       PlateName, PlatePosition,                      
@@ -399,7 +402,8 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       PlateNumber, pangolin_lineage,                  
                                       pangolin_probability, pangolin_status,                    
                                       pangolin_note, nextclade_clade,                    
-                                      nextclade_totalMissing, nextclade_completeness,             
+                                      nextclade_totalMissing, nextclade_completeness,
+                                      genbank_SequenceID, genbank_Accession,
                                       received_date, position,                           
                                       SiteName, subject_id_length,                  
                                       PlateName, PlatePosition,                      

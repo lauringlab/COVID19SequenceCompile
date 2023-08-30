@@ -22,6 +22,11 @@ nc_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Seq
 pang_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # gisaid file path
 gisaid_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+
+# genbank file path
+genbank_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+
+
 # previous 2021 file path
 prev_2021 <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PreviousLists")
 
@@ -119,7 +124,12 @@ mani_plate_pang <- mani_plate_pang %>% mutate(loc_code = case_when(received_sour
 mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 #mani_plate_pang_g_secret <- merge(mani_plate_pang_secret, gisaid_secret, by.x = c(" "), by.y = c("sample_id"), all.x = TRUE)
 
-mppnc <- merge(mani_plate_pang_g, nextclade, by.x = c("sample_id", "PlateDate"), by.y = c("SampleID", "nextclade_runDate"), all.x = TRUE)
+genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
+mani_plate_pang_g2 <- merge(mani_plate_pang_g, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+#mani_plate_pang_g2 <- merge(mani_plate_pang_g, gisaid, by.x = c("sample_id", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
+
+
+mppnc <- merge(mani_plate_pang_g2, nextclade, by.x = c("sample_id", "PlateDate"), by.y = c("SampleID", "nextclade_runDate"), all.x = TRUE)
 
 if (nrow(mppnc) > nrow(mani_plate_pang_g )){
   stop("Merging of Nextclade Data onto mainfest+plate maps+pangolin+gisaid = too many rows")

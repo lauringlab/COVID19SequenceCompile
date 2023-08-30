@@ -42,7 +42,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20220524_SC2_Nanopore_Run_174"
+plate_name <- "20230817_SC2_Nanopore_Run_339"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -61,7 +61,7 @@ source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
 
 # set output path for gisaid upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/5_GISAID_Uploads/upload_genbank_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
+outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/6_GenBank_Uploads/upload_genbank_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
 
 ################################################################################
 
@@ -120,30 +120,6 @@ ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(a
 
 ################################################################################
 
-# enter GISAID username here 
-# ff$Submitter <- 
-#   if (grepl("juliegil", checking_wd)){
-#   
-#   Submitter <- "juliegil"
-#   
-# } else if (grepl("leighbaker", checking_wd)){
-#   Submitter <- "Leighbaker"
-#   
-# } else if (grepl("leighbak", checking_wd)){
-#   Submitter <- "Leighbaker"
-#   
-# } else {
-#   
-#   print("User not recognized.")
-#   
-# }
-
-# create FASTA filename string
-#ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.final.gisaid.fasta")
-
-### constants
-#ff$Type <- "betacoronavirus"
-#ff$Passage <- "Original"
 
 ### create location from state collection location
 ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"), fill = "right")
@@ -156,30 +132,23 @@ ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.ab
                                             received_source == "VIEW" ~ state.abb[match(ff$State,state.name)], 
                                       T ~ StateAbbrev))
 
-ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", State), 
-                                         received_source == "CDCIVY4" ~ paste0("North America / USA / ", State), 
-                                         received_source == "CDCIVY5" ~ paste0("North America / USA / ", State), 
-                                         received_source == "IVYIC" ~ paste0("North America / USA / ", State),
-                                         received_source == "RVTN" ~ paste0("North America / USA / ", State), 
-                                         received_source == "VIEW" ~ paste0("North America / USA / ", State), 
-                                         T ~ "North America / USA / Michigan"))
+ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("USA: ", State), 
+                                         received_source == "CDCIVY4" ~ paste0("USA: ", State), 
+                                         received_source == "CDCIVY5" ~ paste0("USA: ", State),
+                                         received_source == "CDCIVY6" ~ paste0("USA: ", State),
+                                         received_source == "IVYIC" ~ paste0("USA: ", State),
+                                         received_source == "RVTN" ~ paste0("USA: ", State), 
+                                         received_source == "VIEW" ~ paste0("USA: ", State), 
+                                         T ~ "USA: Michigan"))
 
-# create virus name
-# hCoV-19/USA/MI-UM-10037140915/2020
-# hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
-# ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-#                                           received_source == "CDCIVY4" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-#                                           received_source == "CDCIVY5" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-#                                           received_source == "RVTN" ~ paste0("hCoV-19/USA/", StateAbbrev, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-#                                           received_source == "VIEW" ~ paste0("hCoV-19/USA/", StateAbbrev, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-#                                           received_source == "IVYIC" ~ paste0("hCoV-19/USA/", StateAbbrev, "-IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
-#                                           received_source == "MDHHS" ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4)),
-#                                           T ~ paste0("hCoV-19/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
+
+# creating VirusName which will be the Sequence_ID
 
 ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("IVY-", sample_id),
                                           received_source == "CDCIVY4" ~ paste0("IVY-", sample_id),
                                           received_source == "CDCIVY5" ~ paste0("IVY-", sample_id),
+                                          received_source == "CDCIVY6" ~ paste0("IVY-", sample_id),
                                           received_source == "RVTN" ~ paste0("RVTN-", sample_id_lauring),
                                           received_source == "VIEW" ~ paste0("VIEW-", sample_id_lauring),
                                           received_source == "IVYIC" ~ paste0("IVYIC-", sample_id),
@@ -187,55 +156,33 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           T ~ paste0("UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 
+ ##create genbank formatted isolate name
+ #SARS-CoV-2/human/USA:Michigan/UM-10052426943/2023
+ #SARS-CoV-2/human/USA:Massachusetts/MA-IVY-ZZX9KKEV/2021
+ ff <- ff %>% mutate(IsolateName = case_when(received_source == "CDCIVY" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "CDCIVY4" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "CDCIVY5" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "CDCIVY6" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "RVTN" ~ paste0("SARS-CoV-2/human/USA:", StateAbbrev, "/", "RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
+                                           received_source == "VIEW" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
+                                           received_source == "IVYIC" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "MDHHS" ~ paste0("SARS-CoV-2/human/USA: Michigan/UM-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           T ~ paste0("SARS-CoV-2/human/USA: Michigan/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
+
 if (any(nchar(ff$VirusName) > 24)){
   print(filter(ff, VirusName > 24))
   stop("Virus name has too many characters for GenBank.")
 }
 
+
+
 ff <- ff %>% mutate(Sequence_ID = VirusName, 
-                    isolate = VirusName, 
-                    country = paste0("USA: ", State), 
+                    isolate = IsolateName, 
+                    country = paste0("USA:", State), 
                     host = "Homo sapiens", 
                     collection_date = as.character(coll_date), 
-                    isolation_source = "")
+                    isolation_source = "patient isolate")
 
-
-
-### constants
-# ff$AdditionalLoc <- ""
-# ff$Host <- "Human"
-# ff$AdditionalHost <- ""
-# 
-# ff <- ff %>% mutate(SamplingStrategy = case_when(sample_per_subject > 1 ~ "Warning", 
-#                                                  received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5", "MHOME") ~ "", 
-#                                                  grepl("PUI", flag) ~ "", 
-#                                                  received_source == "RVTN" ~ "Research",
-#                                                  received_source == "VIEW" ~ "Research",
-#                                                  received_source == "IVYIC" ~ "Serial sampling",
-#                                                  T ~ "Baseline surveillance"))
-
-#if(any(ff$SamplingStrategy == "Warning")){
-  #print("Look at this, apply logic if necessary")
-  ## For someone positive > 90 days apart it's tricky. Strictly speaking, 
-  ## they would be considered possible reinfection and not longitudinal (and 
-  ## therefore surveillance). However, they could be prolonged shedder. One way 
-  ## around this would be to look at the lineage in the duplicates, if different, 
-  ## then it is reinfection and surveillance for both. Put another way, the 
-  ## filter for duplicates would be check dates (>90 days) and check lineage 
-  ## (different) in order for it to be considered surveillance.
-  
-  #ff$SamplingStrategy <- ifelse(ff$SamplingStrategy == "Warning", "Baseline surveillance", ff$SamplingStrategy)
-#}
-
-#table(ff$SamplingStrategy)
-
-# ff$Gender <- "unknown"
-# ff$Age <- "unknown"
-# ff$Status <- "unknown"
-# ff$SpecimenSource <- "unknown"
-# ff$Outbreak <- ""
-# ff$lastVaccinated <- ""
-# ff$Treatment <- ""
 
 
 # Oxford Nanopore, Illumina MiSeq
@@ -261,64 +208,12 @@ ff <- ff %>% mutate(Sequence_ID = VirusName,
 # ### Coverage
 # ff$Coverage <- ""
 # 
-# ### Originating Lab
-# ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Central Lab, Vanderbilt University Medical Center", 
-#                                           received_source == "CDCIVY4" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
-#                                           received_source == "CDCIVY5" ~ "IVY5 Central Lab, Vanderbilt University Medical Center",
-#                                           received_source == "RVTN" ~ "Vanderbilt University Medical Center",
-#                                           received_source == "VIEW" ~ "Vanderbilt University Medical Center",
-#                                           received_source == "IVYIC" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
-#                                           received_source == "MDHHS" ~ "Michigan Department of Health and Human Services, Bureau of Laboratories",
-#                                           received_source == "TRINITY" ~ "Warde Medical Laboratory",
-#                                           received_source == "ASC" ~ "TMCIDR Lab",
-#                                           received_source == "ASJ" ~ "TMCIDR Lab",
-#                                           received_source == "HFHS" ~ "Henry Ford Health Microbiology Laboratory",
-#                                           T ~ "University of Michigan Clinical Microbiology Laboratory"), 
-#                     originlabaddress = case_when(received_source == "CDCIVY" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
-#                                                  received_source == "CDCIVY4" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
-#                                                  received_source == "CDCIVY5" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
-#                                                  received_source == "RVTN" ~ "Medical Center North CC303, 1161 21st Ave. S., Nashville, TN, USA",
-#                                                  received_source == "VIEW" ~ "Medical Center North CC303, 1161 21st Ave. S., Nashville, TN, USA",
-#                                                  received_source == "IVYIC" ~ "Medical Center North D7240, 1161 21st Ave. S., Nashville, TN, USA",
-#                                                  received_source == "MDHHS" ~ "3350 N Martin Luther King Jr Blvd",
-#                                                  received_source == "TRINITY" ~ "300 West Textile Rd, Ann Arbor, MI 48108",
-#                                                  received_source == "ASC" ~ "19251 Mack Avenue Suite 575, Grosse Pointe Woods, MI 48236",
-#                                                  received_source == "ASJ" ~ "19251 Mack Avenue Suite 575, Grosse Pointe Woods, MI 48236",
-#                                                  received_source == "HFHS" ~ "2799 West Grand Blvd., 6065 E&R Building, Detroit, MI 48202",
-#                                                   T ~ "2800 Plymouth Rd, Ann Arbor, MI, USA"))
 # 
-# ff$originlabsampleid <- ""
-
-### submitting Lab
-# ff$submitlab <- "Lauring Lab, University of Michigan, Department of Microbiology and Immunology"
-# ff$submitlabaddress <- "1137 Catherine Street, Ann Arbor, MI, USA"
-# ff$submitlabsampleid <- ""
-
-### Authors
-# ff$authors <-
-# if (grepl("juliegil", checking_wd)){
-#   
-#   authors <- "Gilbert"
-#   
-# } else if (grepl("leighbaker", checking_wd)){
-#   authors <- "Baker"
-#   
-# } else if (grepl("leighbak", checking_wd)){
-#   authors <- "Baker" 
-#   
-# } else {
-#   
-#   print("User not recognized.")
-#   
-# }
-# 
-# ff$comment <- ""
-# ff$commenticon <- ""
 
 ################################################################################
 
 ### write out VirusName + sample_id crosswalk for use in making 
-# .all.consensus.final.gisaid.fasta
+# .all.consensus.final.genbank.fasta
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName)
 
@@ -330,7 +225,7 @@ colnames(ff_writeout) <- c("Sequence_ID", "isolate", "country", "host", "collect
 
 ff_writeout <- ff_writeout %>% distinct()
 
-## gisaid upload file name
+## genbank upload file name
 today <- current_date_string()
 gufn <- paste0(today, "_Lauring_genbank_upload_metadata_run_", runnum) 
 

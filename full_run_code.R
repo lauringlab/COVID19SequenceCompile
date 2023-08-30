@@ -134,6 +134,7 @@ source(paste0(code_path, "compile_components_code.R"))
 #                                 ROUND 3                                      #
 ################################################################################
 # Run this after downloading new gisaid metadata from gisaid.org
+# or genbank metadata from ncbi
 
 source(paste0(code_path, "manifest_code.R"))
 
@@ -144,7 +145,8 @@ source(paste0(code_path, "pangolin_code.R"))
 
 source(paste0(code_path, "nextclade_code.R"))
 
-source(paste0(code_path, "gisaid_code.R"))
+source(paste0(code_path, "gisaid_code.R")) # need to do one final pull, then can retire this
+source(paste0(code_path, "genbank_code.R"))
 
 source(paste0(code_path, "compile_components_code.R"))
 

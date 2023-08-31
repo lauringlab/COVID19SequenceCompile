@@ -7,14 +7,14 @@
 checking_wd <- getwd()
 
 if (grepl("juliegil", checking_wd)){
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
-  batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
-  #influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
-  influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  batch_path <- "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/Lab_Organization/AlertCode"
+  #batch_path <- "/Users/juliegil/Documents/LauringLab_Code/AlertCode"
+  influenza_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/InfluenzaACode/"
+  #influenza_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/InfluenzaACode/"
   
 } else if (grepl("leighbaker", checking_wd)){
   
@@ -134,6 +134,7 @@ source(paste0(code_path, "compile_components_code.R"))
 #                                 ROUND 3                                      #
 ################################################################################
 # Run this after downloading new gisaid metadata from gisaid.org
+# or genbank metadata from ncbi
 
 source(paste0(code_path, "manifest_code.R"))
 
@@ -144,7 +145,8 @@ source(paste0(code_path, "pangolin_code.R"))
 
 source(paste0(code_path, "nextclade_code.R"))
 
-source(paste0(code_path, "gisaid_code.R"))
+source(paste0(code_path, "gisaid_code.R")) # need to do one final pull, then can retire this
+source(paste0(code_path, "genbank_code.R"))
 
 source(paste0(code_path, "compile_components_code.R"))
 

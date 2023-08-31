@@ -42,7 +42,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-plate_name <- "20230817_SC2_Nanopore_Run_339"
+#plate_name <- "20230817_SC2_Nanopore_Run_339"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -153,6 +153,10 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           received_source == "VIEW" ~ paste0("VIEW-", sample_id_lauring),
                                           received_source == "IVYIC" ~ paste0("IVYIC-", sample_id),
                                           received_source == "MDHHS" ~ paste0("UM-", sample_id),
+                                          received_source == "HFHS" ~ paste0("MIS-", sample_id),
+                                          received_source == "ASC" ~ paste0("MIS-", sample_id),
+                                          received_source == "ASJ" ~ paste0("MIS-", sample_id),
+                                          received_source == "TRINITY" ~ paste0("MIS-", sample_id),
                                           T ~ paste0("UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 
@@ -166,8 +170,12 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                            received_source == "RVTN" ~ paste0("SARS-CoV-2/human/USA:", StateAbbrev, "/", "RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                            received_source == "VIEW" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                            received_source == "IVYIC" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "MDHHS" ~ paste0("SARS-CoV-2/human/USA: Michigan/UM-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           T ~ paste0("SARS-CoV-2/human/USA: Michigan/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
+                                           received_source == "HFHS" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "ASC" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "ASJ" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "TRINITY" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "MDHHS" ~ paste0("SARS-CoV-2/human/USA/UM-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           T ~ paste0("SARS-CoV-2/human/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
 
 if (any(nchar(ff$VirusName) > 24)){
   print(filter(ff, VirusName > 24))
@@ -204,10 +212,6 @@ ff <- ff %>% mutate(Sequence_ID = VirusName,
 # if (nrow(unknown_assembly) != 0){
 #   stop("Check Assembly Method options.")
 # }
-# 
-# ### Coverage
-# ff$Coverage <- ""
-# 
 # 
 
 ################################################################################

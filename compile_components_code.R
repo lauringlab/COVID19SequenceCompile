@@ -125,7 +125,22 @@ mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id", "loc_c
 #mani_plate_pang_g_secret <- merge(mani_plate_pang_secret, gisaid_secret, by.x = c(" "), by.y = c("sample_id"), all.x = TRUE)
 
 genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
-mani_plate_pang_g2 <- merge(mani_plate_pang_g, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+
+mani_plate_pang_g <- mani_plate_pang_g %>% mutate(loc_code2 = case_when(received_source == "CDCIVY" ~  "IVY",
+                                                  received_source == "CDCIVY4" ~ "IVY",
+                                                  received_source == "CDCIVY5" ~ "IVY",
+                                                  received_source == "CDCIVY6" ~ "IVY",
+                                                  received_source == "RVTN" ~ "RVTN",
+                                                  received_source == "VIEW" ~ "VIEW",
+                                                  received_source == "IVYIC" ~ "IVYIC",
+                                                  received_source == "HFHS" ~ "MIS",
+                                                  received_source == "ASC" ~ "MIS",
+                                                  received_source == "ASJ" ~ "MIS",
+                                                  received_source == "TRINITY" ~ "MIS",
+                                                  received_source == "MDHHS" ~ "UM",
+                                                  T ~ "UM"))
+
+mani_plate_pang_g2 <- merge(mani_plate_pang_g, genbank, by.x = c("sample_id", "loc_code2"), by.y = c("sample_id", "loc_code2"), all.x = TRUE)
 #mani_plate_pang_g2 <- merge(mani_plate_pang_g, gisaid, by.x = c("sample_id", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 
 

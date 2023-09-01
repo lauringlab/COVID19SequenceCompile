@@ -40,13 +40,17 @@ genbank_storage$sample_id <-  sapply(strsplit(as.character(genbank_storage$Seque
 
 genbank_storage <- separate(genbank_storage, col=sample_id, into=c('one', 'two'), sep='-')
 
+genbank_storage <- genbank_storage %>% mutate(loc_code2 = one)
+
 genbank_storage$sample_id <- genbank_storage$two
 
-genbank_storage <- genbank_storage %>% select(SequenceID, Accession, sample_id)
+genbank_storage <- genbank_storage %>% select(SequenceID, Accession, sample_id, loc_code2)
 
 ### rename columns 
-rename_columns <- c("genbank_SequenceID", "genbank_Accession", "sample_id")
+rename_columns <- c("genbank_SequenceID", "genbank_Accession", "sample_id", "loc_code2")
 colnames(genbank_storage) <- rename_columns
+
+
 
 # write out the compiled file
 write.csv(genbank_storage, paste0(outputLOC, "/sample_full_genbank_list.csv"), row.names = FALSE, na = "")

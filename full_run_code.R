@@ -167,9 +167,9 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20230620_IBV_Illumina_Run_2"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20230814_IBV_Nanopore_Run_3"
+plate_name <- "20230829_IAV_Nanopore_Run_39"
 
-num_iavs_on_plate <- 70
+num_iavs_on_plate <- 25
 
 ################################################################################
 ### first check, see if any fasta files made for negative control wells

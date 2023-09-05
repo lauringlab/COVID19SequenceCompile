@@ -3,11 +3,11 @@ library(tidyverse)
 library(lubridate)
 
 #### Read in influenza full file
-flu_file <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+flu_file <- read.csv(paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
-flu_fileB <- read.csv(paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+flu_fileB <- read.csv(paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                             "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 #flu_file <- filter(flu_file, PlateName != "20230315_IAV_Illumina_Run_49")
@@ -58,7 +58,7 @@ cdc_flu <- cdc_flu %>% mutate(study_id = case_when(sample_id == "G43Q59U6" ~ "23
 
 today_date <- gsub("-", "", Sys.Date())
 
-write.csv(filter(cdc_flu, received_source_flu == "CDCIVY4"), paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(filter(cdc_flu, received_source_flu == "CDCIVY4"), paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                           "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                           "IVY_uploads/cdc_ivy_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 
@@ -70,6 +70,6 @@ flu5 <- filter(cdc_flu, received_source_flu == "CDCIVY5")
 # flu5 <- filter(flu5, !plate_name_flu %in% c("20230315_IAV_Illumina_Run_49", "20230316_IAV_Illumina_Run_51"))
 # flu_all <- rbind(flu5, flu5_out)
 
-write.csv(flu5, paste0("/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(flu5, paste0("C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/", 
                                                                     "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                                                                     "IVY_uploads/cdc_ivy5_flu_", today_date, ".csv"), row.names = FALSE, na = "")

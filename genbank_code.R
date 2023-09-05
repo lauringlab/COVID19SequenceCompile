@@ -27,8 +27,16 @@ genbank_storage <- data.frame()
 
 for (i in file_list){
     genbank_in <- read.delim(paste0(genbank_fp, "/", i), header = TRUE, row.names = NULL)
+    
+    # get submission id
+    a <- strsplit(i, "\\_")[[1]][2]
+    b <- strsplit(a, "\\.")[[1]][1]
+    
     genbank_in <- genbank_in[, c(1:3)]
     colnames(genbank_in) <- c("Accession", "SequenceID", "Release")
+    
+    genbank_in$SubmissionID <- b
+    
     genbank_storage <- rbind(genbank_storage, genbank_in)
 }
 
@@ -40,13 +48,17 @@ genbank_storage$sample_id <-  sapply(strsplit(as.character(genbank_storage$Seque
 
 genbank_storage <- separate(genbank_storage, col=sample_id, into=c('one', 'two'), sep='-')
 
+genbank_storage <- genbank_storage %>% mutate(loc_code2 = one)
+
 genbank_storage$sample_id <- genbank_storage$two
 
-genbank_storage <- genbank_storage %>% select(SequenceID, Accession, sample_id)
+genbank_storage <- genbank_storage %>% select(SequenceID, SubmissionID, Accession, sample_id, loc_code2)
 
 ### rename columns 
-rename_columns <- c("genbank_SequenceID", "genbank_Accession", "sample_id")
+rename_columns <- c("genbank_SequenceID", "genbank_SubmissionID", "genbank_Accession", "sample_id", "loc_code2")
 colnames(genbank_storage) <- rename_columns
+
+
 
 # write out the compiled file
 write.csv(genbank_storage, paste0(outputLOC, "/sample_full_genbank_list.csv"), row.names = FALSE, na = "")

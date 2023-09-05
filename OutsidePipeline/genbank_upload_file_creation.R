@@ -161,21 +161,22 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
 
 
  ##create genbank formatted isolate name
- #SARS-CoV-2/human/USA:Michigan/UM-10052426943/2023
- #SARS-CoV-2/human/USA:Massachusetts/MA-IVY-ZZX9KKEV/2021
- ff <- ff %>% mutate(IsolateName = case_when(received_source == "CDCIVY" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "CDCIVY4" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "CDCIVY5" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "CDCIVY6" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "RVTN" ~ paste0("SARS-CoV-2/human/USA:", StateAbbrev, "/", "RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-                                           received_source == "VIEW" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
-                                           received_source == "IVYIC" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "HFHS" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "ASC" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "ASJ" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "TRINITY" ~ paste0("SARS-CoV-2/human/USA: ", StateAbbrev, "/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
-                                           received_source == "MDHHS" ~ paste0("SARS-CoV-2/human/USA/UM-", sample_id, "/", substr(coll_date, 1, 4)),
+ #SARS-CoV-2/human/USA/UM-10052426943/2023
+ #SARS-CoV-2/human/USA/MA-IVY-ZZX9KKEV/2021
+ ff <- ff %>% mutate(IsolateName = case_when(received_source == "CDCIVY" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "CDCIVY4" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "CDCIVY5" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "CDCIVY6" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "RVTN" ~ paste0("SARS-CoV-2/human/USA/", "RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
+                                           received_source == "VIEW" ~ paste0("SARS-CoV-2/human/USA/", "VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
+                                           received_source == "IVYIC" ~ paste0("SARS-CoV-2/human/USA/", "IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "HFHS" ~ paste0("SARS-CoV-2/human/USA/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "ASC" ~ paste0("SARS-CoV-2/human/USA/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "ASJ" ~ paste0("SARS-CoV-2/human/USA/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "TRINITY" ~ paste0("SARS-CoV-2/human/USA/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "MDHHS" ~ paste0("SARS-CoV-2/human/USA/", "MI-UM-", sample_id, "/", substr(coll_date, 1, 4)),
                                            T ~ paste0("SARS-CoV-2/human/USA/MI-UM-", sample_id, "/", substr(coll_date, 1, 4))))
+ #received_source == "CDCIVY4" ~ paste0("SARS-CoV-2/human/USA/", StateAbbrev, "/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
 
 if (any(nchar(ff$VirusName) > 24)){
   print(filter(ff, VirusName > 24))

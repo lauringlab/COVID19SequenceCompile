@@ -30,12 +30,17 @@ for (each_page in file_list){
   
   #print(colnames(nc1))
   if("totalMutations" %in% colnames(nc1)){
-    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs)
+    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs, aaSubstitutions)
   } else {
     ### nextclade update changed column totalMutations to totalSubstitutions (near 6/18/2021)
-    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs)
-    colnames(nc1) <- c("seqName", "clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs")
+    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs, aaSubstitutions)
+    colnames(nc1) <- c("seqName", "clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs", "aaSubstitutions")
   }
+  
+  nc1 <- nc1 %>% mutate(SF456L_present = case_when(grepl("S:F456L", aaSubstitutions) ~ 1, 
+                                           T ~ 0))
+  
+  nc1 <- nc1 %>% select(-aaSubstitutions)
   
   ### add date column from file name
   nc1$nextclade_runDate <- date_from_file_FIRST(each_page)
@@ -47,7 +52,7 @@ for (each_page in file_list){
 nc_storage$clade <- gsub(",", "", nc_storage$clade)
 
 ### rename columns 
-rename_columns <- c("SampleID", "nextclade_clade", "nextclade_totalMissing", "nextclade_qcOverallScore", "nextclade_qcOverallStatus", "nextclade_totalMutations", "nextclade_totalNonACGTNs", "nextclade_runDate")
+rename_columns <- c("SampleID", "nextclade_clade", "nextclade_totalMissing", "nextclade_qcOverallScore", "nextclade_qcOverallStatus", "nextclade_totalMutations", "nextclade_totalNonACGTNs", "SF456L_present", "nextclade_runDate")
 colnames(nc_storage) <- rename_columns
 
 ################################################################################

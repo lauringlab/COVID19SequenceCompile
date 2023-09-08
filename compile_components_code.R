@@ -162,6 +162,7 @@ mhome_in$loc_code2 <- "UM"
 mhome_in$genbank_Accession <- ""
 mhome_in$genbank_SequenceID <- ""
 mhome_in$genbank_SubmissionID <- ""
+mhome_in$SF456L_present <- ""
 mhome_in <- mhome_in %>% select(colnames(mppnc))
 
 mppnc <- rbind(mppnc, mhome_in)
@@ -330,7 +331,7 @@ mppnc2 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
                                                        pango_version, pangolin_version, #pangolin_runDate,            
                                                        #PlateToPangolin_days, 
                                                        nextclade_qcOverallScore, nextclade_qcOverallStatus,  
-                                                       nextclade_totalMutations, nextclade_totalNonACGTNs, #nextclade_runDate,          
+                                                       nextclade_totalMutations, nextclade_totalNonACGTNs, SF456L_present, #nextclade_runDate,          
                                                        #PlateToNextclade_days, IlluminaPangolin_OutOfRange, NanoporePangolin_OutOfRange, 
                                                        #IlluminaNextclade_OutOfRange, NanoporeNextclade_OutOfRange, 
                                                        sample_per_subject, 
@@ -406,7 +407,7 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,
                                       pangolin_version, 
                                       #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
-                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs, SF456L_present,          
                                       #nextclade_runDate, 
                                       sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
@@ -429,7 +430,7 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       pangolin_version, 
                                       #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
-                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs, SF456L_present,         
                                       #nextclade_runDate, 
                                       sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
@@ -473,7 +474,7 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,
                                       pangolin_version, 
                                       #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
-                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs, SF456L_present,         
                                       #nextclade_runDate, 
                                       sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
@@ -498,7 +499,7 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       pangolin_version, 
                                       #pangolin_runDate,                   
                                       nextclade_qcOverallScore, nextclade_qcOverallStatus,          
-                                      nextclade_totalMutations, nextclade_totalNonACGTNs,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs, SF456L_present,         
                                       #nextclade_runDate, 
                                       sample_per_subject,                 
                                       multiSamples, daysFromPrevious,                  
@@ -564,4 +565,17 @@ write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_w
 
 write.csv(mppnc2, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc2, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")
+
+# a <- filter(mppnc2, SF456L_present == 1) %>% group_by(received_source, coll_date) %>% summarize(total = sum(as.numeric(SF456L_present)))
+# 
+# ggplot(a, aes(x = as_date(coll_date), y = total, fill = received_source)) + 
+#   geom_col(stat = "identity") + 
+#   scale_x_date(breaks = "1 month", date_labels = "%b '%y") +
+#   theme_bw() +
+#   labs(x = "Collection Date", 
+#        y = "Count of S:F456L Detection", 
+#        fill = "Source") + 
+#   geom_text(aes(x = as_date("2022-09-24"), y = 1, label = "ASC - 007013444")) + 
+#   geom_text(aes(x = as_date("2022-03-11"), y = 1, label = "CDCIVY4 - A93J40A2"))
+
 

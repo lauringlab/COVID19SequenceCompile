@@ -42,7 +42,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20230817_SC2_Nanopore_Run_339"
+plate_name <- "20230831_SC2_Illumina_Run_117_E6446_Nextseq"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -187,7 +187,7 @@ if (any(nchar(ff$VirusName) > 24)){
 
 ff <- ff %>% mutate(Sequence_ID = VirusName, 
                     isolate = IsolateName, 
-                    country = paste0("USA:", State), 
+                    country = Location, 
                     host = "Homo sapiens", 
                     collection_date = as.character(coll_date), 
                     isolation_source = "patient isolate")

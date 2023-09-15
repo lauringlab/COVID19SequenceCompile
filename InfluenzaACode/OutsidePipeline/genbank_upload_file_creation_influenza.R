@@ -190,9 +190,10 @@ if (any(grepl("IVY", ff$received_source))){
 if(any(grepl("RVTN", ff$received_source))){
   
   ff<- ff %>% mutate(state = case_when(grepl("RVTN", received_source) ~ state.abb[match(flag,state.name)], 
-                                       T ~ state), 
-                     sample_id = case_when(grepl("RVTN", received_source) ~ sample_id_lauring, 
-                                           T ~ sample_id))
+                                       T ~ state)#, 
+                     #sample_id = case_when(grepl("RVTN", received_source) ~ sample_id_lauring, 
+                                           #T ~ sample_id)
+                     )
   
 }
 
@@ -247,15 +248,32 @@ if (any(nchar(ff$VirusName) > 24)){
 }
 
 
+############### filter down to only things that have 8 segments
+all_files <- list.files(seq_list_path, pattern = "*.fasta")
 
-ff <- ff %>% mutate(Sequence_ID = VirusName, 
-                    isolate = IsolateName, 
+check_segment_number <- data.frame(all_files)
+check_segment_number <- check_segment_number %>% separate(all_files, c('first', 'second'), sep = "\\.", remove = FALSE)
+check_segment_number <- check_segment_number %>% separate(first, c('sample_id', 'type', 'segment1', 'segment2'), sep = "_", remove = FALSE)
+check_segment_number <- check_segment_number %>% group_by(sample_id) %>% mutate(count = length(unique(segment1)))
+check_segment_number <- filter(check_segment_number, count == 8)
+
+ff <- merge(ff, check_segment_number, by = c("sample_id"))
+ff[is.na(ff)] <- ""
+
+ff <- ff %>% mutate(Sequence_ID = trimws(paste0(VirusName, segment1, segment2)), # needs to be virus name + sequence name ids 
+                    organism = "Influenza A virus",
+                    isolate = VirusName, 
                     country = paste0("USA:", State), 
                     host = "Homo sapiens", 
                     collection_date = as.character(coll_date), 
-                    isolation_source = "patient isolate")
+                    isolation_source = "patient isolate", 
+                    serotype = case_when(nextclade_HA_type == "H1" ~ "H1N1", 
+                                         nextclade_HA_type == "H3" ~ "H3N2", 
+                                         T ~ "unknown"))
 
-
+if (any(ff$serotype == "unknown")){
+  stop("Unknown serotype")
+}
 
 # Oxford Nanopore, Illumina MiSeq
 # ff$SequencingTechnology <- ifelse(ff$PlatePlatform == "Nanopore", "Oxford Nanopore Midnight", 
@@ -283,14 +301,15 @@ ff <- ff %>% mutate(Sequence_ID = VirusName,
 ### write out VirusName + sample_id crosswalk for use in making 
 # .all.consensus.final.genbank.fasta
 
-ff_crosswalk <- ff %>% select(sample_id, VirusName)
+ff_crosswalk <- ff %>% select(sample_id, VirusName) %>% distinct()
 
 write.csv(ff_crosswalk, paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/", plate_datef, "_IAV_", runtech, "_Run_", runnum, ".forgenbank.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
-ff_writeout <- ff %>% select(Sequence_ID, isolate, country, host, collection_date, isolation_source)
-colnames(ff_writeout) <- c("Sequence_ID", "isolate", "country", "host", "collection-date", "isolation-source")
+ff_writeout <- ff %>% select(Sequence_ID, organism, country, host, isolate, collection_date, isolation_source, serotype)
+colnames(ff_writeout) <- c("Sequence_ID", "Organism", "country", "host", "isolate", "collection-date", "isolation-source", "serotype")
 
+# Sequence_ID	Organism	country	host	isolate	collection-date	isolation-source	serotype
 ff_writeout <- ff_writeout %>% distinct()
 
 ## genbank upload file name

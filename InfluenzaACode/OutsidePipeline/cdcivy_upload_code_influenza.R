@@ -45,6 +45,11 @@ cdc_fluB <- cdc_fluB %>% select(sample_id, subject_id, coll_date, flag, received
 
 cdc_flu <- rbind(cdc_flu, cdc_fluB)
 
+# cdc_flu <- cdc_flu %>% mutate(site_code = substr(subject_id, 3, 4))
+# 
+# a <- filter(cdc_flu, site_code %in% c("23", "17"))
+# a %>% group_by(received_source, site_code, substr(PlateName, 10, 12)) %>% summarize(count = length(unique(sample_id)))
+
 colnames(cdc_flu) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu", 
                        "received_source_flu", "received_date_flu", "sample_barcode_flu", 
                        "plate_name_flu", "nextclade_ha_clade_flu", "nextclade_ha_qcoverallscore_flu", 

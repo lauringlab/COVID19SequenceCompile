@@ -42,7 +42,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-plate_name <- "20230831_SC2_Illumina_Run_117_E6446_Nextseq"
+#plate_name <- "20230908_SC2_Nanopore_Run_342"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -102,9 +102,7 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("017838404", "030452124", 
-#                                                              "032982827", "045586418", 
-#                                                              "100422404"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("0419", ()))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
@@ -125,11 +123,9 @@ ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(a
 ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAbbrev"), fill = "right")
 #ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
 ff <- ff %>% mutate(State = case_when(received_source == "RVTN" ~ Site, 
-                                      received_source == "VIEW" ~ Site, 
                                       T ~ state.name[match(ff$StateAbbrev,state.abb)]))
 
 ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.abb[match(ff$State,state.name)],
-                                            received_source == "VIEW" ~ state.abb[match(ff$State,state.name)], 
                                       T ~ StateAbbrev))
 
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("USA: ", State), 
@@ -138,7 +134,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("U
                                          received_source == "CDCIVY6" ~ paste0("USA: ", State),
                                          received_source == "IVYIC" ~ paste0("USA: ", State),
                                          received_source == "RVTN" ~ paste0("USA: ", State), 
-                                         received_source == "VIEW" ~ paste0("USA: ", State), 
+                                         received_source == "VIEW" ~ paste0("USA: Tennessee "), 
                                          T ~ "USA: Michigan"))
 
 

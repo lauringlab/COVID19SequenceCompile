@@ -71,9 +71,9 @@ genbank_storage <- genbank_storage %>% distinct()
 
 ####################
 
-genbank_storage <- genbank_storage %>% select(Accession, sample_id, segment_type, SubmissionID)
+genbank_storage <- genbank_storage %>% select(id, Accession, sample_id, segment_type, SubmissionID)
 
-genbank_storage <- reshape2::dcast(genbank_storage, SubmissionID + sample_id ~ segment_type, value.var = c("Accession"))
+genbank_storage <- reshape2::dcast(genbank_storage, SubmissionID + sample_id + id ~ segment_type, value.var = c("Accession"))
 
 # # create sample_id column
 # genbank_storage$sample_id <-  sapply(strsplit(as.character(genbank_storage$SequenceID),'/'), "[", 1)
@@ -87,8 +87,10 @@ genbank_storage <- reshape2::dcast(genbank_storage, SubmissionID + sample_id ~ s
 #genbank_storage <- genbank_storage %>% select(SequenceID, SubmissionID, Accession, sample_id, loc_code2)
 
 ### rename columns 
-#rename_columns <- c("genbank_SequenceID", "genbank_SubmissionID", "genbank_Accession", "sample_id", "loc_code2")
-#colnames(genbank_storage) <- rename_columns
+rename_columns <- c("genbank_SubmissionID", "sample_id", "loc_code2", "genbank_HAH1", "genbank_HAH3", "genbank_MP",
+                    "genbank_NAN1", "genbank_NAN2", "genbank_NP",   "genbank_NS",   "genbank_PA",   "genbank_PB1",
+                    "genbank_PB2")
+colnames(genbank_storage) <- rename_columns
 
 
 

@@ -58,7 +58,7 @@ seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSample
 # nextclade_totalNonACGTNs, nextclade_runDate, PlateToNextclade_days)
 
 
-seq_list <- filter(seq_list, (received_source == "CDCIVY" | received_source == "CDCIVY4" | received_source == "CDCIVY5") & !grepl("Missing Date", flag))
+seq_list <- filter(seq_list, (received_source == "CDCIVY" | received_source == "CDCIVY4" | received_source == "CDCIVY5" | received_source == "CDCIVY6") & !grepl("Missing Date", flag))
 
 
 ## check for CDC IVY 4 samples (start with 22, ivy 3 == 21)
@@ -128,6 +128,8 @@ today <- paste0(year(Sys.Date()), m, d)
 #ivy3 <- filter(seq_list, substr(subject_id, 1, 2) == 21)
 ivy4 <- filter(seq_list, substr(subject_id, 1, 2) == 22)
 ivy5 <- filter(seq_list, substr(subject_id, 1, 2) == 23)
+ivy6 <- filter(seq_list, substr(subject_id, 1, 2) == 24)
+
 
 # change subject_id to study_id
 ivy4 <- ivy4 %>% select(sample_id, subject_id, coll_date,                    

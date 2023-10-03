@@ -52,13 +52,13 @@ def main():
 
     files_avail = pd.DataFrame(onlyfiles, columns = ['file_name'])
     files_avail[['segment_info', 'fasta_ending']] = files_avail['file_name'].str.split('\\.', expand=True)
-    files_avail[['sample_id', 'typeAorB', 'segment', 'segment2']] = files_avail['segment_info'].str.split('_', expand=True)
+    files_avail[['sample_id', 'typeAorB', 'segment']] = files_avail['segment_info'].str.split('_', expand=True)
 
     files_avail['count'] = files_avail.groupby('sample_id')['sample_id'].transform('count')
     # remove anything that doesn't have 8 segments
     files_avail = files_avail[files_avail["count"] == 8]
     files_avail.fillna("",inplace=True)
-    files_avail['true_segment'] = files_avail["segment"] + files_avail["segment2"]
+    files_avail['true_segment'] = files_avail["segment"] #+ files_avail["segment2"]
     #print(files_avail.head())
     # now we have a dataframe with all the available segment file information, split so we can make new header names.
     # we need to cross reference that against our metadata file list, so we know which ones we want to submit.
@@ -96,7 +96,8 @@ def main():
         print(new_id_name)
         for record in SeqIO.parse(file_1, "fasta"):
 
-            record.id = str(new_id_name) # needed to change numeric sample_ids to be recognized as character strings
+            record.id = ""
+            record.description = str(new_id_name) + " [BioProject=PRJNA1023536]"
             #print(record.id)
             all_fasta.append(record)
 
@@ -105,11 +106,11 @@ def main():
     file_2 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbanktmp.fasta"
     file_3 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbank.fasta"
     #print(file_2)
-    with open(file_2, 'w') as corrected:
+    with open(file_3, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
 
-    sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"'
-    os.system(sed_cmd)
+    #sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"'
+    #os.system(sed_cmd)
     ## select all the IDs that we care about:
     #IDs = meta['sample_id'].tolist()
     #print(IDs)

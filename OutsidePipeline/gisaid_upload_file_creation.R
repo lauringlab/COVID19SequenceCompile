@@ -13,11 +13,11 @@ library(openxlsx)
 checking_wd <- getwd()
 if (grepl("juliegil", checking_wd)){
   
-  code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  #code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
-  #starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
-  starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/juliegil/Documents/UofM_Work/SequenceCompilationCode/"
+  starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+  #code_path <- "/Users/juliegil/Documents/git_synced_code/SequenceCompilationCode/COVID19SequenceCompile/"
+  #starting_path <- "/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
   
 } else if (grepl("leighbaker", checking_wd)){
   code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
@@ -42,7 +42,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20220524_SC2_Nanopore_Run_174"
+#plate_name <- "20230412_SC2_Illumina_IVYIC_Run_1"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options

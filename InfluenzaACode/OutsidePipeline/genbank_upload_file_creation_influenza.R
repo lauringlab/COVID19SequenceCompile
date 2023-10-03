@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-#plate_name <- "20230829_IAV_Nanopore_Run_39"
+#plate_name <- "20230814_IBV_Nanopore_Run_3"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -97,7 +97,7 @@ if (grepl("IBV", plate_name)){
   
   # set output path for gisaid upload file
   # will need to add appropriate folder name at the end of this path
-  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/6_GenBank_uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/")
+  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/6_GenBank_uploads/upload_", plate_datef, "_ibv_", tolower(runtech), "_run_", runnum, "/")
   
   ################################################################################
   
@@ -260,6 +260,8 @@ check_segment_number <- filter(check_segment_number, count == 8)
 ff <- merge(ff, check_segment_number, by = c("sample_id"))
 ff[is.na(ff)] <- ""
 
+if (grepl("IAV", plate_name)){
+
 ff <- ff %>% mutate(Sequence_ID = trimws(paste0(VirusName, segment1, segment2)), # needs to be virus name + sequence name ids 
                     organism = "Influenza A virus",
                     isolate = VirusName, 
@@ -270,6 +272,20 @@ ff <- ff %>% mutate(Sequence_ID = trimws(paste0(VirusName, segment1, segment2)),
                     serotype = case_when(nextclade_HA_type == "H1" ~ "H1N1", 
                                          nextclade_HA_type == "H3" ~ "H3N2", 
                                          T ~ "unknown"))
+
+} else {
+  ff <- ff %>% mutate(Sequence_ID = trimws(paste0(VirusName, segment1, segment2)), # needs to be virus name + sequence name ids 
+                      organism = "Influenza B virus",
+                      isolate = VirusName, 
+                      country = paste0("USA:", State), 
+                      host = "Homo sapiens", 
+                      collection_date = as.character(coll_date), 
+                      isolation_source = "patient isolate", 
+                      serotype = case_when(nextclade_HA_type == "victoria" ~ "Victoria", 
+                                           nextclade_HA_type == "yamagata" ~ "Yamagata", 
+                                           T ~ "unknown"))
+  
+}
 
 if (any(ff$serotype == "unknown")){
   stop("Unknown serotype")
@@ -303,7 +319,15 @@ if (any(ff$serotype == "unknown")){
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName) %>% distinct()
 
-write.csv(ff_crosswalk, paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/", plate_datef, "_IAV_", runtech, "_Run_", runnum, ".forgenbank.meta.csv"), row.names = FALSE, na = "")
+if (grepl("IAV", plate_name)){
+
+    write.csv(ff_crosswalk, paste0(starting_path, "SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/", plate_datef, "_IAV_", runtech, "_Run_", runnum, ".forgenbank.meta.csv"), row.names = FALSE, na = "")
+
+} else {
+  
+  write.csv(ff_crosswalk, paste0(starting_path, "SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/", plate_datef, "_IBV_", runtech, "_Run_", runnum, ".forgenbank.meta.csv"), row.names = FALSE, na = "")  
+
+}
 
 ## select variables
 ff_writeout <- ff %>% select(Sequence_ID, organism, country, host, isolate, collection_date, isolation_source, serotype)

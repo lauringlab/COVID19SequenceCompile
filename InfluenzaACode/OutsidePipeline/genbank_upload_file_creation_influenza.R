@@ -329,10 +329,15 @@ if (grepl("IAV", plate_name)){
 
 }
 
+if (grepl("IBV", plate_name)){
 ## select variables
-ff_writeout <- ff %>% select(Sequence_ID, organism, country, host, isolate, collection_date, isolation_source, serotype)
-colnames(ff_writeout) <- c("Sequence_ID", "Organism", "country", "host", "isolate", "collection-date", "isolation-source", "serotype")
-
+ff_writeout <- ff %>% select(Sequence_ID, organism, country, host, isolate, collection_date, isolation_source)#, serotype)
+colnames(ff_writeout) <- c("Sequence_ID", "Organism", "country", "host", "isolate", "collection-date", "isolation-source")#, "serotype")
+} else {
+  ff_writeout <- ff %>% select(Sequence_ID, organism, country, host, isolate, collection_date, isolation_source, serotype)
+  colnames(ff_writeout) <- c("Sequence_ID", "Organism", "country", "host", "isolate", "collection-date", "isolation-source", "serotype")
+  
+}
 # Sequence_ID	Organism	country	host	isolate	collection-date	isolation-source	serotype
 ff_writeout <- ff_writeout %>% distinct()
 

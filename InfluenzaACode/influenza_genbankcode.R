@@ -48,6 +48,8 @@ for (i in file_list){
                                                                  grepl("PA", interest) ~ "genbank_PA",
                                                                  grepl("PB1", interest) ~ "genbank_PB1",
                                                                  grepl("PB2", interest) ~ "genbank_PB2",
+                                                                 grepl("HA", interest) ~ "genbank_HA", 
+                                                                 grepl("NA", interest) ~ "genbank_NA",
                                                                  T ~ "unknown"), 
                                         sample_id = case_when(grepl("HAH3", interest) ~ gsub("HAH3", "", interest), 
                                                                  grepl("HAH1", interest) ~ gsub("HAH1", "", interest),
@@ -59,6 +61,8 @@ for (i in file_list){
                                                                  grepl("PA", interest) ~ gsub("PA", "", interest),
                                                                  grepl("PB1", interest) ~ gsub("PB1", "", interest),
                                                                  grepl("PB2", interest) ~ gsub("PB2", "", interest),
+                                                              grepl("HA", interest) ~ gsub("HA", "", interest),
+                                                              grepl("NA", interest) ~ gsub("NA", "", interest),
                                                                  T ~ "unknown"))
     
     genbank_in$SubmissionID <- b
@@ -87,8 +91,8 @@ genbank_storage <- reshape2::dcast(genbank_storage, SubmissionID + sample_id + i
 #genbank_storage <- genbank_storage %>% select(SequenceID, SubmissionID, Accession, sample_id, loc_code2)
 
 ### rename columns 
-rename_columns <- c("genbank_SubmissionID", "sample_id", "loc_code2", "genbank_HAH1", "genbank_HAH3", "genbank_MP",
-                    "genbank_NAN1", "genbank_NAN2", "genbank_NP",   "genbank_NS",   "genbank_PA",   "genbank_PB1",
+rename_columns <- c("genbank_SubmissionID", "sample_id", "loc_code2", "genbank_HA", "genbank_HAH1", "genbank_HAH3", "genbank_MP",
+                    "genbank_NA", "genbank_NAN1", "genbank_NAN2", "genbank_NP",   "genbank_NS",   "genbank_PA",   "genbank_PB1",
                     "genbank_PB2")
 colnames(genbank_storage) <- rename_columns
 

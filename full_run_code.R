@@ -201,6 +201,8 @@ source(paste0(influenza_path, "influenza_manifestcode.R"))
 
 source(paste0(influenza_path, "influenza_platemapcode.R"))
 
+source(paste0(influenza_path, "influenza_genbankcode.R"))
+
 source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 source(paste0(influenza_path, "influenzaB_compilecomponentscode.R"))
 
@@ -219,6 +221,8 @@ source(paste0(influenza_path, "influenza_manifestcode.R"))
 source(paste0(influenza_path, "influenza_platemapcode.R"))
 
 source(paste0(influenza_path, "influenza_nextcladecode.R"))
+
+source(paste0(influenza_path, "influenza_genbankcode.R"))
 
 source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 source(paste0(influenza_path, "influenzaB_compilecomponentscode.R"))

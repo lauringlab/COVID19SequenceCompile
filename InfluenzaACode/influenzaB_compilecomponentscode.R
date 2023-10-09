@@ -20,6 +20,8 @@ plate_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetada
 nc_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 # gisaid file path
 gisaid_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
+# genbank file path
+genbank_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
 ### output location for files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary")
@@ -131,7 +133,22 @@ colnames(gisaid_secret) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.S
 
 
 mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
-mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE) %>% distinct()
+
+################################################################################
+### genbank
+
+genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
+
+colnames(genbank)[1] <- "genbank_SubmissionID"
+
+genbank_secret <- filter(genbank, grepl("RVTN", loc_code2))
+genbank <- filter(genbank, !grepl("RVTN", loc_code2))
+
+mani_plate_g2 <- merge(mani_plate_g, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+
+################################################################################
+
+mppnc <- merge(mani_plate_g2, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE) %>% distinct()
 # 
 # ### add column for time in days from plate to nextclade
 # mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_HA_runDate, mppnc$PlateDate, units = "days")
@@ -199,9 +216,13 @@ mppnc2 <- merge(mppnc, rvtn_recodes, by = c("subject_id", "sample_id"), all.x = 
 mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
 mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RVTN")
 
-mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
+mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,                   
                                       flag, received_source, received_date, SampleBarcode,
                                       PlateDate, PlatePlatform, PlateNumber,
+                                      genbank_SubmissionID, loc_code2, genbank_HAH1,               
+                                      genbank_HAH3, genbank_MP, genbank_NAN1,              
+                                      genbank_NAN2, genbank_NP, genbank_NS,                 
+                                      genbank_PA, genbank_PB1, genbank_PB2,
                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
                                       nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
                                       nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
@@ -217,6 +238,10 @@ mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
                                       flag, received_source, received_date, SampleBarcode,
                                       PlateDate, PlatePlatform, PlateNumber,
+                                      genbank_SubmissionID, loc_code2, genbank_HAH1,               
+                                      genbank_HAH3, genbank_MP, genbank_NAN1,              
+                                      genbank_NAN2, genbank_NP, genbank_NS,                 
+                                      genbank_PA, genbank_PB1, genbank_PB2,
                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
                                       nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
                                       nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
@@ -232,7 +257,53 @@ mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
 
 rm(mppnc2_rvtn)
 
+################################################################################
 
+# add in RVTN genbank
+mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
+mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RVTN")
+
+mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,                   
+                                      flag, received_source, received_date, SampleBarcode,
+                                      PlateDate, PlatePlatform, PlateNumber,
+                                      nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
+                                      nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
+                                      nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                                      nextclade_HA_runDate, nextclade_HA_type,
+                                      Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                                      NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                                      P3.Segment_Id, Isolate_Name,
+                                      subject_id_length, position, PlateName, PlatePosition,
+                                      SampleSourceLocation, #PlateToNextclade_days,
+                                      sample_per_subject, sample_id_lauring)
+
+mppnc2_rvtn <- merge(mppnc2_rvtn, genbank_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
+
+#colnames(mppnc2_rvtn)
+
+mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
+                                      flag, received_source, received_date, SampleBarcode,
+                                      PlateDate, PlatePlatform, PlateNumber,
+                                      genbank_SubmissionID, loc_code2, genbank_HAH1,               
+                                      genbank_HAH3, genbank_MP, genbank_NAN1,              
+                                      genbank_NAN2, genbank_NP, genbank_NS,                 
+                                      genbank_PA, genbank_PB1, genbank_PB2,
+                                      nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
+                                      nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
+                                      nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                                      nextclade_HA_runDate, nextclade_HA_type,
+                                      Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                                      NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                                      P3.Segment_Id, Isolate_Name,
+                                      subject_id_length, position, PlateName, PlatePosition,
+                                      SampleSourceLocation, #PlateToNextclade_days,
+                                      sample_per_subject, sample_id_lauring)
+
+mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
+
+rm(mppnc2_rvtn)
+
+################################################################################
 
 ################################################################################
 ## apply logic for mis-matched pangolin/nextclade info
@@ -272,6 +343,25 @@ mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
 # keep_NCs <- table(check_NCs$PlateName, check_NCs$neg_control_warning)
 # 
 # write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_warnings.tsv"), sep = "\t")
+
+mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,                   
+                            flag, received_source, received_date, SampleBarcode,               
+                            PlateDate, PlatePlatform, PlateNumber,
+                            genbank_SubmissionID, loc_code2, genbank_HAH1,               
+                            genbank_HAH3, genbank_MP, genbank_NAN1,              
+                            genbank_NAN2, genbank_NP, genbank_NS,                 
+                            genbank_PA, genbank_PB1, genbank_PB2,
+                            nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
+                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                            nextclade_HA_runDate, nextclade_HA_type, 
+                            Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
+                            P3.Segment_Id, Isolate_Name,              
+                            subject_id_length, position, PlateName, PlatePosition,               
+                            SampleSourceLocation, #PlateToNextclade_days, 
+                            sample_per_subject, sample_id_lauring)
+
 
 ################################################################################
 

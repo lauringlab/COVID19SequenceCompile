@@ -96,7 +96,8 @@ def main():
         print(new_id_name)
         for record in SeqIO.parse(file_1, "fasta"):
 
-            record.id = str(new_id_name) # needed to change numeric sample_ids to be recognized as character strings
+            record.id = ""
+            record.description = str(new_id_name) + " [BioProject=PRJNA1019712]"
             #print(record.id)
             all_fasta.append(record)
 
@@ -108,8 +109,8 @@ def main():
     with open(file_2, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
 
-    sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"'
-    os.system(sed_cmd)
+    #sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"'
+    #os.system(sed_cmd)
     ## select all the IDs that we care about:
     #IDs = meta['sample_id'].tolist()
     #print(IDs)

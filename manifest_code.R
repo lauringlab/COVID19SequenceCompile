@@ -332,7 +332,7 @@ full_ivy4 <- data.frame()
 
 for (each_file in cdc_file_list){
   #print(each_file)
-  if (grepl("CDCIVY4", each_file) | grepl("CDCIVY5", each_file)){
+  if (grepl("CDCIVY4", each_file) | grepl("CDCIVY5", each_file) | grepl("CDCIVY6", each_file)){
     #print("IVY4")
     #print(each_file)
     fileone <- read.xlsx(paste0(cdcivy_manifest_fp, "/", each_file), sheet = 1, detectDates = TRUE)
@@ -438,7 +438,7 @@ for (each_file in cdc_file_list){
   
   if (sum(fileone$SiteName_check, na.rm = TRUE) != 0){
     message(each_file)
-    message(filter(fileone, SeiteName_check == 0))
+    message(filter(fileone, SiteName_check == 0))
     stop("There are incorrect site names in the manifest.")
   } else {
     fileone <- fileone %>% select(position, SiteName, subject_id, coll_date, sample_id)

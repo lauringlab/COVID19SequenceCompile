@@ -115,6 +115,7 @@ if (nrow(mani_plate_pang) > nrow(mani_plate)){
 mani_plate_pang <- mani_plate_pang %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
                                           received_source == "CDCIVY4" ~ "IVY",
                                           received_source == "CDCIVY5" ~ "IVY",
+                                          received_source == "CDCIVY6" ~ "IVY",
                                           received_source == "RVTN" ~ "RVTN",
                                           received_source == "VIEW" ~ "VIEW",
                                           received_source == "IVYIC" ~ "IVYIC",
@@ -440,6 +441,7 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
 mppnc2_rvtn <- mppnc2_rvtn %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
                                                                    received_source == "CDCIVY4" ~ "IVY",
                                                                    received_source == "CDCIVY5" ~ "IVY",
+                                                                   received_source == "CDCIVY6" ~ "IVY",
                                                                    received_source == "RVTN" ~ "RVTN",
                                                                    received_source == "VIEW" ~ "VIEW",
                                                                    received_source == "IVYIC" ~ "IVYIC",
@@ -448,6 +450,7 @@ mppnc2_rvtn <- mppnc2_rvtn %>% mutate(loc_code = case_when(received_source == "C
 mppnc2_view <- mppnc2_view %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
                                                                    received_source == "CDCIVY4" ~ "IVY",
                                                                    received_source == "CDCIVY5" ~ "IVY",
+                                                                   received_source == "CDCIVY6" ~ "IVY",
                                                                    received_source == "RVTN" ~ "RVTN",
                                                                    received_source == "VIEW" ~ "VIEW",
                                                                    received_source == "IVYIC" ~ "IVYIC",
@@ -539,7 +542,7 @@ fpn <- fpn %>% group_by(sample_id) %>% mutate(count = length(sample_id)) %>% dis
 fpn <- fpn %>% select(sample_id, newest_pangolin_lineage, newest_pangolin_date)
 
 ### remove out any negative controls, etc.
-fpn <- filter(fpn, !grepl("NC_", sample_id) & !grepl("HeLa", sample_id))
+fpn <- filter(fpn, !grepl("NC_", sample_id) & !grepl("HeLa", sample_id) & !grepl("NC-", sample_id))
 
 # merge that data onto full set
 mppnc2 <- merge(mppnc2, fpn, by = c("sample_id"), all.x = TRUE, all.y = FALSE)
@@ -548,9 +551,10 @@ mppnc2 <- merge(mppnc2, fpn, by = c("sample_id"), all.x = TRUE, all.y = FALSE)
 ### negative control well warning
 
 neg_control <- unique(filter(mppnc2, grepl("NC_", sample_id) & is.na(as.numeric(sample_id)))$sample_id)
+neg_control2 <- unique(filter(mppnc2, grepl("NC-", sample_id) & is.na(as.numeric(sample_id)))$sample_id)
 helas <- unique(filter(mppnc2, grepl("hela", tolower(sample_id)))$sample_id)
 
-check_NCs <- filter(mppnc2, sample_id %in% neg_control | sample_id %in% helas)
+check_NCs <- filter(mppnc2, sample_id %in% neg_control | sample_id %in% helas | sample_id %in% neg_control2)
 
 # We want to make sure with each plate that the three negative controls have ???10% of genome covered. 
 

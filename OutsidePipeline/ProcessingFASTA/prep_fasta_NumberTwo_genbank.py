@@ -77,7 +77,7 @@ def main():
     # Write everything out as .all.consensus.tmp.fasta, with the replaced system
     file_2 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbanktmp.fasta"
     file_3 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbank.fasta"
-    with open(file_2, 'w') as corrected:
+    with open(file_3, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
      #rename to .all.consensus.final.gisaid.fasta
     # and remove everything after a space character on fasta entry lines. The Biopython modules add extra characters after the sample ID

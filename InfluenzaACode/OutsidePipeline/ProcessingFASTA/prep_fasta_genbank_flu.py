@@ -106,7 +106,7 @@ def main():
     file_2 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbanktmp.fasta"
     file_3 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbank.fasta"
     #print(file_2)
-    with open(file_2, 'w') as corrected:
+    with open(file_3, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
 
     #sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"'

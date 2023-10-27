@@ -15,20 +15,22 @@ outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
 ################################################################################
-
-seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
-                                flag, received_source, SiteName, SampleBarcode,                
-                                PlateDate, PlatePlatform, PlateNumber,                 
-                                pangolin_lineage, pangolin_probability, pangolin_status,             
-                                pangolin_note, nextclade_clade, nextclade_totalMissing,      
-                                nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
-                                received_date, position,          
-                                PlateName, PlatePosition, SampleSourceLocation,        
-                                pangoLEARN_version, pango_version,               
-                                pangolin_version, pangolin_conflict,     
-                                nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
-                                nextclade_totalNonACGTNs, 
-                                data_quality_rule, newest_pangolin_lineage, newest_pangolin_date, sample_id_lauring)
+# 
+# seq_list <- seq_list %>% select(sample_id, subject_id, coll_date,                    
+#                                 flag, received_source, SiteName, SampleBarcode,                
+#                                 PlateDate, PlatePlatform, PlateNumber,                 
+#                                 pangolin_lineage, pangolin_probability, pangolin_status,             
+#                                 pangolin_note, nextclade_clade, nextclade_totalMissing,      
+#                                 nextclade_completeness, gisaid_strain, gisaid_epi_isl,
+#                                 genbank_sequenceid, genbank_accession, 
+#                                 genbank_submissionid,
+#                                 received_date, position,          
+#                                 PlateName, PlatePosition, SampleSourceLocation,        
+#                                 pangoLEARN_version, pango_version,               
+#                                 pangolin_version, pangolin_conflict,     
+#                                 nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,    
+#                                 nextclade_totalNonACGTNs, 
+#                                 data_quality_rule, newest_pangolin_lineage, newest_pangolin_date, sample_id_lauring)
 
 seq_list <- filter(seq_list, received_source == "VIEW")
 
@@ -50,7 +52,9 @@ view1 <- seq_list %>% select(sample_id, subject_id, coll_date,
                             PlateDate, PlatePlatform, PlateNumber,                 
                             pangolin_lineage, pangolin_probability, pangolin_status,             
                             pangolin_note, nextclade_clade, nextclade_totalMissing,      
-                            nextclade_completeness, gisaid_strain, gisaid_epi_isl,              
+                            nextclade_completeness, gisaid_strain, gisaid_epi_isl,  
+                            genbank_SequenceID, genbank_Accession, 
+                            genbank_SubmissionID,
                             received_date, position,          
                             PlateName, PlatePosition, SampleSourceLocation,        
                             pangoLEARN_version, pango_version,               
@@ -64,7 +68,9 @@ colnames(view1) <- c("sample_id", "subject_id", "coll_date",
                     "platedate", "plateplatform", "platenumber",                 
                     "pangolin_lineage", "pangolin_probability", "pangolin_status",             
                     "pangolin_note", "nextclade_clade", "nextclade_totalmissing",      
-                    "nextclade_completeness", "gisaid_strain", "gisaid_epi_isl",              
+                    "nextclade_completeness", "gisaid_strain", "gisaid_epi_isl",
+                    "genbank_sequenceid", "genbank_accession", 
+                    "genbank_submissionid",
                     "received_date", "position",          
                     "platename", "plateposition", "samplesourcelocation",        
                     "pangolearn_version", "pango_version",               

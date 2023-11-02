@@ -100,7 +100,7 @@ nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClass
 # colnames(gisaid)[1] <- "Isolate_Id"
 
 gisaid <- read.csv(paste0(gisaid_fp, "/gisaid_back_info.csv"), colClasses = "character")
-gisaid <- gisaid %>% select(sample_id, epi_isl)
+gisaid <- gisaid %>% select(sample_id, epi_isl, strain_name)
 
 
 

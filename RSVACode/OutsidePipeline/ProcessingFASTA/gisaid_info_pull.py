@@ -62,17 +62,18 @@ def main():
         id = str(record.id)
         all_fasta.append(id)
 
-    fasta_headers = pd.DataFrame (all_fasta, columns = ['headers'])
+    fasta_headers = pd.DataFrame(all_fasta, columns = ['headers'])
 
     # split headers on document
     # words = string.split(',')
     # user_df['name'].str.split(pat = ' ', expand = True)
     # >hRSV/A/USA/MA-IVY-D13J37N6/2022|EPI_ISL_17367997|2022-11-04
 
+    fasta_headers[['strain_name', 'epi_code', 'date_code']] = fasta_headers['headers'].str.split(pat = "|", expand = True)
     fasta_headers[['organism', 'subtype', 'country', 'id_string', 'year_tag_date']] = fasta_headers['headers'].str.split(pat = "/", expand = True)
     fasta_headers[['year', 'epi_isl', 'date']] = fasta_headers['year_tag_date'].str.split(pat = "|", expand = True)
     fasta_headers[['state', 'project', 'sample_id']] = fasta_headers['id_string'].str.split(pat = "-", expand = True)
-
+    #print(fasta_headers.head())
     # Write
     #with open(file_2, 'w') as corrected:
     #    SeqIO.write(all_fasta, corrected, "fasta")

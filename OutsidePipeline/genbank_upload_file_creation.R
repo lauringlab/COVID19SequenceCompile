@@ -50,7 +50,7 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 
 ################################################################################
 
-# create gisaid directory
+# create genbank directory
 dir.create(paste0(starting_path, "/SEQUENCING/SARSCOV2/6_GenBank_Uploads/upload_genbank_", plate_datef, "_", tolower(runtech), "_run_", runnum))
 
 ################################################################################
@@ -59,7 +59,7 @@ dir.create(paste0(starting_path, "/SEQUENCING/SARSCOV2/6_GenBank_Uploads/upload_
 # in the secret folder
 source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
 
-# set output path for gisaid upload file
+# set output path for genbank upload file
 # will need to add appropriate folder name at the end of this path
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/6_GenBank_Uploads/upload_genbank_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
 
@@ -87,12 +87,14 @@ if (any(ff$sample_per_subject > 1)){
   stop("There are samples from subject_ids that we've sequenced previously.")
 }
 
-
+# if "Stop" gets printed then uncomment the bottom two lines
+# then look at the "original_full" data frame and sort by subject_id
+# and look at the collection dates 
 
 #samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
 #original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 # if they are IVYIC duplicates, let them all through regardless
-### check if the samples are > 90 days apart from one another - then you can let 
+### check if the samples are > 90 days apart from one another for collection dates - then you can let 
 ### them through.
 
 #writes the original_full dataframe to a .csv file
@@ -190,27 +192,6 @@ ff <- ff %>% mutate(Sequence_ID = VirusName,
 
 
 
-# Oxford Nanopore, Illumina MiSeq
-# ff$SequencingTechnology <- ifelse(ff$PlatePlatform == "Nanopore", "Oxford Nanopore Midnight", 
-#                                   ifelse(ff$PlatePlatform == "Illumina", "Illumina NextSeq 1000", "Unknown"))
-# 
-# unknown_tech <- filter(ff, SequencingTechnology == "Unknown")
-# 
-# if (nrow(unknown_tech) != 0){
-#   stop("Check Sequencing Technology options.")
-# }
-# 
-# ### Assembly Method
-# ff$AssemblyMethod <- ifelse(ff$PlatePlatform == "Nanopore", "ARTIC Network pipeline Midnight", 
-#                             ifelse(ff$PlatePlatform == "Illumina", "BWA-MEM, iVar", "Unknown"))
-# 
-# unknown_assembly <- filter(ff, AssemblyMethod == "Unknown")
-
-# if (nrow(unknown_assembly) != 0){
-#   stop("Check Assembly Method options.")
-# }
-# 
-
 ################################################################################
 
 ### write out VirusName + sample_id crosswalk for use in making 
@@ -233,11 +214,5 @@ gufn <- paste0(today, "_Lauring_genbank_upload_metadata_run_", runnum)
 
 write.table(ff_writeout, paste0(outputLOC, gufn, ".tsv"), sep = "\t", row.names = FALSE, na = "", )
 
-# ## write to excel file (follow format)
-# wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE2.xlsx"))
-# 
-# # fill in the submissions tab with built data frame
-# writeData(wb, ff_writeout, sheet = "Submissions", startRow = 3, startCol = 1, colNames = FALSE)
-# 
-# saveWorkbook(wb, paste0(outputLOC, gufn, ".xlsx"), overwrite = TRUE)
+
 

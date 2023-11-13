@@ -27,6 +27,12 @@ if (grepl("juliegil", checking_wd)){
   starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
   code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
   batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
+
+} else if (grepl("chbla", checking_wd)){
+  
+  starting_path <- "C:/Users/chbla/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "C:/Users/chbla/Documents/LauringLab/COVID19SequenceCompile/"
+  batch_path <- "C:/Users/chbla/Documents/LauringLab/AlertCode"
   
   
 } else {

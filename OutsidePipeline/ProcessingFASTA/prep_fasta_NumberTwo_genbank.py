@@ -33,6 +33,9 @@ def main():
     elif ("leighbak" in os.getcwd()):
         s_path = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/"
         full_loc = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
+   elif ("chbla" in os.getcwd()):
+        s_path = "C:/Users/chbla/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/"
+        full_loc = "C:/Users/chbla/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"    
     else:
         print("Current working directory username not recognized.")
 

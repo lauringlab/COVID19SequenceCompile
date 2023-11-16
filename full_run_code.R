@@ -27,6 +27,7 @@ if (grepl("juliegil", checking_wd)){
   starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
   code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
   batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
+  influenza_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
 
 } else if (grepl("chbla", checking_wd)){
   
@@ -63,7 +64,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20230501_SC2_Nanopore_Run_312"
+plate_name <- "2023_SC2_Nanopore_Run_312"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
@@ -174,9 +175,9 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20230620_IBV_Illumina_Run_2"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20230829_IAV_Nanopore_Run_39"
+plate_name <- "20231107_IAV_Nanopore_Run_40"
 
-num_iavs_on_plate <- 25
+num_iavs_on_plate <- 96
 
 ################################################################################
 ### first check, see if any fasta files made for negative control wells

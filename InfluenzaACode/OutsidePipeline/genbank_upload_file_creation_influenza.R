@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-#plate_name <- "20230814_IBV_Nanopore_Run_3"
+plate_name <- "20231107_IAV_Nanopore_Run_40"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -40,8 +40,8 @@ if (grepl("IAV", plate_name)){
     starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
     code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
     batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
-    seq_list_path <- ""
-    code_path2 <- ""
+    seq_list_path <- paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    code_path2 <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
     
   } else {
     
@@ -69,8 +69,8 @@ if (grepl("IAV", plate_name)){
     starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
     code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
     batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
-    seq_list_path <- ""
-    code_path2 <- ""
+    seq_list_path <-paste0("Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    code_path2 <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
     
   } else {
     
@@ -83,7 +83,7 @@ if (grepl("IAV", plate_name)){
 
 source(paste0(code_path, "pipeline_functions.R"))
 
-
+print(starting_path)
 ################################################################################
 
 

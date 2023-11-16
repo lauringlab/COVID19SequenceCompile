@@ -227,8 +227,8 @@ mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source)) #received_source != "RV
 mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,                   
                                       flag, received_source, received_date, SampleBarcode,
                                       PlateDate, PlatePlatform, PlateNumber,
-                                      genbank_SubmissionID, loc_code2, genbank_HAH1,               
-                                      genbank_HAH3, genbank_MP, genbank_NAN1,              
+                                      genbank_SubmissionID, loc_code2, genbank_HA, genbank_HAH1,               
+                                      genbank_HAH3, genbank_MP, genbank_NA, genbank_NAN1,              
                                       genbank_NAN2, genbank_NP, genbank_NS,                 
                                       genbank_PA, genbank_PB1, genbank_PB2,
                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
@@ -242,12 +242,14 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
 mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
 
 #colnames(mppnc2_rvtn)
+colnames(mppnc2)
+#colnames(gisaid_secret)
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
                                       flag, received_source, received_date, SampleBarcode,
                                       PlateDate, PlatePlatform, PlateNumber,
-                                      genbank_SubmissionID, loc_code2, genbank_HAH1,               
-                                      genbank_HAH3, genbank_MP, genbank_NAN1,              
+                                      genbank_SubmissionID, loc_code2, genbank_HA, genbank_HAH1,               
+                                      genbank_HAH3, genbank_MP, genbank_NA, genbank_NAN1,              
                                       genbank_NAN2, genbank_NP, genbank_NS,                 
                                       genbank_PA, genbank_PB1, genbank_PB2,
                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
@@ -293,8 +295,8 @@ mppnc2_rvtn <- merge(mppnc2_rvtn, genbank_secret, by.x = c("sample_id_lauring"),
 mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
                                       flag, received_source, received_date, SampleBarcode,
                                       PlateDate, PlatePlatform, PlateNumber,
-                                      genbank_SubmissionID, loc_code2, genbank_HAH1,               
-                                      genbank_HAH3, genbank_MP, genbank_NAN1,              
+                                      genbank_SubmissionID, loc_code2, genbank_HA, genbank_HAH1,               
+                                      genbank_HAH3, genbank_MP, genbank_NA, genbank_NAN1,              
                                       genbank_NAN2, genbank_NP, genbank_NS,                 
                                       genbank_PA, genbank_PB1, genbank_PB2,
                                       nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,

@@ -252,11 +252,11 @@ source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 # RSVA COMPONENT
 ################################################################################
 
-plate_name <- "20230307_RSVA_Illumina_Run_1"
+plate_name <- "20231005_RSVA_Nanopore_Run_1"
 #plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-num_rsvs_on_plate <- 88
+num_rsvs_on_plate <- 85
 
 ################################################################################
 # ROUND 1
@@ -264,15 +264,21 @@ num_rsvs_on_plate <- 88
 
 source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
-
 source(paste0(code_path, "RSVACode/rsva_manifestcode.R"))
 
 source(paste0(code_path, "RSVACode/rsva_platemapcode.R"))
 
 source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 
-
 source(paste0(code_path, "RSVACode/rsva_subset_compiled_for_fasta.R"))
+
+#                                NEXTCLADE                                     #
+################################################################################
+
+# run nextclade from https://clades.nextstrain.org/results
+
+# Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
+source(paste0(code_path, "RSVACode/OutsidePipeline/moving_nextclade_output.R"))
 
 ################################################################################
 # ROUND 2
@@ -304,11 +310,11 @@ source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 # RSVB COMPONENT
 ################################################################################
 
-plate_name <- "20230323_RSVB_Illumina_Run_1"
+plate_name <- "20231004_RSVB_Nanopore_Run_1"
 #plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-num_rsvs_on_plate <- 98
+num_rsvs_on_plate <- 85
 
 ################################################################################
 # ROUND 1
@@ -325,6 +331,14 @@ source(paste0(code_path, "RSVBCode/rsvb_compilecomponentscode.R"))
 
 
 source(paste0(code_path, "RSVBCode/rsvb_subset_compiled_for_fasta.R"))
+
+#                                NEXTCLADE                                     #
+################################################################################
+
+# run nextclade from https://clades.nextstrain.org/results
+
+# Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
+source(paste0(code_path, "RSVBCode/OutsidePipeline/moving_nextclade_output.R"))
 
 ################################################################################
 # ROUND 2

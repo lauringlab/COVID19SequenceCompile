@@ -141,6 +141,23 @@ mppnc3 <- mppnc
 #                            sample_per_subject, sample_id_lauring)
 
 ################################################################################
+### negative control well warning
+
+neg_control <- unique(filter(mppnc3, grepl("NC_", sample_id) & is.na(as.numeric(sample_id)))$sample_id)
+neg_control2 <- unique(filter(mppnc3, grepl("NC-", sample_id) & is.na(as.numeric(sample_id)))$sample_id)
+helas <- unique(filter(mppnc3, grepl("hela", tolower(sample_id)))$sample_id)
+
+check_NCs <- filter(mppnc3, sample_id %in% neg_control | sample_id %in% helas | sample_id %in% neg_control2)
+
+# We want to make sure with each plate that the three negative controls have ???10% of genome covered. 
+
+check_NCs <- check_NCs %>% mutate(neg_control_warning = case_when(as.numeric(nextclade_completeness) >= 10 ~ 1,
+                                                                  T ~ 0))
+
+keep_NCs <- table(check_NCs$PlateName, check_NCs$neg_control_warning)
+
+write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_warnings.tsv"), sep = "\t")
+################################################################################
 
 write.csv(mppnc3, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc3, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")

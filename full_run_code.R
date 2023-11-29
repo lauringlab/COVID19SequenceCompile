@@ -34,7 +34,12 @@ if (grepl("juliegil", checking_wd)){
   starting_path <- "C:/Users/chbla/Dropbox (University of Michigan)/MED-LauringLab/"
   code_path <- "C:/Users/chbla/Documents/LauringLab/COVID19SequenceCompile/"
   batch_path <- "C:/Users/chbla/Documents/LauringLab/AlertCode"
+
+} else if (grepl("chbl", checking_wd)){
   
+  starting_path <- "/Users/chbl/Dropbox (University of Michigan)/MED-LauringLab/"
+  code_path <- "/Users/chbl/Documents/LauringLab/COVID19SequenceCompile/"
+  batch_path <- "/Users/chbl/Documents/LauringLab/AlertCode"  
   
 } else {
   
@@ -64,7 +69,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "2023_SC2_Nanopore_Run_312"
+plate_name <- "20231121_SC2_Nanopore_Run_386"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
@@ -153,7 +158,7 @@ source(paste0(code_path, "pangolin_code.R"))
 
 source(paste0(code_path, "nextclade_code.R"))
 
-source(paste0(code_path, "gisaid_code.R")) # need to do one final pull, then can retire this
+#source(paste0(code_path, "gisaid_code.R")) # need to do one final pull, then can retire this
 source(paste0(code_path, "genbank_code.R"))
 
 source(paste0(code_path, "compile_components_code.R"))

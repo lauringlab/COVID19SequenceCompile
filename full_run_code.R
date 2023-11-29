@@ -237,6 +237,7 @@ source(paste0(influenza_path, "influenzaB_compilecomponentscode.R"))
 ################################################################################
 # ROUND 3
 ################################################################################
+source(paste0(influenza_path, "influenza_genbankcode.R"))
 
 source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 

@@ -25,8 +25,8 @@ elif "leighbaker" in current_user:
     meta_file_location = "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
 elif "leighbak" in current_user:
     meta_file_location = "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"
-elif "chbla" in current_user:
-    meta_file_location = "/Users/chbla/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"    
+elif "chbl" in current_user:
+    meta_file_location = "/Users/chbl/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/" + plate_run_name + "/"    
 else:
     print("User not recognized.")
 

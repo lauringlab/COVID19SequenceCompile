@@ -22,7 +22,8 @@ nc_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Sequen
 gisaid_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
 # previous 2021 file path
 #prev_2021 <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/PreviousLists")
-
+# genbank file path
+genbank_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 ### output location for files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary")
 
@@ -107,7 +108,9 @@ gisaid <- gisaid %>% select(sample_id, epi_isl, strain_name)
 mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleID"), all.x = TRUE)
 
+genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
 
+mppnc <- merge(mppnc, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 ################################################################################
 ## Additional subject_id length check (leading zeros)
 ## CSTP == 8 (UMIDs), CBR == 9 (MRNs)

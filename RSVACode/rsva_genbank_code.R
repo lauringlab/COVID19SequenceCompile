@@ -24,14 +24,13 @@ outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Se
 
 file_list <- list.files(pattern = "*.txt", path = genbank_fp)
 
-table_test <- read.table(paste0(genbank_fp, "/seqids_20231130.txt"), header = TRUE)
-
-test_table_2 <- read.table(paste0(genbank_fp, "/seqids_20231208.txt"))
+#table_test <- read.table(paste0(genbank_fp, "/seqids_20231130.txt"), header = TRUE)
+#test_table_2 <- read.table(paste0(genbank_fp, "/seqids_20231208.txt"))
 
 genbank_storage <- data.frame()
 
 for (i in file_list){
-  genbank_table_in <- read.table(paste0(genbank_fp, "/", i), header = TRUE)
+  genbank_storage <- read.table(paste0(genbank_fp, "/", i), header = TRUE)
 }
 
  
@@ -54,18 +53,20 @@ for (i in file_list){
 genbank_storage <- genbank_storage %>% distinct()  
 
 # create sample_id column
-genbank_storage$sample_id <-  sapply(strsplit(as.character(genbank_storage$SequenceID),'/'), "[", 1)
+genbank_storage$sample_id <- sapply(strsplit(as.character(genbank_storage$SampleID),'-'), "[", 3)
 
-genbank_storage <- separate(genbank_storage, col=sample_id, into=c('one', 'two'), sep='-')
 
-genbank_storage <- genbank_storage %>% mutate(loc_code2 = one)
+############
+#genbank_storage <- separate(genbank_storage, col=sample_id, into=c('one', 'two'), sep='-')
 
-genbank_storage$sample_id <- genbank_storage$two
+#genbank_storage <- genbank_storage %>% mutate(loc_code2 = one)
 
-genbank_storage <- genbank_storage %>% select(SequenceID, SubmissionID, Accession, sample_id, loc_code2)
+#genbank_storage$sample_id <- genbank_storage$two
+
+#genbank_storage <- genbank_storage %>% select(SequenceID, SubmissionID, Accession, sample_id, loc_code2)
 
 ### rename columns 
-rename_columns <- c("genbank_SequenceID", "genbank_SubmissionID", "genbank_Accession", "sample_id", "loc_code2")
+rename_columns <- c("genbank_SubmissionID", "genbank_SequenceID",  "genbank_Accession", "sample_id") #, "loc_code2")
 colnames(genbank_storage) <- rename_columns
 
 

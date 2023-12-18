@@ -127,6 +127,8 @@ mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id", "loc_c
 
 genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
 
+genbank_secret <- filter(genbank, grepl("RVTN", genbank_SequenceID) | grepl("VIEW", genbank_SequenceID))
+
 mani_plate_pang_g <- mani_plate_pang_g %>% mutate(loc_code2 = case_when(received_source == "CDCIVY" ~  "IVY",
                                                   received_source == "CDCIVY4" ~ "IVY",
                                                   received_source == "CDCIVY5" ~ "IVY",
@@ -376,7 +378,7 @@ full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_se
 write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
 
 
-# read in and attach RVTN re-codes
+# read in and attach RVTN and VIEW re-codes
 rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
 rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id)
 rvtn_recodes <- filter(rvtn_recodes, sample_id != "")
@@ -422,7 +424,7 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       pangolin_probability, pangolin_status,                    
                                       pangolin_note, nextclade_clade,                    
                                       nextclade_totalMissing, nextclade_completeness,
-                                      genbank_SequenceID, genbank_Accession, genbank_SubmissionID,
+                                      #genbank_SequenceID, genbank_Accession, genbank_SubmissionID,
                                       received_date, position,                           
                                       SiteName, subject_id_length,                  
                                       PlateName, PlatePosition,                      
@@ -458,6 +460,8 @@ mppnc2_view <- mppnc2_view %>% mutate(loc_code = case_when(received_source == "C
 
 mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 mppnc2_view <- merge(mppnc2_view, gisaid_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
+
+mppnc2_view <- merge(mppnc2_view, genbank_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code2"), all.x = TRUE)
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
                                       received_source, SampleBarcode,                     

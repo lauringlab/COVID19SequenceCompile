@@ -32,16 +32,16 @@ if (grepl("IAV", plate_name)){
     } else if (grepl("leighbaker", checking_wd)){
       code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
       starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
-      seq_list_path <- ""
-      code_path2 <- ""
+      seq_list_path <- paste0("/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+      code_path2 <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
       
     } else if (grepl("leighbak", checking_wd)){
       
       starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
       code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
       batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
-      seq_list_path <- ""
-      code_path2 <- ""
+      seq_list_path <- paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+      code_path2 <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
       
     } else {
       
@@ -61,16 +61,16 @@ if (grepl("IAV", plate_name)){
   } else if (grepl("leighbaker", checking_wd)){
     code_path <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/"
     starting_path <- "/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/"
-    seq_list_path <- ""
-    code_path2 <- ""
+    seq_list_path <- paste0("/Users/leighbaker/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    code_path2 <- "/Users/leighbaker/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
     
   } else if (grepl("leighbak", checking_wd)){
     
     starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
     code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
     batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
-    seq_list_path <- ""
-    code_path2 <- ""
+    seq_list_path <- paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    code_path2 <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
     
   } else {
     
@@ -157,7 +157,7 @@ original_full <- filter(final_file, subject_id %in% unique(samples_previous$subj
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, sample_per_subject == 1 | subject_id == "100432897")
-#ff <- filter(ff, sample_id != "007482947")
+ff <- filter(ff, sample_id != "MH15940")
 
 ################################################################################
 ### fix date formatting
@@ -307,3 +307,4 @@ if (grepl("IAV", plate_name)){
 
 
 ## single upload: A/Michigan/UOM10042526240/2021 (2021-11-21)
+

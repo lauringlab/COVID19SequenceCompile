@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-plate_name <- "20231107_IAV_Nanopore_Run_40"
+#plate_name <- "20231107_IAV_Nanopore_Run_40"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -146,13 +146,13 @@ table(ff$received_source)
 # set up alert to duplicate items
 
 if (any(ff$sample_per_subject > 1)){
-  print("STOP: Examine this set of GISAID submissions.")
+  print("STOP: Examine this set of Genbank submissions.")
   stop("There are samples from subject_ids that we've sequenced previously.")
 }
 
 
-samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 

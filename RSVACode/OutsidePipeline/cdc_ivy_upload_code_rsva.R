@@ -32,23 +32,23 @@ rsv_ab6 <- rbind(rsv_a6, rsv_b6)
 
 rsv_ab_out4 <- rsv_ab4 %>% select(subject_id, sample_id, coll_date, flag, 
                               received_source, received_date, position, 
-                              PlateName, PlatePosition, SampleSourceLocation, 
+                              PlateName, PlateDate, PlatePosition, SampleSourceLocation, 
                               subtype, genbank_SubmissionID, genbank_Accession, genbank_SequenceID,
                               nextclade_clade, nextclade_Gclade, 
                               nextclade_totalMutations, nextclade_totalNonACGTNs, 
                               nextclade_totalMissing, nextclade_completeness, nextclade_qcOverallStatus)
 
 rsv_ab_out5 <- rsv_ab5 %>% select(subject_id, sample_id, coll_date, flag, 
-                                 received_source, received_date, position, 
-                                 PlateName, PlatePosition, SampleSourceLocation, 
-                                 subtype, genbank_SubmissionID, genbank_Accession, genbank_SequenceID,
-                                 nextclade_clade, nextclade_Gclade, 
-                                 nextclade_totalMutations, nextclade_totalNonACGTNs, 
-                                 nextclade_totalMissing, nextclade_completeness, nextclade_qcOverallStatus)
+                                  received_source, received_date, position, 
+                                  PlateName, PlateDate, PlatePosition, SampleSourceLocation, 
+                                  subtype, genbank_SubmissionID, genbank_Accession, genbank_SequenceID,
+                                  nextclade_clade, nextclade_Gclade, 
+                                  nextclade_totalMutations, nextclade_totalNonACGTNs, 
+                                  nextclade_totalMissing, nextclade_completeness, nextclade_qcOverallStatus)
 
 rsv_ab_out6 <- rsv_ab6 %>% select(subject_id, sample_id, coll_date, flag, 
                                   received_source, received_date, position, 
-                                  PlateName, PlatePosition, SampleSourceLocation, 
+                                  PlateName, PlateDate, PlatePosition, SampleSourceLocation, 
                                   subtype, genbank_SubmissionID, genbank_Accession, genbank_SequenceID,
                                   nextclade_clade, nextclade_Gclade, 
                                   nextclade_totalMutations, nextclade_totalNonACGTNs, 
@@ -56,7 +56,7 @@ rsv_ab_out6 <- rsv_ab6 %>% select(subject_id, sample_id, coll_date, flag,
 
 
 colnames(rsv_ab_out4) <- c("subject_id", "sample_id", "coll_date_rsv", "flag_rsv", 
-                         "received_source_rsv", "received_date_rsv", "position_rsv", 
+                         "received_source_rsv", "received_date_rsv", "plate_date_rsv", "position_rsv", 
                          "plate_name_rsv", "plate_position_rsv", "sample_source_location_rsv", 
                          "subtype_rsv", "genbank_submissionid_rsv", "genbank_accessionid_rsv", "genbank_sequenceid_rsv",
                          "nextclade_clade_rsv", "nextclade_gclade_rsv", 
@@ -64,15 +64,15 @@ colnames(rsv_ab_out4) <- c("subject_id", "sample_id", "coll_date_rsv", "flag_rsv
                          "nextclade_totalmissing_rsv", "nextclade_completeness_rsv", "nextclade_overall_qc_rsv")
 
 colnames(rsv_ab_out5) <- c("subject_id", "sample_id", "coll_date_rsv", "flag_rsv", 
-                          "received_source_rsv", "received_date_rsv", "position_rsv", 
-                          "plate_name_rsv", "plate_position_rsv", "sample_source_location_rsv", 
-                          "subtype_rsv", "genbank_submissionid_rsv", "genbank_accessionid_rsv", "genbank_sequenceid_rsv",
-                          "nextclade_clade_rsv", "nextclade_gclade_rsv", 
-                          "nextclade_totalmutations_rsv", "nextclade_totalnonacgtns_rsv", 
-                          "nextclade_totalmissing_rsv", "nextclade_completeness_rsv", "nextclade_overall_qc_rsv")
+                           "received_source_rsv", "received_date_rsv", "plate_date_rsv", "position_rsv", 
+                           "plate_name_rsv", "plate_position_rsv", "sample_source_location_rsv", 
+                           "subtype_rsv", "genbank_submissionid_rsv", "genbank_accessionid_rsv", "genbank_sequenceid_rsv",
+                           "nextclade_clade_rsv", "nextclade_gclade_rsv", 
+                           "nextclade_totalmutations_rsv", "nextclade_totalnonacgtns_rsv", 
+                           "nextclade_totalmissing_rsv", "nextclade_completeness_rsv", "nextclade_overall_qc_rsv")
 
 colnames(rsv_ab_out6) <- c("subject_id", "sample_id", "coll_date_rsv", "flag_rsv", 
-                           "received_source_rsv", "received_date_rsv", "position_rsv", 
+                           "received_source_rsv", "received_date_rsv", "plate_date_rsv", "position_rsv", 
                            "plate_name_rsv", "plate_position_rsv", "sample_source_location_rsv", 
                            "subtype_rsv", "genbank_submissionid_rsv", "genbank_accessionid_rsv", "genbank_sequenceid_rsv",
                            "nextclade_clade_rsv", "nextclade_gclade_rsv", 

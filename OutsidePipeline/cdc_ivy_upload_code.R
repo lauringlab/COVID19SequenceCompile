@@ -9,7 +9,7 @@ library(lubridate)
 
 ################################################################################
 
-starting_path <- "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/"
+starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
 outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
@@ -211,7 +211,7 @@ colnames(ivy6) <- c("sample_id", "subject_id", "coll_date", "flag", "received_so
 #seq_list <- filter(seq_list, platenumber <= 49)
 #write.csv(ivy3, paste0(outputLOC, "cdc_ivy3_", today, ".csv"), row.names = FALSE, na = "")
 #write.csv(ivy4, paste0(outputLOC, "cdc_ivy4_", today, ".csv"), row.names = FALSE, na = "")
-write.csv(ivy5, paste0(outputLOC, "cdc_ivy5_", today, ".csv"), row.names = FALSE, na = "")
+#write.csv(ivy5, paste0(outputLOC, "cdc_ivy5_", today, ".csv"), row.names = FALSE, na = "")
 write.csv(ivy6, paste0(outputLOC, "cdc_ivy6_", today, ".csv"), row.names = FALSE, na = "")
 
 

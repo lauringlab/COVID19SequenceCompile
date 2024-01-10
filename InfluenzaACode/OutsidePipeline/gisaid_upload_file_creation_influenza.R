@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-#plate_name <- "20230623_IAV_Illumina_Run_58"
+plate_name <- "20231208_IBV_Illumina_Run_3"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -94,7 +94,7 @@ if (grepl("IBV", plate_name)){
   
   # set output path for gisaid upload file
   # will need to add appropriate folder name at the end of this path
-  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/5_GISAID_Uploads/upload_", plate_datef, "_iav_", tolower(runtech), "_run_", runnum, "/")
+  outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/5_GISAID_Uploads/upload_", plate_datef, "_ibv_", tolower(runtech), "_run_", runnum, "/")
   
   ################################################################################
   

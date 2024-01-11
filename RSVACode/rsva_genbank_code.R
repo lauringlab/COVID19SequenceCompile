@@ -30,10 +30,13 @@ file_list <- list.files(pattern = "*.txt", path = genbank_fp)
 genbank_storage <- data.frame()
 
 for (i in file_list){
-  genbank_storage <- read.table(paste0(genbank_fp, "/", i), header = TRUE)
+  genbank_storage <- read.table(paste0(genbank_fp, "/", i), header = TRUE, stringsAsFactors = FALSE)
 }
 
- 
+#sapply(genbank_storage, class)
+
+
+
 #for (i in file_list){
 #  genbank_in <- read.delim(paste0(genbank_fp, "/", i), header = TRUE, row.names = NULL)
   

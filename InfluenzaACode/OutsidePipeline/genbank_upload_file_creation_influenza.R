@@ -159,7 +159,7 @@ if (any(ff$sample_per_subject > 1)){
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, sample_per_subject == 1 | subject_id == "100432897")
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("045688124", "101522622"))
 #ff <- filter(ff, sample_id != "007482947")
 
 ################################################################################

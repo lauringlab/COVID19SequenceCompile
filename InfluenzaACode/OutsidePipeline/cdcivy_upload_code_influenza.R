@@ -47,22 +47,22 @@ cdc_flu_old <- rbind(cdc_flu_old, cdc_fluB_old)
 
 
 cdc_flu_new <- cdc_flu %>% select(sample_id, subject_id, coll_date, flag, received_source, 
-                                  received_date, SampleBarcode, PlateName, PlatePlatform, PlateNumber,
-                                  PlatePostion, Sample_SourceLocation, nextclade_HA_clade, nextclade_HA_type,
-                                  nextclade_HA_completeness, nextclad_HA_totalMissing, nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+                                  received_date, SampleBarcode, PlateName, PlateDate, PlatePlatform, PlateNumber,
+                                  PlatePosition, SampleSourceLocation, nextclade_HA_clade, nextclade_HA_type,
+                                  nextclade_HA_completeness, nextclade_HA_totalMissing, nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
                                   nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs, 
-                                  genbank_submissionID, genbank_HAH1, genbank_HAH3,
-                                  genabnk_MP, genbank_NAN1, genbank_NAN2, genbnak_NP, genbank_NS,
-                                  genbank_PA, genbank_PB1, genbnak_PB2)
+                                  genbank_SubmissionID, genbank_HAH1, genbank_HAH3,
+                                  genbank_MP, genbank_NAN1, genbank_NAN2, genbank_NP, genbank_NS,
+                                  genbank_PA, genbank_PB1, genbank_PB2)
 
 cdc_fluB_new <- cdc_fluB %>% select(sample_id, subject_id, coll_date, flag, received_source, 
-                                    received_date, SampleBarcode, PlateName, PlatePlatform, PlateNumber,
-                                    PlatePostion, Sample_SourceLocation, nextclade_HA_clade, nextclade_HA_type,
-                                    nextclade_HA_completeness, nextclad_HA_totalMissing, nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+                                    received_date, SampleBarcode, PlateName, PlateDate, PlatePlatform, PlateNumber,
+                                    PlatePosition, SampleSourceLocation, nextclade_HA_clade, nextclade_HA_type,
+                                    nextclade_HA_completeness, nextclade_HA_totalMissing, nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
                                     nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs, 
-                                    genbank_submissionID, genbank_HAH1, genbank_HAH3,
-                                    genabnk_MP, genbank_NAN1, genbank_NAN2, genbnak_NP, genbank_NS,
-                                    genbank_PA, genbank_PB1, genbnak_PB2)
+                                    genbank_SubmissionID, genbank_HAH1, genbank_HAH3,
+                                    genbank_MP, genbank_NAN1, genbank_NAN2, genbank_NP, genbank_NS,
+                                    genbank_PA, genbank_PB1, genbank_PB2)
 
 cdc_flu_new <- rbind(cdc_flu_new, cdc_fluB_new)
 

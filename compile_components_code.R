@@ -7,6 +7,7 @@
 library(tidyverse)
 library(lubridate)
 library(withr)
+library(arsenal)
 
 ################################################################################
 #                 Component Files - Upload and Data Checks                     #
@@ -153,7 +154,18 @@ if (nrow(mppnc) > nrow(mani_plate_pang_g )){
   stop("Merging of Nextclade Data onto mainfest+plate maps+pangolin+gisaid = too many rows")
 }
 
+#nrow(mppnc)
+#nrow(mani_plate_pang_g)
 
+#differences <- comparedf(mppnc, mani_plate_pang_g, by = "sample_id")
+#diffs(differences, by.var = TRUE)
+
+#unique_genbank <- distinct(genbank, sample_id)
+#gb_differneces <- comparedf(genbank, unique_genbank, by = "sample_id")
+
+#found_samples <- genbank %>% group_by(sample_id) %>% summarise(n = n()) %>% filter(n > 1)
+
+#head(diffs(gb_differneces))
 ### add column for time in days from plate to nextclade
 #mppnc$PlateToNextclade_days <- difftime(mppnc$nextclade_runDate, mppnc$PlateDate, units = "days")
 

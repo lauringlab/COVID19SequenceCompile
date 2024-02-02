@@ -83,10 +83,10 @@ colnames(cdc_flu_new) <- c("sample_id", "subject_id", "coll_date_flu", "flag_flu
                            "received_source_flu", "received_date_flu", "sample_barcode_flu", 
                            "plate_name_flu", "plate_date_flu", "plate_platform_flu", "plate_number_flu",
                            "plate_position_flu", "sample_source_location_flu", "nextclade_ha_clade_flu", 
-                           "nextclade_ha_type_flu", "nextcalde_ha_completeness_flu", "nextclade_ha_totalmissing_flu",
+                           "nextclade_ha_type_flu", "nextclade_ha_completeness_flu", "nextclade_ha_totalmissing_flu",
                            "nextclade_ha_qcoverallscore_flu", "nextclade_ha_qcoverallstatus_flu", "nextclade_ha_totalmutations_flu", 
                            "nextclade_ha_totalnonacgtns_flu", "genbank_submissionid_flu", "genbank_hah1_flu",
-                           "genbank_hah3_flu", "genbank_mp_flu", "genbank_nan1_flu", "genbank_nan2_flu", "genbnak_np_flu",
+                           "genbank_hah3_flu", "genbank_mp_flu", "genbank_nan1_flu", "genbank_nan2_flu", "genbank_np_flu",
                            "genbank_ns_flu", "genbank_pa_flu", "genbank_pb1_flu", "genbank_pb2_flu")
 
 cdc_flu_old <- cdc_flu_old %>% mutate(study_id = case_when(sample_id == "G43Q59U6" ~ "23240105-01", 

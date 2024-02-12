@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-plate_name <- "20240130_IBV_Nanopore_Run_5"
+#plate_name <- "20240130_IBV_Nanopore_Run_5"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -151,8 +151,8 @@ if (any(ff$sample_per_subject > 1)){
 }
 
 
-#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
 

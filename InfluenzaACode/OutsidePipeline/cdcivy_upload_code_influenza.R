@@ -28,6 +28,16 @@ colnames(cdc_flu)
 #                               MP.Segment_ID = "", 
 #                               NS.Segment_ID = "")
 
+cdc_fluB <- cdc_flu %>% mutate(Isolate_Id = "",
+                               PB2.Segment_ID = "", 
+                               PB1.Segment_ID = "", 
+                               PA.Segment_ID = "", 
+                               HA.Segment_Id = "",
+                               NP.Segment_ID = "", 
+                               NA.Segment_ID = "", 
+                              MP.Segment_ID = "", 
+                              NS.Segment_ID = "",
+                              Isolate_Name = "")
 
 cdc_flu_old <- cdc_flu %>% select(sample_id, subject_id, coll_date, flag, received_source, 
                               received_date, SampleBarcode, PlateName, nextclade_HA_clade, 

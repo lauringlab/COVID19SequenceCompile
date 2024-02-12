@@ -69,7 +69,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20240201_SC2_Nanopore_Run_427"
+plate_name <- "20240206_SC2_Nanopore_Run_430"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
@@ -180,7 +180,7 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20230620_IBV_Illumina_Run_2"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20240123_IAV_Nanopore_Run_53"
+plate_name <- "20240202_IAV_Nanopore_Run_56"
 
 num_iavs_on_plate <- 93
 
@@ -213,8 +213,6 @@ source(paste0(influenza_path, "influenza_manifestcode.R"))
 
 source(paste0(influenza_path, "influenza_platemapcode.R"))
 
-source(paste0(influenza_path, "influenza_genbankcode.R"))
-
 source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
 source(paste0(influenza_path, "influenzaB_compilecomponentscode.R"))
 
@@ -233,10 +231,10 @@ source(paste0(influenza_path, "influenza_manifestcode.R"))
 source(paste0(influenza_path, "influenza_platemapcode.R"))
 
 source(paste0(influenza_path, "influenza_nextcladecode.R"))
-
+## A
 source(paste0(influenza_path, "influenza_genbankcode.R"))
 source(paste0(influenza_path, "influenza_compilecomponentscode.R"))
-
+## B
 source(paste0(influenza_path, "influenza_genbankcode_B.R"))
 source(paste0(influenza_path, "influenzaB_compilecomponentscode.R"))
 
@@ -266,6 +264,22 @@ plate_name <- "20231005_RSVA_Nanopore_Run_1"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 num_rsvs_on_plate <- 85
+
+### first check, see if any fasta files made for negative control wells
+if (grepl("RSVA", plate_name)){
+  all_fastas <- list.files(paste0(starting_path, "SEQUENCING/RSV_A/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
+}
+
+if (any(grepl("NC", all_fastas))){
+  stop("Negative Control Well generated fasta files.")
+}
+
+if (any(grepl("HeLa", all_fastas))){
+  stop("HeLa Control Well generated fasta files.")
+}
+
+#### if anything prompts a notification, confirm with lab technicians/underworld
+#### that plate passed negative control well checks
 
 ################################################################################
 # ROUND 1
@@ -326,6 +340,22 @@ plate_name <- "20231004_RSVB_Nanopore_Run_1"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 num_rsvs_on_plate <- 85
+
+### first check, see if any fasta files made for negative control wells
+if (grepl("RSVB", plate_name)){
+  all_fastas <- list.files(paste0(starting_path, "SEQUENCING/RSV_B/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
+}
+
+if (any(grepl("NC", all_fastas))){
+  stop("Negative Control Well generated fasta files.")
+}
+
+if (any(grepl("HeLa", all_fastas))){
+  stop("HeLa Control Well generated fasta files.")
+}
+
+#### if anything prompts a notification, confirm with lab technicians/underworld
+#### that plate passed negative control well checks
 
 ################################################################################
 # ROUND 1

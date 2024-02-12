@@ -103,8 +103,8 @@ if (any(ff$sample_per_subject > 1)){
 # then look at the "original_full" data frame and sort by subject_id
 # and look at the collection dates 
 
-#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 # if they are IVYIC duplicates, let them all through regardless
 ### check if the samples are > 90 days apart from one another for collection dates - then you can let 
 ### them through.
@@ -116,7 +116,7 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("013683554", "016454311", "028915640", "100856926"))
+ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("37710806", "63003871"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")

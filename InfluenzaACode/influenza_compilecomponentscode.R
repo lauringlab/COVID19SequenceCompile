@@ -315,6 +315,36 @@ mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
 rm(mppnc2_rvtn)
 
 ################################################################################
+## creating "StrainName" for genbank submissions
+## this is equivalent to "Isolate_Name" from old gisiad submission ways
+
+#getting state information for IVY
+#if (any(grepl("IVY", mppnc2$received_source))){
+  
+#  mppnc2$source_state_code <- substr(mppnc2$subject_id, 3, 4)
+#  cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
+#  cdc_sites <- read.csv(paste0(cdcivy_manifest_fp, "/Keys/CDC_SiteCodebook.csv"), colClasses = "character") %>% separate(SiteCode, into = c("site", "state"), sep = "_")
+#  site_bit <- cdc_sites %>% select(Number, state)
+  # add leading zeros to site
+#  site_bit <- site_bit %>% mutate(Number = case_when(nchar(Number) == 1 ~ paste0("0", Number), 
+#                                                     T ~ Number))
+  #colnames(site_bit) <- c("Number", "state")
+#  mppnc2 <- merge(mppnc2, site_bit, by.x = c("source_state_code"), by.y = c("Number"), all.x = TRUE)
+#  mppnc2$state <- ifelse(!grepl("IVY", mppnc2$received_source), "", mppnc2$state)
+  
+#} else {
+#  state <- ""
+#}
+
+## need to add in other options of Michigan for state if not IVY above
+
+## creating StrainName variable for the various sources
+## A/State/genbank_id/Year
+#mppnc2 <- mppnc2 %>% mutate(StrainName = case_when(received_source == "CDCIVY6" ~ paste0("A/", state, "/IVY-", genbank_id, "/", substr(coll_date, 1, 4)),
+#                                                                                       received_source == "CDCIVY4" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+
+
+################################################################################
 ## apply logic for mis-matched pangolin/nextclade info
 ## necessary for instances where a sample was run on two different plates
 ## unsure how this logic will work for flu, since not everything gets a nextclade entry

@@ -177,7 +177,7 @@ source(paste0(code_path, "compile_components_code.R"))
 # INFLUENZA COMPONENT
 ################################################################################
 
-plate_name <- "20230620_IBV_Illumina_Run_2"
+plate_name <- "20240212_IBV_Nanopore_Run_6"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
 plate_name <- "20240202_IAV_Nanopore_Run_56"
@@ -259,11 +259,11 @@ source(paste0(influenza_path, "influenzaB_compilecomponentscode.R"))
 # RSVA COMPONENT
 ################################################################################
 
-plate_name <- "20231005_RSVA_Nanopore_Run_1"
+plate_name <- "20240125_RSVA_Nanopore_Run_4"
 #plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-num_rsvs_on_plate <- 85
+num_rsvs_on_plate <- 93
 
 ### first check, see if any fasta files made for negative control wells
 if (grepl("RSVA", plate_name)){

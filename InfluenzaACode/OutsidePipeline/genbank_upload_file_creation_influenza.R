@@ -161,7 +161,7 @@ if (any(ff$sample_per_subject > 1)){
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("045688124", "101522622"))
 #ff <- filter(ff, sample_id != "007482947")
-
+#ff <- filter(ff, sample_id != "G43R60Y0" & sample_id != "RR041265541" & sample_id != "G43R61G4")
 ################################################################################
 ### fix date formatting
 ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 

@@ -174,7 +174,8 @@ if (any(grepl("IVY", ff$received_source))){
 
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
                                          received_source == "CDCIVY4" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
-                                         received_source == "CDCIVY5" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
+                                         received_source == "CDCIVY5" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]),
+                                         received_source == "CDCIVY6" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]),
                                          received_source == "IVYIC" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]),
                                          received_source == "RVTN" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
                                          received_source == "VIEW" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
@@ -195,6 +196,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("N
 ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hRSV-B-", sample_id),
                                           received_source == "CDCIVY4" ~ paste0("hRSV-B-", sample_id),
                                           received_source == "CDCIVY5" ~ paste0("hRSV-B-", sample_id),
+                                          received_source == "CDCIVY6" ~ paste0("hRSV-B-", sample_id),
                                           #received_source == "RVTN" ~ paste0("hRSV/A/USA/", state, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           #received_source == "VIEW" ~ paste0("hRSV/A/USA/", state, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           received_source == "IVYIC" ~ paste0("hRSV-B-", sample_id),
@@ -208,7 +210,7 @@ ff$Host <- "Human"
 ff$AdditionalHost <- ""
 
 ff <- ff %>% mutate(SamplingStrategy = case_when(sample_per_subject > 1 ~ "Warning", 
-                                                 received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5", "MHOME") ~ "", 
+                                                 received_source %in% c("CDCIVY", "CDCIVY4", "CDCIVY5","CDCIVY6","MHOME") ~ "", 
                                                  grepl("PUI", flag) ~ "", 
                                                  received_source == "RVTN" ~ "Research",
                                                  received_source == "VIEW" ~ "Research",
@@ -266,6 +268,7 @@ ff$Coverage <- ""
 ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Central Lab, Vanderbilt University Medical Center", 
                                           received_source == "CDCIVY4" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
                                           received_source == "CDCIVY5" ~ "IVY5 Central Lab, Vanderbilt University Medical Center",
+                                          received_source == "CDCIVY6" ~ "IVY6 Central Lab, Vanderbilt University Medical Center",
                                           received_source == "RVTN" ~ "Vanderbilt University Medical Center",
                                           received_source == "VIEW" ~ "Vanderbilt University Medical Center",
                                           received_source == "IVYIC" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",

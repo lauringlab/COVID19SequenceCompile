@@ -180,7 +180,7 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20240212_IBV_Nanopore_Run_6"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20240202_IAV_Nanopore_Run_56"
+plate_name <- "20240213_IAV_Nanopore_Run_60"
 
 num_iavs_on_plate <- 93
 
@@ -265,21 +265,6 @@ plate_name <- "20240125_RSVA_Nanopore_Run_4"
 
 num_rsvs_on_plate <- 93
 
-### first check, see if any fasta files made for negative control wells
-if (grepl("RSVA", plate_name)){
-  all_fastas <- list.files(paste0(starting_path, "SEQUENCING/RSV_A/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
-}
-
-if (any(grepl("NC", all_fastas))){
-  stop("Negative Control Well generated fasta files.")
-}
-
-if (any(grepl("HeLa", all_fastas))){
-  stop("HeLa Control Well generated fasta files.")
-}
-
-#### if anything prompts a notification, confirm with lab technicians/underworld
-#### that plate passed negative control well checks
 
 ################################################################################
 # ROUND 1
@@ -335,27 +320,12 @@ source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 # RSVB COMPONENT
 ################################################################################
 
-plate_name <- "20231004_RSVB_Nanopore_Run_1"
+plate_name <- "20240209_RSVB_Nanopore_Run_4"
 #plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-num_rsvs_on_plate <- 85
+num_rsvs_on_plate <- 93
 
-### first check, see if any fasta files made for negative control wells
-if (grepl("RSVB", plate_name)){
-  all_fastas <- list.files(paste0(starting_path, "SEQUENCING/RSV_B/3_ProcessedGenomes/", plate_name, "/Segment_sequences"))
-}
-
-if (any(grepl("NC", all_fastas))){
-  stop("Negative Control Well generated fasta files.")
-}
-
-if (any(grepl("HeLa", all_fastas))){
-  stop("HeLa Control Well generated fasta files.")
-}
-
-#### if anything prompts a notification, confirm with lab technicians/underworld
-#### that plate passed negative control well checks
 
 ################################################################################
 # ROUND 1

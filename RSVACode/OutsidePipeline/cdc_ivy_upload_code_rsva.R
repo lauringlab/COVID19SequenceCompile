@@ -1,4 +1,4 @@
-### Code to generate RedCap upload file for RSVA - IVY
+### Code to generate RedCap upload file for RSVA and RSVB - IVY
 
 library(tidyverse)
 library(lubridate)
@@ -84,8 +84,8 @@ colnames(rsv_ab_out6) <- c("subject_id", "sample_id", "coll_date_rsv", "flag_rsv
 f_out <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/IVY_uploads/"
 
 
-write.csv(rsv_ab_out4, paste0(f_out, "ivy4_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
-write.csv(rsv_ab_out5, paste0(f_out, "ivy5_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
+#write.csv(rsv_ab_out4, paste0(f_out, "ivy4_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
+#write.csv(rsv_ab_out5, paste0(f_out, "ivy5_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
 write.csv(rsv_ab_out6, paste0(f_out, "ivy6_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
 
 

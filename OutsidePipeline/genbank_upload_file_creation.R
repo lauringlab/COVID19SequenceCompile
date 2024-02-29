@@ -54,7 +54,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20230908_SC2_Nanopore_Run_342"
+#plate_name <- "20240220_SC2_Nanopore_Run_438"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -103,8 +103,8 @@ if (any(ff$sample_per_subject > 1)){
 # then look at the "original_full" data frame and sort by subject_id
 # and look at the collection dates 
 
-samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 # if they are IVYIC duplicates, let them all through regardless
 ### check if the samples are > 90 days apart from one another for collection dates - then you can let 
 ### them through.
@@ -116,7 +116,7 @@ original_full <- filter(final_file, subject_id %in% unique(samples_previous$subj
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("37710806", "63003871"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("37710806", "63003871"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")

@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-#plate_name <- "20240206_IAV_Nanopore_Run_58"
+#plate_name <- "20240214_IAV_Nanopore_Run_63"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -159,7 +159,7 @@ if (any(ff$sample_per_subject > 1)){
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("045688124", "101522622"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("015673084", "100865083"))
 #ff <- filter(ff, sample_id != "007482947")
 #ff <- filter(ff, sample_id != "G43R60Y0" & sample_id != "RR041265541" & sample_id != "G43R61G4")
 ################################################################################
@@ -200,7 +200,8 @@ if(any(grepl("RVTN", ff$received_source))){
 
 #ff$State <- state.name[match(ff$StateAbbrev,state.abb)]
 ff <- ff %>% mutate(StateAbbrev = case_when(grepl("RVTN", received_source) ~ state, 
-                                            grepl("CDCIVY", received_source) ~ state, 
+                                            grepl("CDCIVY", received_source) ~ state,
+                                            grepl("VIEW", received_source) ~ "TN",
                                             T ~ "MI"))
 
 ff <- ff %>% mutate(State = state.name[match(StateAbbrev,state.abb)])

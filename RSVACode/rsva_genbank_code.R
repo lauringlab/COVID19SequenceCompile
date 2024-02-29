@@ -29,28 +29,29 @@ file_list <- list.files(pattern = "*.txt", path = genbank_fp)
 
 genbank_storage <- data.frame()
 
-#for (i in file_list){
-#  genbank_storage <- read.table(paste0(genbank_fp, "/", i), header = TRUE, stringsAsFactors = FALSE)
-#}
+for (i in file_list){
+  genbank_in <- read.table(paste0(genbank_fp, "/", i), header = TRUE)
+  genbank_storage <- rbind(genbank_storage, genbank_in) 
+}
 
 #sapply(genbank_storage, class)
 
 
 
-for (i in file_list){
-  genbank_in <- read.table(paste0(genbank_fp, "/", i), header = TRUE, row.names = NULL)
+#for (i in file_list){
+#  genbank_in <- read.table(paste0(genbank_fp, "/", i), header = TRUE, row.names = NULL)
   
   # get submission id
-  a <- strsplit(i, "\\_")[[1]][2]
-  b <- strsplit(a, "\\.")[[1]][1]
+ # a <- strsplit(i, "\\_")[[1]][2]
+#  b <- strsplit(a, "\\.")[[1]][1]
   
-  genbank_in <- genbank_in[, c(1:3)]
-  colnames(genbank_in) <- c("SubmissionID", "SequenceID", "Accession")
+ # genbank_in <- genbank_in[, c(1:3)]
+#  colnames(genbank_in) <- c("SubmissionID", "SequenceID", "Accession")
   
   #genbank_in$SubmissionID <- b
   
-  genbank_storage <- rbind(genbank_storage, genbank_in)
-}
+ # genbank_storage <- rbind(genbank_storage, genbank_in)
+#}
 
 
 genbank_storage <- genbank_storage %>% distinct()  

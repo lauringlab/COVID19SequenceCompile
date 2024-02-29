@@ -30,7 +30,8 @@ file_list <- list.files(pattern = "*.txt", path = genbank_fp)
 genbank_storage <- data.frame()
 
 for (i in file_list){
-  genbank_storage <- read.table(paste0(genbank_fp, "/", i), header = TRUE)
+ genbank_in <- read.table(paste0(genbank_fp, "/", i), header = TRUE)
+ genbank_storage <- rbind(genbank_storage, genbank_in) 
 }
 
  
@@ -44,7 +45,7 @@ for (i in file_list){
 #  genbank_in <- genbank_in[, c(1:3)]
 #  colnames(genbank_in) <- c("SubmissionID", "SequenceID", "Accession")
   
-#  genbank_in$SubmissionID <- b
+  #genbank_in$SubmissionID <- b
   
 #  genbank_storage <- rbind(genbank_storage, genbank_in)
 #}

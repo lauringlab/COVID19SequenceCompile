@@ -69,7 +69,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20240219_SC2_Nanopore_Run_437"
+plate_name <- "20240318_SC2_Nanopore_Run_450"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
@@ -180,7 +180,7 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20240212_IBV_Nanopore_Run_6"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20240213_IAV_Nanopore_Run_59"
+plate_name <- "20240314_IAV_Nanopore_Run_81"
 
 num_iavs_on_plate <- 93
 

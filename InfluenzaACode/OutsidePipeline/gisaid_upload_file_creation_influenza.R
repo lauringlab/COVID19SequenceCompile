@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-plate_name <- "20231208_IBV_Illumina_Run_3"
+plate_name <- "20231208_IBV_Illumina_Run_4"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -157,7 +157,7 @@ original_full <- filter(final_file, subject_id %in% unique(samples_previous$subj
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, sample_per_subject == 1 | subject_id == "100432897")
-ff <- filter(ff, sample_id != "MH15940")
+#ff <- filter(ff, sample_id != "MH15940")
 
 ################################################################################
 ### fix date formatting

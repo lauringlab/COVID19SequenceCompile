@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-#plate_name <- "20240214_IAV_Nanopore_Run_63"
+#plate_name <- "20240307_IAV_Nanopore_Run_75"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -258,6 +258,12 @@ check_segment_number <- check_segment_number %>% separate(all_files, c('first', 
 check_segment_number <- check_segment_number %>% separate(first, c('sample_id', 'type', 'segment1', 'segment2'), sep = "_", remove = FALSE)
 check_segment_number <- check_segment_number %>% group_by(sample_id) %>% mutate(count = length(unique(segment1)))
 check_segment_number <- filter(check_segment_number, count == 8)
+
+#adding leading zeros to ASJ samples if not added in the beginning of the processing
+#check_segment_number$sample_id <- paste0("00", check_segment_number$sample_id)
+
+#remove leading zeros for ASJ samples if not in the segment sequence file names
+#ff$sample_id <- str_remove(ff$sample_id, "^0+")
 
 ff <- merge(ff, check_segment_number, by = c("sample_id"))
 ff[is.na(ff)] <- ""

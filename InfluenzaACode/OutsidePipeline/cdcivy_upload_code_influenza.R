@@ -104,9 +104,9 @@ cdc_flu_old <- cdc_flu_old %>% mutate(study_id = case_when(sample_id == "G43Q59U
 
 today_date <- gsub("-", "", Sys.Date())
 
-write.csv(filter(cdc_flu_old, received_source_flu == "CDCIVY4"), paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
-                          "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
-                          "IVY_uploads/cdc_ivy_flu_", today_date, ".csv"), row.names = FALSE, na = "")
+#write.csv(filter(cdc_flu_old, received_source_flu == "CDCIVY4"), paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
+#                          "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
+#                          "IVY_uploads/cdc_ivy_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 
 
 flu5 <- filter(cdc_flu_old, received_source_flu == "CDCIVY5")
@@ -116,9 +116,9 @@ flu5 <- filter(cdc_flu_old, received_source_flu == "CDCIVY5")
 # flu5 <- filter(flu5, !plate_name_flu %in% c("20230315_IAV_Illumina_Run_49", "20230316_IAV_Illumina_Run_51"))
 # flu_all <- rbind(flu5, flu5_out)
 
-write.csv(flu5, paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
-                                                                    "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
-                                                                    "IVY_uploads/cdc_ivy5_flu_", today_date, ".csv"), row.names = FALSE, na = "")
+#write.csv(flu5, paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
+#                                                                    "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
+#                                                                    "IVY_uploads/cdc_ivy5_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 
 flu6 <- filter(cdc_flu_new, received_source_flu == "CDCIVY6")
 

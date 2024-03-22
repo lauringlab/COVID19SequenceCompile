@@ -105,7 +105,7 @@ for (i in g_files){
   gisaid <- rbind(gisaid, gisaid_in)
 }
 
-colnames(gisaid)[1] <- "Isolate_Id"
+colnames(gisaid)[2] <- "Isolate_Id"
 
 gisaid_secret <- filter(gisaid, grepl("RVTN", Isolate_Name))
 gisaid <- filter(gisaid, !grepl("RVTN", Isolate_Name))
@@ -391,3 +391,4 @@ mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
 
 write.csv(mppnc3, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc3, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")
+

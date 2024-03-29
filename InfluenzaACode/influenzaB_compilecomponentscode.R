@@ -86,44 +86,47 @@ nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClass
 # 
 ### gisaid
 ### read every .csv in that folder
-#g_files <- list.files(gisaid_fp, pattern = "*.csv")
+g_files <- list.files(gisaid_fp, pattern = "*.csv")
 
-#gisaid <- data.frame()
+gisaid <- data.frame()
 
-#for (i in g_files){
-#  gisaid_in <- read.csv(paste0(gisaid_fp, "/", i), colClasses = "character")
-#  gisaid <- rbind(gisaid, gisaid_in)
-#}
+for (i in g_files){
+  gisaid_in <- read.csv(paste0(gisaid_fp, "/", i), colClasses = "character")
+  gisaid <- rbind(gisaid, gisaid_in)
+}
 
-#colnames(gisaid)[1] <- "Isolate_Id"
+colnames(gisaid)[1] <- "Isolate_Id"
 
 #gisaid_secret <- filter(gisaid, grepl("RVTN", Isolate_Name))
 #gisaid <- filter(gisaid, !grepl("RVTN", Isolate_Name))
 
-#gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
-#                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
-#                            P3.Segment_Id, Isolate_Name)
+gisaid <- gisaid %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, #HE.Segment_Id,
+                            #P3.Segment_Id, 
+                            Isolate_Name)
 #gisaid_secret <- gisaid_secret %>% select(Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
 #                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
 #                            P3.Segment_Id, Isolate_Name)
 
-#gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
+gisaid <- separate(data = gisaid, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
 #gisaid_secret <- separate(data = gisaid_secret, col = Isolate_Name, remove = FALSE, sep = "/", into = c("type", "place", "id", "year"))
 
-#gisaid$id <- gsub("UOM", "", gisaid$id)
+gisaid$id <- gsub("UOM", "", gisaid$id)
 #gisaid$id <- gsub("MISAPPHIRE", "", gisaid$id)
 #gisaid$id <- gsub("IVY", "", gisaid$id)
 #gisaid$id <- gsub("HFHS", "", gisaid$id)
 #gisaid$id <- gsub("RVTN", "", gisaid$id)
 #gisaid_secret$id <- gsub("RVTN", "", gisaid_secret$id)
 
-#gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
-#                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
-#                            P3.Segment_Id, Isolate_Name)
-#colnames(gisaid) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id",
-#                      "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", "HE.Segment_Id",
-#                      "P3.Segment_Id", "Isolate_Name")
-#
+gisaid <- gisaid %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, #HE.Segment_Id,
+                            #P3.Segment_Id, 
+                            Isolate_Name)
+colnames(gisaid) <- c("sample_id", "Isolate_Id", "PB2.Segment_Id", "PB1.Segment_Id", "PA.Segment_Id", "HA.Segment_Id",
+                      "NP.Segment_Id", "NA.Segment_Id", "MP.Segment_Id", "NS.Segment_Id", #"HE.Segment_Id",
+                      #"P3.Segment_Id", 
+                      "Isolate_Name")
+
 #gisaid_secret <- gisaid_secret %>% select(id, Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
 #                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
 #                            P3.Segment_Id, Isolate_Name)
@@ -132,7 +135,7 @@ nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClass
 #                      "P3.Segment_Id", "Isolate_Name")
 
 
-#mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mani_plate_g <- merge(mani_plate, gisaid, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 
 ################################################################################
 ### genbank
@@ -144,7 +147,7 @@ colnames(genbank)[1] <- "genbank_SubmissionID"
 genbank_secret <- filter(genbank, grepl("RVTN", loc_code2))
 genbank <- filter(genbank, !grepl("RVTN", loc_code2))
 
-mani_plate_g2 <- merge(mani_plate, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+mani_plate_g2 <- merge(mani_plate_g, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 
 ################################################################################
 
@@ -284,6 +287,17 @@ mppnc2_rvtn <- merge(mppnc2_rvtn, genbank_secret, by.x = c("sample_id_lauring"),
 
 #colnames(mppnc2_rvtn)
 
+mppnc2_rvtn$Isolate_Id <- ""
+mppnc2_rvtn$PB2.Segment_Id <- ""
+mppnc2_rvtn$PB1.Segment_Id <- ""
+mppnc2_rvtn$PA.Segment_Id <- ""
+mppnc2_rvtn$HA.Segment_Id <- ""
+mppnc2_rvtn$NP.Segment_Id <- ""
+mppnc2_rvtn$NA.Segment_Id <- ""
+mppnc2_rvtn$MP.Segment_Id <- ""
+mppnc2_rvtn$NS.Segment_Id <- ""
+mppnc2_rvtn$Isolate_Name <- ""
+
 mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
                                       flag, received_source, received_date, SampleBarcode,
                                       PlateDate, PlatePlatform, PlateNumber,
@@ -295,9 +309,10 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
                                       nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
                                       nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
                                       nextclade_HA_runDate, nextclade_HA_type,
-                                      #Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
-                                      #NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
-                                      #P3.Segment_Id, Isolate_Name,
+                                      Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                                      NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, #HE.Segment_Id,
+                                      #P3.Segment_Id, 
+                                      Isolate_Name,
                                       subject_id_length, position, PlateName, PlatePosition,
                                       SampleSourceLocation, #PlateToNextclade_days,
                                       sample_per_subject, sample_id_lauring)
@@ -363,9 +378,10 @@ mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
                             nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
                             nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
                             nextclade_HA_runDate, nextclade_HA_type, 
-                            #Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-                            #NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-                            #P3.Segment_Id, Isolate_Name,              
+                            Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, #HE.Segment_Id, 
+                            #P3.Segment_Id, 
+                            Isolate_Name,              
                             subject_id_length, position, PlateName, PlatePosition,               
                             SampleSourceLocation, #PlateToNextclade_days, 
                             sample_per_subject, sample_id_lauring)

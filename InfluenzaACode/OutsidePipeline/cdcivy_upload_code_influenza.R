@@ -28,16 +28,16 @@ colnames(cdc_flu)
 #                               MP.Segment_ID = "", 
 #                               NS.Segment_ID = "")
 
-cdc_fluB <- cdc_flu %>% mutate(Isolate_Id = "",
-                               PB2.Segment_ID = "", 
-                               PB1.Segment_ID = "", 
-                               PA.Segment_ID = "", 
-                               HA.Segment_Id = "",
-                               NP.Segment_ID = "", 
-                               NA.Segment_ID = "", 
-                              MP.Segment_ID = "", 
-                              NS.Segment_ID = "",
-                              Isolate_Name = "")
+#cdc_fluB <- cdc_fluB %>% mutate(Isolate_Id = "",
+#                               PB2.Segment_ID = "", 
+#                               PB1.Segment_ID = "", 
+#                               PA.Segment_ID = "", 
+#                               HA.Segment_Id = "",
+#                               NP.Segment_ID = "", 
+#                               NA.Segment_ID = "", 
+#                              MP.Segment_ID = "", 
+#                              NS.Segment_ID = "",
+#                              Isolate_Name = "")
 
 cdc_flu_old <- cdc_flu %>% select(sample_id, subject_id, coll_date, flag, received_source, 
                               received_date, SampleBarcode, PlateName, nextclade_HA_clade, 
@@ -65,6 +65,11 @@ cdc_flu_new <- cdc_flu %>% select(sample_id, subject_id, coll_date, flag, receiv
                                   genbank_MP, genbank_NAN1, genbank_NAN2, genbank_NP, genbank_NS,
                                   genbank_PA, genbank_PB1, genbank_PB2)
 
+cdc_fluB$genbank_HAH1 <- ""
+cdc_fluB$genbank_HAH3 <- ""
+cdc_fluB$genbank_NAN1 <- ""
+cdc_fluB$genbank_NAN2 <- ""
+
 cdc_fluB_new <- cdc_fluB %>% select(sample_id, subject_id, coll_date, flag, received_source, 
                                     received_date, SampleBarcode, PlateName, PlateDate, PlatePlatform, PlateNumber,
                                     PlatePosition, SampleSourceLocation, nextclade_HA_clade, nextclade_HA_type,
@@ -74,7 +79,7 @@ cdc_fluB_new <- cdc_fluB %>% select(sample_id, subject_id, coll_date, flag, rece
                                     genbank_MP, genbank_NAN1, genbank_NAN2, genbank_NP, genbank_NS,
                                     genbank_PA, genbank_PB1, genbank_PB2)
 
-cdc_flu_new <- rbind(cdc_flu_new, cdc_fluB_new)
+cdc_flu_new_full <- rbind(cdc_flu_new, cdc_fluB_new)
 
 # cdc_flu <- cdc_flu %>% mutate(site_code = substr(subject_id, 3, 4))
 # 
@@ -89,7 +94,7 @@ colnames(cdc_flu_old) <- c("sample_id", "study_id", "coll_date_flu", "flag_flu",
                        "pb1_segment_id_flu", "pa_segment_id_flu", "ha_segment_id_flu", "np_segment_id_flu", 
                        "na_segment_id_flu", "mp_segment_id_flu", "ns_segment_id_flu", "isolate_name_flu")
 
-colnames(cdc_flu_new) <- c("sample_id", "subject_id", "coll_date_flu", "flag_flu", 
+colnames(cdc_flu_new_full) <- c("sample_id", "subject_id", "coll_date_flu", "flag_flu", 
                            "received_source_flu", "received_date_flu", "sample_barcode_flu", 
                            "plate_name_flu", "plate_date_flu", "plate_platform_flu", "plate_number_flu",
                            "plate_position_flu", "sample_source_location_flu", "nextclade_ha_clade_flu", 
@@ -120,7 +125,7 @@ flu5 <- filter(cdc_flu_old, received_source_flu == "CDCIVY5")
 #                                                                    "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
 #                                                                    "IVY_uploads/cdc_ivy5_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 
-flu6 <- filter(cdc_flu_new, received_source_flu == "CDCIVY6")
+flu6 <- filter(cdc_flu_new_full, received_source_flu == "CDCIVY6")
 
 write.csv(flu6, paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
                        "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 

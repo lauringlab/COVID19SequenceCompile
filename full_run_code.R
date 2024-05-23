@@ -40,7 +40,7 @@ if (grepl("juliegil", checking_wd)){
   starting_path <- "/Users/chbl/Dropbox (University of Michigan)/MED-LauringLab/"
   code_path <- "/Users/chbl/Documents/LauringLab/COVID19SequenceCompile/"
   batch_path <- "/Users/chbl/Documents/LauringLab/AlertCode"  
-  
+  influenza_path <- "/Users/chbl/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
 } else {
   
   print("User not recognized.")

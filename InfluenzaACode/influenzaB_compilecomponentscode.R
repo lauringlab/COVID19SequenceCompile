@@ -22,6 +22,8 @@ nc_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/
 gisaid_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/gisaid")
 # genbank file path
 genbank_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+# other lists file path
+otherlists_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/SequenceOutcomes/OtherLists")
 
 ### output location for files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary")
@@ -386,6 +388,42 @@ mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
                             SampleSourceLocation, #PlateToNextclade_days, 
                             sample_per_subject, sample_id_lauring)
 
+
+################################################################################
+## Filtering out the duplicate "old" SPH samples (2016-2019) so there is only 1 sample
+## that has the correct nextclade strain with it 
+
+only_sph_samples <- filter(mppnc3, grepl("MARTIN", received_source))
+
+runs_sph <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
+
+#double checking that all other SPH samples have duplicate entries in full compiled IBV
+num_of_samples <- only_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
+runs_ibv <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
+
+#this has all "NA" (12) and "good" (2) that are not duplicate samples
+non_dups_sph <- filter(only_sph_samples, sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
+                                                          "MH25666", "MH25785", "MH26763", "MH26931",
+                                                          "MH26934", "MH26944", "MH26968", "MH29093",
+                                                          "MHM2682", "MHM2684"))
+
+## removing the duplicat sph samples that have the wrong nextclade assignment
+good_nc_sph <- only_sph_samples[!only_sph_samples$sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
+                                                                   "MH25666", "MH25785", "MH26763", "MH26931",
+                                                                   "MH26934", "MH26944", "MH26968", "MH29093",
+                                                                   "MHM2682", "MHM2684"),]
+
+good_nextclade_sph_samples <- filter(good_nc_sph, grepl("good", nextclade_HA_qcOverallStatus))
+
+num_of_good_samples <- good_nextclade_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
+
+runs_sph_ibv <- good_nextclade_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
+
+mppnc3 <- good_nextclade_sph_samples
+
+#all_back_together <- rbind(all_other_samples, non_dups_sph, good_nextclade_sph_samples)
+
+#all_runs_edited <- all_back_together %>% group_by(PlateName) %>% summarize(count = n())
 
 ################################################################################
 

@@ -116,14 +116,16 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("37710806", "63003871"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("107202", "120502", "121101", "121601",
+#                                                             "50610", "50980", "51789", "51968", "52429"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
 
 ## filter option for when missing subject_id and need to remove sample from list
 ## for example when we sequence a sample not on the manifest and only have sample_id
-#ff <- filter(ff, sample_id != "101074339")
+#ff <- filter(ff, sample_id != "HCV47970")
+#ff <- filter(ff, sample_id != "HCV47970" & sample_id != "HCV45295" & sample_id != "HCV45935" & sample_id != "HCV49066" & sample_id != "HCV46832")
 ################################################################################
 ### fix date formatting
 ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
@@ -148,7 +150,8 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("U
                                          received_source == "CDCIVY6" ~ paste0("USA: ", State),
                                          received_source == "IVYIC" ~ paste0("USA: ", State),
                                          received_source == "RVTN" ~ paste0("USA: ", State), 
-                                         received_source == "VIEW" ~ paste0("USA: Tennessee "), 
+                                         received_source == "VIEW" ~ paste0("USA: Tennessee "),
+                                         received_source == "RIGHT" ~ paste0("USA: Tennessee "),
                                          T ~ "USA: Michigan"))
 
 
@@ -161,13 +164,14 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           received_source == "CDCIVY6" ~ paste0("IVY-", sample_id),
                                           received_source == "RVTN" ~ paste0("RVTN-", sample_id_lauring),
                                           received_source == "VIEW" ~ paste0("VIEW-", sample_id_lauring),
+                                          received_source == "RIGHT" ~ paste0("RIGHT-", sample_id_lauring),
                                           received_source == "IVYIC" ~ paste0("IVYIC-", sample_id),
                                           received_source == "MDHHS" ~ paste0("UM-", sample_id),
                                           received_source == "HFHS" ~ paste0("MIS-", sample_id),
                                           received_source == "ASC" ~ paste0("MIS-", sample_id),
                                           received_source == "ASJ" ~ paste0("MIS-", sample_id),
                                           received_source == "TRINITY" ~ paste0("MIS-", sample_id),
-                                          T ~ paste0("UM-", sample_id, "/", substr(coll_date, 1, 4))))
+                                          T ~ paste0("UM-", sample_id)))
 
 
  ##create genbank formatted isolate name
@@ -179,6 +183,7 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                            received_source == "CDCIVY6" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                            received_source == "RVTN" ~ paste0("SARS-CoV-2/human/USA/", "RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                            received_source == "VIEW" ~ paste0("SARS-CoV-2/human/USA/", "VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
+                                           received_source == "RIGHT" ~ paste0("SARS-CoV-2/human/USA/", "RIGHT-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                            received_source == "IVYIC" ~ paste0("SARS-CoV-2/human/USA/", "IVYIC-", sample_id, "/", substr(coll_date, 1, 4)),
                                            received_source == "HFHS" ~ paste0("SARS-CoV-2/human/USA/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),
                                            received_source == "ASC" ~ paste0("SARS-CoV-2/human/USA/", "MIS-", sample_id, "/", substr(coll_date, 1, 4)),

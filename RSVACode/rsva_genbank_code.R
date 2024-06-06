@@ -58,7 +58,7 @@ genbank_storage <- genbank_storage %>% distinct()
 
 #sapply(genbank_storage, class)
 # create sample_id column
-genbank_storage$sample_id <- sapply(strsplit(as.character(genbank_storage$SequenceID),'-'),"[", 3)
+genbank_storage$sample_id <- sapply(strsplit(as.character(genbank_storage$SampleID),'-'),"[", 3)
 
 
 ############

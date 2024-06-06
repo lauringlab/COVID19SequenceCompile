@@ -89,8 +89,8 @@ if (any(ff$sample_per_subject > 1)){
 
 
 
-#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 # if they are IVYIC duplicates, let them all through regardless
 ### check if the samples are > 90 days apart from one another - then you can let 
 ### them through.
@@ -102,9 +102,7 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("017838404", "030452124", 
-#                                                              "032982827", "045586418", 
-#                                                              "100422404"))
+ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("56189"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
@@ -175,6 +173,7 @@ if (any(grepl("IVY", ff$received_source))){
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
                                          received_source == "CDCIVY4" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
                                          received_source == "CDCIVY5" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
+                                         received_source == "CDCIVY6" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
                                          received_source == "IVYIC" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]),
                                          received_source == "RVTN" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
                                          received_source == "VIEW" ~ paste0("North America / USA / ", state.name[match(ff$state,state.abb)]), 
@@ -195,6 +194,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("N
 ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("hRSV-A-", sample_id),
                                           received_source == "CDCIVY4" ~ paste0("hRSV-A-", sample_id),
                                           received_source == "CDCIVY5" ~ paste0("hRSV-A-", sample_id),
+                                          received_source == "CDCIVY6" ~ paste0("hRSV-A-", sample_id),
                                           #received_source == "RVTN" ~ paste0("hRSV/A/USA/", state, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           #received_source == "VIEW" ~ paste0("hRSV/A/USA/", state, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           received_source == "IVYIC" ~ paste0("hRSV-A-", sample_id),
@@ -266,6 +266,7 @@ ff$Coverage <- ""
 ff <- ff %>% mutate(originlab = case_when(received_source == "CDCIVY" ~ "IVY3 Central Lab, Vanderbilt University Medical Center", 
                                           received_source == "CDCIVY4" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",
                                           received_source == "CDCIVY5" ~ "IVY5 Central Lab, Vanderbilt University Medical Center",
+                                          received_source == "CDCIVY6" ~ "IVY6 Central Lab, Vanderbilt University Medical Center",
                                           received_source == "RVTN" ~ "Vanderbilt University Medical Center",
                                           received_source == "VIEW" ~ "Vanderbilt University Medical Center",
                                           received_source == "IVYIC" ~ "IVY4 Central Lab, Vanderbilt University Medical Center",

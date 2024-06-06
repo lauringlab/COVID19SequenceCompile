@@ -1,5 +1,5 @@
 ################################################################################
-#       Creation of Cumulative Dataset for Influenza Genetic Sampling          #
+#       Creation of Cumulative Dataset for RSVB Genetic Sampling          #
 #                            Created: 2021-11-19                               #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
@@ -142,6 +142,9 @@ mppnc3 <- mppnc
 #                            subject_id_length, position, PlateName, PlatePosition,               
 #                            SampleSourceLocation, PlateToNextclade_days, 
 #                            sample_per_subject, sample_id_lauring)
+
+## removing duplicate IVY6 samples that were sequenced with the wrong primers
+
 
 ################################################################################
 ### negative control well warning

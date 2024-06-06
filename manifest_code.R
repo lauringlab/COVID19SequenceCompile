@@ -14,6 +14,8 @@ library(withr)
 #                Manifest Files - Upload and Data Checks                       #
 ################################################################################
 
+#starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+
 # Manifest file paths (there should be a path per source)
 cbr_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CBR")
 uhs_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/UHS")
@@ -24,6 +26,7 @@ edidnow_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSamp
 cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/CDCIVY")
 rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN")
 view_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/VIEW")
+right_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RIGHT")
 ivyic_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/IVYIC")
 mdhhs_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/MDHHS")
 trinity_manifest_fp <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/TRINITY")
@@ -527,16 +530,17 @@ manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 
 
 ################################################################################
-## handle rvtn manifests
+## handle rvtn, view, right manifests
 
 #rvtn_file_list <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
 
 rvtn_file_list22 <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
 view_file_list <- list.files(pattern = "*.csv", path = view_manifest_fp)
+right_file_list <- list.files(pattern = "*.csv", path = right_manifest_fp)
 
-print("Processing RVTN and VIEW Manifests")
+print("Processing RVTN, VIEW, and RIGHT Manifests")
 
-rvtn_file_list22 <- c(rvtn_file_list22, view_file_list)
+rvtn_file_list22 <- c(rvtn_file_list22, view_file_list, right_file_list)
 
 rvtn_file_list <- c()
 for (each_file in rvtn_file_list22){
@@ -550,6 +554,8 @@ for (each_file in rvtn_file_list22){
 rvtn_storage <- data.frame()
 full_rvtn <- data.frame()
 
+#print(rvtn_file_list)
+
 for (each_file in rvtn_file_list){
     #print(each_file)
     if (grepl("VIEW", each_file)){
@@ -558,6 +564,12 @@ for (each_file in rvtn_file_list){
       fileone$site <- ""
       fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
                                     specimen_type, manifest_creation_date, record_id)
+    } else if (grepl("RIGHT", each_file)){
+        fileone <- read.csv(paste0(right_manifest_fp, "/", each_file), colClasses = "character")
+        colnames(fileone)[1] <- "specimen_id"
+        fileone$site <- ""
+        fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
+                                      specimen_type, manifest_creation_date, record_id)
     } else {
       fileone <- read.csv(paste0(rvtn_manifest_fp, "/", each_file), colClasses = "character")
     }

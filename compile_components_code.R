@@ -91,7 +91,7 @@ mani_plate <- rbind(mani_plate, mani_plate2)
 #missings <- filter(mani_plate, is.na(subject_id))
 #write.csv(missings, "C:/Users/juliegil/Documents/UofM_Work/Lauring_Lab/check_miss_subjects.csv", na = "", row.names = FALSE)
 
-# then, read in pangolin, gisaid, and next clade files
+# then, read in pangolin, gisaid, and nextclade files
 pangolin <- read.csv(paste0(pang_fp, "/sample_full_pangolin_list.csv"), colClasses = "character")
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
 gisaid <- read.csv(paste0(gisaid_fp, "/sample_full_gisaid_list.csv"), colClasses = "character")
@@ -119,6 +119,7 @@ mani_plate_pang <- mani_plate_pang %>% mutate(loc_code = case_when(received_sour
                                           received_source == "CDCIVY6" ~ "IVY",
                                           received_source == "RVTN" ~ "RVTN",
                                           received_source == "VIEW" ~ "VIEW",
+                                          received_source == "RIGHT" ~ "RIGHT",
                                           received_source == "IVYIC" ~ "IVYIC",
                                           T ~ "UM"))
 
@@ -128,7 +129,7 @@ mani_plate_pang_g <- merge(mani_plate_pang, gisaid, by.x = c("sample_id", "loc_c
 
 genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
 
-genbank_secret <- filter(genbank, grepl("RVTN", genbank_SequenceID) | grepl("VIEW", genbank_SequenceID))
+genbank_secret <- filter(genbank, grepl("RVTN", genbank_SequenceID) | grepl("VIEW", genbank_SequenceID) | grepl("RIGHT", genbank_SequenceID))
 
 mani_plate_pang_g <- mani_plate_pang_g %>% mutate(loc_code2 = case_when(received_source == "CDCIVY" ~  "IVY",
                                                   received_source == "CDCIVY4" ~ "IVY",
@@ -136,6 +137,7 @@ mani_plate_pang_g <- mani_plate_pang_g %>% mutate(loc_code2 = case_when(received
                                                   received_source == "CDCIVY6" ~ "IVY",
                                                   received_source == "RVTN" ~ "RVTN",
                                                   received_source == "VIEW" ~ "VIEW",
+                                                  received_source == "RIGHT" ~ "RIGHT",
                                                   received_source == "IVYIC" ~ "IVYIC",
                                                   received_source == "HFHS" ~ "MIS",
                                                   received_source == "ASC" ~ "MIS",
@@ -361,11 +363,11 @@ mppnc2 <- mppnc2 %>% mutate(coll_date = case_when(grepl("/", coll_date) & substr
 ################################################################################
 
 ###
-# pull in covid RVTN data
+# pull in covid RVTN, VIEW, and RIGHT data
 seq <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
 
-# only keep RVTN and VIEW
-seq <- filter(seq, received_source %in% c("RVTN", "VIEW"))
+# only keep RVTN, VIEW, and RIGHT
+seq <- filter(seq, received_source %in% c("RVTN", "VIEW", "RIGHT"))
 
 # read in already assigned sequences
 already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"))
@@ -390,7 +392,7 @@ full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_se
 write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
 
 
-# read in and attach RVTN and VIEW re-codes
+# read in and attach RVTN, VIEW, and RIGHT re-codes
 rvtn_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/Manifests/RVTN/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
 rvtn_recodes <- rvtn_recodes %>% select(sample_id_lauring, sample_id)
 rvtn_recodes <- filter(rvtn_recodes, sample_id != "")
@@ -401,10 +403,12 @@ mppnc2 <- merge(mppnc2, rvtn_recodes, by = c("sample_id"), all.x = TRUE)
 
 ################################################################################
 
-# add in RVTN gisaid
+# add in RVTN, VIEW, and RIGHT gisaid and genban
 mppnc2_rvtn <- filter(mppnc2, grepl("RVTN", received_source))# received_source == "RVTN")
 mppnc2_view <- filter(mppnc2, grepl("VIEW", received_source))
-mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source) & !grepl("VIEW", received_source)) #received_source != "RVTN")
+mppnc2_right <- filter(mppnc2, grepl("RIGHT", received_source))
+
+mppnc2 <- filter(mppnc2,!grepl("RVTN", received_source) & !grepl("VIEW", received_source) & !grepl("RIGHT", received_source)) #received_source != "RVTN")
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
                                       received_source, SampleBarcode,                     
@@ -452,12 +456,36 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
 
+mppnc2_right <- mppnc2_right %>% select(subject_id, sample_id, coll_date, flag,                               
+                                      received_source, SampleBarcode,                     
+                                      PlateDate, PlatePlatform,                      
+                                      PlateNumber, pangolin_lineage,                  
+                                      pangolin_probability, pangolin_status,                    
+                                      pangolin_note, nextclade_clade,                    
+                                      nextclade_totalMissing, nextclade_completeness,
+                                      #genbank_SequenceID, genbank_Accession, genbank_SubmissionID,
+                                      received_date, position,                           
+                                      SiteName, subject_id_length,                  
+                                      PlateName, PlatePosition,                      
+                                      SampleSourceLocation, pangoLEARN_version,                
+                                      pangolin_conflict, pango_version,                     
+                                      pangolin_version, 
+                                      #pangolin_runDate,                   
+                                      nextclade_qcOverallScore, nextclade_qcOverallStatus,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs, SF456L_present,         
+                                      #nextclade_runDate, 
+                                      sample_per_subject,                 
+                                      multiSamples, daysFromPrevious,                  
+                                      ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
+                                      previousCladeDifferentThanCurrent, sample_id_lauring)
+
 mppnc2_rvtn <- mppnc2_rvtn %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
                                                                    received_source == "CDCIVY4" ~ "IVY",
                                                                    received_source == "CDCIVY5" ~ "IVY",
                                                                    received_source == "CDCIVY6" ~ "IVY",
                                                                    received_source == "RVTN" ~ "RVTN",
                                                                    received_source == "VIEW" ~ "VIEW",
+                                                                   received_source == "RIGHT" ~ "RIGHT",
                                                                    received_source == "IVYIC" ~ "IVYIC",
                                                                    T ~ "UM"))
 
@@ -467,13 +495,25 @@ mppnc2_view <- mppnc2_view %>% mutate(loc_code = case_when(received_source == "C
                                                                    received_source == "CDCIVY6" ~ "IVY",
                                                                    received_source == "RVTN" ~ "RVTN",
                                                                    received_source == "VIEW" ~ "VIEW",
+                                                                   received_source == "RIGHT" ~ "RIGHT",
                                                                    received_source == "IVYIC" ~ "IVYIC",
                                                                    T ~ "UM"))
+
+mppnc2_right <- mppnc2_right %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
+                                                           received_source == "CDCIVY4" ~ "IVY",
+                                                           received_source == "CDCIVY5" ~ "IVY",
+                                                           received_source == "CDCIVY6" ~ "IVY",
+                                                           received_source == "RVTN" ~ "RVTN",
+                                                           received_source == "VIEW" ~ "VIEW",
+                                                           received_source == "RIGHT" ~ "RIGHT",
+                                                           received_source == "IVYIC" ~ "IVYIC",
+                                                           T ~ "UM"))
 
 mppnc2_rvtn <- merge(mppnc2_rvtn, gisaid_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 mppnc2_view <- merge(mppnc2_view, gisaid_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 
 mppnc2_view <- merge(mppnc2_view, genbank_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code2"), all.x = TRUE)
+mppnc2_right <- merge(mppnc2_right, genbank_secret, by.x = c("sample_id_lauring", "loc_code"), by.y = c("sample_id", "loc_code2"), all.x = TRUE)
 
 mppnc2_rvtn <- mppnc2_rvtn %>% select(subject_id, sample_id, coll_date, flag,                               
                                       received_source, SampleBarcode,                     
@@ -525,12 +565,39 @@ mppnc2_view <- mppnc2_view %>% select(subject_id, sample_id, coll_date, flag,
                                       ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
                                       previousCladeDifferentThanCurrent, sample_id_lauring)
 
+mppnc2_right <- mppnc2_right %>% select(subject_id, sample_id, coll_date, flag,                               
+                                      received_source, SampleBarcode,                     
+                                      PlateDate, PlatePlatform,                      
+                                      PlateNumber, pangolin_lineage,                  
+                                      pangolin_probability, pangolin_status,                    
+                                      pangolin_note, nextclade_clade,                    
+                                      nextclade_totalMissing, nextclade_completeness,             
+                                      gisaid_strain, gisaid_epi_isl,                     
+                                      gisaid_clade, gisaid_pango_lineage,
+                                      genbank_SequenceID, genbank_Accession, genbank_SubmissionID,
+                                      received_date, position,                           
+                                      SiteName, subject_id_length,                  
+                                      PlateName, PlatePosition,                      
+                                      SampleSourceLocation, pangoLEARN_version,                
+                                      pangolin_conflict, pango_version,                     
+                                      pangolin_version, 
+                                      #pangolin_runDate,                   
+                                      nextclade_qcOverallScore, nextclade_qcOverallStatus,          
+                                      nextclade_totalMutations, nextclade_totalNonACGTNs, SF456L_present,         
+                                      #nextclade_runDate, 
+                                      sample_per_subject,                 
+                                      multiSamples, daysFromPrevious,                  
+                                      ninetyDayFromPrevious, previousLineageDifferentThanCurrent,
+                                      previousCladeDifferentThanCurrent, sample_id_lauring)
+
 
 mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
 mppnc2 <- rbind(mppnc2, mppnc2_view)
+mppnc2 <- rbind(mppnc2, mppnc2_right)
 
 rm(mppnc2_rvtn)
 rm(mppnc2_view)
+rm(mppnc2_right)
 
 ################################################################################
 

@@ -25,6 +25,7 @@ cdcivy_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSa
 rvtn_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/RVTN")
 hfhs_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/HENRYFORD")
 asj_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/ASCENSION")
+mdhhs_manifest_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/MDHHS")
 
 asj_manifestb_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/Manifests/ASCENSION")
 cbr_manifestb_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/Manifests/CBR")
@@ -32,13 +33,14 @@ cdcivy_manifestb_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceS
 hfhs_manifestb_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/Manifests/HENRYFORD")
 rvtn_manifestb_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/Manifests/RVTN")
 martin_manifestb_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/Manifests/MARTIN")
+mdhhs_manifestb_fp <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/Manifests/MDHHS")
 
 manifest_folder_list <- c(cbr_manifest_fp, uhs_manifest_fp, stj_manifest_fp, mm_manifest_fp, 
                           puimisc_manifest_fp, cdcivy_manifest_fp, sph_manifest_fp, 
-                          rvtn_manifest_fp, hfhs_manifest_fp, asj_manifest_fp)
+                          rvtn_manifest_fp, hfhs_manifest_fp, asj_manifest_fp, mdhhs_manifest_fp)
 
 manifest_b_folder_list <- c(asj_manifestb_fp, cbr_manifestb_fp, cdcivy_manifestb_fp, 
-                            hfhs_manifestb_fp, rvtn_manifestb_fp, martin_manifestb_fp)
+                            hfhs_manifestb_fp, rvtn_manifestb_fp, martin_manifestb_fp, mdhhs_manifestb_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
@@ -131,6 +133,39 @@ for (each_list in i_folderlists){
                 manifest_storage <- rbind(manifest_storage, file_in)
                 
               }
+        } else if (each_folder %in% c(mdhhs_manifest_fp, mdhhs_manifestb_fp)){
+          # process mdhhs manifest
+          
+          # read in manifests
+          file_list <- list.files(pattern = "*.csv", path = each_folder)
+          for (mdhhs in file_list){
+            #print(mdhhs)
+            file_in <- read.csv(paste0(each_folder, "/", mdhhs))#, detectDates = TRUE)
+            
+            # "position", "sample_id", "subject_id", "coll_date", "flag"
+            file_in <- file_in %>% select(sample_id, subject_id, coll_date, result, recieved_date)
+            colnames(file_in) <- c("sample_id", "subject_id", "coll_date", "flag", "received_date")
+            
+            # sometimes have to cut time off of collection date (from excel)
+            #file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+            
+            # add in 2 new columns: received_date and received_source (from file name)
+            #file_in$received_date <- date_from_file(mdhhs)
+            # add in position column
+            file_in$position <- ""
+            
+            rec_source <- trimws(as.character(strsplit(mdhhs, "_")[[1]][1]))
+            file_in$received_source <- rec_source
+            file_in$flu_type <- add_on
+            # bind all rows together
+            
+            # reorder columns
+            file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, flu_type)
+            
+            manifest_storage <- rbind(manifest_storage, file_in)
+            
+          }          
+              
         } else {
         
         ### get names of all .csv files in folder

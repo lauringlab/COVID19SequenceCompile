@@ -568,6 +568,7 @@ for (each_file in rvtn_file_list){
         fileone <- read.csv(paste0(right_manifest_fp, "/", each_file), colClasses = "character")
         colnames(fileone)[1] <- "specimen_id"
         fileone$site <- ""
+        #fileone$date_of_collection <- as.Date(fileone$date_of_collection)#, format = "Y%-m%-d%")
         fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
                                       specimen_type, manifest_creation_date, record_id)
     } else {
@@ -594,8 +595,10 @@ for (each_file in rvtn_file_list){
     fileone <- fileone %>% select(study_id, date_of_collection, specimen_id, site)
     
     # fix date
-    fileone <- fileone %>% mutate(date_of_collection = case_when(is.numeric(as.numeric(substr(date_of_collection, 1, 4))) ~ as.POSIXct(date_of_collection, format = "%Y-%m-%d"), 
-                                                                 T ~ as.POSIXct(date_of_collection, format = "%d-%b-%y")))
+    #fileone <- fileone %>% mutate(date_of_collection = case_when(is.numeric(as.numeric(substr(date_of_collection, 1, 4))) ~ as.POSIXct(date_of_collection, format = "Y%-%m-%d"), #format = "%Y-%m-%d"), 
+    #                                                             T ~ as.POSIXct(date_of_collection, format = "%d-%b-%y")))
+    
+    #fileone <- fileone %>% 
     
     if (any(nchar(as.character(fileone$specimen_id)) != 9)){
       message(each_file)

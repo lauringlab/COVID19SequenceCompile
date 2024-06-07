@@ -385,7 +385,7 @@ fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_as
 colnames(fillup) <- colnames(seq3)
 seq3 <- rbind(seq3, fillup)
 
-full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned rvtn stuff, plus all the unassigned ids
+full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned rvtn, view, and right stuff, plus all the unassigned ids
 
 full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_set2)
 
@@ -463,6 +463,8 @@ mppnc2_right <- mppnc2_right %>% select(subject_id, sample_id, coll_date, flag,
                                       pangolin_probability, pangolin_status,                    
                                       pangolin_note, nextclade_clade,                    
                                       nextclade_totalMissing, nextclade_completeness,
+                                      gisaid_strain, gisaid_epi_isl,                     
+                                      gisaid_clade, gisaid_pango_lineage,
                                       #genbank_SequenceID, genbank_Accession, genbank_SubmissionID,
                                       received_date, position,                           
                                       SiteName, subject_id_length,                  

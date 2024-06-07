@@ -19,8 +19,9 @@ ivy4_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMeta
 ivy5_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/CDCIVY5")
 ivy6_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/CDCIVY6")
 hive_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/HIVE")
+right_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/RIGHT")
 
-manifest_folder_list <- c(ivy4_manifest_fp, ivy5_manifest_fp, ivy6_manifest_fp, hive_manifest_fp)
+manifest_folder_list <- c(ivy4_manifest_fp, ivy5_manifest_fp, ivy6_manifest_fp, hive_manifest_fp, right_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
@@ -121,7 +122,37 @@ for (each_folder in manifest_folder_list){
             manifest_storage <- rbind(manifest_storage, file_in)
             
           }    
+
+    }    else if (each_folder == right_manifest_fp){
+           #process RIGHT manifest
+      
+      # read in manifests
+      file_list <- list.files(pattern = "*.xlsx", path = each_folder)
+      for (rightm in file_list){
+        file_in <- read.xlsx(paste0(each_folder, "/", rightm), detectDates = TRUE)
         
+        # "position", "sample_id", "subject_id", "coll_date", "flag"
+        file_in <- file_in %>% select(specimen_id, study_id, date_of_collection, specimen_type, 
+                                      manifest_creation_date)
+        colnames(file_in) <- c("sample_id", "subject_id", "coll_date", "flag", "received_date")
+        
+        # sometimes have to cut time off of collection date (from excel)
+        file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+        
+        # add in 2 new columns: position and received_source (from file name)
+        file_in$position <- ""
+        
+        
+        rec_source <- trimws(as.character(strsplit(rightm, "_")[[1]][1]))
+        file_in$received_source <- rec_source
+        file_in$coll_date <- as.character(file_in$coll_date)
+        
+        #select the columns in the correct order
+        file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source)
+        
+        # bind all rows together
+        manifest_storage <- rbind(manifest_storage, file_in)
+      }
   } else {
   
   ### get names of all .csv files in folder

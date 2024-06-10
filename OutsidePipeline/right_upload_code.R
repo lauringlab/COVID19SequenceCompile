@@ -8,9 +8,20 @@ library(tidyverse)
 library(lubridate)
 
 ################################################################################
+checking_wd <- getwd()
 
-starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
-outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/RIGHT_UPLOADS/")
+if (grepl("leighbak", checking_wd)){
+  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
+  
+}else if (grepl("chbl", checking_wd)){
+  starting_path <- "/Users/chbl/Dropbox (University of Michigan)/MED-LauringLab/"
+  outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
+} else {
+  
+  print("User not recognized.")
+  
+}
 
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 

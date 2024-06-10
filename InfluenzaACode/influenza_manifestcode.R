@@ -140,15 +140,19 @@ for (each_list in i_folderlists){
           file_list <- list.files(pattern = "*.csv", path = each_folder)
           for (mdhhs in file_list){
             #print(mdhhs)
-            file_in <- read.csv(paste0(each_folder, "/", mdhhs))#, detectDates = TRUE)
+            file_in <- read.csv(paste0(each_folder, "/", mdhhs))
             
             # "position", "sample_id", "subject_id", "coll_date", "flag"
             file_in <- file_in %>% select(sample_id, subject_id, coll_date, result, recieved_date)
             colnames(file_in) <- c("sample_id", "subject_id", "coll_date", "flag", "received_date")
             
             # sometimes have to cut time off of collection date (from excel)
-            #file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
             
+            #file_in$coll_date <- as.POSIXct(as.numeric(as.character(file_in$coll_date)),origin="1970-01-01")
+            file_in$coll_date <- as.Date(file_in$coll_date, format = "%Y-%m-%d")
+            file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+            
+            class(file_in$coll_date)
             # add in 2 new columns: received_date and received_source (from file name)
             #file_in$received_date <- date_from_file(mdhhs)
             # add in position column

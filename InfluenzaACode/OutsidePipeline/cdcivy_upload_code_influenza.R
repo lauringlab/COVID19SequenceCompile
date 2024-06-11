@@ -3,11 +3,11 @@ library(tidyverse)
 library(lubridate)
 
 #### Read in influenza full file
-flu_file <- read.csv(paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
+flu_file <- read.csv(paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/", 
                             "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 
-flu_fileB <- read.csv(paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
+flu_fileB <- read.csv(paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/", 
                             "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetadata/FinalSummary/", 
                             "full_compiled_data.csv"), colClasses = c("character"))
 #flu_file <- filter(flu_file, PlateName != "20230315_IAV_Illumina_Run_49")
@@ -127,7 +127,7 @@ flu5 <- filter(cdc_flu_old, received_source_flu == "CDCIVY5")
 
 flu6 <- filter(cdc_flu_new_full, received_source_flu == "CDCIVY6")
 
-write.csv(flu6, paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/", 
+write.csv(flu6, paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/", 
                        "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                        "IVY_uploads/cdc_ivy6_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 

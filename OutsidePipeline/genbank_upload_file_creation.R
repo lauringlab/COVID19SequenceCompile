@@ -25,7 +25,7 @@ if (grepl("juliegil", checking_wd)){
 
 } else if (grepl("leighbak", checking_wd)){
   
-  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/"
   code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
   batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
   
@@ -37,7 +37,7 @@ if (grepl("juliegil", checking_wd)){
 
 } else if (grepl("chbl", checking_wd)){
   
-  starting_path <- "/Users/chbl/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/chbl/University of Michigan Dropbox/MED-LauringLab/"
   code_path <- "/Users/chbl/Documents/LauringLab/COVID19SequenceCompile/"
   batch_path <- "/Users/chbl/Documents/LauringLab/AlertCode"
       

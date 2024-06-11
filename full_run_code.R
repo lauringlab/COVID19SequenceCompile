@@ -24,7 +24,7 @@ if (grepl("juliegil", checking_wd)){
   
 } else if (grepl("leighbak", checking_wd)){
   
-  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/"
   code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
   batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
   influenza_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
@@ -37,7 +37,7 @@ if (grepl("juliegil", checking_wd)){
 
 } else if (grepl("chbl", checking_wd)){
   
-  starting_path <- "/Users/chbl/Dropbox (University of Michigan)/MED-LauringLab/"
+  starting_path <- "/Users/chbl/University of Michigan Dropbox/MED-LauringLab/"
   code_path <- "/Users/chbl/Documents/LauringLab/COVID19SequenceCompile/"
   batch_path <- "/Users/chbl/Documents/LauringLab/AlertCode"  
   influenza_path <- "/Users/chbl/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
@@ -69,9 +69,10 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20240318_SC2_Nanopore_Run_450"
+plate_name <- "20240604_SC2_Nanopore_Run_473"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
+
 #>>>>>>> 965c5720bf619c9fbd3a0ac0fa4ba776ee6d272f
 
 
@@ -180,7 +181,7 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20240212_IBV_Nanopore_Run_6"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20240314_IAV_Nanopore_Run_81"
+plate_name <- "20240605_IAV_Nanopore_Run_101"
 
 num_iavs_on_plate <- 93
 

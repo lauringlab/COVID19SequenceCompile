@@ -36,7 +36,9 @@ for (i in file_list){
   colnames(genbank_in) <- c("Accession", "SequenceID", "Release")
   
   # need to edit sequenceID to separate sample id out from the segment type
-  genbank_in <- genbank_in %>% separate(SequenceID, into = c("id", "interest"), sep = "-", remove = FALSE)
+  genbank_in <- genbank_in %>% separate(SequenceID, into = c("id"), sep = "-", remove = FALSE)
+  
+  genbank_in$interest <- substring(genbank_in$SequenceID, regexpr("-", genbank_in$SequenceID) + 1, nchar(genbank_in$SequenceID))
   
   genbank_in <- genbank_in %>% mutate(segment_type = case_when(grepl("MP", interest) ~ "genbank_MP",
                                                                grepl("NP", interest) ~ "genbank_NP", 
@@ -57,6 +59,7 @@ for (i in file_list){
                                                             grepl("NA", interest) ~ gsub("NA", "", interest),
                                                             T ~ "unknown"))
   
+
   genbank_in$SubmissionID <- b
   
   genbank_storage <- rbind(genbank_storage, genbank_in)
@@ -92,3 +95,4 @@ colnames(genbank_storage) <- rename_columns
 
 # write out the compiled file
 write.csv(genbank_storage, paste0(outputLOC, "/sample_full_genbank_list.csv"), row.names = FALSE, na = "")
+

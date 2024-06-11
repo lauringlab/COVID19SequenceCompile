@@ -36,7 +36,9 @@ for (i in file_list){
     colnames(genbank_in) <- c("Accession", "SequenceID", "Release")
     
     # need to edit sequenceID to separate sample id out from the segment type
-    genbank_in <- genbank_in %>% separate(SequenceID, into = c("id", "interest"), sep = "-", remove = FALSE)
+    genbank_in <- genbank_in %>% separate(SequenceID, into = c("id"), sep = "-", remove = FALSE)
+    
+    genbank_in$interest <- substring(genbank_in$SequenceID, regexpr("-", genbank_in$SequenceID) + 1, nchar(genbank_in$SequenceID))
     
     genbank_in <- genbank_in %>% mutate(segment_type = case_when(grepl("HAH3", interest) ~ "genbank_HAH3", 
                                                                  grepl("HAH1", interest) ~ "genbank_HAH1",

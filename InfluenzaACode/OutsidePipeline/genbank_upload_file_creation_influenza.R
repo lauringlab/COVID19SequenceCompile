@@ -37,12 +37,20 @@ if (grepl("IAV", plate_name)){
     
   } else if (grepl("leighbak", checking_wd)){
     
-    starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+    starting_path <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/"
     code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
     batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
-    seq_list_path <- paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    seq_list_path <- paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/INFLUENZA_A/3_ProcessedGenomes/", plate_datef, "_IAV_", runtech, "_Run_", runnum, "/Segment_sequences/")
     code_path2 <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
+ 
+  } else if (grepl("chbl", checking_wd)){
     
+    starting_path <- "/Users/chbl/University of Michigan Dropbox/MED-LauringLab/"
+    code_path <- "/Users/chbl/Documents/Lauring_Lab/COVID19SequenceCompile/"
+    batch_path <- "/Users/chbl/Documents/Lauring_Lab/AlertCode"
+    seq_list_path <-paste0("/Users/chbl/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    code_path2 <- "/Users/chbl/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"  
+       
   } else {
     
     stop("User not recognized.")
@@ -66,12 +74,20 @@ if (grepl("IAV", plate_name)){
     
   } else if (grepl("leighbak", checking_wd)){
     
-    starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"
+    starting_path <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/"
     code_path <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/"
     batch_path <- "/Users/leighbak/Documents/Lauring_Lab/AlertCode"
-    seq_list_path <-paste0("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    seq_list_path <-paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
     code_path2 <- "/Users/leighbak/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
+  
+  } else if (grepl("chbl", checking_wd)){
     
+    starting_path <- "/Users/chbl/University of Michigan Dropbox/MED-LauringLab/"
+    code_path <- "/Users/chbl/Documents/Lauring_Lab/COVID19SequenceCompile/"
+    batch_path <- "/Users/chbl/Documents/Lauring_Lab/AlertCode"
+    seq_list_path <-paste0("/Users/chbl/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/INFLUENZA_B/3_ProcessedGenomes/", plate_datef, "_IBV_", runtech, "_Run_", runnum, "/Segment_sequences/")
+    code_path2 <- "/Users/chbl/Documents/Lauring_Lab/COVID19SequenceCompile/InfluenzaACode/"
+        
   } else {
     
     stop("User not recognized.")

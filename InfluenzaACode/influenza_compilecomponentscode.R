@@ -263,6 +263,25 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
                                       SampleSourceLocation, PlateToNextclade_days,
                                       sample_per_subject, sample_id_lauring)
 
+mppnc2 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
+                                 flag, received_source, received_date, SampleBarcode,
+                                 PlateDate, PlatePlatform, PlateNumber,
+                                 genbank_SubmissionID, loc_code2, genbank_HA, genbank_HAH1,               
+                                 genbank_HAH3, genbank_MP, genbank_NA, genbank_NAN1,              
+                                 genbank_NAN2, genbank_NP, genbank_NS,                 
+                                 genbank_PA, genbank_PB1, genbank_PB2,
+                                 nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
+                                 nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
+                                 nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                                 nextclade_HA_runDate, nextclade_HA_type,
+                                 Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                                 NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id,
+                                 P3.Segment_Id, Isolate_Name,
+                                 subject_id_length, position, PlateName, PlatePosition,
+                                 SampleSourceLocation, PlateToNextclade_days,
+                                 sample_per_subject, sample_id_lauring)
+
+
 mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
 
 rm(mppnc2_rvtn)

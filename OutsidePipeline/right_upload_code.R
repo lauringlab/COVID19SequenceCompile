@@ -12,11 +12,11 @@ checking_wd <- getwd()
 
 if (grepl("leighbak", checking_wd)){
   starting_path <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/"
-  outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
+  outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/RIGHT_UPLOADS/")
   
 }else if (grepl("chbl", checking_wd)){
   starting_path <- "/Users/chbl/University of Michigan Dropbox/MED-LauringLab/"
-  outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/CDC_IVY_UPLOADS/")
+  outputLOC <- paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/RIGHT_UPLOADS/")
 } else {
   
   print("User not recognized.")

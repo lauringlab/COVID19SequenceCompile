@@ -126,32 +126,35 @@ for (each_folder in manifest_folder_list){
    } else if (each_folder == right_manifest_fp){
       #process RIGHT manifest
       
-      # read in manifests
-      file_list <- list.files(pattern = "*.xlsx", path = each_folder)
-      for (rightm in file_list){
-        file_in <- read.xlsx(paste0(each_folder, "/", rightm), detectDates = TRUE)
-        
-        # "position", "sample_id", "subject_id", "coll_date", "flag"
-        file_in <- file_in %>% select(specimen_id, study_id, date_of_collection, specimen_type, 
-                                      manifest_creation_date)
-        colnames(file_in) <- c("sample_id", "subject_id", "coll_date", "flag", "received_date")
-        
-        # sometimes have to cut time off of collection date (from excel)
-        file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
-        
-        # add in 2 new columns: position and received_source (from file name)
-        file_in$position <- ""
-        
-        
-        rec_source <- trimws(as.character(strsplit(rightm, "_")[[1]][1]))
-        file_in$received_source <- rec_source
-        file_in$coll_date <- as.character(file_in$coll_date)
-        
-        #select the columns in the correct order
-        file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source)
-        
-        # bind all rows together
-        manifest_storage <- rbind(manifest_storage, file_in)
+     # read in manifests
+     file_list <- list.files(pattern = "*.csv", path = each_folder)
+     for (rightb in file_list){
+       file_in <- read.csv(paste0(each_folder, "/", rightb), colClasses = "character")
+       
+       colnames(fileone)[1] <- "specimen_id"
+       fileone$site <- ""
+       #fileone$date_of_collection <- as.Date(fileone$date_of_collection)#, format = "Y%-m%-d%")
+       fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
+                                     specimen_type, manifest_creation_date, record_id)
+       
+       # sometimes have to cut time off of collection date (from excel)
+       file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+       
+       # add in 2 new columns: position and received_source (from file name)
+       file_in$position <- ""
+       
+       
+       rec_source <- trimws(as.character(strsplit(rightb, "_")[[1]][1]))
+       file_in$received_source <- rec_source
+       file_in$coll_date <- as.character(file_in$coll_date)
+       colnames(fileone) <- c("specimen_id", "site", "study_id", "date_of_collection", 
+                              "specimen_type", "manifest_creation_date", "record_id")
+       
+       #select the columns in the correct order
+       file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source)
+       
+       # bind all rows together
+       manifest_storage <- rbind(manifest_storage, file_in)
       }
     
   } else {

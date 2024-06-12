@@ -319,6 +319,25 @@ mppnc2_rvtn <- mppnc2_rvtn %>% select(sample_id, subject_id, coll_date,
                                       SampleSourceLocation, #PlateToNextclade_days,
                                       sample_per_subject, sample_id_lauring)
 
+mppnc2 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
+                                      flag, received_source, received_date, SampleBarcode,
+                                      PlateDate, PlatePlatform, PlateNumber,
+                                      genbank_SubmissionID, loc_code2, genbank_HA,               
+                                      genbank_MP, genbank_NA,    
+                                      genbank_NP, genbank_NS,                 
+                                      genbank_PA, genbank_PB1, genbank_PB2,
+                                      nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,
+                                      nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus,
+                                      nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                                      nextclade_HA_runDate, nextclade_HA_type,
+                                      Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id,
+                                      NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, #HE.Segment_Id,
+                                      #P3.Segment_Id, 
+                                      Isolate_Name,
+                                      subject_id_length, position, PlateName, PlatePosition,
+                                      SampleSourceLocation, #PlateToNextclade_days,
+                                      sample_per_subject, sample_id_lauring)
+
 mppnc2 <- rbind(mppnc2, mppnc2_rvtn)
 
 rm(mppnc2_rvtn)
@@ -399,7 +418,7 @@ runs_sph <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
 
 #double checking that all other SPH samples have duplicate entries in full compiled IBV
 num_of_samples <- only_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
-runs_ibv <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
+#runs_ibv <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
 
 #this has all "NA" (12) and "good" (2) that are not duplicate samples
 non_dups_sph <- filter(only_sph_samples, sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
@@ -407,7 +426,7 @@ non_dups_sph <- filter(only_sph_samples, sample_id %in% c("MH16168", "MH16279", 
                                                           "MH26934", "MH26944", "MH26968", "MH29093",
                                                           "MHM2682", "MHM2684"))
 
-## removing the duplicat sph samples that have the wrong nextclade assignment
+## removing the duplicate sph samples that have the wrong nextclade assignment
 good_nc_sph <- only_sph_samples[!only_sph_samples$sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
                                                                    "MH25666", "MH25785", "MH26763", "MH26931",
                                                                    "MH26934", "MH26944", "MH26968", "MH29093",
@@ -415,11 +434,18 @@ good_nc_sph <- only_sph_samples[!only_sph_samples$sample_id %in% c("MH16168", "M
 
 good_nextclade_sph_samples <- filter(good_nc_sph, grepl("good", nextclade_HA_qcOverallStatus))
 
+filt_out_dup_sph <- mppnc3[!mppnc3$sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
+                                                    "MH25666", "MH25785", "MH26763", "MH26931",
+                                                    "MH26934", "MH26944", "MH26968", "MH29093",
+                                                                        "MHM2682", "MHM2684"),]
+
+all_good_nextclade_sph_samples <- filter(mppnc3, !grepl("good", nextclade_HA_qcOverallStatus) | grepl("20231208_IBV_Illumina_Run_3", PlateName) | grepl("20231208_IBV_Illumina_Run_4", PlateName))
+
 num_of_good_samples <- good_nextclade_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
 
 runs_sph_ibv <- good_nextclade_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
 
-mppnc3 <- good_nextclade_sph_samples
+#mppnc3 <- good_nextclade_sph_samples
 
 #all_back_together <- rbind(all_other_samples, non_dups_sph, good_nextclade_sph_samples)
 

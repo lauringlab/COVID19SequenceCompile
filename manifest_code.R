@@ -533,6 +533,9 @@ manifest_storage <- rbind(manifest_storage, cdc_ivy_storage)
 ## handle rvtn, view, right manifests
 
 #rvtn_file_list <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
+right_sites <- read.csv(paste0(right_manifest_fp, "/Keys/right_site_Codebook.csv"), colClasses = "character")
+
+
 
 rvtn_file_list22 <- list.files(pattern = "*.csv", path = rvtn_manifest_fp)
 view_file_list <- list.files(pattern = "*.csv", path = view_manifest_fp)
@@ -569,8 +572,15 @@ for (each_file in rvtn_file_list){
         colnames(fileone)[1] <- "specimen_id"
         fileone$site <- ""
         #fileone$date_of_collection <- as.Date(fileone$date_of_collection)#, format = "Y%-m%-d%")
+        #fileone$site_number <- fileone %>% substr(fileone$specimen_id)
+        
+        fileone <- fileone %>% mutate(site = case_when(substr(specimen_id, 1, 1) == "1" ~ "VU_TN",
+                                                              substr(specimen_id, 1, 1) == "2" ~ "CU_NY",
+                                                              substr(specimen_id, 1, 1) == "3" ~ "UW_WA"))
+        
         fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
                                       specimen_type, manifest_creation_date, record_id)
+        
     } else {
       fileone <- read.csv(paste0(rvtn_manifest_fp, "/", each_file), colClasses = "character")
     }

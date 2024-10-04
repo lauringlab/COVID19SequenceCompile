@@ -54,7 +54,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20240220_SC2_Nanopore_Run_438"
+plate_name <- "20240930_SC2_Nanopore_Run_504"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -103,8 +103,8 @@ if (any(ff$sample_per_subject > 1)){
 # then look at the "original_full" data frame and sort by subject_id
 # and look at the collection dates 
 
-#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 # if they are IVYIC duplicates, let them all through regardless
 ### check if the samples are > 90 days apart from one another for collection dates - then you can let 
 ### them through.
@@ -116,16 +116,19 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("107202", "120502", "121101", "121601",
-#                                                             "50610", "50980", "51789", "51968", "52429"))
+ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("301502", "301401", "301302", "301301",
+                                                             "1982", "1678", "1399", "119501", "119301", "119001", "118901", "118802",
+                                                             "118801", "118702", "118601", "118302", "118301", "118202", "118201", "118001",
+                                                             "117701", "117501", "117401", "117302", "117301", "117202", "117201",
+                                                             "117102", "117101", "0001"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
 
 ## filter option for when missing subject_id and need to remove sample from list
 ## for example when we sequence a sample not on the manifest and only have sample_id
-#ff <- filter(ff, sample_id != "HCV47970")
-#ff <- filter(ff, sample_id != "HCV47970" & sample_id != "HCV45295" & sample_id != "HCV45935" & sample_id != "HCV49066" & sample_id != "HCV46832")
+#ff <- filter(ff, sample_id != "0673_R077")
+ff <- filter(ff, sample_id != "1982_R025" & sample_id != "1399_R068" & sample_id != "117401N02" )
 ################################################################################
 ### fix date formatting
 ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
@@ -141,8 +144,14 @@ ff <- separate(data = ff, col = SiteName, sep = "\\_", into = c("Site", "StateAb
 ff <- ff %>% mutate(State = case_when(received_source == "RVTN" ~ Site, 
                                       T ~ state.name[match(ff$StateAbbrev,state.abb)]))
 
+#ff <- ff %>% mutate(State = case_when(received_source == "RIGHT" ~ Site, 
+#                                      T ~ state.name[match(ff$StateAbbrev,state.abb)]))
+
 ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RVTN" ~ state.abb[match(ff$State,state.name)],
                                       T ~ StateAbbrev))
+
+#ff <- ff %>% mutate(StateAbbrev = case_when(received_source == "RIGHT" ~ state.abb[match(ff$State,state.name)],
+#                                            T ~ StateAbbrev))
 
 ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("USA: ", State), 
                                          received_source == "CDCIVY4" ~ paste0("USA: ", State), 
@@ -151,7 +160,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("U
                                          received_source == "IVYIC" ~ paste0("USA: ", State),
                                          received_source == "RVTN" ~ paste0("USA: ", State), 
                                          received_source == "VIEW" ~ paste0("USA: Tennessee "),
-                                         received_source == "RIGHT" ~ paste0("USA: Tennessee "),
+                                         received_source == "RIGHT" ~ paste0("USA: ", State),
                                          T ~ "USA: Michigan"))
 
 

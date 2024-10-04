@@ -20,15 +20,15 @@ if (grepl("juliegil", checking_wd)){
   
 } else if (grepl("leighbak", checking_wd)){
   
-  starting_path <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/"  
+  starting_path <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/"  
  
 } else if (grepl("chbla", checking_wd)){
   
-  starting_path <- "/Users/chbla/Dropbox (University of Michigan)/MED-LauringLab/" 
+  starting_path <- "/Users/chbla/University of Michigan Dropbox/MED-LauringLab/" 
 
 } else if (grepl("chbl", checking_wd)){
   
-  starting_path <- "/Users/chbl/Dropbox (University of Michigan)/MED-LauringLab/"  
+  starting_path <- "/Users/chbl/University of Michigan Dropbox/MED-LauringLab/"  
   
 } else {
   

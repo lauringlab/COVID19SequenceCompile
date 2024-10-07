@@ -103,8 +103,8 @@ if (any(ff$sample_per_subject > 1)){
 # then look at the "original_full" data frame and sort by subject_id
 # and look at the collection dates 
 
-samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
-original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
+#samples_previous <- filter(ff, sample_per_subject > 1) %>% select(subject_id, sample_id, coll_date)
+#original_full <- filter(final_file, subject_id %in% unique(samples_previous$subject_id))
 # if they are IVYIC duplicates, let them all through regardless
 ### check if the samples are > 90 days apart from one another for collection dates - then you can let 
 ### them through.
@@ -116,11 +116,9 @@ original_full <- filter(final_file, subject_id %in% unique(samples_previous$subj
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("301502", "301401", "301302", "301301",
-                                                             "1982", "1678", "1399", "119501", "119301", "119001", "118901", "118802",
-                                                             "118801", "118702", "118601", "118302", "118301", "118202", "118201", "118001",
-                                                             "117701", "117501", "117401", "117302", "117301", "117202", "117201",
-                                                             "117102", "117101", "0001"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("301502", "301401", "301302", "301301",
+#                                                             "1982", "1678", "1399", "119501", "119301", "119001", "118901", "118802",
+#                                                             "118801", "118702", "118601", "118302", "118301", "118202", "118201", "118001"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
@@ -128,7 +126,7 @@ ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("301502", "301401",
 ## filter option for when missing subject_id and need to remove sample from list
 ## for example when we sequence a sample not on the manifest and only have sample_id
 #ff <- filter(ff, sample_id != "0673_R077")
-ff <- filter(ff, sample_id != "1982_R025" & sample_id != "1399_R068" & sample_id != "117401N02" )
+#ff <- filter(ff, sample_id != "1982_R025" & sample_id != "1399_R068" & sample_id != "117401N02" )
 ################################################################################
 ### fix date formatting
 ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
@@ -157,6 +155,7 @@ ff <- ff %>% mutate(Location = case_when(received_source == "CDCIVY" ~ paste0("U
                                          received_source == "CDCIVY4" ~ paste0("USA: ", State), 
                                          received_source == "CDCIVY5" ~ paste0("USA: ", State),
                                          received_source == "CDCIVY6" ~ paste0("USA: ", State),
+                                         received_source == "CDCIVY7" ~ paste0("USA: ", State),
                                          received_source == "IVYIC" ~ paste0("USA: ", State),
                                          received_source == "RVTN" ~ paste0("USA: ", State), 
                                          received_source == "VIEW" ~ paste0("USA: Tennessee "),
@@ -171,6 +170,7 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           received_source == "CDCIVY4" ~ paste0("IVY-", sample_id),
                                           received_source == "CDCIVY5" ~ paste0("IVY-", sample_id),
                                           received_source == "CDCIVY6" ~ paste0("IVY-", sample_id),
+                                          received_source == "CDCIVY7" ~ paste0("IVY-", sample_id),
                                           received_source == "RVTN" ~ paste0("RVTN-", sample_id_lauring),
                                           received_source == "VIEW" ~ paste0("VIEW-", sample_id_lauring),
                                           received_source == "RIGHT" ~ paste0("RIGHT-", sample_id_lauring),
@@ -190,6 +190,7 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                            received_source == "CDCIVY4" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                            received_source == "CDCIVY5" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                            received_source == "CDCIVY6" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
+                                           received_source == "CDCIVY7" ~ paste0("SARS-CoV-2/human/USA/", "IVY-", sample_id, "/", substr(coll_date, 1, 4)),
                                            received_source == "RVTN" ~ paste0("SARS-CoV-2/human/USA/", "RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                            received_source == "VIEW" ~ paste0("SARS-CoV-2/human/USA/", "VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                            received_source == "RIGHT" ~ paste0("SARS-CoV-2/human/USA/", "RIGHT-", sample_id_lauring, "/", substr(coll_date, 1, 4)),

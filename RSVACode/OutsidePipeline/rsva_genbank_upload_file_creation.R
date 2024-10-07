@@ -103,7 +103,7 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("56189"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("56189"))
 #ff <- filter(ff, sample_per_subject == 1)
 #ff <- filter(ff, subject_id != "101074339")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
@@ -154,6 +154,7 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           received_source == "CDCIVY4" ~ paste0("hRSV-A-", sample_id),
                                           received_source == "CDCIVY5" ~ paste0("hRSV-A-", sample_id),
                                           received_source == "CDCIVY6" ~ paste0("hRSV-A-", sample_id),
+                                          received_source == "CDCIVY7" ~ paste0("hRSV-A-", sample_id),
                                           #received_source == "RVTN" ~ paste0("hRSV/A/USA/", state, "-RVTN-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           #received_source == "VIEW" ~ paste0("hRSV/A/USA/", state, "-VIEW-", sample_id_lauring, "/", substr(coll_date, 1, 4)),
                                           received_source == "RIGHT" ~ paste0("hRSV-A-", sample_id_lauring),

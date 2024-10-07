@@ -230,7 +230,7 @@ write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/SARSCOV2/3_ProcessedG
 
 ## select variables
 ff_writeout <- ff %>% select(Sequence_ID, isolate, country, host, collection_date, isolation_source)
-colnames(ff_writeout) <- c("Sequence_ID", "isolate", "country", "host", "collection-date", "isolation-source")
+colnames(ff_writeout) <- c("Sequence_ID", "isolate", "geo_loc_name", "host", "collection-date", "isolation-source")
 
 ff_writeout <- ff_writeout %>% distinct()
 

@@ -141,7 +141,7 @@ today <- paste0(year(Sys.Date()), m, d)
 ivy4 <- filter(seq_list, substr(subject_id, 1, 2) == 22)
 ivy5 <- filter(seq_list, substr(subject_id, 1, 2) == 23)
 ivy6 <- filter(seq_list, substr(subject_id, 1, 2) == 24)
-#ivy7 <- filter(seq_list, substr(subject_id, 1, 2) == 24)
+ivy7 <- filter(seq_list, substr(subject_id, 1, 2) == 25)
 
 
 # change subject_id to study_id
@@ -247,7 +247,7 @@ colnames(ivy7) <- c("sample_id", "subject_id", "coll_date", "flag", "received_so
 #write.csv(ivy3, paste0(outputLOC, "cdc_ivy3_", today, ".csv"), row.names = FALSE, na = "")
 #write.csv(ivy4, paste0(outputLOC, "cdc_ivy4_", today, ".csv"), row.names = FALSE, na = "")
 #write.csv(ivy5, paste0(outputLOC, "cdc_ivy5_", today, ".csv"), row.names = FALSE, na = "")
-write.csv(ivy6, paste0(outputLOC, "cdc_ivy6_", today, ".csv"), row.names = FALSE, na = "")
+#write.csv(ivy6, paste0(outputLOC, "cdc_ivy6_", today, ".csv"), row.names = FALSE, na = "")
 write.csv(ivy7, paste0(outputLOC, "cdc_ivy7_", today, ".csv"), row.names = FALSE, na = "")
 
 

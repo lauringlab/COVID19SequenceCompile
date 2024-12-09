@@ -126,7 +126,52 @@ mppnc <- subject_id_length_QA(mppnc, "CBR")
 mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
 
 ################################################################################
+## adding in the lauring_lab_id recode info
 
+genbank_secret <- filter(genbank, grepl("RIGHT", genbank_SequenceID))
+
+# pull in covid RVTN, VIEW, and RIGHT data
+seq <- read.csv(paste0(starting_path, "/SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
+
+# only keep RIGHT
+seq <- filter(seq, received_source %in% c("RIGHT"))
+
+# read in already assigned sequences
+already_assigned <- read.csv(paste0(starting_path, "/SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/RIGHT/SampleID_Hide/assigned_right_random.csv"))
+already_assigned <- already_assigned %>% select(sample_id_lauring, sample_id, subject_id)
+
+### only keep items in seq that are NOT already assigned
+seq2 <- filter(seq, !sample_id %in% unique(already_assigned$sample_id))
+
+# filter out already_assigned so only non-assigned lauring labels are present
+not_assigned <- filter(already_assigned, is.na(subject_id)) %>% select(sample_id_lauring)
+
+# pull out sample & subject id, add to full_set
+seq3 <- seq2 %>% select(subject_id, sample_id)
+fillup <- data.frame(rep(NA, nrow(not_assigned)-nrow(seq3)), rep(NA, nrow(not_assigned)-nrow(seq3)))
+colnames(fillup) <- colnames(seq3)
+seq3 <- rbind(seq3, fillup)
+
+full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned right stuff, plus all the unassigned ids
+
+full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_set2)
+
+write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/RIGHT/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
+
+
+# read in and attach RIGHT re-codes
+right_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/RSV_B/4_SequenceSampleMetadata/Manifests/RIGHT/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
+right_recodes <- right_recodes %>% select(sample_id_lauring, sample_id)
+right_recodes <- filter(right_recodes, sample_id != "")
+#colnames(right_recodes)
+
+
+mppnc <- merge(mppnc, right_recodes, by = c("sample_id"), all.x = TRUE)
+
+
+
+
+################################################################################
 
 mppnc3 <- mppnc 
 # %>% select(sample_id, subject_id, coll_date,                   

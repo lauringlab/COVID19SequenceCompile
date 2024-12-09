@@ -63,7 +63,14 @@ if (grepl("_SC2_", plate_name)){
   
   # then, read in that excel file that we moved to the inner pipeline set
   file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), sheet = 1)
+ 
+} else if (grepl("_HMPV_", plate_name)){
+  file.copy(from = paste0(starting_path, "SEQUENCING/hMPV/2_PlateMaps/", plate_name, ".xlsx"),
+            to = paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), 
+            overwrite = TRUE)
   
+  # then, read in that excel file that we moved to the inner pipeline set
+  file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), sheet = 1)
   
 } else {
     stop("Plate name does not contain recognized phrase (IAV/SC2).")
@@ -134,8 +141,13 @@ if (grepl("_SC2_", plate_name)){
   # write the excel file back out
   write.xlsx(file_in, paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), overwrite = TRUE)
   
+} else if (grepl("_HMPV_", plate_name)){
+  
+  # write the excel file back out
+  write.xlsx(file_in, paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), overwrite = TRUE)
+  
 } else {
-  stop("Plate name does not contain recognized phrase (IAV/SC2).")
+  stop("Plate name does not contain recognized phrase (IAV/SC2/RSV/hMPV).")
 }
 
 plate_name <- plate_name2

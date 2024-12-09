@@ -84,3 +84,4 @@ colnames(view1) <- c("sample_id", "subject_id", "coll_date",
 write.csv(view1, paste0(outputLOC, "view_", today, ".csv"), row.names = FALSE, na = "")
 
 #table(seq_list$pangolin_lineage)
+

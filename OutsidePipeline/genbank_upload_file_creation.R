@@ -54,7 +54,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-plate_name <- "20240930_SC2_Nanopore_Run_504"
+#plate_name <- "20241003_SC2_Nanopore_Run_505"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -116,16 +116,15 @@ if (any(ff$sample_per_subject > 1)){
 
 ### uncomment this portion to remove those samples
 ### to remove these: 
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("301502", "301401", "301302", "301301",
-#                                                             "1982", "1678", "1399", "119501", "119301", "119001", "118901", "118802",
-#                                                             "118801", "118702", "118601", "118302", "118301", "118202", "118201", "118001"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("023601692", "027390043", "028817265", "037503915",
+#                                                            "041966567", "100569171", "101415036"))
 #ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, subject_id != "101074339")
+#ff <- filter(ff, subject_id != "10059683637")
 #ff <- filter(ff, subject_id != "045447388" & subject_id != "017429620" & subject_id != "014789935")
 
 ## filter option for when missing subject_id and need to remove sample from list
 ## for example when we sequence a sample not on the manifest and only have sample_id
-#ff <- filter(ff, sample_id != "0673_R077")
+#ff <- filter(ff, sample_id != "10059683637")
 #ff <- filter(ff, sample_id != "1982_R025" & sample_id != "1399_R068" & sample_id != "117401N02" )
 ################################################################################
 ### fix date formatting

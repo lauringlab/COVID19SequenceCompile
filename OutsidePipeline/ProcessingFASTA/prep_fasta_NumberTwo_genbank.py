@@ -32,6 +32,7 @@ def main():
         full_loc = "C:/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     elif ("leighbak" in os.getcwd()):
         s_path = "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/"
+        g_path = "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/SARSCOV2/6_GenBank_Uploads/"
         full_loc = "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"
     elif ("chbla" in os.getcwd()):
         s_path = "C:/Users/chbla/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/3_ProcessedGenomes/"
@@ -45,6 +46,7 @@ def main():
     parser = argparse.ArgumentParser()
     # takes the string after "--prefix" in the command line for use later
     parser.add_argument('--prefix', action="store", dest="prefix")
+    parser.add_argument('--gb', action="store", dest="gb")
     args = parser.parse_args()
 
     ### This section converts barcode (NBXX) into sample_id.
@@ -53,6 +55,7 @@ def main():
     file_1 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.renamed.full.fasta"
     #file_2 = s_path + args.prefix + ".all.consensus.final.genbanktmp.fasta"
     file_3 = s_path + args.prefix + ".all.consensus.final.genbank.fasta" # This is the file to use in genbank
+    file_4 = g_path + "upload_genbank_" + args.gb + "/" + args.prefix + ".all.consensus.final.genbank.fasta" # This is the file to use in genbank
     meta_file = s_path + args.prefix + "/" + args.prefix + ".forgenbank.meta.csv" # This is made in gisaid file prep code - just uploaded names + sample ifs
 
     # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)
@@ -83,8 +86,11 @@ def main():
     # Write everything out as .all.consensus.tmp.fasta, with the replaced system
     file_2 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbanktmp.fasta"
     file_3 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbank.fasta"
+    file_4 = g_path + "upload_genbank_"  + args.gb + "/" + args.prefix + ".all.consensus.final.genbank.fasta"
     with open(file_3, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
+    with open(file_4, 'w') as corrected:
+        SeqIO.write(all_fasta, corrected, "fasta")    
      #rename to .all.consensus.final.gisaid.fasta
     # and remove everything after a space character on fasta entry lines. The Biopython modules add extra characters after the sample ID
     #sed_cmd = """ sed '/^>/ s/ .*//' """ + '"' + file_2 + '"' + " > " + '"' + file_3 + '"' # need quotes around file names with spaces in them (from the dropbox folder)

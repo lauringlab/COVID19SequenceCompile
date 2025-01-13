@@ -637,6 +637,33 @@ fpn <- filter(fpn, !grepl("NC_", sample_id) & !grepl("HeLa", sample_id) & !grepl
 # merge that data onto full set
 mppnc2 <- merge(mppnc2, fpn, by = c("sample_id"), all.x = TRUE, all.y = FALSE)
 
+
+################################################################################
+
+# get full nextclade file
+#/Users/juliegil/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/CompleteFastaUpToDate
+full_nextclade_new <- list.files(path = paste0(starting_path, "/SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/CompleteFastaUpToDate"), pattern = "nextclade*")
+fnn <- read_tsv(paste0(starting_path, "SEQUENCING/SARSCOV2/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/CompleteFastaUpToDate/", full_nextclade_new), show_col_types = FALSE)
+
+# only select the sample id and lineage call
+fnn <- fnn %>% select(seqName, clade)
+colnames(fnn) <- c("sample_id", "newest_nextclade_clade")
+
+# pull the date portion out and attach that
+date_bit <- substr(full_nextclade_new, 11, 18)
+fnn$newest_nextclade_date <- date_bit
+
+fnn <- fnn %>% group_by(sample_id) %>% mutate(count = length(sample_id)) %>% distinct()
+#fpn <- filter(fpn, count == 1)
+fnn <- fnn %>% select(sample_id, newest_nextclade_clade, newest_nextclade_date)
+
+### remove out any negative controls, etc.
+fnn <- filter(fnn, !grepl("NC_", sample_id) & !grepl("HeLa", sample_id) & !grepl("NC-", sample_id))
+
+# merge that data onto full set
+mppnc2 <- merge(mppnc2, fnn, by = c("sample_id"), all.x = TRUE, all.y = FALSE)
+
+
 ################################################################################
 ### negative control well warning
 

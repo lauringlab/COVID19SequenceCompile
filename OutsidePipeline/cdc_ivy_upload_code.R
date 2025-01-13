@@ -198,6 +198,9 @@ ivy5 <- ivy5 %>% select(sample_id, subject_id, coll_date,
 
 #names(ivy5)[names(ivy5) == 'subject_id'] <- 'study_id'
 
+ivy6$newest_nextclade_date <-ymd(ivy6$newest_nextclade_date)
+
+
 ivy6 <- ivy6 %>% select(sample_id, subject_id, coll_date, flag, received_source, 
                         received_date, sitename, samplebarcode, platename, platedate, 
                         plateplatform, platenumber, plateposition, samplesourcelocation, 
@@ -207,7 +210,7 @@ ivy6 <- ivy6 %>% select(sample_id, subject_id, coll_date, flag, received_source,
                         nextclade_qcoverallstatus, nextclade_totalmutations, 
                         nextclade_totalnonacgtns, genbank_sequenceid, genbank_accession, 
                         genbank_submissionid, data_quality_rule, newest_pangolin_lineage, 
-                        newest_pangolin_date, sf456l_present)
+                        newest_pangolin_date, sf456l_present, newest_nextclade_clade, newest_nextclade_date)
 
 colnames(ivy6) <- c("sample_id", "subject_id", "coll_date", "flag", "received_source", 
                     "received_date", "sitename", "samplebarcode", "platename", "platedate", 
@@ -218,7 +221,14 @@ colnames(ivy6) <- c("sample_id", "subject_id", "coll_date", "flag", "received_so
                     "nextclade_qcoverallstatus", "nextclade_totalsubstitutions", 
                     "nextclade_totalnonacgtns", "genbank_sequenceid", "genbank_accession", 
                     "genbank_submissionid", "data_quality_rule", "newest_pangolin_lineage", 
-                    "newest_pangolin_date", "nextclade_sf456l_present")
+                    "newest_pangolin_date", "nextclade_sf456l_present", "newest_nextclade_clade", "newest_nextclade_date")
+
+################################################################################
+## for IVY7 we are including an over write of the nextclade clades to the newest assignments
+## (ie like we do for the updating of pangolin) but they are not new columns 
+
+
+ivy7$newest_nextclade_date <-ymd(ivy7$newest_nextclade_date)
 
 
 ivy7 <- ivy7 %>% select(sample_id, subject_id, coll_date, flag, received_source, 
@@ -230,7 +240,7 @@ ivy7 <- ivy7 %>% select(sample_id, subject_id, coll_date, flag, received_source,
                         nextclade_qcoverallstatus, nextclade_totalmutations, 
                         nextclade_totalnonacgtns, genbank_sequenceid, genbank_accession, 
                         genbank_submissionid, data_quality_rule, newest_pangolin_lineage, 
-                        newest_pangolin_date, sf456l_present)
+                        newest_pangolin_date, sf456l_present, newest_nextclade_clade, newest_nextclade_date)
 
 colnames(ivy7) <- c("sample_id", "subject_id", "coll_date", "flag", "received_source", 
                     "received_date", "sitename", "samplebarcode", "platename", "platedate", 
@@ -241,7 +251,7 @@ colnames(ivy7) <- c("sample_id", "subject_id", "coll_date", "flag", "received_so
                     "nextclade_qcoverallstatus", "nextclade_totalsubstitutions", 
                     "nextclade_totalnonacgtns", "genbank_sequenceid", "genbank_accession", 
                     "genbank_submissionid", "data_quality_rule", "newest_pangolin_lineage", 
-                    "newest_pangolin_date", "nextclade_sf456l_present")
+                    "newest_pangolin_date", "nextclade_sf456l_present", "newest_nextclade_clade", "newest_nextclade_date")
 
 #seq_list <- filter(seq_list, platenumber <= 49)
 #write.csv(ivy3, paste0(outputLOC, "cdc_ivy3_", today, ".csv"), row.names = FALSE, na = "")

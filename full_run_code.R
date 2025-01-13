@@ -69,7 +69,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20240604_SC2_Nanopore_Run_473"
+plate_name <- "20241111_SC2_Nanopore_Run_514"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
 
@@ -88,6 +88,7 @@ source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
 source(paste0(code_path, "manifest_code.R"))
 # time = 1.06s
+# note: this doesn't run if any manifest files are open
 
 source(paste0(code_path, "plate_map_code.R"))
 # note: this doesn't run if any plate map excel files are open
@@ -375,6 +376,27 @@ source(paste0(code_path, "RSVBCode/rsvb_genbank_code.R"))
 
 source(paste0(code_path, "RSVBCode/rsvb_compilecomponentscode.R"))
 
+
+
+################################################################################
+# hMPV COMPONENT
+################################################################################
+
+plate_name <- ""
+
+################################################################################
+# ROUND 1
+################################################################################
+
+source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
+
+source(paste0(code_path, "hMPVCode/hMPV_manifestcode.R"))
+
+source(paste0(code_path, "hMPVCode/hMPV_platemapcode.R"))
+
+source(paste0(code_path, "hMPVCode/hMPV_compilecomponentscode.R"))
+
+source(paste0(code_path, "hMPVCode/hMPV_subset_compiled_for_fasta.R"))
 
 
 

@@ -382,7 +382,7 @@ source(paste0(code_path, "RSVBCode/rsvb_compilecomponentscode.R"))
 # hMPV COMPONENT
 ################################################################################
 
-plate_name <- ""
+plate_name <- "20240910_HMPV_Illumina_Run_1"
 
 ################################################################################
 # ROUND 1

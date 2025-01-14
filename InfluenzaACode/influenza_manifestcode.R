@@ -114,6 +114,28 @@ for (each_list in i_folderlists){
               # read in manifests
               file_list <- list.files(pattern = "*.xlsx", path = each_folder)
               for (ivym in file_list){
+                if (grepl("CDCIVY7", ivym)){
+                  file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
+                  
+                  # "position", "sample_id", "subject_id", "coll_date", "flag"
+                  file_in <- file_in %>% select(`Position.#`, Aliquot.ID, `Study_ID`, `Collection.Date`, Comments)
+                  colnames(file_in) <- c("position", "sample_id", "subject_id", "coll_date", "flag")
+                  
+                  # sometimes have to cut time off of collection date (from excel)
+                  file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+                  
+                  # add in 2 new columns: received_date and received_source (from file name)
+                  file_in$received_date <- date_from_file(ivym)
+                  
+                  
+                  rec_source <- trimws(as.character(strsplit(ivym, "_")[[1]][1]))
+                  file_in$received_source <- rec_source
+                  file_in$flu_type <- add_on
+                  # bind all rows together
+                  manifest_storage <- rbind(manifest_storage, file_in)
+                  
+                  
+                } else {
                 #print(ivym)
                 file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
                 
@@ -134,6 +156,7 @@ for (each_list in i_folderlists){
                 # bind all rows together
                 manifest_storage <- rbind(manifest_storage, file_in)
                 
+                }
               }
         } else if (each_folder %in% c(mdhhs_manifest_fp, mdhhs_manifestb_fp)){
           # process mdhhs manifest

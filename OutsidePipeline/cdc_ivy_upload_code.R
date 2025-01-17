@@ -82,6 +82,11 @@ if (length(unique(seq_list$sample_id)) != nrow(seq_list)){
   stop("Duplicate sample IDs - handle accordingly")
 }
 
+#samp_dup <- seq_list %>% group_by(sample_id) %>% summarize(count = n ()) %>% filter(count > 1)
+#print(samp_dup)
+# these samples dupilcated because they hace different "newest_nextclade_clades"
+#dup_samples <- filter(seq_list, sample_id %in% c("G43Q32V2", "W13J94M7", "W13J95C6", "W13J95O2"))
+
 ## remove study withdraws
 seq_list <- filter(seq_list, flag != "Withdrawn from study")
 seq_list <- filter(seq_list, !grepl("Withdrawn from study", flag))
@@ -229,6 +234,7 @@ colnames(ivy6) <- c("sample_id", "subject_id", "coll_date", "flag", "received_so
 
 
 ivy7$newest_nextclade_date <-ymd(ivy7$newest_nextclade_date)
+ivy7$newest_pangolin_date <-ymd(ivy7$newest_pangolin_date)
 
 
 ivy7 <- ivy7 %>% select(sample_id, subject_id, coll_date, flag, received_source, 

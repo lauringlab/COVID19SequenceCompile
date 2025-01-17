@@ -1,6 +1,6 @@
 ################################################################################
-#        Creation of NextClade Dataset for COVID-19 Genetic Sampling           #
-#                         Last Updated: 05/18/2021                             #
+#        Creation of NextClade Dataset for RSVA Genetic Sampling           #
+#                         Last Updated: 01/17/2025                             #
 #                 Code Edited By: Julie (Jules) Gilbert                        #
 ################################################################################
 

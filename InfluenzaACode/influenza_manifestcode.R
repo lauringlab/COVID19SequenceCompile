@@ -110,10 +110,12 @@ for (each_list in i_folderlists){
           
         } else if (each_folder %in% c(cdcivy_manifest_fp, cdcivy_manifestb_fp)){
               # process ivy manifest
-              
+          
               # read in manifests
               file_list <- list.files(pattern = "*.xlsx", path = each_folder)
               for (ivym in file_list){
+                if (grepl("CDCIVY4", ivym) | grepl("CDCIVY5", ivym) | grepl("CDCIVY6", ivym)){
+                
                 #print(ivym)
                 file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
                 
@@ -132,9 +134,35 @@ for (each_list in i_folderlists){
                 file_in$received_source <- rec_source
                 file_in$flu_type <- add_on
                 # bind all rows together
+                
+                file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, flu_type)
                 manifest_storage <- rbind(manifest_storage, file_in)
                 
+              } else {
+                file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
+                
+                # "position", "sample_id", "subject_id", "coll_date", "flag"
+                file_in <- file_in %>% select(`Position.#`, Aliquot.ID, `Study_ID`, `Collection.Date`, Comments)
+                colnames(file_in) <- c("position", "sample_id", "subject_id", "coll_date", "flag")
+                
+                # sometimes have to cut time off of collection date (from excel)
+                file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+                
+                # add in 2 new columns: received_date and received_source (from file name)
+                file_in$received_date <- date_from_file(ivym)
+                
+                
+                rec_source <- trimws(as.character(strsplit(ivym, "_")[[1]][1]))
+                file_in$received_source <- rec_source
+                file_in$flu_type <- add_on
+                # bind all rows together
+                
+                file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source, flu_type)
+                
               }
+              manifest_storage <- rbind(manifest_storage, file_in)
+              
+              }    
         } else if (each_folder %in% c(mdhhs_manifest_fp, mdhhs_manifestb_fp)){
           # process mdhhs manifest
           
@@ -266,9 +294,11 @@ for (each_list in i_folderlists){
             print(paste0("No files in folder = ", each_folder))
           }
         }
-      }
       
-}
+      
+      }
+      }
+
       manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
       
       ################################################################################

@@ -77,7 +77,7 @@ if (grepl("SC2", plate_name)){
     } else if (grepl("RSVB", plate_name)){
       if (file.exists(paste0(starting_path, "SEQUENCING/RSV_B/3_ProcessedGenomes/", plate_name, "/nextclade.tsv"))){
         file.copy(from = paste0(starting_path, "SEQUENCING/RSV_B/3_ProcessedGenomes/", plate_name, "/nextclade.tsv"),
-                  to = paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/", plate_name, "_nextclade.tsv"), 
+                  to = paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/", plate_name, "_nextclade.tsv"), 
                   overwrite = TRUE)
       } else {
         
@@ -85,5 +85,16 @@ if (grepl("SC2", plate_name)){
                   to = paste0(starting_path, "SEQUENCING/RSV_B/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/", plate_name, "_nextclade.tsv"), 
                   overwrite = TRUE)
       }
+      }else if (grepl("HMPV", plate_name)){
+        if (file.exists(paste0(starting_path, "SEQUENCING/hMPV/3_ProcessedGenomes/", plate_name, "/nextclade.tsv"))){
+          file.copy(from = paste0(starting_path, "SEQUENCING/hMPV/3_ProcessedGenomes/", plate_name, "/nextclade.tsv"),
+                    to = paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/", plate_name, "_nextclade.tsv"), 
+                    overwrite = TRUE)
+        } else {
+          
+          file.copy(from = paste0(starting_path, "SEQUENCING/hMPV/3_ProcessedGenomes/", plate_name, "/", plate_name, "_nextclade.tsv"),
+                    to = paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/nextclade/", plate_name, "_nextclade.tsv"), 
+                    overwrite = TRUE)
+        }
 }
 

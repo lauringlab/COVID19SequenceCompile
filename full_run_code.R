@@ -69,7 +69,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20241111_SC2_Nanopore_Run_514"
+plate_name <- "20250108_SC2_Nanopore_Run_521"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
 
@@ -290,7 +290,7 @@ source(paste0(code_path, "RSVACode/rsva_subset_compiled_for_fasta.R"))
 # run nextclade from https://clades.nextstrain.org/results
 
 # Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
-source(paste0(code_path, "RSVACode/OutsidePipeline/moving_nextclade_output.R"))
+source(paste0(code_path, "OutsidePipeline/moving_nextclade_output.R"))
 
 ################################################################################
 # ROUND 2
@@ -353,7 +353,7 @@ source(paste0(code_path, "RSVBCode/rsvb_subset_compiled_for_fasta.R"))
 # run nextclade from https://clades.nextstrain.org/results
 
 # Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
-source(paste0(code_path, "RSVBCode/OutsidePipeline/moving_nextclade_output.R"))
+source(paste0(code_path, "OutsidePipeline/moving_nextclade_output.R"))
 
 ################################################################################
 # ROUND 2
@@ -397,6 +397,27 @@ source(paste0(code_path, "hMPVCode/hMPV_platemapcode.R"))
 source(paste0(code_path, "hMPVCode/hMPV_compilecomponentscode.R"))
 
 source(paste0(code_path, "hMPVCode/hMPV_subset_compiled_for_fasta.R"))
+
+#                                NEXTCLADE                                     #
+################################################################################
+
+# run nextclade from https://clades.nextstrain.org/results
+
+# Copy that re-named file to [DropBox/MED-LauringLab/SequenceSampleMetadata/SequenceOutcomes/nextclade]
+source(paste0(code_path, "OutsidePipeline/moving_nextclade_output.R"))
+
+################################################################################
+# ROUND 2
+################################################################################
+
+source(paste0(code_path, "hMPVCode/hmpv_manifestcode.R"))
+
+source(paste0(code_path, "hMPVCode/hmpv_platemapcode.R"))
+# note: this doesn't run if any plate map excel files are open
+
+source(paste0(code_path, "hMPVCode/hmpv_nextclade_code.R"))
+
+source(paste0(code_path, "hMPVCode/hmpv_compilecomponentscode.R"))
 
 
 

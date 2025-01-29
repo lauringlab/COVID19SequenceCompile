@@ -569,7 +569,7 @@ for (each_file in rvtn_file_list){
                                     specimen_type, manifest_creation_date, record_id)
     } else if (grepl("RIGHT", each_file)){
         fileone <- read.csv(paste0(right_manifest_fp, "/", each_file), colClasses = "character")
-        colnames(fileone)[1] <- "specimen_id"
+        #colnames(fileone)[1] <- "specimen_id"
         fileone$site <- ""
         #fileone$date_of_collection <- as.Date(fileone$date_of_collection)#, format = "Y%-m%-d%")
         #fileone$site_number <- fileone %>% substr(fileone$specimen_id)

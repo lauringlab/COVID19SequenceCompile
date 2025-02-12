@@ -133,7 +133,7 @@ write.csv(flu6, paste0("/Users/leighbak/University of Michigan Dropbox/MED-Lauri
 
 flu7 <- filter(cdc_flu_new_full, received_source_flu == "CDCIVY7")
 
-write.csv(flu6, paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/", 
+write.csv(flu7, paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/", 
                        "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
                        "IVY_uploads/cdc_ivy7_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 

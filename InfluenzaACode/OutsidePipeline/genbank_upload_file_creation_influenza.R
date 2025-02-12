@@ -11,7 +11,7 @@ library(reshape2)
 ################################################################################
 # just need some of these functions
 
-#plate_name <- "20240307_IAV_Nanopore_Run_75"
+#plate_name <- "20250107_IBV_Illumina_Run_5"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -154,6 +154,10 @@ ff <- filter(final_file, as.numeric(nextclade_HA_completeness) >= 90)
 # select run of choice
 ff <- filter(ff, PlatePlatform == runtech & PlateNumber == runnum)
 
+# for roche samples keep everything but the controls
+#ff <- filter(final_file, PlatePlatform == runtech & PlateNumber == runnum)
+#ff <- filter(ff, grepl("ROCHE", received_source))
+
 ff <- filter(ff, subject_id != "")
 
 table(ff$received_source)
@@ -175,9 +179,10 @@ if (any(ff$sample_per_subject > 1)){
 ### uncomment this portion to remove those samples
 ### to remove these: 
 #ff <- filter(ff, sample_per_subject == 1)
-#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("51564", "126101", "51294"))
+#ff <- filter(ff, sample_per_subject == 1 | subject_id %in% c("100786991", "101200155", "101339213"))
 #ff <- filter(ff, sample_id != "007482947")
 #ff <- filter(ff, sample_id != "G43R60Y0" & sample_id != "RR041265541" & sample_id != "G43R61G4")
+#ff <- filter(ff, !grepl("ROCHE", received_source))
 ################################################################################
 ### fix date formatting
 ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(as.POSIXct(coll_date, format = "%m/%d/%Y")), 
@@ -218,12 +223,23 @@ if(any(grepl("RVTN", ff$received_source))){
 ff <- ff %>% mutate(StateAbbrev = case_when(grepl("RVTN", received_source) ~ state, 
                                             grepl("CDCIVY", received_source) ~ state,
                                             grepl("VIEW", received_source) ~ "TN",
+                                            grepl("ROCHE", received_source) ~ "",
                                             T ~ "MI"))
 
 ff <- ff %>% mutate(State = state.name[match(StateAbbrev,state.abb)])
 
+if(any(grepl("ROCHE", ff$received_source))){
+  
+  ff<- ff %>% mutate(Location = case_when(grepl("ROCHE", received_source) ~ flag)#, 
+                     #sample_id = case_when(grepl("RVTN", received_source) ~ sample_id_lauring, 
+                     #T ~ sample_id)
+  )
+  
+} else {
+
 ff <- ff %>% mutate(Location = paste0("USA: ", State))
 
+}
 
 
 # creating VirusName which will be the Sequence_ID
@@ -242,6 +258,7 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           received_source == "ASC" ~ paste0("MIS-", sample_id),
                                           received_source == "ASJ" ~ paste0("MIS-", sample_id),
                                           received_source == "TRINITY" ~ paste0("MIS-", sample_id),
+                                          received_source == "ROCHE" ~ paste0(subject_id),
                                           T ~ paste0("UM-", sample_id)))
 
 
@@ -285,12 +302,16 @@ check_segment_number <- filter(check_segment_number, count == 8)
 ff <- merge(ff, check_segment_number, by = c("sample_id"))
 ff[is.na(ff)] <- ""
 
+# matching segment sequences to roche subject_id
+#ff <- merge(ff, check_segment_number, by.x = "subject_id", by.y = "sample_id")
+#ff[is.na(ff)] <- ""
+
 if (grepl("IAV", plate_name)){
 
 ff <- ff %>% mutate(Sequence_ID = trimws(paste0(VirusName, segment1, segment2)), # needs to be virus name + sequence name ids 
                     organism = "Influenza A virus",
                     isolate = VirusName, 
-                    country = paste0("USA:", State), 
+                    country = Location, 
                     host = "Homo sapiens", 
                     collection_date = as.character(coll_date), 
                     isolation_source = "patient isolate", 
@@ -302,7 +323,7 @@ ff <- ff %>% mutate(Sequence_ID = trimws(paste0(VirusName, segment1, segment2)),
   ff <- ff %>% mutate(Sequence_ID = trimws(paste0(VirusName, segment1, segment2)), # needs to be virus name + sequence name ids 
                       organism = "Influenza B virus",
                       isolate = VirusName, 
-                      country = paste0("USA:", State), 
+                      country = Location, 
                       host = "Homo sapiens", 
                       collection_date = as.character(coll_date), 
                       isolation_source = "patient isolate", 
@@ -343,6 +364,10 @@ if (any(ff$serotype == "unknown")){
 # .all.consensus.final.genbank.fasta
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName) %>% distinct()
+
+# for roche to keep everything based in subject_id being unique
+#ff_crosswalk <- ff %>% select(subject_id, VirusName) %>% distinct()
+
 
 if (grepl("IAV", plate_name)){
 

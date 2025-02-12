@@ -21,6 +21,8 @@ plate_fp <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/Plat
 # genbank file path
 genbank_fp <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
+# nextclade file path
+nc_fp <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
 
 ### output location for files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/FinalSummary")
@@ -84,7 +86,8 @@ mani_plate <- rbind(mani_plate, mani_plate2)
 
 
 mani_plate <- mani_plate %>% mutate(loc_code = case_when(received_source == "CDCIVY" ~ "IVY",
-                                          received_source == "CDCIVY6" ~ "IVY",
+                                                         received_source == "CDCIVY5" ~ "IVY",
+                                                         received_source == "CDCIVY6" ~ "IVY",
                                           received_source == "CDCIVY7" ~ "IVY",
                                           T ~ "UM"))
 
@@ -92,7 +95,8 @@ mani_plate <- mani_plate %>% mutate(loc_code = case_when(received_source == "CDC
 genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
 
 mani_plate <- mani_plate %>% mutate(loc_code2 = case_when(received_source == "CDCIVY" ~  "IVY",
-                                                  received_source == "CDCIVY6" ~ "IVY",
+                                                          received_source == "CDCIVY5" ~ "IVY",
+                                                          received_source == "CDCIVY6" ~ "IVY",
                                                   received_source == "CDCIVY7" ~ "IVY",
                                                   T ~ "UM"))
 
@@ -100,7 +104,11 @@ mani_plate_g2 <- merge(mani_plate, genbank, by.x = c("sample_id", "loc_code2"), 
 #mani_plate_pang_g2 <- merge(mani_plate_pang_g, gisaid, by.x = c("sample_id", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 
 
-mppnc2 <- mani_plate_g2
+mppnc1 <- mani_plate_g2
+
+nextclade <- read.csv(paste0(nextclade_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
+
+mppnc2 <- merge(mppnc1, nextclade, by.x = c("sample_id", "PlateDate"), by.y = c("SampleID", "nextclade_runDate"), all.x = TRUE)
 
 ################################################################################
 ## add a column to number multiple sample_ids per subject_id

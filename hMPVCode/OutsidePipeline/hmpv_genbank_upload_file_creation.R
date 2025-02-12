@@ -52,7 +52,7 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 ################################################################################
 
 # create gisaid directory
-dir.create(paste0(starting_path, "/SEQUENCING/hMPV/6_GenBank_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum))
+dir.create(paste0(starting_path, "/SEQUENCING/hMPV/6_GenBank_Uploads/upload_genbank", plate_datef, "_HPMV_", runtech, "_Run_", runnum))
 
 ################################################################################
 
@@ -117,7 +117,7 @@ ff <- ff %>% mutate(coll_date = case_when(grepl("/", coll_date) ~ as.character(a
 ################################################################################
 
 # create FASTA filename string
-ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.final.genbank.fasta")
+ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.vadr.fasta")
 
 ### constants
 #ff$Subtype <- "A"
@@ -161,14 +161,14 @@ ff$Host <- "Human"
 
 ff_crosswalk <- ff %>% select(sample_id, VirusName)
 
-write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/RSV_A/3_ProcessedGenomes/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, "/", plate_datef, "_RSVA_", runtech, "_Run_", runnum, ".forgenbank.meta.csv"), row.names = FALSE, na = "")
+write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/hMPV/3_ProcessedGenomes/", plate_datef, "_HMPV_", runtech, "_Run_", runnum, "/", plate_datef, "_HMPV_", runtech, "_Run_", runnum, ".forvadr.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
 ff_writeout <- ff %>% select(Sequence_ID, Collection_date, Country, Host, Strain)
 
 ff_writeout <- ff_writeout %>% distinct()
 
-## gisaid upload file name
+## genbank upload file name
 today <- current_date_string()
 gufn <- paste0(today, "_Lauring_genbank_upload_metadata_run_", runnum)
 

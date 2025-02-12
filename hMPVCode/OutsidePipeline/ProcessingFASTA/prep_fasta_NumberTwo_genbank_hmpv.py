@@ -1,6 +1,6 @@
 ### Author: Andrew Valesano/Julie (Jules) Gilbert/Leigh Papalambros
 ### Project: hMPV Sequencing
-### Purpose: Change the names of the fasta entries for uploading to Genbank
+### Purpose: Change the names of the fasta entries for uploading to Genbank after being processed through VADR
 
 # Usage: Run in the batch folder in ProcessedGenomes.
 
@@ -43,17 +43,17 @@ def main():
     parser = argparse.ArgumentParser()
     # takes the string after "--prefix" in the command line for use later
     parser.add_argument('--prefix', action="store", dest="prefix")
-    parser.add_argument('--gb', action="store", dest="gb")
+    #parser.add_argument('--gb', action="store", dest="gb")
     args = parser.parse_args()
 
     ### This section converts barcode (NBXX) into sample_id.
 
     # create set of file names
-    file_1 = s_path + args.prefix + "/" + args.prefix + "90.consensus.fasta"
+    file_1 = s_path + args.prefix + "/" + args.prefix + ".consensus.all.fasta"
     #file_2 = s_path + args.prefix + ".all.consensus.final.genbanktmp.fasta"
-    file_3 = s_path + args.prefix + ".all.consensus.final.genbank.fasta" # This is the file to use in genbank
-    file_4 = g_path + "upload_genbank_" + args.gb + "/" + args.prefix + ".all.consensus.final.genbank.fasta" # This is the file to use in genbank
-    meta_file = s_path + args.prefix + "/" + args.prefix + ".forgenbank.meta.csv" # This is made in gisaid file prep code - just uploaded names + sample ifs
+    file_3 = s_path + args.prefix + ".all.consensus.vadr.fasta" # This is the file to use in genbank
+    file_4 = g_path + "upload_genbank_" + args.prefix + "/" + args.prefix + ".all.consensus.vadr.fasta" # This is the file to use in genbank
+    meta_file = s_path + args.prefix + "/" + args.prefix + ".forvadr.meta.csv" # This is made in gisaid file prep code - just uploaded names + sample ifs
 
     # read in .meta.csv file, which is the compiled file (full_compiled_data.csv)
     meta = pd.read_csv(meta_file, index_col = None, header = 0, dtype = object)
@@ -81,9 +81,9 @@ def main():
             all_fasta.append(record)
 
     # Write everything out as .all.consensus.tmp.fasta, with the replaced system
-    file_2 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbanktmp.fasta"
-    file_3 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.final.genbank.fasta"
-    file_4 = g_path + "upload_genbank_"  + args.gb + "/" + args.prefix + ".all.consensus.final.genbank.fasta"
+    file_2 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.vadr.temp.fasta"
+    file_3 = s_path + args.prefix + "/" + args.prefix + ".all.consensus.vadr.fasta"
+    file_4 = g_path + "upload_genbank_"  + args.prefix + "/" + args.prefix + ".all.consensus.vadr.fasta"
     with open(file_3, 'w') as corrected:
         SeqIO.write(all_fasta, corrected, "fasta")
     with open(file_4, 'w') as corrected:

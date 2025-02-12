@@ -347,7 +347,7 @@ rm(mppnc2_rvtn)
 ## ROCHE sample id combining using the hidden ids because it needs to be deidentified from Adam
 ## along with the rest of the ROCHE sample matching data
 
-## random assigned lauring lab IDs
+## random assigned lauring lab IDs for Roche
 hidden_id_roche <- read.csv(paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/ROCHE/SampleID_Hide/assigned_roche.csv"))
 
 hidden_id_roche$sssubject_id <- str_sub(hidden_id_roche$subject_id, 1, 10)
@@ -372,7 +372,7 @@ mrhpm$subject_id_length <- nchar(mrhpm$subject_id)
 
 # adding in nextclade information to the roche subset
 
-rhpmn <- merge(mrhpm, nextclade, by.x = "sssubject_id", by.y = "SampleID", all.x = TRUE)
+rhpmn <- merge(mrhpm, nextclade, by.x = "sample_id_lauring", by.y = "SampleID", all.x = TRUE)
 
 rhpmn$PlateToNextclade_days <- difftime(rhpmn$nextclade_HA_runDate, rhpmn$PlateDate, units = "days")
 

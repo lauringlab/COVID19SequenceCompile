@@ -178,8 +178,8 @@ for (each_list in i_folderlists){
             
             # sometimes have to cut time off of collection date (from excel)
             
-            #file_in$coll_date <- as.POSIXct(as.numeric(as.character(file_in$coll_date)),origin="1970-01-01")
-            file_in$coll_date <- as.Date(file_in$coll_date, format = "%Y-%m-%d")
+            file_in$coll_date <- as.POSIXct(as.numeric(as.character(file_in$coll_date)),origin="1970-01-01")
+            #file_in$coll_date <- as.Date(file_in$coll_date, format = "%Y-%m-%d")
             file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
             
             class(file_in$coll_date)
@@ -258,7 +258,7 @@ for (each_list in i_folderlists){
                   #print(test_date_format)
                   
                   if (is.na(as.numeric(test_date_format))){
-                    #a <- file_in$coll_date
+                    a <- file_in$coll_date
                     file_in$coll_date <- as.POSIXct(file_in$coll_date, format = "%m/%d/%y")
                   }
                   

@@ -34,9 +34,12 @@ outputLOC <- paste0(starting_path, "SEQUENCING/INFLUENZA_B/4_SequenceSampleMetad
 # first, read in manifest file
 manifest <- read.csv(paste0(manifest_fp, "/sample_full_manifest_list.csv"), colClasses = "character")
 
+manifest_roche <- filter(manifest, grepl("ROCHE", received_source))
+
 # read in plate map file
 plate_map <- read.csv(paste0(plate_fp, "/sample_full_plate_list.csv"), colClasses = "character")
-plate_map <- filter(plate_map, SampleID != "" & !is.na(SampleID)) # remove any rows where sample ID is missing on the plate map
+platemap_roche <- filter(plate_map, grepl("ROCHE", SampleSourceLocation))
+plate_map <- filter(plate_map, SampleID != "" & !is.na(SampleID) & !grepl("ROCHE", SampleSourceLocation)) # remove any rows where sample ID is missing on the plate map
 #plate_map$SampleID <- as.character(trimws(plate_map$SampleID))
 
 
@@ -388,6 +391,140 @@ rm(mppnc2_rvtn)
 # 
 # write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_warnings.tsv"), sep = "\t")
 
+
+
+################################################################################
+## Filtering out the duplicate "old" SPH samples (2016-2019) so there is only 1 sample
+## that has the correct nextclade strain with it 
+
+#only_sph_samples <- filter(mppnc3, grepl("MARTIN", received_source))
+
+#runs_sph <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
+
+#double checking that all other SPH samples have duplicate entries in full compiled IBV
+#num_of_samples <- only_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
+#runs_ibv <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
+
+#this has all "NA" (12) and "good" (2) that are not duplicate samples
+#non_dups_sph <- filter(only_sph_samples, sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
+#                                                          "MH25666", "MH25785", "MH26763", "MH26931",
+#                                                          "MH26934", "MH26944", "MH26968", "MH29093",
+#                                                          "MHM2682", "MHM2684"))
+
+## removing the duplicate sph samples that have the wrong nextclade assignment
+#good_nc_sph <- only_sph_samples[!only_sph_samples$sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
+#                                                                   "MH25666", "MH25785", "MH26763", "MH26931",
+#                                                                   "MH26934", "MH26944", "MH26968", "MH29093",
+#                                                                   "MHM2682", "MHM2684"),]
+
+#good_nextclade_sph_samples <- filter(good_nc_sph, grepl("good", nextclade_HA_qcOverallStatus))
+
+#filt_out_dup_sph <- mppnc3[!mppnc3$sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
+#                                                    "MH25666", "MH25785", "MH26763", "MH26931",
+#                                                    "MH26934", "MH26944", "MH26968", "MH29093",
+#                                                                        "MHM2682", "MHM2684"),]
+
+#all_good_nextclade_sph_samples <- filter(mppnc3, !grepl("good", nextclade_HA_qcOverallStatus) | grepl("20231208_IBV_Illumina_Run_3", PlateName) | grepl("20231208_IBV_Illumina_Run_4", PlateName))
+
+#num_of_good_samples <- good_nextclade_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
+
+#runs_sph_ibv <- good_nextclade_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
+
+#mppnc3 <- good_nextclade_sph_samples
+
+#all_back_together <- rbind(all_other_samples, non_dups_sph, good_nextclade_sph_samples)
+
+#all_runs_edited <- all_back_together %>% group_by(PlateName) %>% summarize(count = n())
+
+
+################################################################################
+## ROCHE sample id combining using the hidden ids because it needs to be deidentified from Adam
+## along with the rest of the ROCHE sample matching data
+
+## random assigned lauring lab IDs for Roche
+hidden_id_roche <- read.csv(paste0(starting_path, "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/Manifests/ROCHE/SampleID_Hide/assigned_roche.csv"))
+
+hidden_id_roche$sssubject_id <- str_sub(hidden_id_roche$subject_id, 1, 10)
+
+## the subject_ids and sample_ids in the platemap and manifest need to have the "-##" stripped off to match
+
+platemap_roche$SSSampleID <- str_sub(platemap_roche$SampleID, 1, 10)
+
+# merging roche platemap and lauring_lab_id
+mrhp <- merge(hidden_id_roche, platemap_roche, by.x = "sssubject_id", by.y = "SSSampleID", all.y = TRUE)
+
+# adding in manifest information
+
+mrhpm <- merge(mrhp, manifest_roche, by.x = "sample_id_lauring", "subject_id", all.x = TRUE)
+
+## add a column to number multiple sample_ids per subject_id
+
+mrhpm <- mrhpm %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample_per_subject = row_number())
+
+# add a column to check length of subject_id
+mrhpm$subject_id_length <- nchar(mrhpm$subject_id)
+
+# adding in nextclade information to the roche subset
+
+rhpmn <- merge(mrhpm, nextclade, by.x = "sample_id_lauring", by.y = "SampleID", all.x = TRUE)
+
+rhpmn$PlateToNextclade_days <- difftime(rhpmn$nextclade_HA_runDate, rhpmn$PlateDate, units = "days")
+
+# adding in genbank information to roche subset
+
+rhpmng <- merge(rhpmn, genbank, by.x ="sssubject_id" , by.y = "sample_id", all.x = TRUE)
+
+# adding columns for gisaid so that the data can be combined with the full compiled
+
+rhpmng$Isolate_Id <- ""
+rhpmng$PB2.Segment_Id <- ""
+rhpmng$PB1.Segment_Id <- ""
+rhpmng$PA.Segment_Id <- ""
+rhpmng$HA.Segment_Id <- ""
+rhpmng$NP.Segment_Id <- ""
+rhpmng$NA.Segment_Id <- ""
+rhpmng$MP.Segment_Id <- ""
+rhpmng$NS.Segment_Id <- ""
+#rhpmng$HE.Segment_Id <- ""
+#rhpmng$P3.Segment_Id <- ""
+rhpmng$Isolate_Name <- ""
+
+
+# renaming some of the columns in master merged data frame before selecting everything that is needed to 
+# rbind the roche data with the full compiled data
+
+#colnames(df)[colnames(df) == 'oldName'] <- 'newName'
+
+colnames(rhpmng)[colnames(rhpmng) == 'sample_id.x'] <- 'sample_id'
+colnames(rhpmng)[colnames(rhpmng) == 'subject_id'] <- 'subject_id_hide'
+colnames(rhpmng)[colnames(rhpmng) == 'sample_id_lauring'] <- 'subject_id'
+colnames(rhpmng)[colnames(rhpmng) == 'subject_id_hide'] <- 'sample_id_lauring'
+
+
+mppnc2_roche <- rhpmng %>% select(sample_id, subject_id, coll_date,                   
+                                  flag, received_source, received_date, SampleBarcode,               
+                                  PlateDate, PlatePlatform, PlateNumber,
+                                  genbank_SubmissionID, loc_code2, genbank_HA,               
+                                  genbank_MP, genbank_NA,    
+                                  genbank_NP, genbank_NS,                 
+                                  genbank_PA, genbank_PB1, genbank_PB2,
+                                  nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
+                                  nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
+                                  nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
+                                  nextclade_HA_runDate, nextclade_HA_type, 
+                                  Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
+                                  NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, #HE.Segment_Id, 
+                                  #P3.Segment_Id, 
+                                  Isolate_Name,              
+                                  subject_id_length, position, PlateName, PlatePosition,               
+                                  SampleSourceLocation, #PlateToNextclade_days, 
+                                  sample_per_subject, sample_id_lauring)
+
+
+mppnc2 <- rbind(mppnc2, mppnc2_roche) 
+
+
+#################################################################################
 mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,                   
                             flag, received_source, received_date, SampleBarcode,               
                             PlateDate, PlatePlatform, PlateNumber,
@@ -408,48 +545,6 @@ mppnc3 <- mppnc2 %>% select(sample_id, subject_id, coll_date,
                             sample_per_subject, sample_id_lauring)
 
 
-################################################################################
-## Filtering out the duplicate "old" SPH samples (2016-2019) so there is only 1 sample
-## that has the correct nextclade strain with it 
-
-only_sph_samples <- filter(mppnc3, grepl("MARTIN", received_source))
-
-runs_sph <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
-
-#double checking that all other SPH samples have duplicate entries in full compiled IBV
-num_of_samples <- only_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
-#runs_ibv <- only_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
-
-#this has all "NA" (12) and "good" (2) that are not duplicate samples
-non_dups_sph <- filter(only_sph_samples, sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
-                                                          "MH25666", "MH25785", "MH26763", "MH26931",
-                                                          "MH26934", "MH26944", "MH26968", "MH29093",
-                                                          "MHM2682", "MHM2684"))
-
-## removing the duplicate sph samples that have the wrong nextclade assignment
-good_nc_sph <- only_sph_samples[!only_sph_samples$sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
-                                                                   "MH25666", "MH25785", "MH26763", "MH26931",
-                                                                   "MH26934", "MH26944", "MH26968", "MH29093",
-                                                                   "MHM2682", "MHM2684"),]
-
-good_nextclade_sph_samples <- filter(good_nc_sph, grepl("good", nextclade_HA_qcOverallStatus))
-
-filt_out_dup_sph <- mppnc3[!mppnc3$sample_id %in% c("MH16168", "MH16279", "MH17559", "MH25162",
-                                                    "MH25666", "MH25785", "MH26763", "MH26931",
-                                                    "MH26934", "MH26944", "MH26968", "MH29093",
-                                                                        "MHM2682", "MHM2684"),]
-
-all_good_nextclade_sph_samples <- filter(mppnc3, !grepl("good", nextclade_HA_qcOverallStatus) | grepl("20231208_IBV_Illumina_Run_3", PlateName) | grepl("20231208_IBV_Illumina_Run_4", PlateName))
-
-num_of_good_samples <- good_nextclade_sph_samples %>% group_by(sample_id) %>% summarize(count = n())
-
-runs_sph_ibv <- good_nextclade_sph_samples %>% group_by(PlateName) %>% summarize(count = n())
-
-#mppnc3 <- good_nextclade_sph_samples
-
-#all_back_together <- rbind(all_other_samples, non_dups_sph, good_nextclade_sph_samples)
-
-#all_runs_edited <- all_back_together %>% group_by(PlateName) %>% summarize(count = n())
 
 ################################################################################
 

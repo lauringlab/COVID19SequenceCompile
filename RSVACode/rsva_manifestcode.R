@@ -21,8 +21,9 @@ ivy6_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMeta
 ivy7_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/CDCIVY7")
 hive_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/HIVE")
 right_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/RIGHT")
+martin_manifest_fp <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/MARTIN")
 
-manifest_folder_list <- c(ivy4_manifest_fp, ivy5_manifest_fp, ivy6_manifest_fp, ivy7_manifest_fp, hive_manifest_fp, right_manifest_fp)
+manifest_folder_list <- c(ivy4_manifest_fp, ivy5_manifest_fp, ivy6_manifest_fp, ivy7_manifest_fp, hive_manifest_fp, right_manifest_fp, martin_manifest_fp)
 
 ### output location of manifest files, all together
 outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/ManifestsComplete")
@@ -133,7 +134,7 @@ for (each_folder in manifest_folder_list){
         file_in <- read.xlsx(paste0(each_folder, "/", ivym), detectDates = TRUE)
         
         # "position", "sample_id", "subject_id", "coll_date", "flag"
-        file_in <- file_in %>% select(`Position.#`, Aliquot.ID, `Study.ID`, `Collection.Date`, Comments)
+        file_in <- file_in %>% select(`Position.#`, Aliquot.ID, `Study_ID`, `Collection.Date`, Comments)
         colnames(file_in) <- c("position", "sample_id", "subject_id", "coll_date", "flag")
         
         # sometimes have to cut time off of collection date (from excel)
@@ -152,38 +153,39 @@ for (each_folder in manifest_folder_list){
         
       }          
           
-    }    else if (each_folder == right_manifest_fp){
+    }else if (each_folder == right_manifest_fp){
            #process RIGHT manifest
-      
+      full_right <- data.frame()
       # read in manifests
       file_list <- list.files(pattern = "*.csv", path = each_folder)
       for (righta in file_list){
-        file_in <- read.csv(paste0(each_folder, "/", righta), colClasses = "character")
+        right_one <- read.csv(paste0(each_folder, "/", righta), colClasses = "character")
         
-        colnames(fileone)[1] <- "specimen_id"
-        fileone$site <- ""
-        #fileone$date_of_collection <- as.Date(fileone$date_of_collection)#, format = "Y%-m%-d%")
-        fileone <- fileone %>% select(specimen_id, site, study_id, date_of_collection, 
-                                      specimen_type, manifest_creation_date, record_id)
+        rfile_one <- rbind(right_one, full_right)
+        
+        rfile_one <- rfile_one %>% select(specimen_id, study_id, date_of_collection, site_name,
+                                      specimen_type, manifest_creation_date, record_id, rsv_subtype)
         
         # sometimes have to cut time off of collection date (from excel)
-        file_in$coll_date <- substr(as.character(file_in$coll_date), 1, 10)
+        rfile_one$date_of_collection <- substr(as.character(rfile_one$date_of_collection), 1, 10)
         
+        
+        colnames(rfile_one) <- c("sample_id", "subject_id", "coll_date", "site",
+                                 "specimen_type", "received_date", "record_id", "flag")
         # add in 2 new columns: position and received_source (from file name)
-        file_in$position <- ""
+        rfile_one$position <- ""
         
         
         rec_source <- trimws(as.character(strsplit(righta, "_")[[1]][1]))
-        file_in$received_source <- rec_source
-        file_in$coll_date <- as.character(file_in$coll_date)
-        colnames(fileone) <- c("specimen_id", "site", "study_id", "date_of_collection", 
-                               "specimen_type", "manifest_creation_date", "record_id")
+        rfile_one$received_source <- rec_source
+        rfile_one$coll_date <- as.character(rfile_one$coll_date)
+        
         
         #select the columns in the correct order
-        file_in <- file_in %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source)
+        rfile_one <- rfile_one %>% select(position, sample_id, subject_id, coll_date, flag, received_date, received_source)
         
         # bind all rows together
-        manifest_storage <- rbind(manifest_storage, file_in)
+        manifest_storage <- rbind(manifest_storage, rfile_one)
       }
   } else {
   

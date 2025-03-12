@@ -286,7 +286,18 @@ for (each_folder in manifest_folder_list){
 manifest_storage <- filter(manifest_storage, !is.na(sample_id) & !is.na(subject_id))
 manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
 
+################################################################################
+## RIGHT manifest post formatting 
+date_test_right <- filter(manifest_storage, grepl("RIGHT", received_source))
+#str(test_right)
+all_non_right <- filter(manifest_storage, !grepl("RIGHT", received_source))
 
+
+date_test_right$received_date <- as.Date(date_test_right$received_date, format = "%m/%d/%Y")
+
+all_back <- rbind(date_test_right, all_non_right)
+
+manifest_storage <- all_back
 ################################################################################
 # check for sample_id/subject_id/coll_date duplicates
 # count of unique sample_id, subject_id, coll_date combinations

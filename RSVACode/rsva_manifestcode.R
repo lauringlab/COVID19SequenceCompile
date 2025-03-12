@@ -166,15 +166,17 @@ for (each_folder in manifest_folder_list){
         rfile_one <- rfile_one %>% select(specimen_id, study_id, date_of_collection, site_name,
                                       specimen_type, manifest_creation_date, record_id, rsv_subtype)
         
+        #rfile_one$manifest_creation_date <- substr(as.character(rfile_one$manifest_creation_date), 1, 10)
+        #rfile_one$manifest_creation_date <- as.POSIXct(rfile_one$manifest_creation_date, format = "%m/%d/%Y")
+        
         # sometimes have to cut time off of collection date (from excel)
         rfile_one$date_of_collection <- substr(as.character(rfile_one$date_of_collection), 1, 10)
-        
+        #str(rfile_one)
         
         colnames(rfile_one) <- c("sample_id", "subject_id", "coll_date", "site",
                                  "specimen_type", "received_date", "record_id", "flag")
         # add in 2 new columns: position and received_source (from file name)
         rfile_one$position <- ""
-        
         
         rec_source <- trimws(as.character(strsplit(righta, "_")[[1]][1]))
         rfile_one$received_source <- rec_source
@@ -285,7 +287,18 @@ for (each_folder in manifest_folder_list){
 manifest_storage <- filter(manifest_storage, !is.na(sample_id) & !is.na(subject_id))
 manifest_storage$coll_date <- as.character(manifest_storage$coll_date)
 
+################################################################################
+## RIGHT manifest post formatting 
+date_test_right <- filter(manifest_storage, grepl("RIGHT", received_source))
+#str(test_right)
+all_non_right <- filter(manifest_storage, !grepl("RIGHT", received_source))
 
+
+date_test_right$received_date <- as.Date(date_test_right$received_date, format = "%m/%d/%Y")
+
+all_back <- rbind(date_test_right, all_non_right)
+
+manifest_storage <- all_back
 ################################################################################
 # check for sample_id/subject_id/coll_date duplicates
 # count of unique sample_id, subject_id, coll_date combinations

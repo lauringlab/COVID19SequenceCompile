@@ -21,28 +21,31 @@ outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/Se
 
 ################################################################################
 
-file_list <- list.files(pattern = "*.tsv", path = nc_fp)
+file_list_rsva <- list.files(pattern = "*.tsv", path = nc_fp)
 
 nc_storage <- data.frame()
+nc_old <- data.frame()
+nc_new <- data.frame()
 
-for (each_page in file_list){
-  nc1 <- read.table(paste0(nc_fp, "/", each_page), header = TRUE, colClasses = "character", stringsAsFactors = FALSE, fill = TRUE, sep = "\t")
-  
-  #print(colnames(nc1))
-  if("totalMutations" %in% colnames(nc1)){
-    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs)
-  } else {
-    ### nextclade update changed column totalMutations to totalSubstitutions (near 6/18/2021)
+for (each_file in file_list_rsva){
+  if(grepl("2023", each_file) | grepl("2024", each_file)){
+    nc1 <- read.table(paste0(nc_fp, "/", each_file), header = TRUE, colClasses = "character", stringsAsFactors = FALSE, fill = TRUE, sep = "\t")
     nc1 <- nc1 %>% select(seqName, clade, G_clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs)
     colnames(nc1) <- c("seqName", "clade", "G_clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs")
+    nc_old <- rbind(nc1, nc_old)
+  } else {
+    nc2 <- read.table(paste0(nc_fp, "/", each_file), header = TRUE, colClasses = "character", stringsAsFactors = FALSE, fill = TRUE, sep = "\t")
+    nc2 <- nc2 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs)
+    nc2$G_clade <- ""
+    nc2 <- nc2 %>% select(seqName, clade, G_clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs)
+    colnames(nc2) <- c("seqName", "clade", "G_clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs")
+    nc_new <- rbind(nc2, nc_new)
   }
   
-  ### add date column from file name
-  nc1$nextclade_runDate <- date_from_file_FIRST(each_page)
+  nc_storage <- rbind(nc_old, nc_new)
   
-  nc_storage <- rbind(nc_storage, nc1)
+  nc_storage$nextclade_runDate <- date_from_file_FIRST(each_file)
 }
-
 ### remove commas from clade column
 nc_storage$clade <- gsub(",", "", nc_storage$clade)
 

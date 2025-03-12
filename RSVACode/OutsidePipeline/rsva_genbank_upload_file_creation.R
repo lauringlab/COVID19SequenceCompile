@@ -84,7 +84,7 @@ table(ff$received_source, useNA = "always")
 # set up alert to duplicate items
 
 if (any(ff$sample_per_subject > 1)){
-  print("STOP: Examine this set of GISAID submissions.")
+  print("STOP: Examine this set of GENBANK submissions.")
   stop("There are samples from subject_ids that we've sequenced previously.")
 }
 
@@ -160,6 +160,7 @@ ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY" ~ paste0("
                                           received_source == "RIGHT" ~ paste0("hRSV-A-", sample_id_lauring),
                                           received_source == "IVYIC" ~ paste0("hRSV-A-", sample_id),
                                           received_source == "MDHHS" ~ paste0("hRSV-A-", sample_id),
+                                          received_source == "MARTIN" ~ paste0("hRSV-A-", sample_id),
                                           T ~ paste0("hRSV-A-", sample_id)))
 
 ff$Sequence_ID <- ff$VirusName

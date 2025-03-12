@@ -17,7 +17,7 @@ rsv_a7 <- filter(rsv_a, received_source == "CDCIVY7")
 rsv_a4$subtype <- "A"
 rsv_a5$subtype <- "A"
 rsv_a6$subtype <- "A"
-rsv_a$subtype <- "A"
+rsv_a7$subtype <- "A"
 
 rsv_b <- read.csv("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv", colClasses = "character")
 

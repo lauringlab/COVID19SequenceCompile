@@ -128,9 +128,10 @@ mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample
 ################################################################################
 ## adding in the lauring_lab_id recode info
 
-genbank_secret <- filter(genbank, grepl("RIGHT", genbank_SequenceID))
+#genbank_secret <- filter(genbank, grepl("RA", genbank_SequenceID))
+genbank_secret <- filter(genbank, grepl("RA", sample_id))
 
-# pull in covid RVTN, VIEW, and RIGHT data
+# pull in rsva RIGHT data
 seq <- read.csv(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
 
 # only keep RIGHT
@@ -156,17 +157,17 @@ full_set2 <- cbind(not_assigned, seq3) ## this contains all newly assigned right
 
 full_set_complete <- rbind(filter(already_assigned, !is.na(subject_id)), full_set2)
 
-write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/RIGHT/SampleID_Hide/assigned_rvtn_random.csv"), row.names = FALSE, na = "")
+write.csv(full_set_complete, paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/RIGHT/SampleID_Hide/assigned_right_random.csv"), row.names = FALSE, na = "")
 
 
 # read in and attach RIGHT re-codes
-right_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/RIGHT/SampleID_Hide/assigned_rvtn_random.csv"), colClasses = "character")
+right_recodes <- read.csv(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/Manifests/RIGHT/SampleID_Hide/assigned_right_random.csv"), colClasses = "character")
 right_recodes <- right_recodes %>% select(sample_id_lauring, sample_id)
 right_recodes <- filter(right_recodes, sample_id != "")
 #colnames(right_recodes)
 
 
-mppnc <- merge(mppnc, right_recodes, by = c("sample_id"), all.x = TRUE)
+mppnc <- merge(mppnc, right_recodes, by = "sample_id", all.x = TRUE)
 
 
 ################################################################################
@@ -213,3 +214,4 @@ write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_w
 
 write.csv(mppnc3, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc3, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")
+

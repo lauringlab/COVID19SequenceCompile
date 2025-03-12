@@ -9,13 +9,13 @@ library(lubridate)
 
 # read in full compiled rsv_a file
 
-rsv_a <- read.csv("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv", colClasses = "character")
+rsv_a <- read.csv("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv", colClasses = "character")
 
 right1_a <- filter(rsv_a, received_source == "RIGHT")
 
 right1_a$subtype <- "A"
 
-rsv_b <- read.csv("/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv", colClasses = "character")
+rsv_b <- read.csv("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/RSV_B/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv", colClasses = "character")
 
 right1_b <- filter(rsv_b, received_source == "RIGHT")
 
@@ -44,7 +44,7 @@ colnames(right1_ab_out) <- c("subject_id", "sample_id", "coll_date_rsv", "flag_r
                            "nextclade_totalmissing_rsv", "nextclade_completeness_rsv", "nextclade_overall_qc_rsv")
 
 
-f_out <- "/Users/leighbak/Dropbox (University of Michigan)/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/RIGHT_uploads/"
+f_out <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/RIGHT_uploads/"
 
 
 write.csv(right1_ab_out, paste0(f_out, "right_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")

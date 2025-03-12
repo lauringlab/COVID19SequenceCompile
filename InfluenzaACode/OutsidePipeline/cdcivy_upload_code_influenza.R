@@ -127,9 +127,9 @@ flu5 <- filter(cdc_flu_old, received_source_flu == "CDCIVY5")
 
 flu6 <- filter(cdc_flu_new_full, received_source_flu == "CDCIVY6")
 
-write.csv(flu6, paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/", 
-                       "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
-                       "IVY_uploads/cdc_ivy6_flu_", today_date, ".csv"), row.names = FALSE, na = "")
+#write.csv(flu6, paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/", 
+#                       "SEQUENCING/INFLUENZA_A/4_SequenceSampleMetadata/FinalSummary/", 
+#                       "IVY_uploads/cdc_ivy6_flu_", today_date, ".csv"), row.names = FALSE, na = "")
 
 flu7 <- filter(cdc_flu_new_full, received_source_flu == "CDCIVY7")
 

@@ -43,7 +43,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 ### fill in some info
 
 #fill in the plate name below if running this code seperate and not after "full_run_code.R"
-#plate_name <- "20230307_RSVA_Illumina_Run_1"
+#plate_name <- "20250523_HMPV_Illumina_Run_7"
 
 plate_datef <- strsplit(plate_name, "_")[[1]][1] # plate date in YYYYMMDD format
 runtech <- strsplit(plate_name, "_")[[1]][3] # nanopore or illumina, will match "PlatePlatform" options
@@ -51,18 +51,18 @@ runnum <- strsplit(plate_name, "_")[[1]][5] # number, will match "PlateNumber" o
 
 ################################################################################
 
-# create gisaid directory
-dir.create(paste0(starting_path, "/SEQUENCING/hMPV/6_GenBank_Uploads/upload_genbank", plate_datef, "_HPMV_", runtech, "_Run_", runnum))
+# create genbank directory
+dir.create(paste0(starting_path, "/SEQUENCING/hMPV/6_GenBank_Uploads/upload_genbank_", plate_datef, "_HMPV_", runtech, "_Run_", runnum))
 
 ################################################################################
 
 # run comparison code file first, to be sure full_compiled_data matches the one
 # in the secret folder
-source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
+#source(paste0(code_path, "OutsidePipeline/checking_compiled_files.R"))
 
 # set output path for genbank upload file
 # will need to add appropriate folder name at the end of this path
-outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/6_GenBank_Uploads/upload_", plate_datef, "_", tolower(runtech), "_run_", runnum, "/")
+outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/6_GenBank_Uploads/upload_genbank_", plate_datef, "_HMPV_", runtech, "_Run_", runnum, "/")
 
 ################################################################################
 
@@ -70,7 +70,7 @@ outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/6_GenBank_Uploads/upload_", 
 finalfileLOC <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/FinalSummary")
 final_file <- read.csv(paste0(finalfileLOC, "/full_compiled_data.csv"), colClasses = "character")
 
-final_file <- filter(final_file, !grepl("Missing Date in Manifest", flag))
+#final_file <- filter(final_file, !grepl("Missing Date in Manifest", flag))
 
 # only keep rows with completeness > 90%
 ff <- filter(final_file, as.numeric(nextclade_completeness) >= 80)
@@ -84,7 +84,7 @@ table(ff$received_source, useNA = "always")
 # set up alert to duplicate items
 
 if (any(ff$sample_per_subject > 1)){
-  print("STOP: Examine this set of GISAID submissions.")
+  print("STOP: Examine this set of Genbank submissions.")
   stop("There are samples from subject_ids that we've sequenced previously.")
 }
 
@@ -142,10 +142,10 @@ ff$FASTAfilename <- paste0(ff$PlateName, ".all.consensus.vadr.fasta")
 # hCoV-19/USA/MI-UM-10037140915/2020
 # hCoV-19/USA/MA-IVY-ZZX9KKEV/2021
                                      
-ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY5" ~ paste0("hMPV", sample_id),
-                                          received_source == "CDCIVY6" ~ paste0("hMPV", sample_id),
-                                          received_source == "CDCIVY7" ~ paste0("hMPV", sample_id),
-                                          T ~ paste0("hMPV", sample_id)))
+ff <- ff %>% mutate(VirusName = case_when(received_source == "CDCIVY5" ~ paste0("hMPV-", sample_id),
+                                          received_source == "CDCIVY6" ~ paste0("hMPV-", sample_id),
+                                          received_source == "CDCIVY7" ~ paste0("hMPV-", sample_id),
+                                          T ~ paste0("hMPV-", sample_id)))
 
 ff$Sequence_ID <- ff$VirusName
 ff$Collection_date <- paste0(day(ff$coll_date), "-", month(ff$coll_date, label = TRUE), "-", year(ff$coll_date))
@@ -164,7 +164,7 @@ ff_crosswalk <- ff %>% select(sample_id, VirusName)
 write.csv(ff_crosswalk, paste0(starting_path, "/SEQUENCING/hMPV/3_ProcessedGenomes/", plate_datef, "_HMPV_", runtech, "_Run_", runnum, "/", plate_datef, "_HMPV_", runtech, "_Run_", runnum, ".forvadr.meta.csv"), row.names = FALSE, na = "")
 
 ## select variables
-ff_writeout <- ff %>% select(Sequence_ID, Collection_date, Country, Host, Strain)
+ff_writeout <- ff %>% select(Sequence_ID, Collection_date, Country, Host)
 
 ff_writeout <- ff_writeout %>% distinct()
 
@@ -172,7 +172,9 @@ ff_writeout <- ff_writeout %>% distinct()
 today <- current_date_string()
 gufn <- paste0(today, "_Lauring_genbank_upload_metadata_run_", runnum)
 
-write.table(ff_writeout, paste0(outputLOC, gufn, ".txt"), sep = "\t", row.names = FALSE, na = "", quote = FALSE)
+write.table(ff_writeout, paste0("/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/hMPV/6_GenBank_Uploads/upload_genbank_", plate_name, "/", gufn, ".txt"), sep = "\t", row.names = FALSE, na = "", quote = FALSE)
+
+#write.table(ff_writeout, "~/Desktop/test_hmpv.txt", sep = "\t", row.names = FALSE, na = "", quote = FALSE)
 
 # ## write to excel file (follow format)
 # wb <- loadWorkbook(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/SequenceOutcomes/gisaid/GISAID_UPLOAD_TEMPLATE_2.xlsx"))

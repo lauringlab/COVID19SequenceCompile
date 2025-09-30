@@ -1,6 +1,6 @@
 ################################################################################
-#          Creation of GenBank Dataset for RSVA Genetic Sampling               #
-#                         Last Updated: 12/08/2023                             #
+#          Creation of GenBank Dataset for hMPV Genetic Sampling               #
+#                         Last Updated: 06/08/2025                             #
 #                 Code Edited By: Leigh Papalambros                            #
 ################################################################################
 

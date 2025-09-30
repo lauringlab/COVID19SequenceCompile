@@ -17,7 +17,7 @@ library(janitor)
 nc_fp <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/nextclade")
 
 ### output location of nextclade files, all together
-outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomesComplete")
 
 ################################################################################
 
@@ -33,8 +33,8 @@ for (each_page in file_list){
     nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalMutations, totalNonACGTNs, aaSubstitutions)
   } else {
     ### nextclade update changed column totalMutations to totalSubstitutions (near 6/18/2021)
-    nc1 <- nc1 %>% select(seqName, clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs, aaSubstitutions)
-    colnames(nc1) <- c("seqName", "clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs", "aaSubstitutions")
+    nc1 <- nc1 %>% select(seqName, clade, legacy_clade, totalMissing, qc.overallScore, qc.overallStatus, totalSubstitutions, totalNonACGTNs, aaSubstitutions)
+    colnames(nc1) <- c("seqName", "clade", "alternate_clade", "totalMissing", "qc.overallScore", "qc.overallStatus", "totalMutations", "totalNonACGTNs", "aaSubstitutions")
   }
   
   
@@ -48,7 +48,7 @@ for (each_page in file_list){
 nc_storage$clade <- gsub(",", "", nc_storage$clade)
 
 ### rename columns 
-rename_columns <- c("SampleID", "nextclade_clade", "nextclade_totalMissing", "nextclade_qcOverallScore", "nextclade_qcOverallStatus", "nextclade_totalMutations", "nextclade_totalNonACGTNs", "SF456L_present", "nextclade_runDate")
+rename_columns <- c("SampleID", "nextclade_clade", "nextclade_alternate_clade", "nextclade_totalMissing", "nextclade_qcOverallScore", "nextclade_qcOverallStatus", "nextclade_totalMutations", "nextclade_totalNonACGTNs", "nextclade_aaSubstitutions", "nextclade_runDate")
 colnames(nc_storage) <- rename_columns
 
 ################################################################################

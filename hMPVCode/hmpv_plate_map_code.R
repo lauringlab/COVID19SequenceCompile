@@ -1,7 +1,7 @@
 ################################################################################
-#       Creation of Plate Map Dataset for COVID-19 Genetic Sampling            #
-#                         Last Updated: 05/18/2021                             #
-#                 Code Edited By: Julie (Jules) Gilbert                        #
+#       Creation of Plate Map Dataset for hMPV Genetic Sampling            #
+#                         Last Updated: 05/18/2025                             #
+#                 Code Edited By: Leigh Papalambros                       #
 ################################################################################
 
 library(tidyverse)
@@ -67,3 +67,4 @@ colnames(plate_storage) <- c("PlateName", "PlatePosition", "SampleID", "SampleBa
 
 ### write out compiled plate information
 write.csv(plate_storage, paste0(outputLOC, "/sample_full_plate_list.csv"), row.names = FALSE, na = "")
+

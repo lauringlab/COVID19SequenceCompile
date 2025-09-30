@@ -49,7 +49,7 @@ def main():
     ### This section converts barcode (NBXX) into sample_id.
 
     # create set of file names
-    file_1 = s_path + args.prefix + "/" + args.prefix + ".consensus.all.fasta"
+    file_1 = s_path + args.prefix + "/" + args.prefix + ".full.consensus.fasta"
     #file_2 = s_path + args.prefix + ".all.consensus.final.genbanktmp.fasta"
     file_3 = s_path + args.prefix + ".all.consensus.vadr.fasta" # This is the file to use in genbank
     file_4 = g_path + "upload_genbank_" + args.prefix + "/" + args.prefix + ".all.consensus.vadr.fasta" # This is the file to use in genbank

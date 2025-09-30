@@ -73,7 +73,7 @@ if (grepl("_SC2_", plate_name)){
   file_in <- read.xlsx(paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), sheet = 1)
   
 } else {
-    stop("Plate name does not contain recognized phrase (IAV/SC2).")
+    stop("Plate name does not contain recognized phrase (IAV/SC2/RSVA/RSVB/HMPV).")
 }
 
 
@@ -147,7 +147,8 @@ if (grepl("_SC2_", plate_name)){
   write.xlsx(file_in, paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/PlateMaps/", plate_name2, ".xlsx"), overwrite = TRUE)
   
 } else {
-  stop("Plate name does not contain recognized phrase (IAV/SC2/RSV/hMPV).")
+  stop("Plate name does not contain recognized phrase (IAV/SC2/RSVA/RSVB/HMPV).")
 }
 
 plate_name <- plate_name2
+

@@ -69,7 +69,7 @@ source(paste0(code_path, "pipeline_functions.R"))
 
 # sars-cov-2 plate
 #<<<<<<< HEAD
-plate_name <- "20250108_SC2_Nanopore_Run_521"
+plate_name <- "20250717_SC2_Nanopore_Run_571"
 #=======
 plate_name <- "20230605_SC2_Illumina_Run_108"
 
@@ -182,7 +182,7 @@ source(paste0(code_path, "compile_components_code.R"))
 plate_name <- "20240212_IBV_Nanopore_Run_6"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
-plate_name <- "20240605_IAV_Nanopore_Run_101"
+plate_name <- "20250710_IAV_Nanopore_Run_159"
 
 num_iavs_on_plate <- 93
 
@@ -263,7 +263,7 @@ source(paste0(influenza_path, "influenzaB_compilecomponentscode.R"))
 # RSVA COMPONENT
 ################################################################################
 
-plate_name <- "20240125_RSVA_Nanopore_Run_4"
+plate_name <- "20250425_RSVA_Nanopore_Run_15"
 #plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
@@ -324,7 +324,7 @@ source(paste0(code_path, "RSVACode/rsva_compilecomponentscode.R"))
 # RSVB COMPONENT
 ################################################################################
 
-plate_name <- "20240209_RSVB_Nanopore_Run_4"
+plate_name <- "20250320_RSVB_Nanopore_Run_15"
 #plate_name <- "20230307_RSVA_Illumina_Run_1_E6444_Nextseq"
 #plate_name <- "DATE_SC2_Illumina_Run_XX_E6440"
 
@@ -382,7 +382,7 @@ source(paste0(code_path, "RSVBCode/rsvb_compilecomponentscode.R"))
 # hMPV COMPONENT
 ################################################################################
 
-plate_name <- "20240910_HMPV_Illumina_Run_1"
+plate_name <- "20250523_HMPV_Illumina_Run_5"
 
 ################################################################################
 # ROUND 1
@@ -392,7 +392,7 @@ source(paste0(code_path, "OutsidePipeline/moving_plate_map_files.R"))
 
 source(paste0(code_path, "hMPVCode/hMPV_manifestcode.R"))
 
-source(paste0(code_path, "hMPVCode/hMPV_platemapcode.R"))
+source(paste0(code_path, "hMPVCode/hMPV_plate_map_code.R"))
 
 source(paste0(code_path, "hMPVCode/hMPV_compilecomponentscode.R"))
 

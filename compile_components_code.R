@@ -686,6 +686,8 @@ write.table(keep_NCs, paste0(outputLOC, "/ReportNotifications/negative_control_w
 
 write.csv(mppnc2, paste0(outputLOC, "/full_compiled_data.csv"), row.names = FALSE, na = "")
 write.csv(mppnc2, paste0(outputLOC, "/secret/full_compiled_data.csv"), row.names = FALSE, na = "")
+write.csv(mppnc2, paste0(starting_path, "External_Projects_DataRequests/SARSCOV2/MICOM/micom_sc2_full_compiled_data.csv"), row.names = FALSE, na = "")
+
 
 # a <- filter(mppnc2, SF456L_present == 1) %>% group_by(received_source, coll_date) %>% summarize(total = sum(as.numeric(SF456L_present)))
 # 

@@ -109,12 +109,15 @@ mani_plate <- mani_plate %>% mutate(loc_code2 = case_when(received_source == "CD
                                                   received_source == "CDCIVY7" ~ "IVY",
                                                   T ~ "UM"))
 
-mani_plate_g2 <- merge(mani_plate, genbank, by.x = c("sample_id", "loc_code2"), by.y = c("sample_id", "loc_code2"), all.x = TRUE)
+
+
+
+mani_plate_g2 <- merge(mani_plate, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
 #mani_plate_pang_g2 <- merge(mani_plate_pang_g, gisaid, by.x = c("sample_id", "loc_code"), by.y = c("sample_id", "loc_code"), all.x = TRUE)
 
 
-#mppnc1 <- mani_plate_g2 #this is for when we get genbank data back
-mppnc1 <- mani_plate
+mppnc1 <- mani_plate_g2 #this is for when we get genbank data back
+#mppnc1 <- mani_plate
 
 nextclade <- read.csv(paste0(nc_fp, "/sample_full_nextclade_list.csv"), colClasses = "character")
 
@@ -152,7 +155,7 @@ mppnc2 <- merge(mppnc2, multiple_samples, all.x = TRUE)
 mppnc2 <- mppnc2 %>% select(sample_id, subject_id, coll_date,                   
                                                        flag, received_source, SampleBarcode,               
                                                        PlateDate, PlatePlatform, PlateNumber,                 
-                                                       #genbank_SequenceID, genbank_Accession, genbank_SubmissionID, # uncomment when we get genbank data
+                                                       genbank_SequenceID, genbank_Accession, genbank_SubmissionID, # uncomment when we get genbank data
                             nextclade_clade, nextclade_alternate_clade, nextclade_totalMissing, nextclade_qcOverallScore, nextclade_qcOverallStatus,
                             nextclade_totalMutations, nextclade_totalNonACGTNs, nextclade_aaSubstitutions, nextclade_completeness,
                             received_date, position, SiteName,                    

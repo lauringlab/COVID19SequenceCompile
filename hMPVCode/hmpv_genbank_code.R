@@ -18,7 +18,7 @@ library(readr)
 genbank_fp <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/genbank")
 
 ### output location of genbank files, all together
-outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomeComplete")
+outputLOC <- paste0(starting_path, "SEQUENCING/hMPV/4_SequenceSampleMetadata/SequenceOutcomes/SequenceOutcomesComplete")
 
 ################################################################################
 
@@ -58,7 +58,7 @@ genbank_storage <- genbank_storage %>% distinct()
 
 #sapply(genbank_storage, class)
 # create sample_id column
-genbank_storage$sample_id <- sapply(strsplit(as.character(genbank_storage$SampleID),'-'),"[", 3)
+genbank_storage$sample_id <- sapply(strsplit(as.character(genbank_storage$SampleID),'-'),"[", 2)
 
 
 ############

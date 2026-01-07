@@ -14,9 +14,9 @@ ivy_hmpv <- hMPV %>% filter(grepl("IVY", received_source))
 
 
 #sapply(rsv_ab_out5, class)
-ivy_hmpv$genbank_SubmissionID <- ""
-ivy_hmpv$genbank_Accession <- ""
-ivy_hmpv$genbank_SequenceID <- ""
+#ivy_hmpv$genbank_SubmissionID <- ""
+#ivy_hmpv$genbank_Accession <- ""
+#ivy_hmpv$genbank_SequenceID <- ""
 
 hmpv_out <- ivy_hmpv %>% select(subject_id, sample_id, coll_date, flag, 
                                   received_source, received_date, SiteName, SampleBarcode,

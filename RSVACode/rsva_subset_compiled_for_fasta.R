@@ -19,10 +19,13 @@ outputLOC <- paste0(starting_path, "SEQUENCING/RSV_A/3_ProcessedGenomes/", plate
 # read in compiled dataset
 seq_list <- read.csv(paste0(starting_path, "SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"), colClasses = "character")
 
+#num_rsvs_on_plate <- 93
 ################################################################################
 # filter to plate run
 seq_list2 <- filter(seq_list, PlateNumber == strsplit(plate_name, "_")[[1]][5] & PlateDate == paste0(substr(strsplit(plate_name, "_")[[1]][1], 1, 4), "-", substr(strsplit(plate_name, "_")[[1]][1], 5, 6), "-", substr(strsplit(plate_name, "_")[[1]][1], 7, 8)))
 #puis <- filter(seq_list, grepl("pui", tolower(flag)) | grepl("pui", tolower(SampleSourceLocation)))
+
+#str(seq_list2)
 
 ######################################
 # check how current the samples are

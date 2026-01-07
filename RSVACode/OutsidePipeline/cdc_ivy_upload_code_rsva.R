@@ -103,12 +103,21 @@ colnames(rsv_ab_out7) <- c("subject_id", "sample_id", "coll_date_rsv", "flag_rsv
                            "nextclade_totalmissing_rsv", "nextclade_completeness_rsv", "nextclade_overall_qc_rsv")
 
 
-f_out <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/IVY_uploads/"
+#samp_dup <- rsv_ab_out7 %>% group_by(sample_id) %>% summarize(count = n ()) %>% filter(count > 1)
+#print(samp_dup)
 
+
+# there is a RSVB sample that was intially run as an A and rerun as B so 
+# filtering out the A instance in the upload file for right now
+rsv_ab_out7 <- filter(rsv_ab_out7, subject_id != "25260343" | plate_name_rsv != "20250205_RSVA_Nanopore_Run_9")
+rsv_ab_out7 <- filter(rsv_ab_out7, subject_id != "25260311" | plate_name_rsv != "20250205_RSVA_Nanopore_Run_9")
+
+
+f_out <- "/Users/leighbak/University of Michigan Dropbox/MED-LauringLab/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/IVY_uploads/"
 
 #write.csv(rsv_ab_out4, paste0(f_out, "ivy4_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
 #write.csv(rsv_ab_out5, paste0(f_out, "ivy5_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
-write.csv(rsv_ab_out6, paste0(f_out, "ivy6_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
+#write.csv(rsv_ab_out6, paste0(f_out, "ivy6_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
 write.csv(rsv_ab_out7, paste0(f_out, "ivy7_rsv_upload_", gsub("-", "", Sys.Date()), ".csv"), row.names = FALSE, na = "")
 
 

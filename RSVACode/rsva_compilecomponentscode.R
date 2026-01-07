@@ -111,6 +111,12 @@ mppnc <- merge(mani_plate_g, nextclade, by.x = c("sample_id"), by.y = c("SampleI
 genbank <- read.csv(paste0(genbank_fp, "/sample_full_genbank_list.csv"), colClasses = "character")
 
 mppnc <- merge(mppnc, genbank, by.x = c("sample_id"), by.y = c("sample_id"), all.x = TRUE)
+
+# filtering for just the RIGHT lauring_lab_id
+#genbank_secret <- filter(genbank, grepl("RA", genbank_SequenceID))
+genbank_secret <- filter(genbank, grepl("RA", sample_id))
+
+
 ################################################################################
 ## Additional subject_id length check (leading zeros)
 ## CSTP == 8 (UMIDs), CBR == 9 (MRNs)
@@ -127,9 +133,6 @@ mppnc <- mppnc %>% group_by(subject_id) %>% arrange(coll_date) %>% mutate(sample
 
 ################################################################################
 ## adding in the lauring_lab_id recode info
-
-#genbank_secret <- filter(genbank, grepl("RA", genbank_SequenceID))
-genbank_secret <- filter(genbank, grepl("RA", sample_id))
 
 # pull in rsva RIGHT data
 seq <- read.csv(paste0(starting_path, "/SEQUENCING/RSV_A/4_SequenceSampleMetadata/FinalSummary/full_compiled_data.csv"))
@@ -169,22 +172,34 @@ right_recodes <- filter(right_recodes, sample_id != "")
 
 mppnc <- merge(mppnc, right_recodes, by = "sample_id", all.x = TRUE)
 
+# add in RIGHT and genbank
+
+mppnc_right <- filter(mppnc, grepl("RIGHT", received_source))
+
+mppnc2 <- filter(mppnc, !grepl("RIGHT", received_source))
+
+mppnc_right <- merge(mppnc_right, genbank_secret, by.x = c("sample_id_lauring"), by.y = c("sample_id"), all.x = TRUE)
+
+mppnc_right <- mppnc_right %>% select(sample_id, received_date, position, subject_id,
+                                      coll_date, flag, received_source, subject_id_length,
+                                      PlateName, PlatePosition, SampleBarcode, SampleSourceLocation,
+                                      PlateDate, PlatePlatform, PlateNumber, epi_isl, strain_name,
+                                      nextclade_clade, nextclade_Gclade, nextclade_totalMissing,
+                                      nextclade_qcOverallScore, nextclade_qcOverallStatus, nextclade_totalMutations,
+                                      nextclade_totalNonACGTNs, nextclade_runDate, nextclade_completeness,
+                                      genbank_SubmissionID.y, genbank_SequenceID.y, genbank_Accession.y,
+                                      sample_per_subject, sample_id_lauring)
+
+
+colnames(mppnc_right)[colnames(mppnc_right) == 'genbank_SubmissionID.y'] <- 'genbank_SubmissionID'
+colnames(mppnc_right)[colnames(mppnc_right) == 'genbank_SequenceID.y'] <- 'genbank_SequenceID'
+colnames(mppnc_right)[colnames(mppnc_right) == 'genbank_Accession.y'] <- 'genbank_Accession'
+
+
+mppnc2 <- rbind(mppnc_right, mppnc2)
 
 ################################################################################
-mppnc3 <- mppnc 
-# %>% select(sample_id, subject_id, coll_date,                   
-#                            flag, received_source, received_date, SampleBarcode,               
-#                            PlateDate, PlatePlatform, PlateNumber,
-#                            nextclade_HA_clade, nextclade_HA_completeness, nextclade_HA_totalMissing,      
-#                            nextclade_HA_qcOverallScore, nextclade_HA_qcOverallStatus, 
-#                            nextclade_HA_totalMutations, nextclade_HA_totalNonACGTNs,
-#                            nextclade_HA_runDate, nextclade_HA_type, 
-#                            Isolate_Id, PB2.Segment_Id, PB1.Segment_Id, PA.Segment_Id, HA.Segment_Id, 
-#                            NP.Segment_Id, NA.Segment_Id, MP.Segment_Id, NS.Segment_Id, HE.Segment_Id, 
-#                            P3.Segment_Id, Isolate_Name,              
-#                            subject_id_length, position, PlateName, PlatePosition,               
-#                            SampleSourceLocation, PlateToNextclade_days, 
-#                            sample_per_subject, sample_id_lauring)
+mppnc3 <- mppnc2 
 
 ################################################################################
 

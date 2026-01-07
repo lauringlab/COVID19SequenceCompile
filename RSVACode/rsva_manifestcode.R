@@ -295,6 +295,7 @@ all_non_right <- filter(manifest_storage, !grepl("RIGHT", received_source))
 
 
 date_test_right$received_date <- as.Date(date_test_right$received_date, format = "%m/%d/%Y")
+date_test_right$coll_date <- as.Date(date_test_right$coll_date, format = "%m/%d/%Y")
 
 all_back <- rbind(date_test_right, all_non_right)
 
